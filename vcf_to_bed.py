@@ -2,9 +2,6 @@ import os
 import pysam
 
 def convert(in_path, out_path):
-    if not os.path.exists(out_path):
-        os.makedirs(out_path)
-
     vcf_in = pysam.VariantFile(in_path)
     with open(out_path, "w") as bam_out:
         for rec in vcf_in.fetch():
@@ -13,6 +10,8 @@ def convert(in_path, out_path):
 
 if __name__ == '__main__':
     genotypes_dir = "/agusevlab/awang/sc_le/genotypes/"
+    if not os.path.exists(genotypes_dir):
+        os.makedirs(genotypes_dir)
     in_path = os.path.join(genotypes_dir, "HRC.r1-1.GRCh37.wgs.mac5.sites.vcf.gz")
     out_path = os.path.join(genotypes_dir, "hrc_sites.bed")
     convert(in_path, out_path)
