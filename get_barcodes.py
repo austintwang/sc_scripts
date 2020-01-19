@@ -10,7 +10,7 @@ def load_hdf5(in_file):
     return barcodes
 
 def get_barcodes(in_dir, out_path):
-    in_files = [os.path.join(in_dir, i) for i in os.listdir(in_dir)]
+    in_files = [os.path.join(in_dir, i) for i in os.listdir(in_dir) if i.endswith(".h5ad")]
     barcodes = []
     for i in in_files:
         barcodes.extend(load_hdf5(i))
@@ -23,6 +23,6 @@ def get_barcodes(in_dir, out_path):
 
 if __name__ == '__main__':
     data_dir = "/agusevlab/awang/sc_le/"
-    in_dir = os.path.join(data_dir, "bam")
+    in_dir = os.path.join(data_dir, "genotypes")
     out_path = os.path.join(data_dir, "barcodes.pickle")
     get_barcodes(in_dir, out_path)
