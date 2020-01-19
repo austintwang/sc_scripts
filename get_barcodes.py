@@ -7,7 +7,12 @@ def load_hdf5(in_file):
     barcodes = []
     for i in hdf_in["obs"]:
         # print(i[0].decode("utf-8").split("-")) ####
-        barcodes.append(i[0].decode("utf-8").split("-")[0])
+        try:
+            barcodes.append(i[0].decode("utf-8").split("-")[0])
+        except Exception as e:
+            print(i) ####
+            raise e
+
     return barcodes
 
 def get_barcodes(in_dir, out_path):
