@@ -3,20 +3,20 @@ import pickle
 import h5py
 
 def load_hdf5(in_file):
-    hdf_in = h5py.File(in_file, "r")
-    barcodes = []
-    for i in hdf_in["obs"]:
-        if isinstance(i[0], bytes):
-            entry = i[0].decode("utf-8")
-        else:
-            entry = i[0]
+    with h5py.File(in_file, "r") as hdf_in:
+        barcodes = []
+        for i in hdf_in["obs"]:
+            if isinstance(i[0], bytes):
+                entry = i[0].decode("utf-8")
+            else:
+                entry = i[0]
 
-        # print(i[0].decode("utf-8").split("-")) ####
-        try:
-            barcodes.append(entry.split("-")[0])
-        except Exception as e:
-            print(i) ####
-            raise e
+            # print(i[0].decode("utf-8").split("-")) ####
+            try:
+                barcodes.append(entry.split("-")[0])
+            except Exception as e:
+                print(i) ####
+                raise e
 
     return barcodes
 
