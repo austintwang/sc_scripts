@@ -24,4 +24,4 @@ if __name__ == '__main__':
     data_dir = "/agusevlab/awang/sc_le/"
     in_path = os.path.join(data_dir, "HRC.r1-1.GRCh37.wgs.mac5.sites.vcf.gz")
     out_path = os.path.join(data_dir, "markers.pickle")
-    get_snps(path, out_path)
+    get_snps(in_path, out_path)
