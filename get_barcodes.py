@@ -15,7 +15,7 @@ def load_hdf5(in_file):
             try:
                 barcodes.append(entry.split("-")[0])
             except Exception as e:
-                print(i) ####
+                print(entry) ####
                 raise e
 
     return barcodes
