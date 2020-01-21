@@ -46,6 +46,7 @@ def star(
 
 	with open(barcodes_path, "rb") as barcodes_file:
 		barcodes_all = pickle.load(barcodes_file)
+	print(barcodes_all.keys())
 	barcodes = barcodes_all[well_name]
 
 	marker_map = {val: ind for ind, val in enumerate(markers)}
