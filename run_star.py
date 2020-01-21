@@ -2,7 +2,7 @@
 
 import os
 import sys
-import pickle
+import pickleru
 import subprocess
 
 def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, log_path):
@@ -44,7 +44,7 @@ def star(
 	with open(markers_path, "rb") as markers_file:
 		markers = pickle.load(markers_file)
 
-	with open(barcodes_path, "rb") as boundaries_file:
+	with open(barcodes_path, "rb") as barcodes_file:
 		barcodes_all = pickle.load(barcodes_file)
 	barcodes = barcodes_all[well_name]
 
