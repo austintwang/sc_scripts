@@ -2,7 +2,7 @@
 
 import os
 import sys
-import pickleru
+import pickle
 import subprocess
 
 def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, log_path):
