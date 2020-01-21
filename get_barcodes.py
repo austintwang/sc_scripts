@@ -28,8 +28,9 @@ def load_barcodes(in_path):
         barcode_idx = cols.index("index")
         well_idx = cols.index("well")
         for line in in_file:
-            bc = cols[barcode_idx].split("-")[0]
-            barcodes.setdefault(line[well_idx], []).append(bc)
+            entries = line.split(",")
+            bc = entries[barcode_idx].split("-")[0]
+            barcodes.setdefault(entries[well_idx], []).append(bc)
 
     return barcodes
 
