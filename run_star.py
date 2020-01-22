@@ -27,6 +27,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 		"--outSAMattributes", "NH", "HI", "AS", "nM", "vW", "vG", "vA", "CR", "CY", "UR", "UY",
 		"--outStd", "SAM"
 	]
+	return cmd
 
 def star(
 		well_name,
