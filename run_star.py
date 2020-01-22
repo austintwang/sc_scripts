@@ -53,8 +53,8 @@ def star(
 	marker_map = {val: ind for ind, val in enumerate(markers)}
 	barcode_map = {val: ind for ind, val in enumerate(barcodes)}
 
-	ref = np.zeros((len(markers), len(barcodes),))
-	alt = np.zeros((len(markers), len(barcodes),))
+	ref = np.zeros((len(markers), len(barcodes),), dtype='uint8')
+	alt = np.zeros((len(markers), len(barcodes),), dtype='uint8')
 
 	cmd = format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, log_path)
 	proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
