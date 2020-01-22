@@ -10,7 +10,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 	cmd = [
 		"STAR",
 		"--runMode", "alignReads",
-		"--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path, bed_path,
+		"--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
 		"--outFilterMultimapNmax", "1",
 		"--outFilterMatchNmin", "35",
 		"--quantMode", "GeneCounts",
