@@ -15,7 +15,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 		"--outFilterMatchNmin", "35",
 		"--quantMode", "GeneCounts",
 		"--twopassMode", "Basic",
-		"--outFileNamePrefix", out_path,
+		"--outFileNamePrefix", log_path,
 		"--genomeDir", genome_path,
 		"--sjdbGTFfile", boundaries_path,
 		"--waspOutputMode", "SAMtag",
@@ -47,7 +47,7 @@ def star(
 
 	with open(barcodes_path, "rb") as barcodes_file:
 		barcodes_all = pickle.load(barcodes_file)
-	print(barcodes_all.keys())
+	# print(barcodes_all.keys()) ####
 	barcodes = barcodes_all[well_name]
 
 	marker_map = {val: ind for ind, val in enumerate(markers)}
