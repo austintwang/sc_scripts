@@ -34,7 +34,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 
 	return cmd
 
-def dispatch_star(bam_map, vcf_map, genome_path, boundaries_path, whitelist_path, out_path_base):
+def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base):
 	jobs = []
 	for k, v in bam_map.items():
 		out_path = os.path.join(out_path_base, k, k)
@@ -65,7 +65,8 @@ if __name__ == '__main__':
 
 	# Ye lab (except "flare" bams)
 	bam_path_ye = "/agusevlab/awang/sc_le/bam/"
-	vcf_generic = "/agusevlab/awang/sc_le/genotypes/HRC.r1-1.GRCh37.wgs.mac5.sites.vcf"
+	vcf_hrc = "/agusevlab/awang/sc_le/genotypes/HRC.r1-1.GRCh37.wgs.mac5.sites.vcf"
+	bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
 	ye_non_flare = {
 		"immvar_8_31-1" : "immvarYE_0831_1.bam.1",
 		"immvar_8_31-2" : "immvarYE_0831_2.bam.1",
@@ -123,9 +124,10 @@ if __name__ == '__main__':
 		"YE_8-9-4" : "YE_8_9_4.bam.1",
 	}
 	bam_map_ye_nf = {k: os.path.join(bam_path_ye, v) for k, v in ye_non_flare.items()}
-	vcf_map_ye_nf = {k: vcf_generic for k in ye_non_flare.keys()}
+	vcf_map_ye_nf = {k: vcf_hrc[k] for k in ye_non_flare.keys()}
+	bed_map_ye_nf = {k: bed_hrc[k] for k in ye_non_flare.keys()}
 	out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
-	dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf)
+	dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf)
 
 	 # : "flare1_1.bam.1",
 	 # : "flare1_2.bam.1",
