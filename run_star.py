@@ -124,8 +124,8 @@ if __name__ == '__main__':
 		"YE_8-9-4" : "YE_8_9_4.bam.1",
 	}
 	bam_map_ye_nf = {k: os.path.join(bam_path_ye, v) for k, v in ye_non_flare.items()}
-	vcf_map_ye_nf = {k: vcf_hrc[k] for k in ye_non_flare.keys()}
-	bed_map_ye_nf = {k: bed_hrc[k] for k in ye_non_flare.keys()}
+	vcf_map_ye_nf = {k: vcf_hrc for k in ye_non_flare.keys()}
+	bed_map_ye_nf = {k: bed_hrc for k in ye_non_flare.keys()}
 	out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
 	dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf)
 
