@@ -32,7 +32,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--mem=50000",
         "-J",
         job_name,
-        "-e",
+        "-o",
         err_name,
         "--wrap='{0}'".format(" ".join(star_cmd))
     ]
@@ -54,7 +54,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
     for i in jobs:
         while True:
             try:
-                submission = subprocess.run(i, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                submission = subprocess.run(i, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 print(str(submission.stdout, 'utf-8').rstrip())
                 break
             except subprocess.CalledProcessError as e:
