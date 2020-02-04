@@ -26,7 +26,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
         # "--outStd", "SAM"
     ]
 
-    err_name = out_prefix + "%j.out"
+    err_name = out_prefix + "_%j.out"
     cmd = [
         "sbatch",
         "--mem=50000",
