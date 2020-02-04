@@ -53,6 +53,8 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix)
         jobs.append(cmd)
 
+    print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
+
     for i in jobs:
         while True:
             try:
