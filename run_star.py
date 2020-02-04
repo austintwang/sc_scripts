@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix):
+def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix):
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
@@ -30,6 +30,8 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
     cmd = [
         "sbatch",
         "--mem=50000",
+        "-J",
+        job_name,
         "-e",
         err_name,
         "--wrap='{0}'".format(" ".join(star_cmd))
@@ -46,7 +48,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         out_prefix = os.path.join(out_path, k)
         vcf_path = vcf_map[k]
         bed_path = bed_map[k]
-        cmd = format_command(v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix)
+        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix)
         jobs.append(cmd)
 
     for i in jobs:
