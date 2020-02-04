@@ -39,6 +39,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
 	for k, v in bam_map.items():
 		out_path = os.path.join(out_path_base, k, k)
 		vcf_path = vcf_map[k]
+		bed_path = bed_map[k]
 		cmd = format_command(v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_path)
 		jobs.append(cmd)
 
