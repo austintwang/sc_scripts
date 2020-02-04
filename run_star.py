@@ -34,8 +34,10 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         job_name,
         "-o",
         err_name,
-        "--wrap='{0}'".format(" ".join(star_cmd)).encode("utf-8").decode('ascii') 
+        "--wrap='{0}'".format(" ".join(star_cmd)) 
     ]
+
+    print(" ".join(cmd))
 
     return cmd
 
