@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_path):
+def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix):
 	star_cmd = [
 		"STAR",
 		"--runMode", "alignReads",
@@ -13,7 +13,7 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 		"--outFilterMatchNmin", "35",
 		"--quantMode", "GeneCounts",
 		"--twopassMode", "Basic",
-		"--outFileNamePrefix", out_path,
+		"--outFileNamePrefix", out_prefix,
 		"--genomeDir", genome_path,
 		"--sjdbGTFfile", boundaries_path,
 		"--waspOutputMode", "SAMtag",
@@ -26,9 +26,12 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 		# "--outStd", "SAM"
 	]
 
+	err_name = out_prefix + "%j.out"
 	cmd = [
 		"sbatch",
 		"--mem=50000",
+		"-e",
+		err_name,
 		"--wrap='{0}'".format(" ".join(star_cmd))
 	]
 
@@ -37,10 +40,13 @@ def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, w
 def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base):
 	jobs = []
 	for k, v in bam_map.items():
-		out_path = os.path.join(out_path_base, k, k)
+		out_path = os.path.join(out_path_base, k)
+		if not os.path.exists(out_path):
+        	os.makedirs(out_path)
+		out_prefix = os.path.join(out_path, k)
 		vcf_path = vcf_map[k]
 		bed_path = bed_map[k]
-		cmd = format_command(v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_path)
+		cmd = format_command(v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix)
 		jobs.append(cmd)
 
 	for i in jobs:
