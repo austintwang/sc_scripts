@@ -34,7 +34,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         job_name,
         "-o",
         err_name,
-        "--wrap='{0}'".format(" ".join(star_cmd))
+        "--wrap='{0}'".format(" ".join(star_cmd)).decode("utf-8").encode('ascii') 
     ]
 
     return cmd
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
     # Ye lab (except "flare" bams)
     bam_path_ye = "/agusevlab/awang/sc_le/bam/"
-    vcf_hrc = "/agusevlab/awang/sc_le/genotypes/HRC.r1-1.GRCh37.wgs.mac5.sites.vcf"
+    vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
     bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
     ye_non_flare = {
         "immvar_8_31-1" : "immvarYE_0831_1.bam.1",
