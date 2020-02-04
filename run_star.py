@@ -4,10 +4,11 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix):
+def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired):
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
+        "--readFilesType", "SAM {0}".format("PE" if paired else "SE"),
         "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
@@ -37,11 +38,11 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--wrap='{0}'".format(" ".join(star_cmd)) 
     ]
 
-    print(" ".join(cmd))
+    # print(" ".join(cmd))
 
     return cmd
 
-def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base):
+def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base, paired=False):
     jobs = []
     for k, v in bam_map.items():
         out_path = os.path.join(out_path_base, k)
@@ -50,7 +51,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         out_prefix = os.path.join(out_path, k)
         vcf_path = vcf_map[k]
         bed_path = bed_map[k]
-        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix)
+        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired)
         jobs.append(cmd)
 
     print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
