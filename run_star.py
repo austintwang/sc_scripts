@@ -125,7 +125,7 @@ if __name__ == '__main__':
 	bam_map_ye_nf = {k: os.path.join(bam_path_ye, v) for k, v in ye_non_flare.items()}
 	vcf_map_ye_nf = {k: vcf_generic for k in ye_non_flare.keys()}
 	out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
-	dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base)
+	dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf)
 
 	 # : "flare1_1.bam.1",
 	 # : "flare1_2.bam.1",
