@@ -44,7 +44,7 @@ def bam_dist(in_path, out_path, max_rows):
 
 
     with open(out_path, "wb") as out_file:
-        pickle.dump(out_file, dist)
+        pickle.dump(dist, out_file)
 
 
 if __name__ == '__main__':
