@@ -58,7 +58,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
     # print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
     with open("exec.sh", "w") as script_file:
         script_file.write("#!/bin/bash\n") ####
-        script_file.writelines([" ".join(cmd) for cmd in jobs]) ####
+        script_file.writelines([(" ".join(cmd) + "\n") for cmd in jobs]) ####
 
     for i in jobs:
         while True:
