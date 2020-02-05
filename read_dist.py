@@ -17,7 +17,7 @@ def bam_dist(in_path, out_path, max_rows):
                 continue
 
             try:
-                var = line.get_tag("vG")
+                var = tuple(line.get_tag("vG")[1])
                 print(var) ####
                 dist.setdefault(var, 0)
                 dist[var] += 1
