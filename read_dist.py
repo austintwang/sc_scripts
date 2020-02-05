@@ -18,6 +18,7 @@ def bam_dist(in_path, out_path, max_rows):
 
             try:
                 var = line.get_tag("vG")
+                print(var) ####
                 dist.setdefault(var, 0)
                 dist[var] += 1
             except KeyError:
