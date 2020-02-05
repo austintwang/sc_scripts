@@ -18,4 +18,4 @@ if __name__ == '__main__':
     data_dir = "/agusevlab/awang/sc_le/"
     in_path = os.path.join(data_dir, "variant_dist.pickle")
     out_path = os.path.join(data_dir, "dist.svg")
-    plot_dist(in_path, out_path, 1000000)
+    plot_dist(in_path, out_path)
