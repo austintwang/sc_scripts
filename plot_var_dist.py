@@ -9,7 +9,7 @@ def plot_dist(in_path, out_path):
     x = np.array(list(dist_data.values()))
     # print(dist_data) ##s##
     # print(x) ####
-    print("\n".join(sorted(x).astype(str))) ####
+    print("\n".join(map(str, sorted(x)))) ####
 
     sns.set()
     sns.distplot(x, rug=True)
