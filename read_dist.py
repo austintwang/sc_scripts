@@ -17,10 +17,11 @@ def bam_dist(in_path, out_path, max_rows):
                 continue
 
             try:
-                var = tuple(line.get_tag("vG"))
-                print(var) ####
-                dist.setdefault(var, 0)
-                dist[var] += 1
+                intersects = line.get_tag("vG")
+                # print(var) ####
+                for var in intersects:
+                    dist.setdefault(var, 0)
+                    dist[var] += 1
             except KeyError:
                 continue
 
