@@ -12,6 +12,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
+        "--limitBAMsortRAM", "60000000000",
         "--quantMode", "GeneCounts",
         "--twopassMode", "Basic",
         "--outFileNamePrefix", out_prefix,
@@ -30,7 +31,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
     err_name = out_prefix + "_%j.out"
     cmd = [
         "sbatch",
-        "--mem=50000",
+        "--mem=100000",
         "-J",
         job_name,
         "-o",
