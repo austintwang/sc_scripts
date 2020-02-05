@@ -1,7 +1,7 @@
 import os
 import pickle
 import pysam
-import numpy
+import numpy as np
 
 def bam_dist(in_path, out_path, max_rows):
     dist = {}
