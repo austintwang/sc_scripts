@@ -8,22 +8,37 @@ def bam_dist(in_path, out_path, max_rows):
         for ind, line in enumerate(in_file):
             if ind >= max_rows:
                 break
+
+            try:
+                wasp_pass = line.get_tag("vW").split(":")[-1]
+                if wasp_pass != "1":
+                    continue
+            except KeyError:
+                continue
+
+            try:
+                var = line.get_tag("vG")
+                dist.setdefault(var, 0)
+                dist[var] += 1
+            except KeyError:
+                continue
+
             if line.startswith("@"):
                 continue
 
-            cols = line.split()
-            wasp_pass = False
-            var = None
-            for col in cols:
-                if col.startswith("vW"):
-                    if col.split(":")[-1] == "1":
-                        wasp_pass = True
-                if col.startswith("vG"):
-                    var = col
-                if (var is not None) and wasp_pass:
-                    dist.setdefault(var, 0)
-                    dist[var] += 1
-                    break
+            # cols = line.split()
+            # wasp_pass = False
+            # var = None
+            # for col in cols:
+            #     if col.startswith("vW"):
+            #         if col.split(":")[-1] == "1":
+            #             wasp_pass = True
+            #     if col.startswith("vG"):
+            #         var = col
+            #     if (var is not None) and wasp_pass:
+            #         dist.setdefault(var, 0)
+            #         dist[var] += 1
+            #         break
 
 
     with open(out_path, "wb") as out_file:
