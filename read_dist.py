@@ -1,9 +1,10 @@
 import os
 import pickle
+import pysam
 
 def bam_dist(in_path, out_path, max_rows):
     dist = {}
-    with open(in_path) as in_file:
+    with pysam.AlignmentFile(in_path, "rb") as in_file:
         for ind, line in enumerate(in_file):
             if ind >= max_rows:
                 break
