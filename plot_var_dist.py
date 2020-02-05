@@ -13,7 +13,7 @@ def plot_dist(in_path, out_path):
     print("\n".join(map(str, sorted(x)))) ####
 
     sns.set()
-    sns.distplot(x, rug=True)
+    sns.distplot(x)
     plt.savefig(out_path)
     plt.clf()
 
