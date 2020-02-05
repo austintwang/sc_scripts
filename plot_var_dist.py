@@ -10,7 +10,9 @@ def plot_dist(in_path, out_path):
     x = np.log10(np.array(list(dist_data.values())))
     # print(dist_data) ##s##
     # print(x) ####
-    print("\n".join(map(str, sorted(x)))) ####
+    # print("\n".join(map(str, sorted(x)))) ####
+    print(np.count_nonzero(x >= 1)) ####
+    print(np.count_nonzero(x >= 2)) ####
 
     sns.set()
     sns.distplot(x, norm_hist=False, kde=False)
