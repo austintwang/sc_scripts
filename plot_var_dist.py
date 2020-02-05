@@ -1,6 +1,7 @@
 import os
 import pickle
 import numpy as np
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 def plot_dist(in_path, out_path):
