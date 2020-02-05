@@ -10,8 +10,8 @@ def bam_dist(in_path, out_path, max_rows):
                 break
 
             try:
-                wasp_pass = line.get_tag("vW").split(":")[-1]
-                if wasp_pass != "1":
+                wasp_pass = line.get_tag("vW")
+                if wasp_pass != 1:
                     continue
             except KeyError:
                 continue
