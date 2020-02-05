@@ -7,7 +7,8 @@ def plot_dist(in_path, out_path):
     with open(in_path, "rb") as in_file:
         dist_data = pickle.load(in_file)
     x = np.array(dist_data.values())
-    print(dist_data) ####
+    # print(dist_data) ##s##
+    print(x) ####
     print("\n".join(sorted(x))) ####
 
     sns.set()
