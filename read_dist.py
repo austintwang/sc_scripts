@@ -24,8 +24,8 @@ def bam_dist(in_path, out_path, max_rows):
             except KeyError:
                 continue
 
-            if line.startswith("@"):
-                continue
+            # if line.startswith("@"):
+            #     continue
 
             # cols = line.split()
             # wasp_pass = False
