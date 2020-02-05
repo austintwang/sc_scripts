@@ -31,7 +31,7 @@ def bam_dist(in_path, out_path, max_rows):
 
 if __name__ == '__main__':
     data_dir = "/agusevlab/awang/sc_le/"
-    in_path = os.path.join(data_dir, "processed", "")
+    in_path = os.path.join(data_dir, "processed", "YE_7-19-1", "YE_7-19-1Aligned.sortedByCoord.out.bam")
     out_path = os.path.join(data_dir, "variant_dist.pickle")
     bam_dist(in_path, out_path, 1000000)
 
