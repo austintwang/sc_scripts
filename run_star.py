@@ -12,7 +12,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
-        "--limitBAMsortRAM", str(int((memory - 3500) * 1e6)),
+        "--limitBAMsortRAM", str(int((memory - 6000) * 1e6)),
         "--quantMode", "GeneCounts",
         "--twopassMode", "Basic",
         "--outFileNamePrefix", out_prefix,
