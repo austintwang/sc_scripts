@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired):
+def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
@@ -12,7 +12,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
-        "--limitBAMsortRAM", "60000000000",
+        "--limitBAMsortRAM", str((memory - 3500) * 1e6),
         "--quantMode", "GeneCounts",
         "--twopassMode", "Basic",
         "--outFileNamePrefix", out_prefix,
@@ -31,7 +31,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
     err_name = out_prefix + "_%j.out"
     cmd = [
         "sbatch",
-        "--mem=100000",
+        "--mem={0}".format(memory),
         "-J",
         job_name,
         "-o",
@@ -43,7 +43,12 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
 
     return cmd
 
-def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base, paired=False):
+def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base, memory, paired=False, selection=None):
+    if selection is not None:
+        bam_map = {k: v for k, v in bam_map.items() if k in selection}
+        vcf_map = {k: v for k, v in vcf_map.items() if k in selection}
+        bed_map = {k: v for k, v in bed_map.items() if k in selection}
+
     jobs = []
     for k, v in bam_map.items():
         out_path = os.path.join(out_path_base, k)
@@ -52,7 +57,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         out_prefix = os.path.join(out_path, k)
         vcf_path = vcf_map[k]
         bed_path = bed_map[k]
-        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired)
+        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory)
         jobs.append(cmd)
 
     # print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
@@ -75,6 +80,14 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
                     continue
                 else:
                     raise e
+
+def get_failed_jobs(names, out_path_base):
+    fails = set()
+    for i in names:
+        out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
+        if not os.path.isfile(out_bam_path):
+            fails.add(i)
+    return fails
 
 if __name__ == '__main__':
     genome_path = "/agusevlab/DATA/GENOMES/STAR_hg19/"
@@ -145,7 +158,13 @@ if __name__ == '__main__':
     vcf_map_ye_nf = {k: vcf_hrc for k in ye_non_flare.keys()}
     bed_map_ye_nf = {k: bed_hrc for k in ye_non_flare.keys()}
     out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
-    dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf)
+    # dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 10000)
+
+    # Clean up Ye
+    fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
+    dispatch_star(
+        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 15000, selection=fail_ye_nf
+    )
 
      # : "flare1_1.bam.1",
      # : "flare1_2.bam.1",
