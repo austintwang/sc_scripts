@@ -93,11 +93,11 @@ if __name__ == '__main__':
     genome_path = "/agusevlab/DATA/GENOMES/STAR_hg19/"
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
     whitelist_path = "/agusevlab/DATA/SCRNA/737K-august-2016.txt"
+    vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
+    bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
 
     # Ye lab (except "flare" bams)
     bam_path_ye = "/agusevlab/awang/sc_le/bam/"
-    vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
-    bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
     ye_non_flare = {
         "immvar_8_31-1" : "immvarYE_0831_1.bam.1",
         "immvar_8_31-2" : "immvarYE_0831_2.bam.1",
@@ -160,11 +160,11 @@ if __name__ == '__main__':
     out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
     # dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 10000)
 
-    # Clean up Ye
-    fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
-    dispatch_star(
-        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 50000, selection=fail_ye_nf
-    )
+    # # Clean up Ye
+    # fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
+    # dispatch_star(
+    #     bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 50000, selection=fail_ye_nf
+    # )
 
      # : "flare1_1.bam.1",
      # : "flare1_2.bam.1",
@@ -178,6 +178,21 @@ if __name__ == '__main__':
      # : "flare4_2.bam.1",
      # : "flare4_3.bam.1",
      # : "flare4_4.bam.1",
+
+
+    # Kellis 48
+    kellis_path_base = "/bcb/agusevlab/awang/sc_kellis"
+    bam_path_kellis = os.path.join(kellis_path_base, "121719_10xdata")
+    kellis_48 = {i: "{0}/{0}.bam".format(i) for i in os.path.listdir(bam_path_kellis)}
+    bam_map_kellis_48 = {k: os.path.join(bam_path_kellis, v) for k, v in kellis_48.items()}
+    vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
+    bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
+    out_path_base_kellis_48 = "/agusevlab/awang/sc_kellis/processed"
+    dispatch_star(
+        bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 10000
+    )
+
+
 
 
 
