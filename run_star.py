@@ -181,13 +181,13 @@ if __name__ == '__main__':
 
 
     # Kellis 48
-    kellis_path_base = "/bcb/agusevlab/awang/sc_kellis"
+    kellis_path_base = "/agusevlab/awang/sc_kellis"
     bam_path_kellis = os.path.join(kellis_path_base, "121719_10xdata")
     kellis_48 = {i: "{0}/{0}.bam".format(i) for i in os.path.listdir(bam_path_kellis)}
     bam_map_kellis_48 = {k: os.path.join(bam_path_kellis, v) for k, v in kellis_48.items()}
     vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
     bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
-    out_path_base_kellis_48 = "/agusevlab/awang/sc_kellis/processed"
+    out_path_base_kellis_48 = os.path.join(kellis_path_base, "processed")
     dispatch_star(
         bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 10000
     )
