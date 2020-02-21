@@ -195,7 +195,7 @@ if __name__ == '__main__':
     # Clean up Kellis
     fail_kellis_48 = get_failed_jobs(kellis_48.keys(), out_path_base_kellis_48)
     dispatch_star(
-        bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
+        bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 30000
     )
 
 
