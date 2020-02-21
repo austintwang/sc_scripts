@@ -188,10 +188,15 @@ if __name__ == '__main__':
     vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
     bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
     out_path_base_kellis_48 = os.path.join(kellis_path_base, "processed")
+    # dispatch_star(
+    #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
+    # )
+
+    # Clean up Kellis
+    fail_kellis_48 = get_failed_jobs(kellis_48.keys(), out_path_base_kellis_48)
     dispatch_star(
         bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
     )
-
 
 
 
