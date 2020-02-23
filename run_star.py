@@ -160,11 +160,11 @@ if __name__ == '__main__':
     out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
     # dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 10000)
 
-    # # Clean up Ye
-    # fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
-    # dispatch_star(
-    #     bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 50000, selection=fail_ye_nf
-    # )
+    # Clean up Ye
+    fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
+    dispatch_star(
+        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 70000, selection=fail_ye_nf
+    )
 
      # : "flare1_1.bam.1",
      # : "flare1_2.bam.1",
@@ -192,11 +192,11 @@ if __name__ == '__main__':
     #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
     # )
 
-    # Clean up Kellis
-    fail_kellis_48 = get_failed_jobs(kellis_48.keys(), out_path_base_kellis_48)
-    dispatch_star(
-        bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 50000
-    )
+    # # Clean up Kellis
+    # fail_kellis_48 = get_failed_jobs(kellis_48.keys(), out_path_base_kellis_48)
+    # dispatch_star(
+    #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 50000
+    # )
 
 
 
