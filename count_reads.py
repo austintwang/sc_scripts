@@ -17,7 +17,7 @@ class ReadBuffer(object):
 		self.marker_data = []
 		self.pos = 0
 
-	def add_read(self, marker, cell_idx, var_idx):
+	def add_read(self, marker, cell, genotype):
 		if marker not in self.buffer_data:
 			retire_marker = self.buffer[self.pos]
 			if retire_marker is not None:
@@ -27,11 +27,10 @@ class ReadBuffer(object):
 					self.markers.append(retire_data)
 			
 			self.buffer[self.pos] = marker
-			self.buffer_data[marker] = np.zeros((self.num_cells, 2,), dtype='uint16')
-
+			self.buffer_data[marker] = {}
 			self.pos = (self.pos + 1) % self.depth
 
-		self.buffer_data[marker][cell_idx] += 1
+		self.buffer_data[marker].setdefault(cell, np.zeros(2, dtype='uint16'))[genotype] += 1
 
 	def purge_buffer(self):
 		for i in range(self.pos, self.pos + self.depth):
@@ -46,29 +45,6 @@ class ReadBuffer(object):
 		self.markers = []
 		self.marker_data = []
 		self.pos = 0
-
-def format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, log_path):
-	cmd = [
-		"STAR",
-		"--runMode", "alignReads",
-		"--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
-		"--outFilterMultimapNmax", "1",
-		"--outFilterMatchNmin", "35",
-		"--quantMode", "GeneCounts",
-		"--twopassMode", "Basic",
-		"--outFileNamePrefix", log_path,
-		"--genomeDir", genome_path,
-		"--sjdbGTFfile", boundaries_path,
-		"--waspOutputMode", "SAMtag",
-		"--varVCFfile", vcf_path,
-		"--outSAMtype", "BAM", "SortedByCoordinate",
-		"--soloCBwhitelist", whitelist_path,
-		"--soloType", "Droplet",
-		"--readFilesIn", bam_path,
-		"--outSAMattributes", "NH", "HI", "AS", "nM", "vW", "vG", "vA", "CR", "CY", "UR", "UY",
-		"--outStd", "SAM"
-	]
-	return cmd
 
 def star(
 		well_name,
