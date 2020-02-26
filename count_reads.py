@@ -5,26 +5,27 @@ import sys
 import pickle
 import subprocess
 import numpy as np
+import pysam
 
 class ReadBuffer(object):
-	def __init__(self, depth, cov_threshold, num_cells):
+	def __init__(self, depth, cov_threshold):
 		self.depth = depth
-		self.num_cells = num_cells
-
 		self.buffer = depth * [None]
 		self.buffer_data = {}
 		self.markers = []
 		self.marker_data = []
+		self.out_data = {}
 		self.pos = 0
 
-	def add_read(self, marker, cell, genotype):
+	def add_read(self, chrm, pos, cell, genotype):
+		marker = (chrm, pos)
 		if marker not in self.buffer_data:
 			retire_marker = self.buffer[self.pos]
 			if retire_marker is not None:
 				retire_data = self.buffer_data.pop(retire_marker)
 				if np.sum(retire_data) >= cov_threshold:
 					self.markers.append(retire_marker)
-					self.markers.append(retire_data)
+					self.marker_data.append(retire_data)
 			
 			self.buffer[self.pos] = marker
 			self.buffer_data[marker] = {}
@@ -32,7 +33,7 @@ class ReadBuffer(object):
 
 		self.buffer_data[marker].setdefault(cell, np.zeros(2, dtype='uint16'))[genotype] += 1
 
-	def purge_buffer(self):
+	def purge(self):
 		for i in range(self.pos, self.pos + self.depth):
 			idx = i % self.depth
 			marker = self.buffer[idx]
@@ -42,70 +43,56 @@ class ReadBuffer(object):
 
 		self.buffer = depth * [None]
 		self.buffer_data = {}
-		self.markers = []
-		self.marker_data = []
 		self.pos = 0
 
-def star(
-		well_name,
-		samples_path,
-		barcodes_path,
-		bam_path, 
-		bed_path, 
-		vcf_path, 
-		genome_path, 
-		boundaries_path, 
-		whitelist_path, 
-		log_path,
-		out_path
-	):
+	def get_data(self):
+		for m, d in zip(markers, marker_data):
+			chrm, pos = m
+			entry = self.out_data.setdefault(chrm, [])
+			entry.append([pos, d])
 
-	with open(samples_path, "rb") as samples_file:
-		samples_all = pickle.load(samples_file)
-	samples = samples_all[well_name]
+		return self.out_data
 
-	with open(barcodes_path, "rb") as barcodes_file:
-		barcodes_all = pickle.load(barcodes_file)
-	# print(barcodes_all.keys()) ####
-	barcodes = barcodes_all[well_name]
 
-	barcode_map = {val: ind for ind, val in enumerate(barcodes)}
+def count_bam(bam_path, readbuf):
+	with pysam.AlignmentFile(bam_path, "rb") as bam_file:
+		for ind, line in enumerate(in_file):
+            try:
+            	wasp_pass = line.get_tag("vW")
+                if wasp_pass != 1:
+                    continue
 
-	# ref = np.zeros((len(markers), len(barcodes),), dtype='uint8')
-	# alt = np.zeros((len(markers), len(barcodes),), dtype='uint8')
-	rbuf = ReadBuffer(10, 100 * len(samples), len(barcodes))
+            	genotype = line.get_tag("vA") - 1
+            	if not (genotype == 0 or genotype == 1):
+            		continue
 
-	cmd = format_command(bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, log_path)
-	proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-	for line in proc.stdout:
-		if line.startswith("@"):
-			continue
-		print(line) ####
-		cols = line.split("\t")
-		wasp_pass = True
-		for c in cols:
-			if c.startswith("vW"):
-				wasp_status = int(c.split(":")[-1])
-				if wasp_status != 1:
-					wasp_pass = False
-					break
-			elif c.startswith("vG"):
-				marker = c.split(":")[-1]
-			elif c.startswith("CB"):
-				cell_idx = barcode_map[c.split(":")[-1].split("-")[0]]
-			elif c.startswith("vA"):
-				var_idx = int(c.split(":")[-1]) - 1
+            	barcode = line.get_tag("CB")
+            	well = line.get_tag("RG").split(":")[0]
+            	cell = (barcode, well)
+            	chromosome = line.reference_name
+                intersects = line.get_tag("vG")
 
-		if wasp_pass == True:
-			rbuf.add_read(marker, cell_idx, var_idx)
+                for var in intersects:
+                    readbuf.add_read(chromosome, var, cell, genotype)
+            
+            except KeyError:
+                continue
 
-	rbuf.purge_buffer()
+    readbuf.purge() 
 
-	with open(out_path, "wb") as out_file:
-		pickle.dump(out_file, {"markers": rbuf.markers, "data": rbuf.marker_data})
+def count_reads(data_dir, name, buffer_depth, cov_threshold):
+	bam_path = os.path.join(data_dir, "{0}Aligned.sortedByCoord.out.bam".format(name))
+	out_path = os.path.join(data_dir, "{0}_counts.pickle")
+
+	readbuf = ReadBuffer(buffer_depth, cov_threshold)
+	count_bam(bam_path, readbuf)
+	out_data = readbuf.get_data()
+
+	with open(out_path, "rb") as out_file:
+		pickle.dump(out_data, out_file)
 
 if __name__ == '__main__':
-	star(*sys.argv[1:])
+	count_reads(*sys.argv[1:])
 
 
 

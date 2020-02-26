@@ -163,7 +163,7 @@ if __name__ == '__main__':
     # Clean up Ye
     fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
     dispatch_star(
-        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 100000, selection=fail_ye_nf
+        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 160000, selection=fail_ye_nf
     )
 
      # : "flare1_1.bam.1",
