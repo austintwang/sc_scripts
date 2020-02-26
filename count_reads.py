@@ -53,6 +53,44 @@ class ReadBuffer(object):
 
 		return self.out_data
 
+class MarkerBuffer(object):
+	def __init__(self, intervals, keys):
+		self.intervals = sorted(intervals)
+		self.keymap = dict(zip(intervals, keys))
+
+		self.idx = 0
+		self.window = set([])
+
+	def query(self, query_pos):
+		# if self.intervals[self.idx][0] > query_pos:
+		# 	raise ValueError("Query's position behind previous query's")
+
+		while self.intervals[self.idx][0] <= query_pos:
+			curr_interval = self.intervals[self.idx]
+			if curr_interval[1] < query_pos:
+				self.idx += 1
+			else:
+				self.window.add(curr_interval)
+				self.idx += 1
+
+		intersects = []
+		retires = []
+		for i in self.window:
+			if i[1] >= query_pos:
+				intersects.append(i)
+			else:
+				retires.append(i)
+
+		for i in retires:
+			self.window.remove(i)
+
+		intersects_names = [self.keymap[i] for i in intersects]
+
+		return intersects_names
+
+	def reset(self):
+		self.idx = 0
+		self.window.clear()
 
 def count_bam(bam_path, readbuf):
 	with pysam.AlignmentFile(bam_path, "rb") as bam_file:
