@@ -176,8 +176,8 @@ def load_exons(boundaries_path):
             # print(data) ####
             if data[2] == "exon":
                 contig = data[0]
-                start = data[3]
-                end = data[4]
+                start = int(data[3])
+                end = int(data[4])
                 gene = data[-1].split(";")[0].split(" ")[1].strip("\"")
                 exons.append([contig, start, end, gene])
 
