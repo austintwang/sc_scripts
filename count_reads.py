@@ -44,7 +44,7 @@ class ReadBuffer(object):
         self.buffer = depth * [None]
         self.buffer_data = {}
         self.pos = 0
-        
+
 
 class MarkerBuffer(object):
     def __init__(self, depth, out_pattern, gene_finder):
@@ -170,6 +170,7 @@ def load_exons(boundaries_path):
     with open(boundaries_path, "r") as boundaries_file:
         for line in boundaries_file:
             data = line.split("\t")
+            print(data) ####
             if data[2] == "exon":
                 contig = data[0]
                 start = data[3]
