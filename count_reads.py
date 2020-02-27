@@ -98,7 +98,7 @@ class MarkerBuffer(object):
 
 class GeneFinder(object):
     def __init__(self, exons, contig_order):
-        self.contig_map = {val: ind for ind, val in contig_order}
+        self.contig_map = {val: ind for ind, val in enumerate(contig_order)}
         self.exons = [[self.contig_map[i[0]]] + i[1:] for i in exons]
         self.intervals = sorted(self.exons, lambda x: (contig_map[x[0]], x[1]))
         self.idx = 0
