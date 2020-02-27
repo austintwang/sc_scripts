@@ -40,7 +40,7 @@ class ReadBuffer(object):
                 self.marker_buf.add_marker(marker, retire_data)
 
         self.marker_buf.purge()
-        self.buffer = depth * [None]
+        self.buffer = self.depth * [None]
         self.buffer_data = {}
         self.pos = 0
 
@@ -78,7 +78,7 @@ class MarkerBuffer(object):
                 retire_data = self.buffer_data.pop(retire_gene)
                 self._retire(retire_gene, retire_data)
         
-        self.buffer[self.pos] = depth * [None]
+        self.buffer[self.pos] = self.depth * [None]
         self.buffer_data = {}
         self.pos = 0
 
