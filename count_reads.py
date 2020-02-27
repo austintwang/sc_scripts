@@ -78,12 +78,9 @@ class MarkerBuffer(object):
                 retire_data = self.buffer_data.pop(retire_gene)
                 self._retire(retire_gene, retire_data)
         
-            self.buffer[self.pos] = g
-            self.buffer_data[g] = {}
-            self.pos = (self.pos + 1) % self.depth
-
-        gene_data = self.buffer_data[g].setdefault(marker, {})
-        gene_data[marker] = data
+        self.buffer[self.pos] = depth * [None]
+        self.buffer_data = {}
+        self.pos = 0
 
 
     def _retire(self, gene, data):
