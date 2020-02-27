@@ -180,11 +180,11 @@ def load_exons(boundaries_path):
     return exons
 
 def count_reads(bam_path, boundaries_path, out_pattern, status_path):
-    with open(status_path) as status_file:
+    with open(status_path, "w") as status_file:
         status_file.write("")
     exons = load_exons(boundaries_path)
     count_bam(bam_path, exons, out_pattern)
-    with open(status_path) as status_file:
+    with open(status_path, "w") as status_file:
         status_file.write("Complete")
 
 if __name__ == '__main__':
