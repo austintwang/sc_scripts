@@ -169,8 +169,10 @@ def load_exons(boundaries_path):
     exons = []
     with open(boundaries_path, "r") as boundaries_file:
         for line in boundaries_file:
+            if line.startswith("##"):
+                continue
             data = line.split("\t")
-            print(data) ####
+            # print(data) ####
             if data[2] == "exon":
                 contig = data[0]
                 start = data[3]
