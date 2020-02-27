@@ -104,7 +104,7 @@ class GeneFinder(object):
         self.idx = 0
         self.window = set([])
 
-    def query(query_pos):
+    def query(self, query_pos):
         while self.intervals[self.idx][1] <= query_pos[1]:
             curr_interval = self.intervals[self.idx]
             if curr_interval[0] > self.contig_map[query_pos[0]]:
