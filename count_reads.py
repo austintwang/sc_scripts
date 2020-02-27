@@ -37,7 +37,7 @@ class ReadBuffer(object):
             marker = self.buffer[idx]
             if marker is not None:
                 retire_data = self.buffer_data.pop(marker)
-                self.marker_buf.add_marker(retire_marker, retire_data)
+                self.marker_buf.add_marker(marker, retire_data)
 
         self.marker_buf.purge()
         self.buffer = depth * [None]
