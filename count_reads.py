@@ -180,6 +180,8 @@ def load_exons(boundaries_path):
                 gene = data[-1].split(";")[0].split(" ")[1].strip("\"")
                 exons.append([contig, start, end, gene])
 
+    return exons
+
 def count_reads(bam_path, boundaries_path, out_pattern):
     exons = load_exons(boundaries_path)
     count_bam(bam_path, exons, out_pattern)
