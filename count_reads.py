@@ -120,7 +120,7 @@ class GeneFinder(object):
         intersects = []
         retires = []
         for i in self.window:
-            if i[1] >= query_pos:
+            if i[2] >= query_pos[1]:
                 intersects.append(i)
             else:
                 retires.append(i)
@@ -128,7 +128,7 @@ class GeneFinder(object):
         for i in retires:
             self.window.remove(i)
 
-        return [i[2] for i in intersects]
+        return [i[3] for i in intersects]
 
     def reset(self):
         self.idx = 0
