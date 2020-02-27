@@ -148,6 +148,7 @@ def count_bam(bam_path, exons, out_pattern):
                 if wasp_pass != 1:
                     continue
 
+                print(line.get_tag("vA")) ####
                 genotype = line.get_tag("vA") - 1
                 if not (genotype == 0 or genotype == 1):
                     continue
