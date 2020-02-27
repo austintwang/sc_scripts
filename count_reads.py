@@ -56,7 +56,7 @@ class MarkerBuffer(object):
         self.gene_finder = gene_finder
 
     def add_marker(self, marker, data):
-        genes = self.gene_finder.query()
+        genes = self.gene_finder.query(marker)
         for g in genes:
             if g not in self.buffer_data:
                 retire_gene = self.buffer[self.pos]
