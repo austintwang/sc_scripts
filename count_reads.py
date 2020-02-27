@@ -142,7 +142,7 @@ def count_bam(bam_path, exons, out_pattern):
         markerbuf = MarkerBuffer(10, out_pattern, gene_finder)
         readbuf = ReadBuffer(10, markerbuf)
 
-        for ind, line in enumerate(in_file):
+        for line in bam_file:
             try:
                 wasp_pass = line.get_tag("vW")
                 if wasp_pass != 1:
