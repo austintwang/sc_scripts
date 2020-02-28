@@ -7,7 +7,7 @@ import numpy as np
 def dispatch(data_dir, boundaries_path, names, out_pattern_base, memory):
     for name in names:
         bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+        if not os.path.isfile(bam_path) or os.path.getsize(bam_path) < 1e5:
             continue
 
         err_name = os.path.join(data_dir, name, "count_%j.out")
