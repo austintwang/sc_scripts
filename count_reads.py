@@ -91,7 +91,7 @@ class MarkerBuffer(object):
             os.makedirs(out_dir)
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
-        print([(k, np.sum(v.values())) for k, v in data.items()]) ####
+        print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
 
 
 class GeneFinder(object):
