@@ -10,6 +10,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
         if not os.path.isfile(bam_path) or os.path.getsize(bam_path) < 1e5:
             continue
 
+        status_path = os.path.join(data_dir, name, "countstatus.txt")
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
         cmd = [
