@@ -4,55 +4,8 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
-    star_cmd = [
-        "STAR",
-        "--runMode", "alignReads",
-        "--readFilesType", "SAM {0}".format("PE" if paired else "SE"),
-        "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
-        "--outFilterMultimapNmax", "1",
-        "--outFilterMatchNmin", "35",
-        "--limitBAMsortRAM", str(int((memory - 6000) * 1e6)),
-        "--quantMode", "GeneCounts",
-        "--twopassMode", "Basic",
-        "--outFileNamePrefix", out_prefix,
-        "--genomeDir", genome_path,
-        "--sjdbGTFfile", boundaries_path,
-        "--waspOutputMode", "SAMtag",
-        "--varVCFfile", vcf_path,
-        "--outSAMtype", "BAM", "SortedByCoordinate",
-        "--soloCBwhitelist", whitelist_path,
-        "--soloType", "Droplet",
-        "--readFilesIn", bam_path,
-        "--outSAMattributes", "NH", "HI", "AS", "nM", "vW", "vG", "vA", "CR", "CY", "UR", "UY",
-        # "--outStd", "SAM"
-    ]
-
-    err_name = out_prefix + "_%j.out"
-    cmd = [
-        "sbatch",
-        "--mem={0}".format(memory),
-        "-J",
-        job_name,
-        "-o",
-        err_name,
-        "--wrap='{0}'".format(" ".join(star_cmd)) 
-    ]
-
-    # print(" ".join(cmd))
-
-    return cmd
-
-def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base, memory, paired=False, selection=None):
-    if selection is not None:
-        bam_map = {k: v for k, v in bam_map.items() if k in selection}
-        vcf_map = {k: v for k, v in vcf_map.items() if k in selection}
-        bed_map = {k: v for k, v in bed_map.items() if k in selection}
-
-    jobs = []
-    for k, v in bam_map.items():
-        
-
+def dispatch_counter(bam_path, boundaries_path, names, out_pattern_base, memory):
+    for name in names:
         bam_path = os.path.join(data_dir, "{0}/{0}Aligned.sortedByCoord.out.bam".format(name))
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
@@ -78,23 +31,21 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
                 else:
                     raise e
 
-def get_failed_jobs(names, out_path_base):
-    fails = set()
-    for i in names:
-        out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
-            fails.add(i)
-    return fails
-
 if __name__ == '__main__':
-    genome_path = "/agusevlab/DATA/GENOMES/STAR_hg19/"
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
-    whitelist_path = "/agusevlab/DATA/SCRNA/737K-august-2016.txt"
-    vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
-    bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
 
     # Ye lab (except "flare" bams)
-    bam_path_ye = "/agusevlab/awang/sc_le/bam/"
+    bam_path_ye = "/agusevlab/awang/sc_le/bam/processed"
+    names_ye = os.listdir(bam_path_ye)
+    out_pattern_base_ye = "/agusevlab/awang/sc_le/genes/"
+
+
+
+
+
+
+
+
     ye_non_flare = {
         "immvar_8_31-1" : "immvarYE_0831_1.bam.1",
         "immvar_8_31-2" : "immvarYE_0831_2.bam.1",
