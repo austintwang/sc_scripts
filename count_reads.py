@@ -55,8 +55,8 @@ class MarkerBuffer(object):
         self.gene_finder = gene_finder
 
     def add_marker(self, marker, data):
-        print(marker) ####
-        print(data) ####
+        # print(marker) ####
+        # print(data) ####
         genes = self.gene_finder.query(marker)
         for g in genes:
             if g not in self.buffer_data:
@@ -69,8 +69,7 @@ class MarkerBuffer(object):
                 self.buffer_data[g] = {}
                 self.pos = (self.pos + 1) % self.depth
 
-            gene_data = self.buffer_data[g].setdefault(marker, {})
-            gene_data[marker] = data
+            self.buffer_data[g][marker] = data
 
     def purge(self):
         for i in range(self.pos, self.pos + self.depth):
@@ -92,7 +91,7 @@ class MarkerBuffer(object):
             os.makedirs(out_dir)
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
-        # print([(k, v.keys()) for k, v in data.items()]) ####
+        print([(k, np.sum(v.values())) for k, v in data.items()]) ####
 
 
 class GeneFinder(object):
