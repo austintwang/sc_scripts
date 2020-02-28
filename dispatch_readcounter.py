@@ -46,7 +46,7 @@ if __name__ == '__main__':
     data_path_ye = "/agusevlab/awang/sc_le"
     bam_path_ye = os.path.join(data_path_ye, "processed")
     names_ye = os.listdir(bam_path_ye)
-    out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}//bamdata/{{0}}_{0}.pickle")
+    out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
     dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
 
 
