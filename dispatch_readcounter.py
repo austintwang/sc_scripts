@@ -4,9 +4,12 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch_counter(bam_path, boundaries_path, names, out_pattern_base, memory):
+def dispatch(bam_path, boundaries_path, names, out_pattern_base, memory):
     for name in names:
         bam_path = os.path.join(data_dir, "{0}/{0}Aligned.sortedByCoord.out.bam".format(name))
+        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+            continue
+             
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
         cmd = [
@@ -35,9 +38,11 @@ if __name__ == '__main__':
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
 
     # Ye lab (except "flare" bams)
-    bam_path_ye = "/agusevlab/awang/sc_le/bam/processed"
-    names_ye = os.listdir(bam_path_ye)
-    out_pattern_base_ye = "/agusevlab/awang/sc_le/genes/"
+    data_path_ye = "/agusevlab/awang/sc_le"
+    bam_path_ye = os.path.join(data_path_ye, "bam/processed")
+    names_ye = [os.listdir(bam_path_ye)]
+    out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}//bamdata/{{0}}_{0}.pickle")
+    dispatch(bam_path, boundaries_path, names, out_pattern_base, memory)
 
 
 
