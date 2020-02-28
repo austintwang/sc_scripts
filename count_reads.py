@@ -29,7 +29,7 @@ class ReadBuffer(object):
                 self.pos = (self.pos + 1) % self.depth
 
             marker_data = self.buffer_data[marker].setdefault(cell, np.zeros(2, dtype='uint16'))
-            marker_data += 1
+            marker_data[genotype] += 1
 
     def purge(self):
         for i in range(self.pos, self.pos + self.depth):
@@ -90,7 +90,7 @@ class MarkerBuffer(object):
             os.makedirs(out_dir)
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
-        print([(k, np.sum([i for i in v.values()])) for k, v in data.items()]) ####
+        print([(k, v.keys()) for k, v in data.items()]) ####
 
 
 class GeneFinder(object):
