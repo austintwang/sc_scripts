@@ -4,9 +4,9 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(bam_path, boundaries_path, names, out_pattern_base, memory):
+def dispatch(data_dir, boundaries_path, names, out_pattern_base, memory):
     for name in names:
-        bam_path = os.path.join(data_dir, "{0}/{0}Aligned.sortedByCoord.out.bam".format(name))
+        bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
         if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
             continue
 
