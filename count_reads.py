@@ -55,6 +55,8 @@ class MarkerBuffer(object):
         self.gene_finder = gene_finder
 
     def add_marker(self, marker, data):
+        print(marker) ####
+        print(data) ####
         genes = self.gene_finder.query(marker)
         for g in genes:
             if g not in self.buffer_data:
@@ -90,7 +92,7 @@ class MarkerBuffer(object):
             os.makedirs(out_dir)
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
-        print([(k, v.keys()) for k, v in data.items()]) ####
+        # print([(k, v.keys()) for k, v in data.items()]) ####
 
 
 class GeneFinder(object):
