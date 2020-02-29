@@ -14,9 +14,10 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
         status_path = os.path.join(data_dir, name, "countstatus.txt")
         if fails_only and os.path.isfile(status_path):
             with open(status_path) as status_file:
-                print(status_file.read()) ####
-                continue ####
+                # print(status_file.read()) ####
+                # continue ####
                 if status_file.read() == "Complete\n":
+                    print("Complete")
                     continue
 
         err_name = os.path.join(data_dir, name, "count_%j.out")
@@ -25,7 +26,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
             script_path, bam_path, boundaries_path, out_pattern, status_path
         ]
-        jobs.append(cmd)
+        # jobs.append(cmd)
 
     for i in jobs:
         while True:
