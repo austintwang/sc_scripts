@@ -14,10 +14,9 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
         status_path = os.path.join(data_dir, name, "countstatus.txt")
         if fails_only and os.path.isfile(status_path):
             with open(status_path) as status_file:
-                # print(status_file.read()) ####
+                print(repr(status_file.read())) ####
                 # continue ####
-                if status_file.read() == "Complete\n":
-                    print("Complete")
+                if status_file.read() == "Complete":
                     continue
 
         err_name = os.path.join(data_dir, name, "count_%j.out")
