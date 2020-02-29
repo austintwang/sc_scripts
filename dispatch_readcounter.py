@@ -17,7 +17,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
                 # print(repr(status_file.read())) ####
                 # continue ####
                 if status_file.read() == "Complete":
-                    print("complete")
+                    # print("complete") ####
                     continue
 
         err_name = os.path.join(data_dir, name, "count_%j.out")
