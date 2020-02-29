@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, memory):
+def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, memory, fails_only=False):
     jobs = []
     for name in names:
         bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
@@ -12,6 +12,11 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
             continue
 
         status_path = os.path.join(data_dir, name, "countstatus.txt")
+        if fails_only and os.path.isfile(status_path):
+            with open(status_path) as status_file:
+                if status_file.read() == "Complete\n"
+                    continue
+
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
         cmd = [
@@ -47,7 +52,8 @@ if __name__ == '__main__':
     bam_path_ye = os.path.join(data_path_ye, "processed")
     names_ye = os.listdir(bam_path_ye)
     out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
-    dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
+    # dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
+    dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000, fails_only=True)
 
 
 
