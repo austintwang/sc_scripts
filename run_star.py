@@ -65,6 +65,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         script_file.write("#!/bin/bash\n") ####
         script_file.writelines([(" ".join(cmd) + "\n") for cmd in jobs]) ####
 
+    timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
     for i in jobs:
         while True:
             try:
@@ -163,7 +164,7 @@ if __name__ == '__main__':
     # Clean up Ye
     fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
     dispatch_star(
-        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 200000, selection=fail_ye_nf
+        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 300000, selection=fail_ye_nf
     )
 
      # : "flare1_1.bam.1",
