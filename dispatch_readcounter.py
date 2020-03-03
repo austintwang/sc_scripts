@@ -63,7 +63,7 @@ if __name__ == '__main__':
     bam_path_ye = os.path.join(data_path_ye, "processed")
     names_ye = os.listdir(bam_path_ye)
     out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
-    dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
+    dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 2000)
     # dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000, fails_only=True)
 
     # Kellis 48
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     names_kellis = os.listdir(bam_path_kellis)
     # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
-    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000)
+    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
     # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000, fails_only=True)
 
 
