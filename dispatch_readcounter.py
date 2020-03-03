@@ -52,6 +52,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
     script_path = os.path.join(curr_path, "count_reads.py")
+    print("start") ####
 
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
 
