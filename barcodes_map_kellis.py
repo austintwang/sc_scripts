@@ -13,7 +13,8 @@ def load_metadata(metadata_path, out_path):
             well = cols[1] 
             barcodes_map[(barcode, well)] = well
 
-    return barcodes_map
+    with open(out_path, "wb") as out_file:
+        pickle.dump(barcodes_map, out_file)
 
 if __name__ == '__main__':
     base_dir = "/agusevlab/awang/sc_kellis"
