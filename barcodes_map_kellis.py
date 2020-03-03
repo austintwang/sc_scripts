@@ -16,4 +16,7 @@ def load_metadata(metadata_path, out_path):
     return barcodes_map
 
 if __name__ == '__main__':
-    load_gene(*sys.argv[1:])
+    base_dir = "/agusevlab/awang/sc_kellis"
+    metadata_path = os.path.join(base_dir, "filtered_column_metadata.txt")
+    out_path = os.path.join(base_dir, "metadata.pickle")
+    load_metadata(metadata_path, out_path)
