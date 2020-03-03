@@ -10,7 +10,7 @@ def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pa
     for name in names:
         bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
         if not os.path.isfile(bam_path) or os.path.getsize(bam_path) < 1e5:
-            print(bam_path) ####
+            # print(bam_path) ####
             continue
 
         status_path = os.path.join(data_dir, name, "countstatus.txt")

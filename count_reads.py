@@ -134,12 +134,12 @@ class GeneFinder(object):
         self.idx = 0
         self.window.clear()
 
-def get_readdata_ye(bam_line):
+def get_readdata_ye(line):
     barcode = line.get_tag("CB").split("-")[0]
     well = line.get_tag("RG").split(":")[0]
     return barcode, well
 
-def get_readdata_kellis(bam_line):
+def get_readdata_kellis(line):
     # print(line.get_tag("RG")) ####
     data = line.get_tag("RG").split(":")
     barcode = data[0].split("-")[0]
