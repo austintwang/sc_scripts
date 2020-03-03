@@ -9,6 +9,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
     for name in names:
         bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
         if not os.path.isfile(bam_path) or os.path.getsize(bam_path) < 1e5:
+            print(bam_path) ####
             continue
 
         status_path = os.path.join(data_dir, name, "countstatus.txt")
@@ -68,7 +69,7 @@ if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     bam_path_kellis = os.path.join(data_path_kellis, "processed")
     names_kellis = os.listdir(bam_path_kellis)
-    print(names_kellis) ####
+    # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
     dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000)
     # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000, fails_only=True)
