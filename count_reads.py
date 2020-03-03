@@ -134,14 +134,19 @@ class GeneFinder(object):
         self.idx = 0
         self.window.clear()
 
-def get_barcode_ye(bam_line):
-    return line.get_tag("CB").split("-")[0]
+def get_readdata_ye(bam_line):
+    barcode = line.get_tag("CB").split("-")[0]
+    well = line.get_tag("RG").split(":")[0]
+    return barcode, well
 
-def get_barcode_kellis(bam_line):
-    print(line.get_tag("RG")) ####
-    return line.get_tag("RG").split(":")[0].split("-")[0]
+def get_readdata_kellis(bam_line):
+    # print(line.get_tag("RG")) ####
+    data = line.get_tag("RG").split(":")
+    barcode = data[0].split("-")[0]
+    well = data[1].split("_")[0]
+    return barcode, well
 
-def count_bam(bam_path, exons, out_pattern):
+def count_bam(bam_path, exons, readdata_fn, out_pattern):
     with pysam.AlignmentFile(bam_path, "rb") as bam_file:
         contig_data = bam_file.header["SQ"]
         contig_order = [i["SN"] for i in contig_data]
@@ -160,9 +165,7 @@ def count_bam(bam_path, exons, out_pattern):
                 if not (genotype == 0 or genotype == 1):
                     continue
 
-                barcode = line.get_tag("CB")
-                well = line.get_tag("RG").split(":")[0]
-                cell = (barcode, well)
+                cell = readdata_fn(line)
 
                 chromosome = line.reference_name
                 intersects = line.get_tag("vG")
@@ -190,11 +193,15 @@ def load_exons(boundaries_path):
 
     return exons
 
-def count_reads(bam_path, boundaries_path, out_pattern, status_path):
+def count_reads(dataset_name, bam_path, boundaries_path, out_pattern, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
     exons = load_exons(boundaries_path)
-    count_bam(bam_path, exons, out_pattern)
+    if dataset_name == "Ye":
+        readdata_fn = get_readdata_ye
+    elif dataset_name == "Kellis":
+        readdata_fn = get_readdata_kellis
+    count_bam(bam_path, exons, readdata_fn, out_pattern)
     with open(status_path, "w") as status_file:
         status_file.write("Complete")
 
