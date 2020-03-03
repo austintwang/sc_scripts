@@ -19,6 +19,9 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
                 if status_file.read() == "Complete":
                     # print("complete") ####
                     continue
+        if not fails_only:
+            with open(status_path, "w") as status_file:
+                status_file.write("")
 
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
@@ -56,8 +59,16 @@ if __name__ == '__main__':
     bam_path_ye = os.path.join(data_path_ye, "processed")
     names_ye = os.listdir(bam_path_ye)
     out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
-    # dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
-    dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000, fails_only=True)
+    dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000)
+    # dispatch(script_path, bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 1000, fails_only=True)
+
+    # Kellis 48
+    data_path_kellis = "/agusevlab/awang/sc_kellis"
+    bam_path_kellis = os.path.join(data_path_kellis, "processed")
+    names_kellis = os.listdir(bam_path_kellis)
+    out_pattern_base_kellis = os.path.join(data_path_kellis, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
+    dispatch(script_path, bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000)
+    # dispatch(script_path, bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 1000, fails_only=True)
 
 
 

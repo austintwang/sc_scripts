@@ -3,7 +3,6 @@
 import os
 import sys
 import pickle
-import subprocess
 import numpy as np
 import pysam
 
@@ -134,6 +133,13 @@ class GeneFinder(object):
     def reset(self):
         self.idx = 0
         self.window.clear()
+
+def get_barcode_ye(bam_line):
+    return line.get_tag("CB").split("-")[0]
+
+def get_barcode_kellis(bam_line):
+    print(line.get_tag("RG")) ####
+    return line.get_tag("RG").split(":")[0].split("-")[0]
 
 def count_bam(bam_path, exons, out_pattern):
     with pysam.AlignmentFile(bam_path, "rb") as bam_file:
