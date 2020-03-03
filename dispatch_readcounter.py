@@ -4,13 +4,13 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, memory, fails_only=False):
+def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pattern_base, memory, fails_only=False):
     jobs = []
-    print(data_dir) ####
+    # print(data_dir) ####
     for name in names:
         bam_path = os.path.join(data_dir, name, "{0}Aligned.sortedByCoord.out.bam".format(name))
         if not os.path.isfile(bam_path) or os.path.getsize(bam_path) < 1e5:
-            # print(bam_path) ####
+            print(bam_path) ####
             continue
 
         status_path = os.path.join(data_dir, name, "countstatus.txt")
@@ -29,7 +29,7 @@ def dispatch(script_path, data_dir, boundaries_path, names, out_pattern_base, me
         out_pattern = out_pattern_base.format(name)
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
-            script_path, bam_path, boundaries_path, out_pattern, status_path
+            script_path, dataset_name, bam_path, boundaries_path, out_pattern, status_path
         ]
         print(" ".join(cmd))
         # jobs.append(cmd)
