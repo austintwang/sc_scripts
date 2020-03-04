@@ -8,7 +8,7 @@ PPATH="/agusevlab/awang/plink/plink"
 PRE="ALL.updated"
 OUT="TCGA_KIDNEY.ARRAY.HRC"
 
-for BED in "/agusevlab/awang/sc_kellis/gen/impute/*.bed"; do
+for BED in /agusevlab/awang/sc_kellis/gen/impute/*.bed; do
     PRE="${BED%.*}"
     OUT=$PRE
 
@@ -20,7 +20,7 @@ for BED in "/agusevlab/awang/sc_kellis/gen/impute/*.bed"; do
     bgzip -c $OUT.vcf > $OUT.vcf.gz
     tabix $OUT.vcf.gz
 
-    # use the fixref plugin to identify and flip any non-matching SNPs
+    # use the fixref plugin to identify and flip any nonta-matching SNPs
     bcftools +fixref $OUT.vcf.gz -Oz -o $OUT.fixed.vcf.gz -- -f /groups/price/sasha/HUMAN_REF/human_g1k_v37.fasta -m flip
     tabix $OUT.fixed.vcf.gz
 
