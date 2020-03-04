@@ -21,9 +21,9 @@ for BED in /agusevlab/awang/sc_kellis/gen/impute/*.bed; do
     tabix $OUT.vcf.gz
 
     # use the fixref plugin to identify and flip any nonta-matching SNPs
-    bcftools +fixref $OUT.vcf.gz -Oz -o $OUT.fixed.vcf.gz -- -f /groups/price/sasha/HUMAN_REF/human_g1k_v37.fasta -m flip
+    bcftools +fixref $OUT.vcf.gz -Oz -o $OUT.fixed.vcf.gz -- -f /agusevlab/awang/refs/human_g1k_v37.fasta -m flip
     tabix $OUT.fixed.vcf.gz
 
     # finally, double check that there are no remaining errors
-    bcftools norm --check-ref w -f /groups/price/sasha/HUMAN_REF/human_g1k_v37.fasta $OUT.fixed.vcf.gz -o /dev/null > $OUT.ERRLOG
+    bcftools norm --check-ref w -f /agusevlab/awang/refs/human_g1k_v37.fasta $OUT.fixed.vcf.gz -o /dev/null > $OUT.ERRLOG
 done
