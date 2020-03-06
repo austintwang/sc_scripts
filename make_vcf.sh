@@ -4,10 +4,6 @@
 
 PPATH="/agusevlab/awang/plink/plink"
 
-
-PRE="ALL.updated"
-OUT="TCGA_KIDNEY.ARRAY.HRC"
-
 for BED in /agusevlab/awang/sc_kellis/gen/impute/*.bed; do
     PRE="${BED%.*}"
     OUT=$PRE

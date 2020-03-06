@@ -15,7 +15,8 @@ def read_vcf(vcf_path, contig, start, end):
     for record in vcf.fetch(contig, start, end):
         add_marker = True
         record_gens = np.zeros((len(samples), 2,),)
-        for ind, val in enumerate(record.samples.values()):
+        for ind, sample in enumerate(samples)
+            val = record.samples[sample]
             if not val.phased:
                 add_marker = False
                 break
@@ -41,16 +42,25 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if np.sum(gen) == 1:
                 cell_agg += counts[gen]
 
-def load_gene(gene_name, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path):
+def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path):
     with open(barcodes_map_path, "rb") as barcodes_map_file:
         barcodes_map = pickle.load(barcodes_map_file)
     with open(boundaries_map_path, "rb") as boundaries_map_file:
         boundaries_map = pickle.load(boundaries_map_file)
+    with open(tss_map_path, "rb") as tss_map_file:
+        tss_map = pickle.load(tss_map_file)
 
     contig, start, end = boundaries_map[gene_name]
     genotypes, samples, markers, marker_ids = read_vcf(vcf_path, contig, start, end)
     sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
     markers = dict([(val, ind) for ind, val in enumerate(markers)])
+
+    contig, tss_pos = tss_map[gene_name.split(".")[0]]
+    genotypes_nc, samples_nc, markers_nc, marker_ids_nc = read_vcf(
+        vcf_path, contig, tss_pos - radius, tss_pos + radius + 1
+    )
+    sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
+    markers_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
     
     agg_counts = {}
     var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
@@ -61,10 +71,10 @@ def load_gene(gene_name, gene_dir, vcf_path, barcodes_map_path, boundaries_map_p
 
     out_data = {
         "name": gene_name, 
-        "genotypes": genotypes, 
-        "samples": samples, 
-        "markers": markers, 
-        "marker_ids": marker_ids,
+        "genotypes": genotypes_nc, 
+        "samples": samples_nc, 
+        "markers": markers_nc, 
+        "marker_ids": marker_ids_nc,
         "cell_counts": agg_counts
     }
     out_path = os.path.join(gene_dir, "gene_data.pickle")
