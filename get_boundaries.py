@@ -20,6 +20,6 @@ def get_boundaries(boundaries_path, out_path):
 
 if __name__ == '__main__':
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
-    boundaries_path = "/agusevlab/awang/gen_data/boundaries.pickle"
+    out_path = "/agusevlab/awang/gen_data/boundaries.pickle"
 
     get_boundaries(boundaries_path, out_path)
