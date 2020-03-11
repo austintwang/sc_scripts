@@ -42,7 +42,10 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if np.sum(gen) == 1:
                 cell_agg += counts[gen]
 
-def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path):
+def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
+    with open(status_path, "w") as status_file:
+        status_file.write("")
+
     with open(barcodes_map_path, "rb") as barcodes_map_file:
         barcodes_map = pickle.load(barcodes_map_file)
     with open(boundaries_map_path, "rb") as boundaries_map_file:
@@ -80,6 +83,9 @@ def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundari
     out_path = os.path.join(gene_dir, "gene_data.pickle")
     with open(out_path, "wb") as out_file:
         pickle.dump(out_data, out_file)
+
+    with open(status_path, "w") as status_file:
+        status_file.write("Complete")
 
 if __name__ == '__main__':
     load_gene(*sys.argv[1:])
