@@ -15,7 +15,7 @@ def read_vcf(vcf_path, contig, start, end):
     for record in vcf.fetch(contig, start, end):
         add_marker = True
         record_gens = np.zeros((len(samples), 2,),)
-        for ind, sample in enumerate(samples)
+        for ind, sample in enumerate(samples):
             val = record.samples[sample]
             if not val.phased:
                 add_marker = False
