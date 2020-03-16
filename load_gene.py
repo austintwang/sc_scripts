@@ -27,7 +27,7 @@ def read_vcf(vcf_path, contig, start, end):
             markers.append((contig, record.pos-1,),)
             marker_ids.append(record.id) 
 
-    genotypes = np.stack(genotypes_list, axis=1)
+    genotypes = np.stack(genotypes_list, axis=1, dtype=int)
     return genotypes, samples, markers, marker_ids
 
 def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map):
