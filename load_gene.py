@@ -46,10 +46,11 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
 
-def load_gene(gene_name, dataset_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
+def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
+    gene_dir = os.path.join(data_dir, gene_name)
     if dataset_name == "Kellis":
         sample_process_fn = process_samplename_kellis
 
