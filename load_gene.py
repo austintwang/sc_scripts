@@ -37,7 +37,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             cell_agg[2] += np.sum(counts)
             if not (var in markers):
                 continue
-            sample_idx = sample_gen_map[cell_map[k]]
+            sample_idx = sample_gen_map[cell_map[cell]]
             marker_idx = marker_gen_map[var]
             gen = genotypes[sample, var, :]
             if np.sum(gen) == 1:
@@ -83,7 +83,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     for path in var_data_paths:
         with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
             var_data = pickle.load(var_file)
-            add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map)
+            add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map)
 
     out_data = {
         "name": gene_name, 
