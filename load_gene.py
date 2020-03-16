@@ -36,7 +36,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             cell_agg = agg_counts.setdefault(cell, np.array([0,0,0]))
             cell_agg[2] += np.sum(counts)
             if not (var in marker_gen_map):
-                print(var) ####
+                # print(var) ####
                 continue
             sample_idx = sample_gen_map[cell_map[cell]]
             marker_idx = marker_gen_map[var]
@@ -70,6 +70,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     samples = sample_process_fn(samples)
     sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
     marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
+    print(marker_gen_map.keys()) ####
 
     contig, tss_pos = tss_map[gene_name.split(".")[0]]
     contig = contig[3:]
