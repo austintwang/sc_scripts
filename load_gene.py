@@ -40,7 +40,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
                 continue
             sample_idx = sample_gen_map[cell_map[cell]]
             marker_idx = marker_gen_map[var]
-            gen = genotypes[sample, var, :]
+            gen = genotypes[sample_idx, marker_idx, :]
             print(gen) ####
             if np.sum(gen) == 1:
                 cell_agg += counts[gen]
