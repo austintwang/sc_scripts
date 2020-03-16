@@ -43,7 +43,7 @@ def dispatch(script_path, names, dataset_name, radius, data_dir, vcf_path, barco
 
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
-    script_path = os.path.join(curr_path, "load_genes.py")
+    script_path = os.path.join(curr_path, "load_gene.py")
 
     gen_data_path = "/agusevlab/awang/gen_data"
     boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
