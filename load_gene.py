@@ -81,7 +81,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     agg_counts = {}
     var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
     for path in var_data_paths:
-        with open(path, "rb") as var_file:
+        with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
             var_data = pickle.load(var_file)
             add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map)
 
