@@ -11,7 +11,7 @@ def read_vcf(vcf_path, contig, start, end):
     markers = [] 
     marker_ids = []
     vcf = pysam.VariantFile(vcf_path)
-    samples = vcf.samples
+    samples = vcf.header.samples
     for record in vcf.fetch(contig, start, end):
         add_marker = True
         record_gens = np.zeros((len(samples), 2,),)
