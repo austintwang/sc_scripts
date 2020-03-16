@@ -70,7 +70,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     samples = sample_process_fn(samples)
     sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
     marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
-    print(marker_gen_map.keys()) ####
+    # print(marker_gen_map.keys()) ####
 
     contig, tss_pos = tss_map[gene_name.split(".")[0]]
     contig = contig[3:]
