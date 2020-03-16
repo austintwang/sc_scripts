@@ -57,19 +57,19 @@ if __name__ == '__main__':
     names_kellis = os.listdir(genes_dir_kellis)
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
 
-    dispatch(
-        script_path, 
-        names_kellis,
-        "Kellis",
-        radius, 
-        genes_dir_kellis, 
-        vcf_path_kellis, 
-        barcodes_map_path_kellis, 
-        boundaries_map_path, 
-        tss_map_path, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis,
+    #     "Kellis",
+    #     radius, 
+    #     genes_dir_kellis, 
+    #     vcf_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     boundaries_map_path, 
+    #     tss_map_path, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     dispatch(
         script_path, 
