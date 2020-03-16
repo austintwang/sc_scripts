@@ -14,7 +14,7 @@ def read_vcf(vcf_path, contig, start, end):
     samples = vcf.header.samples
     for record in vcf.fetch(contig, start, end):
         add_marker = True
-        record_gens = np.zeros((len(samples), 2,),)
+        record_gens = np.zeros((len(samples), 2,), dtype=int)
         for ind, sample in enumerate(samples):
             val = record.samples[sample]
             if not val.phased:
@@ -27,7 +27,7 @@ def read_vcf(vcf_path, contig, start, end):
             markers.append((contig, record.pos-1,),)
             marker_ids.append(record.id) 
 
-    genotypes = np.stack(genotypes_list, axis=1, dtype=int)
+    genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids
 
 def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map):
