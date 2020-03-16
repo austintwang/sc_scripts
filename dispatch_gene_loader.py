@@ -22,7 +22,7 @@ def dispatch(script_path, names, dataset_name, radius, data_dir, vcf_path, barco
             script_path, name, dataset_name, str(radius), data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path
         ]
         print(" ".join(cmd))
-        # jobs.append(cmd)
+        jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
     for i in jobs:
