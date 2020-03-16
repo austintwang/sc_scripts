@@ -67,7 +67,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     genotypes, samples, markers, marker_ids = read_vcf(vcf_path, contig, start, end)
     samples = sample_process_fn(samples)
     sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
-    markers = dict([(val, ind) for ind, val in enumerate(markers)])
+    marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
 
     contig, tss_pos = tss_map[gene_name.split(".")[0]]
     contig = contig[3:]
@@ -76,7 +76,7 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
     )
     samples_nc = sample_process_fn(samples_nc)
     sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
-    markers_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
+    marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
     
     agg_counts = {}
     var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
