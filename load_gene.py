@@ -59,6 +59,8 @@ def load_gene(gene_name, dataset_name, radius, gene_dir, vcf_path, barcodes_map_
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
 
+    radius = int(radius)
+
     contig, start, end = boundaries_map[gene_name]
     genotypes, samples, markers, marker_ids = read_vcf(vcf_path, contig, start, end)
     samples = sample_process_fn(samples)
