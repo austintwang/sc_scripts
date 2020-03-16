@@ -21,7 +21,7 @@ def read_vcf(vcf_path, contig, start, end):
                 add_marker = False
                 break
             record_gens[ind,:] = np.array(val.allele_indices, dtype=int)
-            print(val.allele_indices) ####
+            # print(val.allele_indices) ####
         if add_marker:
             genotypes_list.append(record_gens)
             markers.append((contig, record.pos,),)
@@ -40,6 +40,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             sample_idx = sample_gen_map[cell_map[cell]]
             marker_idx = marker_gen_map[var]
             gen = genotypes[sample, var, :]
+            print(gen) ####
             if np.sum(gen) == 1:
                 cell_agg += counts[gen]
 
