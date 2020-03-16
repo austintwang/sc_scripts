@@ -46,7 +46,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             gen = genotypes[sample_idx, marker_idx, :]
             print(gen) ####
             if np.sum(gen) == 1:
-                cell_agg += counts[gen]
+                cell_agg[:1] += counts[gen]
 
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
