@@ -24,7 +24,7 @@ def read_vcf(vcf_path, contig, start, end):
             # print(val.allele_indices) ####
         if add_marker:
             genotypes_list.append(record_gens)
-            markers.append((contig, record.pos,),)
+            markers.append((contig, record.pos-1,),)
             marker_ids.append(record.id) 
 
     genotypes = np.stack(genotypes_list, axis=1)
