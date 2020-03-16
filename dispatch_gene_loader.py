@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, names, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, memory, fails_only=False):
+def dispatch(script_path, names, dataset_name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "load_status.txt")
@@ -20,10 +20,10 @@ def dispatch(script_path, names, radius, data_dir, vcf_path, barcodes_map_path, 
         out_pattern = out_pattern_base.format(name)
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
-            script_path, name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path
+            script_path, name, dataset_name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path
         ]
         print(" ".join(cmd))
-        jobs.append(cmd)
+        # jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
     for i in jobs:
@@ -56,11 +56,12 @@ if __name__ == '__main__':
     barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes")
     names_kellis = os.listdir(genes_dir_kellis)
-    vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
+    vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
 
     dispatch(
         script_path, 
-        names_kellis, 
+        names_kellis,
+        "Kellis",
         radius, 
         genes_dir_kellis, 
         vcf_path_kellis, 

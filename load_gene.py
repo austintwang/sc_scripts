@@ -42,9 +42,15 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if np.sum(gen) == 1:
                 cell_agg += counts[gen]
 
-def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
+def process_samplename_kellis(sample_names):
+    return [i[-8:] for i in sample_names]
+
+def load_gene(gene_name, dataset_name, radius, gene_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
+
+    if dataset_name == "Kellis":
+        sample_process_fn = process_samplename_kellis
 
     with open(barcodes_map_path, "rb") as barcodes_map_file:
         barcodes_map = pickle.load(barcodes_map_file)
@@ -55,6 +61,7 @@ def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundari
 
     contig, start, end = boundaries_map[gene_name]
     genotypes, samples, markers, marker_ids = read_vcf(vcf_path, contig, start, end)
+    samples = sample_process_fn(samples)
     sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
     markers = dict([(val, ind) for ind, val in enumerate(markers)])
 
@@ -62,6 +69,7 @@ def load_gene(gene_name, radius, gene_dir, vcf_path, barcodes_map_path, boundari
     genotypes_nc, samples_nc, markers_nc, marker_ids_nc = read_vcf(
         vcf_path, contig, tss_pos - radius, tss_pos + radius + 1
     )
+    samples_nc = sample_process_fn(samples_nc)
     sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
     markers_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
     

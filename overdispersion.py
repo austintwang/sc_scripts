@@ -3,7 +3,7 @@ import sys
 import pickle
 import numpy as np
 import scipy.optimize
-from scipy.special import 
+from scipy.special import gammaln
 
 def log_likelihood(samples, overdispersion):
     r = overdispersion - 1
