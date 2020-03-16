@@ -17,7 +17,6 @@ def dispatch(script_path, names, dataset_name, radius, data_dir, vcf_path, barco
                 status_file.write("")
 
         err_name = os.path.join(data_dir, name, "load_%j.out")
-        out_pattern = out_pattern_base.format(name)
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
             script_path, name, dataset_name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path
