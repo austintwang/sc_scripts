@@ -20,8 +20,8 @@ def read_vcf(vcf_path, contig, start, end):
             if not val.phased:
                 add_marker = False
                 break
-            record_gens[ind,:] = np.array(val.alleles_indices, dtype=int)
-            print(val.alleles_indices) ####
+            record_gens[ind,:] = np.array(val.allele_indices, dtype=int)
+            print(val.allele_indices) ####
         if add_marker:
             genotypes_list.append(record_gens)
             markers.append((chrom, record.pos,),)
