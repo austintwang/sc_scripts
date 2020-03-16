@@ -69,6 +69,7 @@ def load_gene(gene_name, dataset_name, radius, gene_dir, vcf_path, barcodes_map_
     markers = dict([(val, ind) for ind, val in enumerate(markers)])
 
     contig, tss_pos = tss_map[gene_name.split(".")[0]]
+    contig = contig[3:]
     genotypes_nc, samples_nc, markers_nc, marker_ids_nc = read_vcf(
         vcf_path, contig, tss_pos - radius, tss_pos + radius + 1
     )
