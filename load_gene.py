@@ -36,6 +36,9 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if not (cell in cell_map):
                 print(cell) ####
                 continue
+            if not (cell_map[cell] in sample_gen_map):
+                print(cell_map[cell])
+                continue
             cell_agg = agg_counts.setdefault(cell, np.array([0,0,0]))
             cell_agg[2] += np.sum(counts)
             if not (var in marker_gen_map):
