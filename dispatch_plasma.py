@@ -21,7 +21,7 @@ def dispatch(script_path, names, data_dir, params, params_path, filter_path, clu
 
         err_name = os.path.join(data_dir, name, "plasma_%j.out")
         cmd = [
-            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
+            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13",
             script_path, name, data_dir, params_path, filter_path, cluster_map_path, barcodes_map_path, overdispersion_path, status_path
         ]
         print(" ".join(cmd))
