@@ -46,7 +46,7 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
 
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
-    script_path = os.path.join(curr_path, "run_plasma.py")
+    script_path = os.path.join(curr_path, "colocalize.py")
 
     # Kellis 48
     data_path_kellis = "/agusevlab/awang/sc_kellis"
