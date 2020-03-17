@@ -6,7 +6,7 @@ import scipy.optimize
 from scipy.special import gammaln
 
 def log_likelihood(samples, overdispersion):
-    r = overdispersion - 1
+    r = (1 / overdispersion) - 1
     x = samples[:,0]
     n = np.sum(samples, axis=1)
     ll = np.sum(
