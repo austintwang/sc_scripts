@@ -89,7 +89,7 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
         counts = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
-        overdispersion_clust = np.array([overdispersion[cluster][i] for i in sample_names])
+        overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
             "counts2": counts[:,1],
@@ -113,30 +113,48 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     with open(status_path, "w") as status_file:
         status_file.write("")
 
-    gene_dir = os.path.join(data_dir, name)
-    gene_path = os.path.join(gene_dir, "gene_data.pickle")
-    output_path = os.path.join(gene_dir, "plasma.pickle")
+    try:
+        gene_dir = os.path.join(data_dir, name)
+        gene_path = os.path.join(gene_dir, "gene_data.pickle")
+        output_path = os.path.join(gene_dir, "plasma.pickle")
 
-    with open(params_path, "rb") as params_file:
-        params = pickle.load(params_file)
-    with open(gene_path, "rb") as gene_file:
-        gene_data = pickle.load(gene_file)
-    if filter_path == "all":
-        snp_filter = False
-    else:
-        with open(filter_path, "rb") as filter_file:
-            snp_filter = pickle.load(filter_file)
+        with open(params_path, "rb") as params_file:
+            params = pickle.load(params_file)
+        try:
+            with open(gene_path, "rb") as gene_file:
+                gene_data = pickle.load(gene_file)
+        except FileNotFoundError:
 
-    inputs_all = {
-        "hap1": gene_data["genotypes"][:,:,0],
-        "hap2": gene_data["genotypes"][:,:,1],
-        "sample_names": gene_data["samples"],
-        "snp_ids": gene_data["marker_ids"],
-        "snp_pos": gene_data["markers"]
-    }
-    inputs_all.update(params)
 
-    clusters = load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path)
+        if filter_path == "all":
+            snp_filter = False
+        else:
+            with open(filter_path, "rb") as filter_file:
+                snp_filter = pickle.load(filter_file)
+
+        inputs_all = {
+            "hap1": gene_data["genotypes"][:,:,0],
+            "hap2": gene_data["genotypes"][:,:,1],
+            "sample_names": gene_data["samples"],
+            "snp_ids": gene_data["marker_ids"],
+            "snp_pos": gene_data["markers"]
+        }
+        inputs_all.update(params)
+
+        clusters = load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path)
+
+    except Exception as e:
+        all_complete = False
+        trace = traceback.format_exc()
+        print(trace, file=sys.stderr)
+        message = repr(e)
+        result["run_error"] = message
+        result["traceback"] = trace
+        write_output(output_path, results)
+
+        with open(status_path, "w") as status_file:
+            status_file.write("Fail")
+        return
 
     results = {}
     all_complete = True
@@ -145,7 +163,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         try:
             inputs.update(inputs_all)
 
-            select_counts = np.logical_and(inputs["counts1"] >= 1, inputs["counts2"] >= 1) 
+            select_counts = np.logical_and(
+                inputs["counts1"] >= 1, 
+                inputs["counts2"] >= 1, 
+                np.logical_not(np.isnan(inputs["overdispersion"]))
+            ) 
             inputs["hap1"] = inputs["hap1"][select_counts]
             inputs["hap2"] = inputs["hap2"][select_counts]
             inputs["counts1"] = inputs["counts1"][select_counts]
