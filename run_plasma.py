@@ -84,12 +84,12 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
 
     cell_counts = gene_data["cell_counts"]
     sample_names = gene_data["samples"]
-    sample_map = {val: ind for ind, val in enumerate(sample_names)}
+    # sample_map = {val: ind for ind, val in enumerate(sample_names)}
 
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
         counts = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
-        overdispersion_clust = np.array([overdispersion[cluster][sample_map[i]] for i in sample_names])
+        overdispersion_clust = np.array([overdispersion[cluster][i] for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
             "counts2": counts[:,1],
