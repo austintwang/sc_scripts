@@ -170,6 +170,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             inputs["counts1"] = inputs["counts1"][select_counts]
             inputs["counts2"] = inputs["counts2"][select_counts]
             inputs["counts_total"] = inputs["counts_total"][select_counts]
+            inputs["overdispersion"] = inputs["overdispersion"][select_counts]
             inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
 
             if snp_filter:
