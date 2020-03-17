@@ -77,7 +77,7 @@ if __name__ == '__main__':
         script_path, 
         names_kellis, 
         genes_dir_kellis, 
-        "alz"
+        "alz",
         params_kellis, 
         params_path_kellis, 
         "all", 
