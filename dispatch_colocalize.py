@@ -67,7 +67,8 @@ if __name__ == '__main__':
         "search_mode": "exhaustive",
         "max_causal": 1,
         "confidence": 0.95, 
-        "model_flavors": "all"
+        "model_flavors": "all",
+        "model_flavors_gwas": "all",
     }
 
     # Alzheimers
