@@ -73,7 +73,8 @@ if __name__ == '__main__':
 
     # Alzheimers
     alz_path = "/agusevlab/awang/gwas_data/alz.pickle"
-    params_kellis_alz = params_kellis.copy().update("num_ppl", 388324)
+    params_kellis_alz = params_kellis.copy()
+    params_kellis_alz["num_ppl"] = 388324
     params_path_kellis_alz = os.path.join(data_path_kellis, "plasma_c_alz_params.pickle")
 
     dispatch(
