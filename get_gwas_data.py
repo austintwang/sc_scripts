@@ -16,7 +16,7 @@ def get_gwas_data(gwas_path, out_path):
         pickle.dump(markers, out_file)
 
 if __name__ == '__main__':
-    gwas_dir = "/bcb/agusevlab/DATA/GWAS/"
+    gwas_dir = "/agusevlab/DATA/GWAS/"
     
     gwas_path_alz = os.path.join(gwas_dir, "INTERNAL", "AlzheimersProxyMetaIGAP_Marioni2018.sumstats.gz")
     out_path = "/agusevlab/awang/gwas_data/alz.pickle"

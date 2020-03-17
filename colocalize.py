@@ -134,6 +134,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
         message = repr(e)
+        result = {}
         result["run_error"] = message
         result["traceback"] = trace
         write_output(output_path, result)
