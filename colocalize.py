@@ -89,6 +89,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
         inputs["z_beta"] = inputs["z_beta"][informative_snps]
+        inputs["num_snps"] = len(inputs["z_beta"])
 
         inputs["num_causal_prior"] = inputs["num_causal"]
 
