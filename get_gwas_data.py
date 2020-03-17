@@ -4,10 +4,10 @@ import gzip
 
 def get_gwas_data(gwas_path, out_path):
     markers = {}
-    with gzip.open(gwas_path, 'r') as gwas_file:
+    with gzip.open(gwas_path, 'rb') as gwas_file:
         next(gwas_file)
         for line in gwas_file:
-            data = line.split("\t")
+            data = line.decode('utf-8').split("\t")
             marker = data[0]
             zscr = float(data[3])
             markers[marker] = zscr
