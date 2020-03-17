@@ -52,7 +52,7 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(params_path, gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, status_path):
+def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
