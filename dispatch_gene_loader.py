@@ -81,7 +81,7 @@ if __name__ == '__main__':
         barcodes_map_path_kellis, 
         boundaries_map_path, 
         tss_map_path, 
-        2000, 
+        5000, 
         fails_only=True
     )
 
