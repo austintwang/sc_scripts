@@ -71,7 +71,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
         with open(finemap_path, "rb") as finemap_file:
-            finemap_data = pickle.load(gene_file)
+            finemap_data = pickle.load(finemap_file)
         if filter_path == "all":
             snp_filter = False
         else:
