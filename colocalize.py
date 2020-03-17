@@ -86,7 +86,6 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         inputs.update(params)
     
         result = {"z_beta": inputs["z_beta"].copy()}
-        informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
         inputs["z_beta"] = inputs["z_beta"][informative_snps]
