@@ -81,7 +81,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         inputs = {
             "snp_ids": gene_data["marker_ids"],
             "snp_pos": gene_data["markers"],
-            "z_beta": np.array(gwas_data.get(i, np.nan) for i in gene_data["marker_ids"])
+            "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]])
         }
         inputs.update(params)
     
