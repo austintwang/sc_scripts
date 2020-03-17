@@ -131,7 +131,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         "hap2": gene_data["genotypes"][:,:,1],
         "sample_names": gene_data["samples"],
         "snp_ids": gene_data["marker_ids"],
-        "snp_pos": gene_data["marker_pos"]
+        "snp_pos": gene_data["markers"]
     }
     inputs_all.update(params)
 
