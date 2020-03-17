@@ -120,11 +120,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
         with open(params_path, "rb") as params_file:
             params = pickle.load(params_file)
-        try:
-            with open(gene_path, "rb") as gene_file:
-                gene_data = pickle.load(gene_file)
-        except FileNotFoundError:
-
+        with open(gene_path, "rb") as gene_file:
+            gene_data = pickle.load(gene_file)
 
         if filter_path == "all":
             snp_filter = False
