@@ -59,6 +59,8 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
     finemap_path = os.path.join(gene_dir, "plasma.pickle")
+    if os.path.isdir(finemap_path):
+        finemap_path = os.path.join(finemap_path, "output.pickle")
     output_path = os.path.join(gene_dir, "coloc_{0}.pickle".format(gwas_name))
 
     try:

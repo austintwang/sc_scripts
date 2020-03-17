@@ -100,11 +100,11 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
     return cluster_inputs
 
 def write_output(output_path, result):
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
+    # if not os.path.exists(output_path):
+    #     os.makedirs(output_path)
 
-    output_return = os.path.join(output_path, "output.pickle")
-    with open(output_return, "wb") as output_file:
+    # output_return = os.path.join(output_path, "output.pickle")
+    with open(output_path, "wb") as output_file:
         pickle.dump(result, output_file)
 
     gc.collect()
