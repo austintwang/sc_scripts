@@ -65,7 +65,8 @@ def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     for i in barcodes:
         counts = cell_counts[i]
         sample = barcodes_map[i]
-        sample_counts.setdefault(sample, np.array([0,0,0])) += counts
+        sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
+        sc += counts
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
     return counts_all
