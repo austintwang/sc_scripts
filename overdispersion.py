@@ -25,7 +25,7 @@ def fit_overdispersion(samples):
 
 def make_cell_map(cluster_map):
     cell_map = {}
-    for cluster, cells in cluster_map.items()
+    for cluster, cells in cluster_map.items():
         for cell in cells:
             cell_map.setdefault(cell, []).append(cluster)
     return cell_map
