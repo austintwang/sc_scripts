@@ -146,8 +146,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
         message = repr(e)
-        result["run_error"] = message
-        result["traceback"] = trace
+        results["run_error_all"] = message
+        results["traceback_all"] = trace
         write_output(output_path, results)
 
         with open(status_path, "w") as status_file:
