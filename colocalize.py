@@ -146,5 +146,5 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             status_file.write("Fail")
 
 if __name__ == '__main__':
-    run_plasma(*sys.argv[1:])
+    colocalize(*sys.argv[1:])
 
