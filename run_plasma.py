@@ -63,10 +63,11 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
 def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     for i in barcodes:
-        counts = cell_counts[i]
-        sample = barcodes_map[i]
-        sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
-        sc += counts
+        if (i in cell_counts) and (i in barcodes_map):
+            counts = cell_counts[i]
+            sample = barcodes_map[i]
+            sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
+            sc += counts
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
     return counts_all
