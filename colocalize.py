@@ -88,12 +88,12 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         result = {"z_beta": inputs["z_beta"].copy()}
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
-        inputs["z_beta"] = inputs["z_beta"][informative_snps]
-        inputs["num_snps"] = len(inputs["z_beta"])
+        inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
+        inputs["num_snps"] = inputs["total_exp_stats"].size
 
         inputs["num_causal_prior"] = inputs["num_causal"]
 
-        if inputs["z_beta"].size == 0:
+        if inputs["num_snps"] == 0:
             result["data_error"] = "Insufficient Markers"
             write_output(output_path, result)
             return
