@@ -72,4 +72,4 @@ if __name__ == '__main__':
     data_dir = os.path.join(base_dir, "genes")
     cluster_map_path = os.path.join(base_dir, "cluster_map.pickle")
     out_path = os.path.join(base_dir, "overdispersions.pickle")
-    get_cluster_map(metadata_path, out_path)
+    get_overdispersions(data_dir, cluster_map_path, out_path)
