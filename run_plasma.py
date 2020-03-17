@@ -108,7 +108,7 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def run_plasma(params_path, name, data_dir, params_path, filter_path, cluster_map_path, barcodes_map_path, overdispersion_path, status_path):
+def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barcodes_map_path, overdispersion_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
