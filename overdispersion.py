@@ -30,7 +30,7 @@ def make_cell_map(cluster_map):
             cell_map.setdefault(cell, []).append(cluster)
     return cell_map
 
-def load_gene(clusters, cell_map, gene_dir):
+def load_gene(clusters, cell_map, barcodes_map, gene_dir):
     data_path = os.path.join(gene_dir, "gene_data.pickle")
     try:
         with open(data_path, "rb") as data_file:
@@ -39,11 +39,14 @@ def load_gene(clusters, cell_map, gene_dir):
         return
     for cell, counts in data["cell_counts"].items():
         # ind_map = {val: ind for ind, val in enumerate(data["samples"])}
+        sample = barcodes_map[cell]
         for cluster in cell_map[cell]:
             clust_data = clusters.setdefault(cluster, {})
-            for idx, ind_counts in enumerate(counts):
-                clust_data_ind = clust_data.setdefault(data["samples"][idx], [])
-                clust_data_ind.append(ind_counts[:2])
+            clust_data_ind = clust_data.setdefault(sample, [])
+            clust_data_ind.append(counts[:2])
+            # for idx, ind_counts in enumerate(counts):
+            #     clust_data_ind = clust_data.setdefault(data["samples"][idx], [])
+            #     clust_data_ind.append(ind_counts[:2])
 
 def calc_overdispersions(clusters):
     overdispersions = {}
@@ -55,15 +58,17 @@ def calc_overdispersions(clusters):
             overdispersions[cluster][sample_name] = overdispersion
     return overdispersions
 
-def get_overdispersions(data_dir, cluster_map_path, out_path):
+def get_overdispersions(data_dir, cluster_map_path, barcodes_map_path, out_path):
     with open(cluster_map_path, "rb") as cluster_map_file:
         cluster_map = pickle.load(cluster_map_file)
+    with open(barcodes_map_path, "rb") as barcodes_map_file:
+        barcodes_map = pickle.load(barcodes_map_file)
     cell_map = make_cell_map(cluster_map)
 
     genes = os.listdir(data_dir)
     clusters = {}
     for g in genes:
-        load_gene(clusters, cell_map, os.path.join(data_dir, g))
+        load_gene(clusters, cell_map, barcodes_map, os.path.join(data_dir, g))
 
     overdispersions = calc_overdispersions(clusters)
 
@@ -74,5 +79,6 @@ if __name__ == '__main__':
     base_dir = "/agusevlab/awang/sc_kellis"
     data_dir = os.path.join(base_dir, "genes")
     cluster_map_path = os.path.join(base_dir, "cluster_map.pickle")
+    barcodes_map_path = os.path.join(base_dir, "metadata.pickle")
     out_path = os.path.join(base_dir, "overdispersions.pickle")
-    get_overdispersions(data_dir, cluster_map_path, out_path)
+    get_overdispersions(data_dir, cluster_map_path, barcodes_map_path, out_path)
