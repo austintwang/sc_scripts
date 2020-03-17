@@ -38,12 +38,12 @@ def load_gene(clusters, cell_map, gene_dir):
     except FileNotFoundError:
         return
     for cell, counts in data["cell_counts"].items():
-        ind_map = {val: ind for ind, val in enumerate(data["samples"])}
+        # ind_map = {val: ind for ind, val in enumerate(data["samples"])}
         for cluster in cell_map[cell]:
             clust_data = clusters.setdefault(cluster, {})
             for idx, ind_counts in enumerate(counts):
-                clust_data_ind = clust_data.setdefault(ind_map[idx], [])
-                clust_data.append(ind_counts[:2])
+                clust_data_ind = clust_data.setdefault(data["samples"][idx], [])
+                clust_data_ind.append(ind_counts[:2])
 
 def calc_overdispersions(clusters):
     overdispersions = {}
