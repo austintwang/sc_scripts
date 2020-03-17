@@ -32,8 +32,11 @@ def make_cell_map(cluster_map):
 
 def load_gene(clusters, cell_map, gene_dir):
     data_path = os.path.join(gene_dir, "gene_data.pickle")
-    with open(data_path, "rb") as data_file:
-        data = pickle.load(data_file)
+    try:
+        with open(data_path, "rb") as data_file:
+            data = pickle.load(data_file)
+    except FileNotFoundError:
+        return
     for cell, counts in data["cell_counts"].items():
         ind_map = {val: ind for ind, val in data["samples"]}
         for cluster in cell_map[cell]:
