@@ -38,7 +38,7 @@ def load_gene(clusters, cell_map, gene_dir):
     except FileNotFoundError:
         return
     for cell, counts in data["cell_counts"].items():
-        ind_map = {val: ind for ind, val in data["samples"]}
+        ind_map = {val: ind for ind, val in enumerate(data["samples"])}
         for cluster in cell_map[cell]:
             clust_data = clusters.setdefault(cluster, {})
             for idx, ind_counts in enumerate(counts):
