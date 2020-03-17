@@ -109,13 +109,13 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             model_flavors_qtl = inputs["model_flavors_qtl"]
 
         if "eqtl" in model_flavors_gwas:
-            updates_eqtl = {"qtl_only": True, "num_ppl": None}
+            updates_eqtl = {"qtl_only": True}
             result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
                 Finemap, inputs, updates_eqtl, informative_snps
             )
 
         if "fmb" in model_flavors_gwas:
-            updates_fmb = {"qtl_only": True, "num_ppl": None}
+            updates_fmb = {"qtl_only": True}
             result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
                 FmBenner, inputs, updates_fmb, informative_snps
             )
