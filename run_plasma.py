@@ -113,6 +113,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     with open(status_path, "w") as status_file:
         status_file.write("")
 
+    results = {}
     try:
         gene_dir = os.path.join(data_dir, name)
         gene_path = os.path.join(gene_dir, "gene_data.pickle")
@@ -153,7 +154,6 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             status_file.write("Fail")
         return
 
-    results = {}
     all_complete = True
     for cluster, inputs in clusters.items():
         result = results.setdefault(cluster, {})
