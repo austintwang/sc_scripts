@@ -37,7 +37,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
         except FileNotFoundError:
             continue
 
-        data = read_data(plasma_data, coloc_data, clusters, gene_name)
+        data = read_data(plasma_data, coloc_data, clusters, g)
         data_lst.append(data)
 
     cols = ["Gene", "Cluster", "Credible Set Prop", "{0} PP4".format(gwas_name)]
