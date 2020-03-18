@@ -5,6 +5,8 @@ import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
     print(coloc_data) ####
+    if not "clusters" in coloc_data:
+        return None
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
         coloc_clust = coloc_data["clusters"].get(c, None)
@@ -39,7 +41,8 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
             continue
 
         data = read_data(plasma_data, coloc_data, clusters, g)
-        data_lst.append(data)
+        if data is not None:
+            data_lst.append(data)
 
     cols = ["Gene", "Cluster", "Credible Set Prop", "{0} PP4".format(gwas_name)]
     data_df = pd.DataFrame(data_lst, columns=cols)
