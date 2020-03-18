@@ -13,7 +13,8 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
         coloc_clust = coloc_data["clusters"].get(c, None)
         if plasma_clust is None or coloc_clust is None:
             continue
-        # print(plasma_clust) ####
+        print(plasma_clust.keys()) ####
+        print(coloc_clust.keys())
         if "causal_set_indep" in plasma_clust and "h4_indep_qtl" in coloc_clust:
             data_clust = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_qtl"]]
             print(data_clust) ####
