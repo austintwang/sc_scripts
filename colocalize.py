@@ -16,8 +16,8 @@ if __name__ == '__main__' and __package__ is None:
 from . import Finemap, FmBenner
 
 def run_plink_ld(gwas_gen_path, marker_ids, contig):
-    in_path = os.path.join("/scratch", str(np.random.randint(100000000)))
-    out_path_base = os.path.join("/scratch", str(np.random.randint(100000000)))
+    in_path = os.path.join("/tmp", str(np.random.randint(100000000)))
+    out_path_base = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path = out_path_base + ".ld"
     cmd = [
         "/agusevlab/awang/plink/plink", 
