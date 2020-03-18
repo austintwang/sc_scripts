@@ -180,13 +180,16 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         cluster_results = result.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
             cluster_results.setdefault(cluster, {})
-            print(fm_res.keys()) ####
+            # print(fm_res.keys()) ####
             for fg in model_flavors_gwas:
                 for fq in model_flavors_qtl:
-                    clpps = fm_res["ppas_{0}".format(fq)] * result["ppas_{0}".format(fg)]
-                    h4 = np.nansum(clpps)
-                    cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
-                    cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
+                    try:
+                        clpps = fm_res["ppas_{0}".format(fq)] * result["ppas_{0}".format(fg)]
+                        h4 = np.nansum(clpps)
+                        cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
+                        cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
+                    except KeyError:
+                        continue
 
         write_output(output_path, result)
 
