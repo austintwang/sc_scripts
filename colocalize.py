@@ -16,7 +16,7 @@ if __name__ == '__main__' and __package__ is None:
     
 from . import Finemap, FmBenner
 
-def run_plink_ld(gwas_gen_path, marker_ids, contig):
+def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     in_path = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path_base = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path = out_path_base + ".ld"
@@ -27,21 +27,39 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
         "--extract", in_path, 
         "--out", out_path_base
     ]
-    print(" ".join(cmd)) ####
+    # print(" ".join(cmd)) ####
     
     with open(in_path, "w") as in_file:
         in_file.writelines([i + "\n" for i in marker_ids])
     out = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print(out) ####
+    # print(out) ####
     os.remove(in_path)
+
+    ld = np.ones((num_snps, num_snps),)
+    marker_map = dict([(val, ind) for ind, val in enumerate(marker_ids)])
 
     with open(out_path, "r") as out_file:
         for line in out_file:
-            print(line) ####
+            # print(line) ####
+            data = line.split("\t")
+            id1 = data[2]
+            id2 = data[5]
+            corr = float(data[6])
+            idx1 = marker_map[id1]
+            idx2 = marker_map[id2]
+            ld[id1, id2] = corr
+            ld[id2, id1] = corr
+
     for path in glob.glob(out_path_base):
         os.remove(path)
 
+    return ld
 
+def restore_informative(shape, values, informative_snps, default):
+    vals_all = np.full(shape, default)
+    np.put(vals_all, informative_snps, values)
+    return vals_all
+    
 def run_model(model_cls, inputs, input_updates, informative_snps):
     model_inputs = inputs.copy()
     model_inputs.update(input_updates)
