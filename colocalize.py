@@ -23,7 +23,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
         "/agusevlab/awang/plink/plink", 
         "--bfile", gwas_gen_path + "." + contig, 
         "-r",
-        "--keep", pipe_path, 
+        "--keep", in_pipe_path, 
         "--out", out_path_base
     ]
     
