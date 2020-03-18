@@ -113,6 +113,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         finemap_path = os.path.join(finemap_path, "output.pickle")
     output_path = os.path.join(gene_dir, "coloc_{0}.pickle".format(gwas_name))
 
+    all_complete = True
     try:
         with open(params_path, "rb") as params_file:
             params = pickle.load(params_file)
