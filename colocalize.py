@@ -41,7 +41,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     with open(out_path, "r") as out_file:
         next(out_file)
         for line in out_file:
-            print(line) ####
+            # print(line) ####
             # if line == "\n":
             #     continue
             data = line.strip().split()
