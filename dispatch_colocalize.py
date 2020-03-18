@@ -21,7 +21,7 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
 
         err_name = os.path.join(data_dir, name, "coloc_%j.out")
         cmd = [
-            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13"
+            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13",
             script_path, gwas_name, name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path
         ]
         print(" ".join(cmd))
