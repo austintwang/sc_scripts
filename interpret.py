@@ -5,15 +5,19 @@ import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
     print(coloc_data) ####
+    data = []
     if not "clusters" in coloc_data:
-        return None
+        return data
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
         coloc_clust = coloc_data["clusters"].get(c, None)
         if plasma_clust is None or coloc_clust is None:
             continue
-        data = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_qtl"]]
-        return data
+        print(plasma_clust) ####
+        if "causal_set_indep" in plasma_clust and "h4_indep_qtl" in coloc_clust:
+            data_clust = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_qtl"]]
+            data.append(data_clust)
+    return data
 
 def load_clusters(cluster_map_path):
     with open(cluster_map_path, "rb") as cluster_map_file:
