@@ -45,6 +45,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
             if line == "\n":
                 continue
             data = line.strip().split("\t")
+            print(data) ####
             id1 = data[2]
             id2 = data[5]
             corr = float(data[6])
