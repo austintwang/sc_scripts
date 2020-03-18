@@ -51,8 +51,8 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
             corr = float(data[6])
             idx1 = marker_map[id1]
             idx2 = marker_map[id2]
-            ld[id1, id2] = corr
-            ld[id2, id1] = corr
+            ld[idx1, idx2] = corr
+            ld[idx2, idx1] = corr
 
     for path in glob.glob(out_path_base):
         os.remove(path)
