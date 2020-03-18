@@ -16,22 +16,21 @@ if __name__ == '__main__' and __package__ is None:
 from . import Finemap, FmBenner
 
 def run_plink_ld(gwas_gen_path, marker_ids, contig):
-    in_pipe_path = os.path.join("/tmp", str(np.random.randint(100000000)))
+    in_path = os.path.join("/scratch", str(np.random.randint(100000000)))
     out_path_base = os.path.join("/scratch", str(np.random.randint(100000000)))
     out_path = out_path_base + ".ld"
     cmd = [
         "/agusevlab/awang/plink/plink", 
         "--bfile", gwas_gen_path + "." + contig, 
         "-r",
-        "--keep", in_pipe_path, 
+        "--keep", in_path, 
         "--out", out_path_base
     ]
     
-    os.mkfifo(in_pipe_path)
-    with os.fdopen(os.open(in_pipe_path, os.O_NONBLOCK), "w") as in_pipe:
-        in_pipe.writelines([i + "\n" for i in marker_ids])
+    with open(in_path, "w") as in_file:
+        in_file.writelines([i + "\n" for i in marker_ids])
     subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    os.remove(in_pipe_path)
+    os.remove(in_path)
 
     with open(out_path, "r") as out_file:
         for line in out_file:
