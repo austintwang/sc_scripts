@@ -59,7 +59,7 @@ def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
     np.put(vals_all, informative_snps, values)
     return vals_all
-    
+
 def run_model(model_cls, inputs, input_updates, informative_snps):
     model_inputs = inputs.copy()
     model_inputs.update(input_updates)
@@ -149,7 +149,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             write_output(output_path, result)
             return
 
-        inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], contig)
+        inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
 
         if inputs["model_flavors_gwas"] == "all":
             model_flavors_gwas = set(["eqtl", "fmb"])
