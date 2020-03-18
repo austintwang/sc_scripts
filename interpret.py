@@ -17,7 +17,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
         # print(coloc_clust.keys()) ####
         if "causal_set_indep" in plasma_clust and "h4_indep_eqtl" in coloc_clust:
             data_clust = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_eqtl"]]
-            print(data_clust) ####
+            # print(data_clust) ####
             data.append(data_clust)
     return data
 
