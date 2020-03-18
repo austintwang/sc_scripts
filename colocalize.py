@@ -6,6 +6,7 @@ import sys
 import traceback
 import pickle
 import gc
+import subprocess
 
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'run'
@@ -13,6 +14,30 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.insert(0, "/agusevlab/awang/plasma")
     
 from . import Finemap, FmBenner
+
+def run_plink_ld(gwas_gen_path, marker_ids, contig):
+    in_pipe_path = os.path.join("/tmp", str(np.randint(100000000)))
+    out_path_base = os.path.join("/scratch", str(np.randint(100000000)))
+    out_path = out_path + ".ld"
+    cmd = [
+        "/agusevlab/awang/plink/plink", 
+        "--bfile", gwas_gen_path + "." + contig, 
+        "-r",
+        "--keep", pipe_path, 
+        "--out", out_path_base
+    ]
+    
+    os.mkfifo(in_pipe_path)
+    with open(in_pipe_path, "w") as in_pipe:
+        in_pipe.writelines([i + "\n" for i in marker_ids])
+    subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    os.remove(in_pipe_path)
+
+    with open(out_path, "r") as out_file:
+        for line in out_file:
+            print(line) ####
+    os.remove(out_path)
+
 
 def run_model(model_cls, inputs, input_updates, informative_snps):
     model_inputs = inputs.copy()
@@ -52,7 +77,7 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, status_path):
+def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -89,6 +114,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
         inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
+        inputs["snp_ids"] = inputs["snp_ids"][informative_snps]
         inputs["num_snps"] = inputs["total_exp_stats"].size
 
         inputs["num_causal_prior"] = inputs["num_causal"]
@@ -97,6 +123,8 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             result["data_error"] = "Insufficient Markers"
             write_output(output_path, result)
             return
+
+        inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"])
 
         if inputs["model_flavors_gwas"] == "all":
             model_flavors_gwas = set(["eqtl", "fmb"])
