@@ -4,7 +4,7 @@ import pickle
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
-    print(coloc_data) ####
+    # print(coloc_data) ####
     data = []
     if not "clusters" in coloc_data:
         return data
@@ -13,7 +13,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
         coloc_clust = coloc_data["clusters"].get(c, None)
         if plasma_clust is None or coloc_clust is None:
             continue
-        print(plasma_clust) ####
+        # print(plasma_clust) ####
         if "causal_set_indep" in plasma_clust and "h4_indep_qtl" in coloc_clust:
             data_clust = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_qtl"]]
             data.append(data_clust)
@@ -45,8 +45,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
             continue
 
         data = read_data(plasma_data, coloc_data, clusters, g)
-        if data is not None:
-            data_lst.append(data)
+        data_lst.extend(data)
 
     cols = ["Gene", "Cluster", "Credible Set Prop", "{0} PP4".format(gwas_name)]
     data_df = pd.DataFrame(data_lst, columns=cols)
