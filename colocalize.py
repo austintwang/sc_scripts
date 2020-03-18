@@ -7,6 +7,7 @@ import traceback
 import pickle
 import gc
 import subprocess
+import glob
 
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'run'
@@ -23,7 +24,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
         "/agusevlab/awang/plink/plink", 
         "--bfile", gwas_gen_path + "." + contig, 
         "--r",
-        "--keep", in_path, 
+        "--extract", in_path, 
         "--out", out_path_base
     ]
     print(" ".join(cmd)) ####
@@ -37,7 +38,8 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
     with open(out_path, "r") as out_file:
         for line in out_file:
             print(line) ####
-    os.remove(out_path)
+    for path in glob.glob(out_path_base):
+        os.remove(path)
 
 
 def run_model(model_cls, inputs, input_updates, informative_snps):
