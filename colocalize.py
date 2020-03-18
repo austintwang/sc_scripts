@@ -40,7 +40,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
 
     with open(out_path, "r") as out_file:
         for line in out_file:
-            # print(line) ####
+            print(line) ####
             data = line.split("\t")
             id1 = data[2]
             id2 = data[5]
