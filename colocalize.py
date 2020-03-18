@@ -26,6 +26,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
         "--keep", in_path, 
         "--out", out_path_base
     ]
+    print(" ".join(cmd)) ####
     
     with open(in_path, "w") as in_file:
         in_file.writelines([i + "\n" for i in marker_ids])
