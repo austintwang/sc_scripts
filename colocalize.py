@@ -14,7 +14,7 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     sys.path.insert(0, "/agusevlab/awang/plasma")
     
-from . import Finemap, FmBenner
+from . import Finemap
 
 def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     in_path = os.path.join("/tmp", str(np.random.randint(100000000)))
@@ -171,11 +171,11 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
                 Finemap, inputs, updates_eqtl, informative_snps
             )
 
-        if "fmb" in model_flavors_gwas:
-            updates_fmb = {"qtl_only": True}
-            result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
-                FmBenner, inputs, updates_fmb, informative_snps
-            )
+        # if "fmb" in model_flavors_gwas:
+        #     updates_fmb = {"qtl_only": True}
+        #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
+        #         FmBenner, inputs, updates_fmb, informative_snps
+        #     )
 
         cluster_results = results.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
