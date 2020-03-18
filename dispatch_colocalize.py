@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_path, gwas_gen_path, memory, fails_only=False):
+def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
     with open(params_path, "wb") as params_file:
         pickle.dump(params, params_file)
 
@@ -22,7 +22,7 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
         err_name = os.path.join(data_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
-            script_path, gwas_name, name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, status_path
+            script_path, gwas_name, name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path
         ]
         print(" ".join(cmd))
         # jobs.append(cmd)
@@ -49,6 +49,8 @@ if __name__ == '__main__':
     script_path = os.path.join(curr_path, "colocalize.py")
 
     gwas_gen_path = "/agusevlab/awang/gwas_data/gen/LDREF/1000G.EUR"
+    gen_data_path = "/agusevlab/awang/gen_data"
+    boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
 
     # Kellis 48
     data_path_kellis = "/agusevlab/awang/sc_kellis"
@@ -89,6 +91,7 @@ if __name__ == '__main__':
         "all", 
         alz_path,
         gwas_gen_path,
+        boundaries_map_path,
         2000, 
         fails_only=False
     )

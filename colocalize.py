@@ -77,7 +77,7 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, status_path):
+def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -97,11 +97,15 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             gene_data = pickle.load(gene_file)
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
+        with open(boundaries_map_path, "rb") as boundaries_map_file:
+        boundaries_map = pickle.load(boundaries_map_file)
         if filter_path == "all":
             snp_filter = False
         else:
             with open(filter_path, "rb") as filter_file:
                 snp_filter = pickle.load(filter_file)
+
+        contig, start, end = boundaries_map[gene_name]
 
         inputs = {
             "snp_ids": gene_data["marker_ids"],
