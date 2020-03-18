@@ -39,9 +39,12 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     marker_map = dict([(val, ind) for ind, val in enumerate(marker_ids)])
 
     with open(out_path, "r") as out_file:
+        next(out_file)
         for line in out_file:
             print(line) ####
-            data = line.split("\t")
+            if line == "\n":
+                continue
+            data = line.strip().split("\t")
             id1 = data[2]
             id2 = data[5]
             corr = float(data[6])
