@@ -82,7 +82,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
             inputs["search_iterations"]
         )
 
-    shape_orig = np.shape(inputs["snp_ids"])
+    shape_orig = np.shape(inputs["z_beta"])
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
