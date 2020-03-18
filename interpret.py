@@ -4,6 +4,7 @@ import pickle
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
+    print(coloc_data) ####
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
         coloc_clust = coloc_data["clusters"].get(c, None)
