@@ -88,7 +88,7 @@ if __name__ == '__main__':
         params_path_kellis, 
         "all", 
         alz_path,
-        gen_path,
+        gwas_gen_path,
         2000, 
         fails_only=False
     )
