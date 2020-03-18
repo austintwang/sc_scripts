@@ -52,7 +52,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
     pp4_name = "{0} PP4".format(gwas_name)
     cols = ["Gene", "Cluster", "Credible Set Prop", pp4_name]
     data_df = pd.DataFrame(data_lst, columns=cols)
-    data_df.sort_values(by=[pp4_name])
+    data_df.sort_values(by=[pp4_name], ascending=False, inplace=True)
     data_df.to_csv(out_path, sep="\t")
 
 
