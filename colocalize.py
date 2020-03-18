@@ -156,7 +156,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
 
         if inputs["model_flavors_gwas"] == "all":
-            model_flavors_gwas = set(["eqtl", "fmb"])
+            model_flavors_gwas = set(["eqtl"])
         else:
             model_flavors_gwas = inputs["model_flavors_gwas"]
 
