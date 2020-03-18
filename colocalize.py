@@ -18,7 +18,7 @@ from . import Finemap, FmBenner
 def run_plink_ld(gwas_gen_path, marker_ids, contig):
     in_pipe_path = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path_base = os.path.join("/scratch", str(np.random.randint(100000000)))
-    out_path = out_path + ".ld"
+    out_path = out_path_base + ".ld"
     cmd = [
         "/agusevlab/awang/plink/plink", 
         "--bfile", gwas_gen_path + "." + contig, 
