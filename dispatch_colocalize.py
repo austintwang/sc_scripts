@@ -81,6 +81,21 @@ if __name__ == '__main__':
     params_kellis_alz["num_ppl"] = 388324
     params_path_kellis_alz = os.path.join(data_path_kellis, "plasma_c_alz_params.pickle")
 
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     "alz",
+    #     params_kellis_alz, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     alz_path,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=False
+    # )
+
     dispatch(
         script_path, 
         names_kellis, 
@@ -93,9 +108,8 @@ if __name__ == '__main__':
         gwas_gen_path,
         boundaries_map_path,
         2000, 
-        fails_only=False
+        fails_only=True
     )
-
 
 
 
