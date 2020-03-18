@@ -29,7 +29,8 @@ def run_plink_ld(gwas_gen_path, marker_ids, contig):
     
     with open(in_path, "w") as in_file:
         in_file.writelines([i + "\n" for i in marker_ids])
-    subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(out) ####
     os.remove(in_path)
 
     with open(out_path, "r") as out_file:
