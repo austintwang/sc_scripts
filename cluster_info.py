@@ -68,7 +68,7 @@ def get_info(genes_dir, cluster_map_path, out_path):
         "MaxPosteriorSNP"
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
-    data_df.sort_values(by=["MeanMappedCoverage"], ascending=False, inplace=True)
+    data_df.sort_values(by=["MaxPosteriorSNP"], ascending=False, inplace=True)
     data_df.to_csv(out_path, sep="\t", index=False, na_rep="None")
 
 
