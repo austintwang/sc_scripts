@@ -67,7 +67,7 @@ def get_info(genes_dir, cluster_map_path, out_path):
         "Max Posterior SNP"
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
-    data_df.sort_values(by=[pp4_name], ascending=False, inplace=True)
+    data_df.sort_values(by=["Max Posterior SNP"], ascending=False, inplace=True)
     data_df.to_csv(out_path, sep="\t", index=False)
 
 

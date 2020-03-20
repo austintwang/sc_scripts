@@ -54,7 +54,7 @@ if __name__ == '__main__':
 
     # Kellis 48
     data_path_kellis = "/agusevlab/awang/sc_kellis"
-    params_path_kellis = os.path.join(data_path_kellis, "plasma_params.pickle")
+    params_path_kellis = os.path.join(data_path_kellis, "coloc_params.pickle")
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
     barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata.pickle")
     overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions.pickle")
