@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 
 def get_cluster_map(metadata_path, out_path):
-    cluster_map = {}
+    cluster_map = {"_all": []}
     with open(metadata_path, "r") as metadata_file:
         next(metadata_file)
         for line in metadata_file:
@@ -12,6 +12,7 @@ def get_cluster_map(metadata_path, out_path):
             barcode = cols[0].split(".")[0]
             well = cols[1] 
             clusters = cols[4:]
+            cluster_map["_all"].append((barcode, well))
             for c in clusters:
                 cells = cluster_map.setdefault(c, [])
                 cells.append((barcode, well),)

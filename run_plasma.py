@@ -6,6 +6,7 @@ import sys
 import traceback
 import pickle
 import gc
+import shutil
 
 if __name__ == '__main__' and __package__ is None:
     __package__ = 'run'
@@ -62,15 +63,19 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
 
 def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     sample_counts = {}
+    sample_num_cells = {}
     for i in barcodes:
         if (i in cell_counts) and (i in barcodes_map):
             counts = cell_counts[i]
             sample = barcodes_map[i]
             sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
             sc += counts
+            sn = sample_num_cells.setdefault(sample, 0)
+            sn += 1
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
-    return counts_all
+    num_cells_all = np.array([sample_num_cells.get(i, 0) for i in sample_names])
+    return counts_all, num_cells_all
 
 def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path):
     # with open(gene_path, "rb") as gene_file:
@@ -88,13 +93,14 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
 
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
-        counts = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
+        counts, num_cells = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
         overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
             "counts2": counts[:,1],
             "counts_total": counts[:,2],
-            "overdispersion": overdispersion_clust
+            "overdispersion": overdispersion_clust,
+            "num_cells": num_cells
         }
 
     return cluster_inputs
@@ -104,6 +110,8 @@ def write_output(output_path, result):
     #     os.makedirs(output_path)
 
     # output_return = os.path.join(output_path, "output.pickle")
+    if os.path.isdir(output_path):
+        shutil.rmtree(output_path)
     with open(output_path, "wb") as output_file:
         pickle.dump(result, output_file)
 
@@ -160,11 +168,18 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         try:
             inputs.update(inputs_all)
 
+            result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
+            result["avg_counts_mapped"] = np.nanmean(inputs["counts_1"] + inputs["counts2"])
+            result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
+            result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
+
             select_counts = np.logical_and(
                 inputs["counts1"] >= 1, 
                 inputs["counts2"] >= 1, 
                 np.logical_not(np.isnan(inputs["overdispersion"]))
-            ) 
+            )
+            result["effective_sample_size"] = np.sum(select_counts)
+
             inputs["hap1"] = inputs["hap1"][select_counts]
             inputs["hap2"] = inputs["hap2"][select_counts]
             inputs["counts1"] = inputs["counts1"][select_counts]
@@ -188,6 +203,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
             informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
             result["informative_snps"] = informative_snps
+            result["num_snps_total"] = np.size(informative_snps)
+            result["num_snps_informative"] = np.count_nonzero(informative_snps)
 
             inputs["hap1"] = inputs["hap1"][:, informative_snps]
             inputs["hap2"] = inputs["hap2"][:, informative_snps]
