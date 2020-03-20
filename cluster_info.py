@@ -11,6 +11,7 @@ def read_data(plasma_data, clusters, gene_name):
         if plasma_clust is None:
             continue
         if "causal_set_indep" in plasma_clust:
+            print(plasma_clust["ppas_indep"]) ####
             data_clust = [
                 gene_name, 
                 c, 
@@ -55,16 +56,16 @@ def get_info(genes_dir, cluster_map_path, out_path):
     cols = [
         "Gene", 
         "Cluster", 
-        "Mean Total Coverage",
-        "Mean Mapped Coverage",
-        "Mean Overdispersion",
-        "Mean Cell Count",
-        "Usable Sample Size",
-        "Total Sample Size",
-        "Usable SNP Count",
-        "Total SNP Count",
-        "Credible Set Size", 
-        "Max Posterior SNP"
+        "MeanTotalCoverage",
+        "MeanMappedCoverage",
+        "MeanOverdispersion",
+        "MeanCellCount",
+        "UsableSampleSize",
+        "TotalSampleSize",
+        "UsableSNPCount",
+        "TotalSNPCount",
+        "CredibleSetSize", 
+        "MaxPosteriorSNP"
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=["Max Posterior SNP"], ascending=False, inplace=True)

@@ -70,8 +70,8 @@ def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
             sample = barcodes_map[i]
             sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
             sc += counts
-            sn = sample_num_cells.setdefault(sample, 0)
-            sn += 1
+            sample_num_cells.setdefault(sample, 0)
+            sample_num_cells[sample] += 1
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
     num_cells_all = np.array([sample_num_cells.get(i, 0) for i in sample_names])
@@ -168,12 +168,6 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         try:
             inputs.update(inputs_all)
 
-            result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
-            result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
-            result["overdispersion"] = inputs["overdispersion"]
-            result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
-            result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
-
             select_counts = np.logical_and(
                 inputs["counts1"] >= 1, 
                 inputs["counts2"] >= 1, 
@@ -189,6 +183,13 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             inputs["counts_total"] = inputs["counts_total"][select_counts]
             inputs["overdispersion"] = inputs["overdispersion"][select_counts]
             inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
+            inputs["num_cells"] = inputs["num_cells"][select_counts]
+
+            result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
+            result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
+            result["overdispersion"] = inputs["overdispersion"]
+            result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
+            result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
             if snp_filter:
                 snps_in_filter = [ind for ind, val in enumerate(inputs["snp_ids"]) if val in snp_filter]
