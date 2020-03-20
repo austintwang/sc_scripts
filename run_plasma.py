@@ -206,7 +206,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
             informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
             result["informative_snps"] = informative_snps
-            result["num_snps_total"] = np.size(informative_snps)
+            result["num_snps_total"] = np.size(inputs["snp_ids"])
             result["num_snps_informative"] = np.count_nonzero(informative_snps)
 
             inputs["hap1"] = inputs["hap1"][:, informative_snps]

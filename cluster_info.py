@@ -11,7 +11,7 @@ def read_data(plasma_data, clusters, gene_name):
         if plasma_clust is None:
             continue
         if "causal_set_indep" in plasma_clust:
-            print(plasma_clust["ppas_indep"]) ####
+            # print(plasma_clust["ppas_indep"]) ####
             data_clust = [
                 gene_name, 
                 c, 
@@ -24,7 +24,7 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["num_snps_informative"],
                 plasma_clust["num_snps_total"],
                 np.sum(plasma_clust["causal_set_indep"]), 
-                np.max(plasma_clust["ppas_indep"])
+                np.nanmax(plasma_clust["ppas_indep"])
             ]
             # print(data_clust) ####
             data.append(data_clust)
