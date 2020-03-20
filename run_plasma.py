@@ -169,7 +169,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             inputs.update(inputs_all)
 
             result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
-            result["avg_counts_mapped"] = np.nanmean(inputs["counts_1"] + inputs["counts2"])
+            result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
+            result["overdispersion"] = inputs["overdispersion"]
             result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
             result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
@@ -179,6 +180,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                 np.logical_not(np.isnan(inputs["overdispersion"]))
             )
             result["effective_sample_size"] = np.sum(select_counts)
+            result["sample_size"] = select_counts.size
 
             inputs["hap1"] = inputs["hap1"][select_counts]
             inputs["hap2"] = inputs["hap2"][select_counts]
