@@ -5,7 +5,8 @@ import numpy as np
 import scipy.optimize
 from scipy.special import gammaln
 
-def log_likelihood(samples, overdispersion):
+def nlog_likelihood(samples, overdispersion):
+    print(overdispersion) ####
     r = (1 / overdispersion) - 1
     x = samples[:,0]
     n = np.sum(samples, axis=1)
@@ -17,7 +18,7 @@ def log_likelihood(samples, overdispersion):
 
 def fit_overdispersion(samples):
     res = scipy.optimize.minimize_scalar(
-        lambda x: log_likelihood(samples, x), 
+        lambda x: nlog_likelihood(samples, x), 
         method="bounded", 
         bounds=(0., 1.)
     )
