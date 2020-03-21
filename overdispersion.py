@@ -34,7 +34,7 @@ def make_cell_map(cluster_map):
             cell_map.setdefault(cell, []).append(cluster)
     return cell_map
 
-def load_gene(clusters, cell_map, barcodes_map, gene_dir):
+def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir):
     data_path = os.path.join(gene_dir, "gene_data.pickle")
     try:
         with open(data_path, "rb") as data_file:
@@ -46,8 +46,10 @@ def load_gene(clusters, cell_map, barcodes_map, gene_dir):
         sample = barcodes_map[cell]
         for cluster in cell_map[cell]:
             clust_data = clusters.setdefault(cluster, {})
-            clust_data_ind = clust_data.setdefault(sample, [])
-            clust_data_ind.append(counts[:2])
+            clust_data_ind = clust_data.setdefault(sample, {})
+            gene_data = clust_data_ind.setdefault(gene, np.array([0, 0]))
+            gene_data += counts[:2]
+            # clust_data_ind.append(counts[:2])
             # for idx, ind_counts in enumerate(counts):
             #     clust_data_ind = clust_data.setdefault(data["samples"][idx], [])
             #     clust_data_ind.append(ind_counts[:2])
@@ -55,9 +57,10 @@ def load_gene(clusters, cell_map, barcodes_map, gene_dir):
 def calc_overdispersions(clusters):
     overdispersions = {}
     for cluster, counts in clusters.items():
-        for sample_name, ind_counts in counts.items():
-            samples = np.stack(ind_counts, axis=0)
+        for sample_name, genes_data in counts.items():
+            samples = np.stack(genes_data.values(), axis=0)
             overdispersion = fit_overdispersion(samples)
+            print(overdispersion) ####
             overdispersions.setdefault(cluster, {}).setdefault(sample_name)
             overdispersions[cluster][sample_name] = overdispersion
     return overdispersions
@@ -72,7 +75,7 @@ def get_overdispersions(data_dir, cluster_map_path, barcodes_map_path, out_path)
     genes = os.listdir(data_dir)
     clusters = {}
     for g in genes:
-        load_gene(clusters, cell_map, barcodes_map, os.path.join(data_dir, g))
+        load_gene(clusters, g, cell_map, barcodes_map, os.path.join(data_dir, g))
 
     overdispersions = calc_overdispersions(clusters)
 
