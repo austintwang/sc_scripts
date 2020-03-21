@@ -6,7 +6,7 @@ import scipy.optimize
 from scipy.special import gammaln
 
 def nlog_likelihood(samples, overdispersion):
-    print(overdispersion) ####
+    # print(overdispersion) ####
     r = (1 / overdispersion) - 1
     x = samples[:,0]
     n = np.sum(samples, axis=1)
@@ -17,11 +17,14 @@ def nlog_likelihood(samples, overdispersion):
     return ll
 
 def fit_overdispersion(samples):
+    print(samples) ####
     res = scipy.optimize.minimize_scalar(
         lambda x: nlog_likelihood(samples, x), 
         method="bounded", 
         bounds=(0., 1.)
     )
+    if not res.success:
+        print(res.message)
     return res.x
 
 def make_cell_map(cluster_map):
