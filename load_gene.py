@@ -76,8 +76,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
         tss_map = pickle.load(tss_map_file)
 
     radius = int(radius)
-    min_maf = int(min_maf)
-    min_info = int(min_info)
+    min_maf = float(min_maf)
+    min_info = float(min_info)
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
