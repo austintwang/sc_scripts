@@ -5,11 +5,9 @@ import numpy as np
 import scipy.optimize
 from scipy.special import gammaln
 
-def nlog_likelihood(samples, overdispersion):
+def nlog_likelihood(x, n, overdispersion):
     # print(overdispersion) ####
     r = (1 / overdispersion) - 1
-    x = samples[:,0]
-    n = np.sum(samples, axis=1)
     ll = np.sum(
         - (gammaln(n+1) + gammaln(x+r/2) + gammaln(n-x+r/2) + gammaln(r)) 
         + (gammaln(x+1) + gammaln(n-x+1) + gammaln(r/2) + gammaln(r/2) + gammaln(n+r))
@@ -18,8 +16,10 @@ def nlog_likelihood(samples, overdispersion):
 
 def fit_overdispersion(samples):
     print(samples) ####
+    x = samples[:,0]
+    n = np.sum(samples, axis=1)
     res = scipy.optimize.minimize_scalar(
-        lambda x: nlog_likelihood(samples, x), 
+        lambda ovd: nlog_likelihood(x, n, ovd), 
         method="bounded", 
         bounds=(0., 1.)
     )
@@ -34,7 +34,7 @@ def make_cell_map(cluster_map):
             cell_map.setdefault(cell, []).append(cluster)
     return cell_map
 
-def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir):
+def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, min_counts=0):
     data_path = os.path.join(gene_dir, "gene_data.pickle")
     try:
         with open(data_path, "rb") as data_file:
@@ -42,13 +42,16 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir):
     except FileNotFoundError:
         return
     for cell, counts in data["cell_counts"].items():
+        allele_counts = counts[:2]
+        if np.sum(allele_counts) < min_counts:
+            continue
         # ind_map = {val: ind for ind, val in enumerate(data["samples"])}
         sample = barcodes_map[cell]
         for cluster in cell_map[cell]:
             clust_data = clusters.setdefault(cluster, {})
             clust_data_ind = clust_data.setdefault(sample, {})
             gene_data = clust_data_ind.setdefault(gene, np.array([0, 0]))
-            gene_data += counts[:2]
+            gene_data += allele_counts
             # clust_data_ind.append(counts[:2])
             # for idx, ind_counts in enumerate(counts):
             #     clust_data_ind = clust_data.setdefault(data["samples"][idx], [])
