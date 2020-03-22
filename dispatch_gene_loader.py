@@ -81,7 +81,7 @@ if __name__ == '__main__':
         "Kellis",
         radius, 
         min_maf,
-        min_info
+        min_info,
         genes_dir_kellis, 
         vcf_path_kellis, 
         barcodes_map_path_kellis, 
