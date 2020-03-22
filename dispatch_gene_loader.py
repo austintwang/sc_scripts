@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, names, dataset_name, radius, min_maf, min_info data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, memory, fails_only=False):
+def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "load_status.txt")
