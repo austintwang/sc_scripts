@@ -12,6 +12,7 @@ def read_data(plasma_data, clusters, gene_name):
             continue
         if "causal_set_indep" in plasma_clust:
             # print(plasma_clust["ppas_indep"]) ####
+            top_snp = np.nanargmax(plasma_clust["ppas_indep"])
             data_clust = [
                 gene_name, 
                 c, 
@@ -27,7 +28,9 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["num_snps_informative"],
                 plasma_clust["num_snps_total"],
                 np.sum(plasma_clust["causal_set_indep"]), 
-                np.nanmax(plasma_clust["ppas_indep"])
+                plasma_clust["ppas_indep"][top_snp],
+                plasma_clust["z_phi"][top_snp],
+                plasma_clust["z_beta"][top_snp],
             ]
             # print(data_clust) ####
             data.append(data_clust)
@@ -71,7 +74,9 @@ def get_info(genes_dir, cluster_map_path, out_path):
         "UsableSNPCount",
         "TotalSNPCount",
         "CredibleSetSize", 
-        "MaxPosteriorSNP"
+        "TopSNPPosterior",
+        "TopSNPZPhi",
+        "TopSNPZBeta",
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=["MaxPosteriorSNP"], ascending=False, inplace=True)
