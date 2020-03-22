@@ -12,7 +12,11 @@ def read_data(plasma_data, clusters, gene_name):
             continue
         if "causal_set_indep" in plasma_clust:
             # print(plasma_clust["ppas_indep"]) ####
-            top_snp = np.nanargmax(plasma_clust["ppas_indep"])
+            ppa = True
+            try:
+                top_snp = np.nanargmax(plasma_clust["ppas_indep"])
+            except ValueError:
+                ppa = False
             data_clust = [
                 gene_name, 
                 c, 
@@ -28,9 +32,9 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["num_snps_informative"],
                 plasma_clust["num_snps_total"],
                 np.sum(plasma_clust["causal_set_indep"]), 
-                plasma_clust["ppas_indep"][top_snp],
-                plasma_clust["z_phi"][top_snp],
-                plasma_clust["z_beta"][top_snp],
+                plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
+                plasma_clust["z_phi"][top_snp] if ppa else np.nan,
+                plasma_clust["z_beta"][top_snp] if ppa else np.nan,
             ]
             # print(data_clust) ####
             data.append(data_clust)
