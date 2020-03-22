@@ -105,7 +105,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
                 var_data = pickle.load(var_file)
                 add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map)
 
-        print(agg_counts) ####
+        # print(agg_counts) ####
         # print(genotypes_nc) ####
         out_data = {
             "name": gene_name, 
