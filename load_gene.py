@@ -17,6 +17,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
         info = record.info["INFO"]
         if (maf < min_maf) or (info < min_info):
             continue
+
         add_marker = True
         record_gens = np.zeros((len(samples), 2,), dtype=int)
         for ind, sample in enumerate(samples):
@@ -75,6 +76,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
         tss_map = pickle.load(tss_map_file)
 
     radius = int(radius)
+    min_maf = int(min_maf)
+    min_info = int(min_info)
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
