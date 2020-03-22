@@ -188,7 +188,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
             result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
             result["overdispersion"] = inputs["overdispersion"]
-            result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
+            # result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
             result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
             if snp_filter:

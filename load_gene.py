@@ -6,13 +6,17 @@ import pickle
 import numpy as np
 import pysam
 
-def read_vcf(vcf_path, contig, start, end):
+def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     genotypes_list = []
     markers = [] 
     marker_ids = []
     vcf = pysam.VariantFile(vcf_path)
     samples = vcf.header.samples
     for record in vcf.fetch(contig, start, end):
+        maf = record.info["RefPanelAF"]
+        info = record.info["INFO"]
+        if (maf < min_maf) or (info < min_info):
+            continue
         add_marker = True
         record_gens = np.zeros((len(samples), 2,), dtype=int)
         for ind, sample in enumerate(samples):
@@ -22,6 +26,7 @@ def read_vcf(vcf_path, contig, start, end):
                 break
             record_gens[ind,:] = np.array(val.allele_indices, dtype=int)
             # print(val.allele_indices) ####
+
         if add_marker:
             genotypes_list.append(record_gens)
             markers.append((contig, record.pos-1,),)
@@ -54,7 +59,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
 
-def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
+def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -85,8 +90,8 @@ def load_gene(gene_name, dataset_name, radius, data_dir, vcf_path, barcodes_map_
             vcf_path, contig, max(0, tss_pos - radius), tss_pos + radius + 1
         )
         samples_nc = sample_process_fn(samples_nc)
-        sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
-        marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
+        # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
+        # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
         
         agg_counts = {}
         var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
