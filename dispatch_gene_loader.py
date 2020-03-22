@@ -49,6 +49,8 @@ if __name__ == '__main__':
     boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
     tss_map_path = os.path.join(gen_data_path, "tss.pickle") 
     radius = 100000
+    min_maf = 0.01
+    min_info = 0.9
 
     # Kellis 48
     data_path_kellis = "/agusevlab/awang/sc_kellis"
