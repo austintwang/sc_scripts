@@ -15,6 +15,8 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     for record in vcf.fetch(contig, start, end):
         maf = record.info["RefPanelAF"]
         info = record.info["INFO"]
+        print(maf) ####
+        print(info) ####
         if (maf < min_maf) or (info < min_info):
             continue
 
