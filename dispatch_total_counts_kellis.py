@@ -13,7 +13,7 @@ def dispatch(script_path, names, base_path, rows_path, genes_dir, agg_out_dir, j
         err_name = os.path.join(job_data_dir, file_name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", file_name, "-o", err_name, "-x", "node02,node13",
-            script_path, base_path, rows_path, genes_dir, agg_out_dir
+            script_path, file_name, base_path, rows_path, genes_dir, agg_out_dir
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
