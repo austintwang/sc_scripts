@@ -3,6 +3,7 @@ import sys
 import pickle
 import gzip
 import glob
+import subprocess
 import numpy as np
 
 
@@ -33,20 +34,6 @@ def dispatch(script_path, names, base_path, rows_path, genes_dir, agg_out_dir, j
                     continue
                 else:
                     raise e
-
-def load_counts(counts_dir, rows_path, genes_dir, agg_out_path):
-    with gzip.open(rows_path, "rb") as row_file:
-        row_names = row_file.read().decode('utf-8').strip().split("\n")
-    counts_paths = glob.glob(os.path.join(counts_dir, "*.s1.gz"))
-    counts_agg = {}
-    for counts_path in counts_paths:
-        base_path = os.path.splitext(os.path.splitext(counts_path)[0])[0]
-        col_path = base_path + ".cols.gz"
-        file_name = os.path.basename(base_path)
-        agg = parse(counts_path, col_path, row_names, genes_dir, file_name)
-        counts_agg.update(agg)
-    with open(agg_out_path, "wb") as agg_out_file:
-        pickle.dump(counts_agg, agg_out_file)
 
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
