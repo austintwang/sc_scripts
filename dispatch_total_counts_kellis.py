@@ -10,6 +10,7 @@ import numpy as np
 def dispatch(script_path, names, base_path, rows_path, genes_dir, agg_out_dir, job_data_dir, memory):
     jobs = []
     for file_name in names:
+        os.makedirs(os.path.join(job_data_dir, file_name), exist_ok=True)
         err_name = os.path.join(job_data_dir, file_name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", file_name, "-o", err_name, "-x", "node02,node13",
