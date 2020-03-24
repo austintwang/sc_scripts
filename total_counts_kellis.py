@@ -17,7 +17,7 @@ def parse(counts_path, col_path, row_names, out_dir):
             gene = gl.strip()
             out_pattern = os.path.join(out_dir, gene + ".*")
             out_match = glob.glob(out_pattern)
-            if len(out_match) = 0:
+            if len(out_match) == 0:
                 continue
             with open(out_match[0]) as out_file:
                 pickle.dump(counts_dct, out_file)
