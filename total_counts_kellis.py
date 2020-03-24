@@ -26,7 +26,7 @@ def parse(counts_path, col_path, row_names, out_dir):
 
 def load_counts(counts_dir, rows_path, genes_dir, agg_out_path):
     with gzip.open(rows_path, "rb") as row_file:
-        row_names = row_file.decode('utf-8').strip().split("\n")
+        row_names = row_file.read().decode('utf-8').strip().split("\n")
     counts_paths = glob.glob(os.path.join(counts_dir, "*.s1.gz"))
     counts_agg = {}
     for counts_path in counts_paths:
