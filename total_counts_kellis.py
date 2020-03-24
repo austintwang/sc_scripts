@@ -5,7 +5,7 @@ import gzip
 import glob
 import numpy as np
 
-def parse(counts_path, col_path, row_names, out_dir):
+def parse(counts_path, col_path, row_names, out_dir, file_name):
     with gzip.open(col_path, "r") as col_file:
         col_names = col_file.read().decode('utf-8').strip().split("\n")
     counts_agg_arr = np.zeros(len(col_names))
@@ -13,14 +13,16 @@ def parse(counts_path, col_path, row_names, out_dir):
         for cl, gl in zip(counts_file, row_names):
             counts_lst = list(map(float, cl.decode('utf-8').strip().split(" ")))
             counts_dct = {ind: val for ind, val in enumerate(counts_lst) if val != 0}
-            print(counts_lst) ####
+            # print(counts_lst) ####
             counts_agg_arr += np.array(counts_lst)
             gene = gl.strip()
             out_pattern = os.path.join(out_dir, gene + ".*")
             out_match = glob.glob(out_pattern)
             if len(out_match) == 0:
                 continue
-            with open(out_match[0]) as out_file:
+            gene_counts_dir = os.path.join(out_match[0], "total_counts")
+            os.makedirs(gene_counts_dir, exist_ok=True)
+            with open(os.path.join(gene_counts_dir, file_name), "wb") as out_file:
                 pickle.dump(counts_dct, out_file)
     counts_agg_dct = dict(zip(col_names, counts_agg_arr))
     return counts_agg_dct
@@ -31,8 +33,10 @@ def load_counts(counts_dir, rows_path, genes_dir, agg_out_path):
     counts_paths = glob.glob(os.path.join(counts_dir, "*.s1.gz"))
     counts_agg = {}
     for counts_path in counts_paths:
-        col_path = os.path.splitext(os.path.splitext(counts_path)[0])[0] + ".cols.gz"
-        agg = parse(counts_path, col_path, row_names, genes_dir)
+        base_path = os.path.splitext(os.path.splitext(counts_path)[0])[0]
+        col_path = base_path + ".cols.gz"
+        file_name = os.path.basename(base_path)
+        agg = parse(counts_path, col_path, row_names, genes_dir, file_name)
         counts_agg.update(agg)
     with open(agg_out_path, "wb") as agg_out_file:
         pickle.dump(counts_agg, agg_out_file)
