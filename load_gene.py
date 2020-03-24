@@ -38,7 +38,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids
 
-def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map):
+def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, total_counts):
     for var, cells in var_data.items():
         for cell, counts in cells.items():
             if not (cell in cell_map):
@@ -47,8 +47,14 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if not (cell_map[cell] in sample_gen_map):
                 # print(cell_map[cell]) ####
                 continue
+            if total_counts:
+                if not (cell in total_counts):
+                    continue
+                counts_all = total_counts[cell]
+            else:
+                counts_all = np.sum(counts)
             cell_agg = agg_counts.setdefault(cell, np.array([0,0,0]))
-            cell_agg[2] += np.sum(counts)
+            cell_agg[2] += counts_all
             if not (var in marker_gen_map):
                 # print(var) ####
                 continue
@@ -62,7 +68,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
 
-def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, status_path):
+def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -76,6 +82,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
         boundaries_map = pickle.load(boundaries_map_file)
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
+    with open(total_counts_norm_path, "rb") as total_counts_norm_file:
+        total_counts_norm = pickle.load(total_counts_norm_file)
 
     radius = int(radius)
     min_maf = float(min_maf)
@@ -97,13 +105,23 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
         samples_nc = sample_process_fn(samples_nc)
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
-        
+
+        total_counts = proc_counts.get(gene_name, False)
+        total_counts_dir = os.path.join(gene_dir, "total_counts")
+        if not os.path.isdir(total_counts_dir):
+            total_counts = False
+        else:
+            total_counts = {}
+            for path in os.listdir(total_counts_dir):
+                with open(path, "rb") as count_file:
+                    total_counts.update(count)
+
         agg_counts = {}
         var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
         for path in var_data_paths:
             with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
                 var_data = pickle.load(var_file)
-                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map)
+                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, total_counts)
 
         # print(agg_counts) ####
         # print(genotypes_nc) ####
@@ -113,7 +131,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
             "samples": samples_nc, 
             "markers": markers_nc, 
             "marker_ids": marker_ids_nc,
-            "cell_counts": agg_counts
+            "cell_counts": agg_counts,
+            "counts_norm": total_counts_norm
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")
         with open(out_path, "wb") as out_file:
