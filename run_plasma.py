@@ -61,7 +61,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
     else:
         return causal_set, ppas, size_probs
 
-def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
+def calc_reads(cell_counts, counts_norm, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     sample_num_cells = {}
     for i in barcodes:
