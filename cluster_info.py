@@ -21,7 +21,7 @@ def read_data(plasma_data, clusters, gene_name):
                 gene_name, 
                 c, 
                 plasma_clust["avg_counts_total"],
-                plasma_clust["avg_counts_total_scaled"]
+                plasma_clust["avg_counts_total_scaled"],
                 plasma_clust["avg_counts_mapped"],
                 np.mean(plasma_clust["overdispersion"]),
                 np.percentile(plasma_clust["overdispersion"], 25),
