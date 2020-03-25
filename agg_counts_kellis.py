@@ -11,7 +11,7 @@ def agg_counts(agg_dir, out_path):
 
     with open(out_path, "wb") as out_file:
         pickle.dump(aggs, out_file)
-a
+
 if __name__ == '__main__':
     base_dir = "/agusevlab/awang/sc_kellis"
     agg_dir = os.path.join(base_dir, "agg_counts")
