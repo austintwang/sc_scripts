@@ -183,7 +183,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             # print(cluster) ####
             if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                 processed_counts = True
-                print(inputs["total_counts"][cluster]) ####
+                # print(inputs["total_counts"][cluster]) ####
                 inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]])
                 inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]])
             else:
@@ -215,6 +215,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
             if processed_counts:
+                print(inputs["counts_total"]) ####
+                print(inputs["counts_norm"]) ####
                 inputs["counts_total"] /= inputs["counts_norm"]
                 result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
             else:
