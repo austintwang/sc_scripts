@@ -10,7 +10,7 @@ def agg_counts(agg_dir, out_path):
             agg = pickle.load(agg_file)
         aggs[ctype] = agg
         for k, v in agg.items():
-            aggs["_all"].setdefault(k) 
+            aggs["_all"].setdefault(k, 0.) 
             aggs["_all"][k] += agg
 
     with open(out_path, "wb") as out_file:
