@@ -61,26 +61,22 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
     else:
         return causal_set, ppas, size_probs
 
-def calc_reads(cell_counts, counts_norm, barcodes, barcodes_map, sample_names):
+def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     sample_counts_norm = {}
     sample_num_cells = {}
     for i in barcodes:
         if (i in cell_counts) and (i in barcodes_map):
             counts = cell_counts[i]
-            norm = counts_norm[i]
             sample = barcodes_map[i]
             sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
             sc += counts
-            sample_counts_norm.setdefault(sample, 0)
-            sample_counts_norm[sample] += norm
             sample_num_cells.setdefault(sample, 0)
             sample_num_cells[sample] += 1
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
-    counts_norm_all = np.array([sample_counts_norm.get(i, 0) for i in sample_names])
     num_cells_all = np.array([sample_num_cells.get(i, 0) for i in sample_names])
-    return counts_all, counts_norm_all, num_cells_all
+    return counts_all, num_cells_all
 
 def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path):
     # with open(gene_path, "rb") as gene_file:
@@ -93,20 +89,18 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
         overdispersion = pickle.load(overdispersion_file)
 
     cell_counts = gene_data["cell_counts"]
-    cell_counts_norm = gene_data["counts_norm"]
     sample_names = gene_data["samples"]
     # sample_map = {val: ind for ind, val in enumerate(sample_names)}
 
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
-        counts, norms, num_cells = calc_reads(cell_counts, cell_counts_norm, barcodes, barcodes_map, sample_names)
+        counts, num_cells = calc_reads(cell_counts, cell_counts_norm, barcodes, barcodes_map, sample_names)
         overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
             "counts2": counts[:,1],
             "counts_total": counts[:,2],
             "overdispersion": overdispersion_clust,
-            "counts_norm": norms,
             "num_cells": num_cells
         }
 
@@ -150,7 +144,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             "hap2": gene_data["genotypes"][:,:,1],
             "sample_names": gene_data["samples"],
             "snp_ids": gene_data["marker_ids"],
-            "snp_pos": gene_data["markers"]
+            "snp_pos": gene_data["markers"],
+            "total_counts": gene_data.get("total_counts", False),
+            "agg_counts": gene_data.get("counts_norm", False)
         }
         inputs_all.update(params)
 
@@ -175,6 +171,10 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         try:
             inputs.update(inputs_all)
 
+            if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
+                inputs["counts_total"] = [inputs["total_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]]
+                inputs["counts_norm"] = [inputs["agg_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]]
+
             select_counts = np.logical_and(
                 inputs["counts1"] >= 1, 
                 inputs["counts2"] >= 1, 
@@ -191,6 +191,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             inputs["overdispersion"] = inputs["overdispersion"][select_counts]
             inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
             inputs["num_cells"] = inputs["num_cells"][select_counts]
+            if inputs["counts_norm"]:
+                inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
             result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
             result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
@@ -198,8 +200,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             # result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
             result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
-            inputs["counts_total"] /= inputs["counts_norm"]
-            result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
+            if inputs["counts_norm"]:
+                inputs["counts_total"] /= inputs["counts_norm"]
+                result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
+            else:
+                result["avg_counts_total_scaled"] = None
 
             if snp_filter:
                 snps_in_filter = [ind for ind, val in enumerate(inputs["snp_ids"]) if val in snp_filter]
