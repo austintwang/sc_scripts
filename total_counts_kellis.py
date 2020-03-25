@@ -16,7 +16,7 @@ def parse(counts_path, col_path, row_names, out_dir, agg_out_dir, file_name):
     with gzip.open(counts_path, "r") as counts_file:
         for cl, gl in zip(counts_file, row_names):
             counts_lst = list(map(float, cl.decode('utf-8').strip().split(" ")))
-            counts_dct = {col_names[ind]: val for ind, val in enumerate(counts_lst) if val != 0}
+            counts_dct = {col_names[ind]: val for ind, val in enumerate(counts_lst)}
             # print(counts_lst) ####
             counts_agg_arr += np.array(counts_lst)
             gene = gl.strip()
