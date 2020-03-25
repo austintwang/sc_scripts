@@ -119,7 +119,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
                     total_counts[cell_type] = counts
                     for k, v in counts.items():
                         total_counts["_all"].setdefault(k, 0.)
-                        total_counts["_all"] += v
+                        total_counts["_all"][k] += v
 
 
         agg_counts = {}
