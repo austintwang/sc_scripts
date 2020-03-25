@@ -170,7 +170,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         result = results.setdefault(cluster, {})
         try:
             inputs.update(inputs_all)
-
+            print(cluster) ####
             if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                 processed_counts = True
                 inputs["counts_total"] = [inputs["total_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]]
