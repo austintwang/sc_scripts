@@ -57,6 +57,13 @@ if __name__ == '__main__':
     genes_dir_kellis = os.path.join(data_path_kellis, "genes")
     names_kellis = os.listdir(genes_dir_kellis)
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
+    aliases_kellis = {
+        "Oligo": "Oli",
+        "OPC": "Opc",
+        "Endo": "End",
+        "Astro": "Ast",
+        "Microglia": "Mic"
+    }
 
     params_kellis = {
         "total_exp_herit_prior": 0.05,
@@ -67,7 +74,8 @@ if __name__ == '__main__':
         "search_mode": "exhaustive",
         "max_causal": 1,
         "confidence": 0.95, 
-        "model_flavors": "all"
+        "model_flavors": "all",
+        "cell_type_aliases": aliases_kellis
     }
 
     dispatch(
