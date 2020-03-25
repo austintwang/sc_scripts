@@ -175,6 +175,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     # print(clusters.keys()) ####
     # print(inputs_all["total_counts"].keys()) ####
     print(inputs_all["total_counts"]) ####
+    print(inputs_all["counts_norm"])  ####
 
     all_complete = True
     for cluster, inputs in clusters.items():
