@@ -10,12 +10,13 @@ import numpy as np
 def parse(counts_path, col_path, row_names, out_dir, agg_out_dir, file_name):
     with gzip.open(col_path, "r") as col_file:
         col_names = col_file.read().decode('utf-8').strip().split("\n")
+    # print(col_names) ####
     counts_agg_arr = np.zeros(len(col_names))
 
     with gzip.open(counts_path, "r") as counts_file:
         for cl, gl in zip(counts_file, row_names):
             counts_lst = list(map(float, cl.decode('utf-8').strip().split(" ")))
-            counts_dct = {ind: val for ind, val in enumerate(counts_lst) if val != 0}
+            counts_dct = {col_names[ind]: val for ind, val in enumerate(counts_lst) if val != 0}
             # print(counts_lst) ####
             counts_agg_arr += np.array(counts_lst)
             gene = gl.strip()
