@@ -183,8 +183,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             # print(cluster) ####
             if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                 processed_counts = True
-                inputs["counts_total"] = [inputs["total_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]]
-                inputs["counts_norm"] = [inputs["agg_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]]
+                inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]])
+                inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, 0.) for i in inputs["sample_names"]])
             else:
                 processed_counts = False
 
