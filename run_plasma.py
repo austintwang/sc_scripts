@@ -106,7 +106,7 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
             "counts2": counts[:,1],
             "counts_total": counts[:,2],
             "overdispersion": overdispersion_clust,
-            "counts_norm": norms
+            "counts_norm": norms,
             "num_cells": num_cells
         }
 
