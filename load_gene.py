@@ -114,7 +114,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
             for fname in os.listdir(total_counts_dir):
                 path = os.path.join(total_counts_dir, fname)
                 with open(path, "rb") as count_file:
-                    total_counts.update(count)
+                    total_counts.update(pickle.load(count))
 
         agg_counts = {}
         var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
