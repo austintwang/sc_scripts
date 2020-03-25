@@ -172,8 +172,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             status_file.write("Fail")
         return
 
-    print(clusters.keys()) ####
-    print(inputs_all["total_counts"].keys()) ####
+    # print(clusters.keys()) ####
+    # print(inputs_all["total_counts"].keys()) ####
 
     all_complete = True
     for cluster, inputs in clusters.items():
