@@ -38,7 +38,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids
 
-def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, total_counts):
+def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map):
     for var, cells in var_data.items():
         for cell, counts in cells.items():
             if not (cell in cell_map):
@@ -47,10 +47,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if not (cell_map[cell] in sample_gen_map):
                 # print(cell_map[cell]) ####
                 continue
-            if total_counts:
-                counts_all = total_counts.get(cell, 0)
-            else:
-                counts_all = np.sum(counts)
+            counts_all = np.sum(counts)
             cell_agg = agg_counts.setdefault(cell, np.array([0,0,0]))
             cell_agg[2] += counts_all
             if not (var in marker_gen_map):
@@ -66,6 +63,9 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
 
+def process_countsname_kellis(counts_names):
+    return [i.split("_")[1] for i in counts_names]
+
 def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
@@ -73,6 +73,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
     gene_dir = os.path.join(data_dir, gene_name)
     if dataset_name == "Kellis":
         sample_process_fn = process_samplename_kellis
+        counts_process_fn = process_countsname_kellis
 
     with open(barcodes_map_path, "rb") as barcodes_map_file:
         barcodes_map = pickle.load(barcodes_map_file)
@@ -109,17 +110,19 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
             total_counts = False
         else:
             total_counts = {}
-            for fname in os.listdir(total_counts_dir):
+            fnames = os.listdir(total_counts_dir)
+            cell_types = counts_process_fn(fnames)
+            for fname, cell_type in zip(fnames, cell_types):
                 path = os.path.join(total_counts_dir, fname)
                 with open(path, "rb") as count_file:
-                    total_counts.update(pickle.load(count_file))
+                    total_counts[cell_type] = pickle.load(count_file)
 
         agg_counts = {}
         var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
         for path in var_data_paths:
             with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
                 var_data = pickle.load(var_file)
-                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, total_counts)
+                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map)
 
         # print(agg_counts) ####
         # print(genotypes_nc) ####
@@ -130,6 +133,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
             "markers": markers_nc, 
             "marker_ids": marker_ids_nc,
             "cell_counts": agg_counts,
+            "total_counts": total_counts,
             "counts_norm": total_counts_norm
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")

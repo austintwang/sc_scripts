@@ -4,10 +4,11 @@ import pickle
 def agg_counts(agg_dir, out_path):
     aggs = {}
     for name in os.listdir(agg_dir):
+        ctype = name.split("_")[1]
         path = os.path.join(agg_dir, name)
         with open(path, "rb") as agg_file:
             agg = pickle.load(agg_file)
-        aggs.update(agg)
+        aggs[ctype] = agg
 
     with open(out_path, "wb") as out_file:
         pickle.dump(aggs, out_file)
