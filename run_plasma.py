@@ -151,10 +151,10 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         inputs_all.update(params)
 
         if inputs_all["total_counts"]:
-            for k, v in inputs_all["cell_type_aliases"]:
+            for k, v in inputs_all["cell_type_aliases"].items():
                 inputs_all["total_counts"][v] = inputs_all["total_counts"][k]
         if inputs_all["agg_counts"]:
-            for k, v in inputs_all["cell_type_aliases"]:
+            for k, v in inputs_all["cell_type_aliases"].items():
                 inputs_all["agg_counts"][v] = inputs_all["agg_counts"][k]
 
         clusters = load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path)
