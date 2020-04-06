@@ -65,7 +65,7 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         script_file.write("#!/bin/bash\n") ####
         script_file.writelines([(" ".join(cmd) + "\n") for cmd in jobs]) ####
 
-    subprocess.run("exec.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    subprocess.run("./exec.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
     # for i in jobs:
