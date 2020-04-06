@@ -211,7 +211,7 @@ if __name__ == '__main__':
         next(bam_data)
         for line in bam_data:
             cols = line.strip().split(",")
-            bam_map_kellis_429[cols[1]] = os.path.join(bam_path_kellis, cols[2], cols[3])
+            bam_map_kellis_429[cols[1]] = os.path.join(bam_path_kellis, cols[2].lstrip("/"), cols[3].lstrip("/"))
             vcf_map_kellis_429[cols[1]] = vcf_hrc
             bed_map_kellis_429[cols[1]] = bed_hrc
 
