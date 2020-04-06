@@ -216,7 +216,7 @@ if __name__ == '__main__':
             bed_map_kellis_429[cols[1]] = bed_hrc
 
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "processed_429")
-    print(bam_map_kellis_429) ####
+    # print(bam_map_kellis_429) ####
 
     dispatch_star(
         bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 20000
