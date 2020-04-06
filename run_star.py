@@ -210,7 +210,7 @@ if __name__ == '__main__':
     with open(os.path.join(kellis_path_base, "Bam_paths_432_PFC_HM_Austin.csv")) as bam_data:
         next(bam_data)
         for line in bam_data:
-            cols = line.split(",")
+            cols = line.strip().split(",")
             bam_map_kellis_429[cols[1]] = os.path.join(bam_path_kellis, cols[2], cols[3])
             vcf_map_kellis_429[cols[1]] = vcf_hrc
             bed_map_kellis_429[cols[1]] = bed_hrc
