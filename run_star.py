@@ -164,10 +164,10 @@ if __name__ == '__main__':
     # dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 10000)
 
     # Clean up Ye
-    fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
-    dispatch_star(
-        bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 300000, selection=fail_ye_nf
-    )
+    # fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
+    # dispatch_star(
+    #     bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 300000, selection=fail_ye_nf
+    # )
 
      # : "flare1_1.bam.1",
      # : "flare1_2.bam.1",
@@ -216,6 +216,7 @@ if __name__ == '__main__':
             bed_map_kellis_429[cols[1]] = bed_hrc
 
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "processed_429")
+    print(bam_map_kellis_429) ####
 
     dispatch_star(
         bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 20000
