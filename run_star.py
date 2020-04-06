@@ -65,22 +65,24 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
         script_file.write("#!/bin/bash\n") ####
         script_file.writelines([(" ".join(cmd) + "\n") for cmd in jobs]) ####
 
-    timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
-    for i in jobs:
-        while True:
-            try:
-                submission = subprocess.run(i, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                print(str(submission.stdout, 'utf-8').rstrip())
-                break
-            except subprocess.CalledProcessError as e:
-                # print(e.stdout) ####
-                err = str(e.stderr, 'utf-8').rstrip()
-                print(err)
-                if err == timeout:
-                    print("Retrying Submit")
-                    continue
-                else:
-                    raise e
+    subprocess.run("exec.sh", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    # timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
+    # for i in jobs:
+    #     while True:
+    #         try:
+    #             submission = subprocess.run(i, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    #             print(str(submission.stdout, 'utf-8').rstrip())
+    #             break
+    #         except subprocess.CalledProcessError as e:
+    #             # print(e.stdout) ####
+    #             err = str(e.stderr, 'utf-8').rstrip()
+    #             print(err)
+    #             if err == timeout:
+    #                 print("Retrying Submit")
+    #                 continue
+    #             else:
+    #                 raise e
 
 def get_failed_jobs(names, out_path_base):
     fails = set()
@@ -182,13 +184,13 @@ if __name__ == '__main__':
 
 
     # Kellis 48
-    kellis_path_base = "/agusevlab/awang/sc_kellis"
-    bam_path_kellis = os.path.join(kellis_path_base, "121719_10xdata")
-    kellis_48 = {i: "{0}/{0}.bam".format(i) for i in os.listdir(bam_path_kellis)}
-    bam_map_kellis_48 = {k: os.path.join(bam_path_kellis, v) for k, v in kellis_48.items()}
-    vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
-    bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
-    out_path_base_kellis_48 = os.path.join(kellis_path_base, "processed")
+    # kellis_path_base = "/agusevlab/awang/sc_kellis"
+    # bam_path_kellis = os.path.join(kellis_path_base, "121719_10xdata")
+    # kellis_48 = {i: "{0}/{0}.bam".format(i) for i in os.listdir(bam_path_kellis)}
+    # bam_map_kellis_48 = {k: os.path.join(bam_path_kellis, v) for k, v in kellis_48.items()}
+    # vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
+    # bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
+    # out_path_base_kellis_48 = os.path.join(kellis_path_base, "processed")
     # dispatch_star(
     #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
     # )
@@ -199,6 +201,24 @@ if __name__ == '__main__':
     #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 60000, selection=fail_kellis_48
     # )
 
+    # Kellis 429
+    kellis_path_base = "/agusevlab/awang/sc_kellis"
+    bam_path_kellis = os.path.join(kellis_path_base, "PFC_bam_files")
+    bam_map_kellis_429 = {}
+    vcf_map_kellis_429 = {}
+    bed_map_kellis_429 = {}
+    with open(os.path.join(kellis_path_base, "Bam_paths_432_PFC_HM_Austin.csv")) as bam_data:
+        next(bam_data)
+        for line in bam_data:
+            cols = line.split(",")
+            bam_map_kellis_429[cols[1]] = os.path.join(bam_path_kellis, cols[2], cols[3])
+            vcf_map_kellis_429[cols[1]] = vcf_hrc
+            bed_map_kellis_429[cols[1]] = bed_hrc
 
+    out_path_base_kellis_429 = os.path.join(kellis_path_base, "processed_429")
+
+    dispatch_star(
+        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 20000
+    )
 
 
