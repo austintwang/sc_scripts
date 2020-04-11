@@ -93,7 +93,7 @@ def get_failed_jobs(names, out_path_base):
     return fails
 
 if __name__ == '__main__':
-    genome_path = "/agusevlab/DATA/GENOMES/STAR_hg19/"
+    genome_path = "/cluster/agusevlab/awang/STAR_hg19/"
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
     whitelist_path = "/agusevlab/DATA/SCRNA/737K-august-2016.txt"
     vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
