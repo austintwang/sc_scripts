@@ -5,6 +5,7 @@ import subprocess
 import numpy as np
 
 def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
+    threads = str(min(64, 500 // (1400000 // memory)))
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
@@ -13,6 +14,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
         "--limitBAMsortRAM", str(int((memory - 6000) * 1e6)),
+        "--runThreadN", threads,
         "--quantMode", "GeneCounts",
         "--twopassMode", "Basic",
         "--outFileNamePrefix", out_prefix,
@@ -32,6 +34,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
     cmd = [
         "sbatch",
         "--mem={0}".format(memory),
+        "-c", threads,
         "-J",
         job_name,
         "-o",
