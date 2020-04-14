@@ -6,7 +6,7 @@ import numpy as np
 
 def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
     threads = str(min(64, 400 // (1400000 // memory)))
-    # threads = str(16) ####
+    threads = str(48) ####
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
