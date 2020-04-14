@@ -38,9 +38,12 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids
 
-def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map):
+def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
     for var, cells in var_data.items():
         for cell, counts in cells.items():
+            cell_full = cell
+            if well_only:
+                cell = cell[1]
             if not (cell in cell_map):
                 # print(cell) ####
                 continue
@@ -48,7 +51,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
                 # print(cell_map[cell]) ####
                 continue
             counts_all = np.sum(counts)
-            cell_agg = agg_counts.setdefault(cell, np.array([0,0,0]))
+            cell_agg = agg_counts.setdefault(cell_full, np.array([0,0,0]))
             cell_agg[2] += counts_all
             if not (var in marker_gen_map):
                 # print(var) ####
@@ -66,7 +69,7 @@ def process_samplename_kellis(sample_names):
 def process_countsname_kellis(counts_names):
     return [i.split("_")[-1] for i in counts_names]
 
-def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
+def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -87,6 +90,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
     radius = int(radius)
     min_maf = float(min_maf)
     min_info = float(min_info)
+    well_only = bool(well_only)
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
@@ -128,7 +132,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, data_dir, vcf_
         for path in var_data_paths:
             with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
                 var_data = pickle.load(var_file)
-                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map)
+                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, well_only)
 
         # print(agg_counts) ####
         # print(genotypes_nc) ####
