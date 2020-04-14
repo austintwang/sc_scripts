@@ -146,6 +146,11 @@ def get_readdata_kellis(line):
     well = data[1].split("_")[0]
     return barcode, well
 
+def get_readdata_kellis_429(line):
+    barcode = line.get_tag("CB").split("-")[0]
+    well = line.get_tag("RG").split(":")[0]
+    return barcode, well   
+
 def count_bam(bam_path, exons, readdata_fn, out_pattern):
     with pysam.AlignmentFile(bam_path, "rb") as bam_file:
         contig_data = bam_file.header["SQ"]
@@ -201,6 +206,8 @@ def count_reads(dataset_name, bam_path, boundaries_path, out_pattern, status_pat
         readdata_fn = get_readdata_ye
     elif dataset_name == "Kellis":
         readdata_fn = get_readdata_kellis
+    elif dataset_name == "Kellis_429":
+        readdata_fn = get_readdata_kellis_429
     count_bam(bam_path, exons, readdata_fn, out_pattern)
     with open(status_path, "w") as status_file:
         status_file.write("Complete")

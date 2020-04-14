@@ -64,7 +64,7 @@ if __name__ == '__main__':
     names_ye = os.listdir(bam_path_ye)
     out_pattern_base_ye = os.path.join(data_path_ye, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
     # dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 2000)
-    dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 2000, fails_only=True)
+    # dispatch(script_path, "Ye", bam_path_ye, boundaries_path, names_ye, out_pattern_base_ye, 2000, fails_only=True)
 
     # Kellis 48
     data_path_kellis = "/agusevlab/awang/sc_kellis"
@@ -73,8 +73,16 @@ if __name__ == '__main__':
     # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes/{{0}}/bamdata/{{0}}_{0}.pickle")
     # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
-    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
+    # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
 
+    # Kellis 429
+    data_path_kellis = "/agusevlab/awang/sc_kellis"
+    bam_path_kellis = os.path.join(data_path_kellis, "processed_429")
+    names_kellis = os.listdir(bam_path_kellis)
+    # print(names_kellis) ####
+    out_pattern_base_kellis = os.path.join(data_path_kellis, "genes_429/{{0}}/bamdata/{{0}}_{0}.pickle")
+    dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
+    # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
 
 
 
