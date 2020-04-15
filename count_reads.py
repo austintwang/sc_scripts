@@ -16,7 +16,7 @@ class ReadBuffer(object):
 
     def add_read(self, chrm, posns, cell, genotype):
         markers = [(chrm, pos) for pos in posns]
-        print(markers) ####
+        # print(markers) ####
         for marker in markers:
             if marker not in self.buffer_data:
                 retire_marker = self.buffer[self.pos]
@@ -164,6 +164,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
         readbuf = ReadBuffer(10, markerbuf)
 
         for line in bam_file:
+            print(line) ####
             try:
                 wasp_pass = line.get_tag("vW")
                 if wasp_pass != 1:
