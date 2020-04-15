@@ -154,7 +154,8 @@ def get_readdata_kellis_429(line):
 def count_bam(bam_path, exons, readdata_fn, out_pattern):
     with pysam.AlignmentFile(bam_path, "rb") as bam_file:
         contig_data = bam_file.header["SQ"]
-        contig_order = [i["SN"] for i in contig_data]
+        contigs = {i["SN"]: i["LN"] for i in contig_data}
+        contig_order = sorted(contigs.keys(), key=contigs.get)
         gene_finder = GeneFinder(exons, contig_order)
         markerbuf = MarkerBuffer(10, out_pattern, gene_finder)
         readbuf = ReadBuffer(10, markerbuf)
