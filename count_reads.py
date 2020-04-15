@@ -165,6 +165,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
 
         for line in bam_file:
             print(line) ####
+            print(line.reference_name) ####
             try:
                 wasp_pass = line.get_tag("vW")
                 if wasp_pass != 1:
@@ -178,7 +179,6 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
                 cell = readdata_fn(line)
 
                 chromosome = line.reference_name
-                print(chromosome) ####
                 intersects = line.get_tag("vG")
                 readbuf.add_read(chromosome, intersects, cell, genotype)
             
