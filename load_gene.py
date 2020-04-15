@@ -69,7 +69,7 @@ def process_samplename_kellis(sample_names):
 def process_countsname_kellis(counts_names):
     return [i.split("_")[-1] for i in counts_names]
 
-def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
+def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ignore_total, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -84,8 +84,11 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, dat
         boundaries_map = pickle.load(boundaries_map_file)
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
-    with open(total_counts_norm_path, "rb") as total_counts_norm_file:
-        total_counts_norm = pickle.load(total_counts_norm_file)
+    if ignore_total:
+        total_counts_norm = None
+    else:
+        with open(total_counts_norm_path, "rb") as total_counts_norm_file:
+            total_counts_norm = pickle.load(total_counts_norm_file)
 
     radius = int(radius)
     min_maf = float(min_maf)
@@ -110,7 +113,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, dat
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
 
         total_counts_dir = os.path.join(gene_dir, "total_counts")
-        if not os.path.isdir(total_counts_dir):
+        if ignore_total or (not os.path.isdir(total_counts_dir)):
             total_counts = False
         else:
             total_counts = {"_all": {}}

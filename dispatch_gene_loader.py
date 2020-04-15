@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_only, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, memory, fails_only=False):
+def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_only, ignore_total, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "load_status.txt")
@@ -19,7 +19,7 @@ def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_o
         err_name = os.path.join(data_dir, name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13",
-            script_path, name, dataset_name, str(radius), str(min_maf), str(min_info), str(well_only), data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, status_path
+            script_path, name, dataset_name, str(radius), str(min_maf), str(min_info), str(well_only), str(ignore_total), data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, status_path
         ]
         print(" ".join(cmd))
         # jobs.append(cmd)
@@ -111,6 +111,7 @@ if __name__ == '__main__':
         min_maf,
         min_info,
         True,
+        True,
         genes_dir_kellis, 
         vcf_path_kellis, 
         barcodes_map_path_kellis, 
@@ -128,6 +129,7 @@ if __name__ == '__main__':
     #     radius, 
     #     min_maf,
     #     min_info,
+    #     True,
     #     True,
     #     genes_dir_kellis, 
     #     vcf_path_kellis, 
