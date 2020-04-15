@@ -156,6 +156,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
         contig_data = bam_file.header["SQ"]
         contigs = {i["SN"]: i["LN"] for i in contig_data}
         contig_order = sorted(contigs.keys(), key=contigs.get)
+        print(contig_order) ####
         gene_finder = GeneFinder(exons, contig_order)
         markerbuf = MarkerBuffer(10, out_pattern, gene_finder)
         readbuf = ReadBuffer(10, markerbuf)
