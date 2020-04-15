@@ -178,6 +178,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
                 cell = readdata_fn(line)
 
                 chromosome = line.reference_name
+                print(chromosome) ####
                 intersects = line.get_tag("vG")
                 readbuf.add_read(chromosome, intersects, cell, genotype)
             
