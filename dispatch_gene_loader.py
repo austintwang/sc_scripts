@@ -4,7 +4,7 @@ import pickle
 import subprocess
 import numpy as np
 
-def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, memory, fails_only=False):
+def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_only, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "load_status.txt")
@@ -19,7 +19,7 @@ def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, data_d
         err_name = os.path.join(data_dir, name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13",
-            script_path, name, dataset_name, str(radius), str(min_maf), str(min_info), data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, status_path
+            script_path, name, dataset_name, str(radius), str(min_maf), str(min_info), str(well_only), data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -60,6 +60,49 @@ if __name__ == '__main__':
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
     agg_counts_path = os.path.join(data_path_kellis, "agg_counts.pickle")
 
+    # dispatch(
+    #     script_path, 
+    #     names_kellis,
+    #     "Kellis",
+    #     radius, 
+    #     min_maf,
+    #     min_info,
+    #     genes_dir_kellis, 
+    #     vcf_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     boundaries_map_path, 
+    #     tss_map_path, 
+    #     agg_counts_path,
+    #     2000, 
+    #     fails_only=False
+    # )
+
+    # dispatch(
+    #     script_path, 
+    #     names_kellis,
+    #     "Kellis",
+    #     radius, 
+    #     min_maf,
+    #     min_info,
+    #     genes_dir_kellis, 
+    #     vcf_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     boundaries_map_path, 
+    #     tss_map_path, 
+    #     agg_counts_path,
+    #     5000, 
+    #     fails_only=True
+    # )
+
+
+    # Kellis 429
+    data_path_kellis = "/agusevlab/awang/sc_kellis"
+    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
+    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
+    names_kellis = os.listdir(genes_dir_kellis)
+    vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
+    agg_counts_path = os.path.join(data_path_kellis, "agg_counts.pickle")
+
     dispatch(
         script_path, 
         names_kellis,
@@ -67,6 +110,7 @@ if __name__ == '__main__':
         radius, 
         min_maf,
         min_info,
+        True,
         genes_dir_kellis, 
         vcf_path_kellis, 
         barcodes_map_path_kellis, 
@@ -84,6 +128,7 @@ if __name__ == '__main__':
     #     radius, 
     #     min_maf,
     #     min_info,
+    #     True,
     #     genes_dir_kellis, 
     #     vcf_path_kellis, 
     #     barcodes_map_path_kellis, 
