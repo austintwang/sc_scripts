@@ -101,7 +101,7 @@ if __name__ == '__main__':
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names_kellis = os.listdir(genes_dir_kellis)
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
-    agg_counts_path = os.path.join(data_path_kellis, "agg_counts.pickle")
+    agg_counts_path = "_none"
 
     dispatch(
         script_path, 
