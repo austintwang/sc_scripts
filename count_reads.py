@@ -17,7 +17,7 @@ class ReadBuffer(object):
 
     def add_read(self, chrm, posns, cell, genotype):
         markers = [(chrm, pos) for pos in posns]
-        # print(markers) ####
+        print(markers) ####
         for marker in markers:
             if marker not in self.buffer_data:
                 retire_marker = self.buffer[self.pos]
