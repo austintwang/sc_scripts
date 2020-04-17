@@ -28,7 +28,7 @@ def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pa
         err_name = os.path.join(data_dir, name, "count_%j.out")
         out_pattern = out_pattern_base.format(name)
         cmd = [
-            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name,
+            "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node06,node07,node16",
             script_path, dataset_name, bam_path, boundaries_path, out_pattern, status_path
         ]
         print(" ".join(cmd))
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes_429/{{0}}/bamdata/{{0}}_{0}.pickle")
     # dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
-    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
+    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 3000, fails_only=True)
 
 
 
