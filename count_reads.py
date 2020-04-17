@@ -190,7 +190,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
     if parse_manual:
         req_tags = set(["vW", "vA", "vG", "CB", "RG"])
         args = ["samtools", "view", bam_path]
-        with subprecess.Popen(args, stdout=subprocess.PIPE, bufsize=1, text=True) as p:
+        with subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, text=True) as p:
             for line in p.stdout:
                 cols = line.split("\t")
                 chromosome = cols[2]
