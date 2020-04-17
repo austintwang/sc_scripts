@@ -165,27 +165,27 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
         readbuf = ReadBuffer(10, markerbuf)
 
         if not parse_manual:
-            # for line in bam_file:
-            #     print(line) ####
-            #     print(line.reference_name) ####
-            try:
-                wasp_pass = line.get_tag("vW")
-                if wasp_pass != 1:
+            for line in bam_file:
+                # print(line) ####
+                # print(line.reference_name) ####
+                try:
+                    wasp_pass = line.get_tag("vW")
+                    if wasp_pass != 1:
+                        continue
+
+                    # print(line.get_tag("vA")) ####
+                    genotype = line.get_tag("vA")[0] - 1
+                    if not (genotype == 0 or genotype == 1):
+                        continue
+
+                    cell = readdata_fn(line)
+
+                    chromosome = line.reference_name
+                    intersects = line.get_tag("vG")
+                    readbuf.add_read(chromosome, intersects, cell, genotype)
+                
+                except KeyError:
                     continue
-
-                # print(line.get_tag("vA")) ####
-                genotype = line.get_tag("vA")[0] - 1
-                if not (genotype == 0 or genotype == 1):
-                    continue
-
-                cell = readdata_fn(line)
-
-                chromosome = line.reference_name
-                intersects = line.get_tag("vG")
-                readbuf.add_read(chromosome, intersects, cell, genotype)
-            
-            except KeyError:
-                continue
 
     if parse_manual:
         req_tags = set(["vW", "vA", "vG", "CB", "RG"])
