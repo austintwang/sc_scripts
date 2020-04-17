@@ -17,7 +17,7 @@ class ReadBuffer(object):
 
     def add_read(self, chrm, posns, cell, genotype):
         markers = [(chrm, pos) for pos in posns]
-        print(markers) ####
+        # print(markers) ####
         for marker in markers:
             if marker not in self.buffer_data:
                 retire_marker = self.buffer[self.pos]
@@ -192,6 +192,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
         args = ["samtools", "view", bam_path]
         with subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1, text=True) as p:
             for line in p.stdout:
+                print(line) ####
                 cols = line.split("\t")
                 chromosome = cols[2]
                 tag_data = {}
