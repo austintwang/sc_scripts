@@ -237,6 +237,8 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
     readbuf.purge()
 
+    print(chromosome, intersects) ####
+
 def load_exons(boundaries_path):
     exons = []
     with open(boundaries_path, "r") as boundaries_file:
