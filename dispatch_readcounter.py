@@ -3,6 +3,7 @@ import sys
 import pickle
 import subprocess
 import numpy as np
+import glob ####
 
 def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pattern_base, memory, fails_only=False):
     jobs = []
@@ -20,7 +21,11 @@ def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pa
                 # continue ####
                 if status_file.read() == "Complete":
                     # print("complete") ####
-                    continue
+                    outs = glob.glob(os.path.join(data_dir, name, "count_*.out")) ####
+                    with open(max(outs)) as of: ####
+                        ol = of.readlines()
+                    if ol == 1:
+                        continue
         if not fails_only:
             with open(status_path, "w") as status_file:
                 status_file.write("")
@@ -82,7 +87,7 @@ if __name__ == '__main__':
     # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes_429/{{0}}/bamdata/{{0}}_{0}.pickle")
     # dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
-    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 3000, fails_only=True)
+    dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 3000, fails_only=True)
 
 
 
