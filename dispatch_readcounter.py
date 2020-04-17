@@ -81,8 +81,8 @@ if __name__ == '__main__':
     names_kellis = os.listdir(bam_path_kellis)
     # print(names_kellis) ####
     out_pattern_base_kellis = os.path.join(data_path_kellis, "genes_429/{{0}}/bamdata/{{0}}_{0}.pickle")
-    dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
-    # dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
+    # dispatch(script_path, "Kellis_429", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 2000)
+    dispatch(script_path, "Kellis", bam_path_kellis, boundaries_path, names_kellis, out_pattern_base_kellis, 10000, fails_only=True)
 
 
 
