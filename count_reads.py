@@ -3,6 +3,7 @@
 import os
 import sys
 import pickle
+import subprocess
 import numpy as np
 import pysam
 
@@ -152,8 +153,8 @@ def get_readdata_kellis_429(line):
     well = line.get_tag("RG").split(":")[0]
     return barcode, well   
 
-def count_bam(bam_path, exons, readdata_fn, out_pattern):
-    with pysam.AlignmentFile(bam_path, "rb", ignore_truncation=True) as bam_file:
+def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
+    with pysam.AlignmentFile(bam_path, "rb") as bam_file:
         contig_data = bam_file.header["SQ"]
         # contigs = {i["SN"]: i["LN"] for i in contig_data}
         # contig_order = sorted(contigs.keys(), key=contigs.get)
@@ -163,9 +164,10 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
         markerbuf = MarkerBuffer(10, out_pattern, gene_finder)
         readbuf = ReadBuffer(10, markerbuf)
 
-        for line in bam_file:
-            print(line) ####
-            print(line.reference_name) ####
+        if not parse_manual:
+            # for line in bam_file:
+            #     print(line) ####
+            #     print(line.reference_name) ####
             try:
                 wasp_pass = line.get_tag("vW")
                 if wasp_pass != 1:
@@ -184,6 +186,52 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern):
             
             except KeyError:
                 continue
+
+    if parse_manual:
+        req_tags = set(["vW", "vA", "vG", "CB", "RG"])
+        args = ["samtools", "view", bam_path]
+        with subprecess.Popen(args, stdout=subprocess.PIPE, bufsize=1, text=True) as p:
+            for line in p.stdout:
+                cols = line.split("\t")
+                chromosome = cols[2]
+                tag_data = {}
+                for tag in cols[11:]:
+                    tag_name = tag[:2]
+                    if tag_name in req_tags:
+                        tag_data[tag_name] = tag[2:]
+
+                wasp_pass = tag_data.get("vW")
+                if (wasp_pass is None) or int(wasp_pass[-1]) != 1:
+                    continue
+
+                # print(line.get_tag("vA")) ####
+                genotype_raw = tag_data.get("vA", None)
+                if genotype_raw is None or len(genotype_raw) < 6:
+                    continue
+                genotype = int(genotype_raw[5]) - 1
+                if not (genotype == 0 or genotype == 1):
+                    continue
+
+                barcode_raw = tag_data.get("CB")
+                if barcode_raw is None or len(barcode_raw) < 6:
+                    continue
+                barcode = barcode_raw[5:].split("-")[0]
+
+                well_raw = tag_data.get("RG")
+                if well_raw is None or len(well_raw) < 6:
+                    continue
+                well = well_raw[5:].split(":")[0]
+                cell = barcode, well
+
+                intersects_raw = tag_data.get("vG")
+                if intersects_raw is None or len(intersects_raw) < 8:
+                    continue
+                try:
+                    map(int, intersects_raw[7:].split(","))
+                except ValueError:
+                    continue
+
+                readbuf.add_read(chromosome, intersects, cell, genotype)
 
     readbuf.purge()
 
@@ -210,11 +258,14 @@ def count_reads(dataset_name, bam_path, boundaries_path, out_pattern, status_pat
     exons = load_exons(boundaries_path)
     if dataset_name == "Ye":
         readdata_fn = get_readdata_ye
+        parse_manual = False
     elif dataset_name == "Kellis":
         readdata_fn = get_readdata_kellis
+        parse_manual = False
     elif dataset_name == "Kellis_429":
         readdata_fn = get_readdata_kellis_429
-    count_bam(bam_path, exons, readdata_fn, out_pattern)
+        parse_manual = True
+    count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual)
     with open(status_path, "w") as status_file:
         status_file.write("Complete")
 
