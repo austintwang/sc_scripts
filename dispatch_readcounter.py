@@ -24,8 +24,8 @@ def dispatch(script_path, dataset_name, data_dir, boundaries_path, names, out_pa
                     outs = glob.glob(os.path.join(data_dir, name, "count_*.out")) ####
                     with open(max(outs)) as of: ####
                         ol = of.readlines()
-                    print(ol) ####
-                    if ol == 1:
+                    # print(ol) ####
+                    if len(ol) == 1:
                         continue
         if not fails_only:
             with open(status_path, "w") as status_file:
