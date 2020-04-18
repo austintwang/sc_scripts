@@ -41,7 +41,7 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
             data = pickle.load(data_file)
     except FileNotFoundError:
         return
-    print(cell_map) ####
+    # print(cell_map) ####
     for cell, counts in data["cell_counts"].items():
         cell_bar = cell[barcodes_idx] if barcodes_idx is not None else cell
         cell_clust = cell[clusters_idx] if clusters_idx is not None else cell
@@ -101,4 +101,4 @@ if __name__ == '__main__':
     cluster_map_path = os.path.join(base_dir, "cluster_map_429.pickle")
     barcodes_map_path = os.path.join(base_dir, "metadata_429.pickle")
     out_path = os.path.join(base_dir, "overdispersions_429.pickle")
-    get_overdispersions(data_dir, cluster_map_path, barcodes_map_path, out_path, barcodes_idx=1, clusters_idx=0)
+    get_overdispersions(data_dir, cluster_map_path, barcodes_map_path, out_path, barcodes_idx=1)
