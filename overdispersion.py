@@ -44,6 +44,7 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
     # print(cell_map) ####
     print(gene) ####
     for cell, counts in data["cell_counts"].items():
+        print(counts) ####
         cell_bar = cell[barcodes_idx] if barcodes_idx is not None else cell
         cell_clust = cell[clusters_idx] if clusters_idx is not None else cell
         allele_counts = counts[:2]
@@ -51,7 +52,7 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
             continue
         # ind_map = {val: ind for ind, val in enumerate(data["samples"])}
         sample = barcodes_map[cell_bar]
-        print(cell_clust, (cell_clust in cell_map)) ####
+        # print(cell_clust, (cell_clust in cell_map)) ####
         for cluster in cell_map.get(cell_clust, ["_all"]):
             clust_data = clusters.setdefault(cluster, {})
             clust_data_ind = clust_data.setdefault(sample, {})
