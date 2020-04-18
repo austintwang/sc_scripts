@@ -30,4 +30,4 @@ if __name__ == '__main__':
     metadata_path = os.path.join(base_dir, "broad.annot.gz")
     out_path = os.path.join(base_dir, "cluster_map_429.pickle")
     well_map_path = os.path.join(base_dir, "metadata_429.pickle")
-    get_cluster_map(metadata_path, well_map_file, out_path)
+    get_cluster_map(metadata_path, well_map_path, out_path)
