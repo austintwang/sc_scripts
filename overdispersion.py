@@ -50,7 +50,9 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
             continue
         # ind_map = {val: ind for ind, val in enumerate(data["samples"])}
         sample = barcodes_map[cell_bar]
-        for cluster in cell_map[cell_clust]:
+        if cluster not in cell_map:
+            print(cluster) ####
+        for cluster in cell_map.get(cell_clust, ["_all"]):
             clust_data = clusters.setdefault(cluster, {})
             clust_data_ind = clust_data.setdefault(sample, {})
             gene_data = clust_data_ind.setdefault(gene, np.array([0, 0]))
