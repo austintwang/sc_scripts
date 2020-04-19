@@ -224,6 +224,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                     continue
                 well = well_raw[5:].split(":")[0]
                 cell = barcode, well
+                print(well, well_raw) ####
 
                 intersects_raw = tag_data.get("vG")
                 if intersects_raw is None or len(intersects_raw) < 8:
