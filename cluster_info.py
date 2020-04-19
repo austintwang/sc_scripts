@@ -91,9 +91,16 @@ def get_info(genes_dir, cluster_map_path, out_path):
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
+    # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
 
-    out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/cluster_info.txt"
+    # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/cluster_info.txt"
+
+    # get_info(genes_dir_kellis, cluster_map_path_kellis, out_path_kellis)
+
+    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
+
+    out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/cluster_info.txt"
 
     get_info(genes_dir_kellis, cluster_map_path_kellis, out_path_kellis)
