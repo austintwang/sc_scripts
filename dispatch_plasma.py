@@ -56,7 +56,6 @@ if __name__ == '__main__':
     overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes")
     names_kellis = os.listdir(genes_dir_kellis)
-    vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
     aliases_kellis = {
         "Oligo": "Oli",
         "OPC": "Opc",
@@ -78,19 +77,19 @@ if __name__ == '__main__':
         "cell_type_aliases": aliases_kellis
     }
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis, 
-        params_path_kellis, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     # dispatch(
     #     script_path, 
@@ -110,9 +109,9 @@ if __name__ == '__main__':
     # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     params_path_kellis = os.path.join(data_path_kellis, "plasma_params.pickle")
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata.pickle")
-    overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions.pickle")
+    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
+    overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names_kellis = os.listdir(genes_dir_kellis)
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
