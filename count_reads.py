@@ -211,6 +211,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 if genotype_raw is None or len(genotype_raw) < 6:
                     continue
                 genotype = int(genotype_raw[5]) - 1
+                print(genotype, genotype_raw) ####
                 if not (genotype == 0 or genotype == 1):
                     continue
 
@@ -218,6 +219,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 if barcode_raw is None or len(barcode_raw) < 6:
                     continue
                 barcode = barcode_raw[5:].split("-")[0]
+                print(barcode, barcode_raw) ####
 
                 well_raw = tag_data.get("RG")
                 if well_raw is None or len(well_raw) < 6:
