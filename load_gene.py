@@ -96,6 +96,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
     min_maf = float(min_maf)
     min_info = float(min_info)
     well_only = bool(well_only)
+    print(barcodes_map) ####
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
