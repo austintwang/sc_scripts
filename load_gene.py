@@ -46,15 +46,15 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             if well_only:
                 cell = cell[1]
             if not (cell in cell_map):
-                print(cell) ####
+                # print(cell) ####
                 continue
             if not (cell_map[cell] in sample_gen_map):
-                print(cell_map[cell]) ####
+                # print(cell_map[cell]) ####
                 continue
             counts_all = np.sum(counts)
             cell_agg = agg_counts.setdefault(cell_full, np.array([0,0,0]))
             cell_agg[2] += counts_all
-            print(var, var in marker_gen_map) ####
+            # print(var, var in marker_gen_map) ####
             if not (var in marker_gen_map):
                 # print(var) ####
                 continue
@@ -96,7 +96,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
     min_maf = float(min_maf)
     min_info = float(min_info)
     well_only = bool(well_only)
-    print(barcodes_map) ####
+    # print(barcodes_map) ####
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
