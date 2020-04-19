@@ -65,10 +65,18 @@ def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     sample_counts_norm = {}
     sample_num_cells = {}
+    if isinstance(barcodes_map.keys()[0], str):
+        well_only = True
+    else:
+        well_only = False
     for i in barcodes:
-        if (i in cell_counts) and (i in barcodes_map):
+        if well_only:
+            bar_key = i[1]
+        else:
+            bar_key = i
+        if (i in cell_counts) and (bar_key in barcodes_map):
             counts = cell_counts[i]
-            sample = barcodes_map[i]
+            sample = barcodes_map[bar_key]
             sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
             sc += counts
             sample_num_cells.setdefault(sample, 0)
