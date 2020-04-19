@@ -211,27 +211,28 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 if genotype_raw is None or len(genotype_raw) < 6:
                     continue
                 genotype = int(genotype_raw[5]) - 1
-                print(genotype, genotype_raw) ####
+                # print(genotype, genotype_raw) ####
                 if not (genotype == 0 or genotype == 1):
                     continue
 
                 barcode_raw = tag_data.get("CB")
-                if barcode_raw is None or len(barcode_raw) < 6:
+                if barcode_raw is None or len(barcode_raw) < 4:
                     continue
-                barcode = barcode_raw[5:].split("-")[0]
-                print(barcode, barcode_raw) ####
+                barcode = barcode_raw[3:].split("-")[0]
+                # print(barcode, barcode_raw) ####
 
                 well_raw = tag_data.get("RG")
-                if well_raw is None or len(well_raw) < 6:
+                if well_raw is None or len(well_raw) < 4:
                     continue
-                well = well_raw[5:].split(":")[0]
+                well = well_raw[3:].split(":")[0]
                 cell = barcode, well
-                print(well, well_raw) ####
+                # print(well, well_raw) ####
 
                 intersects_raw = tag_data.get("vG")
                 if intersects_raw is None or len(intersects_raw) < 8:
                     continue
                 try:
+                    print(intersects, intersects_raw) ####
                     intersects = list(map(int, intersects_raw[7:].split(",")))
                 except ValueError:
                     continue
