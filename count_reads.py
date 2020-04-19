@@ -229,11 +229,11 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 # print(well, well_raw) ####
 
                 intersects_raw = tag_data.get("vG")
-                if intersects_raw is None or len(intersects_raw) < 8:
+                if intersects_raw is None or len(intersects_raw) < 6:
                     continue
                 try:
-                    intersects = list(map(int, intersects_raw[7:].split(",")))
-                    print(intersects, intersects_raw) ####
+                    intersects = list(map(int, intersects_raw[5:].split(",")))
+                    # print(intersects, intersects_raw) ####
                 except ValueError:
                     continue
 
