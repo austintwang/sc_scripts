@@ -42,9 +42,9 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
     except FileNotFoundError:
         return
     # print(cell_map) ####
-    print(gene) ####
+    # print(gene) ####
     for cell, counts in data["cell_counts"].items():
-        print(counts) ####
+        # print(counts) ####
         if len(cell[0]) < 16:
             continue
         cell_bar = cell[barcodes_idx] if barcodes_idx is not None else cell
