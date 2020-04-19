@@ -232,8 +232,8 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 if intersects_raw is None or len(intersects_raw) < 8:
                     continue
                 try:
-                    print(intersects, intersects_raw) ####
                     intersects = list(map(int, intersects_raw[7:].split(",")))
+                    print(intersects, intersects_raw) ####
                 except ValueError:
                     continue
 
