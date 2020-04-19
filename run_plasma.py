@@ -65,7 +65,7 @@ def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     sample_counts_norm = {}
     sample_num_cells = {}
-    if isinstance(barcodes_map.keys()[0], str):
+    if isinstance(next(barcodes_map.keys()), str):
         well_only = True
     else:
         well_only = False
