@@ -39,6 +39,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     return genotypes, samples, markers, marker_ids
 
 def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
+    print(var_data) ####
     for var, cells in var_data.items():
         for cell, counts in cells.items():
             cell_full = cell
