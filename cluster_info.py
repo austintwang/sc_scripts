@@ -152,7 +152,7 @@ def plot_sets(df, out_dir):
     clusters = {
         "_All": "All Cells",
         "Ex": "Excitatory Neuron",
-        "Oligo": "Oligodendrocyte"
+        "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
         "Endo": "Endothelial",
