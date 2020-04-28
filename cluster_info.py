@@ -101,7 +101,7 @@ def make_thresh_barplot(
         title, 
         result_path,
     ):
-
+    model_flavors = list(model_flavors)
     thresh_data = [[] for _ in range(len(threshs))]
     for m in model_flavors:
         lines = []
