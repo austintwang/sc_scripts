@@ -124,6 +124,7 @@ if __name__ == '__main__':
     }
 
     params_kellis = {
+        "run_name": "combined",
         "total_exp_herit_prior": 0.05,
         "imbalance_herit_prior": 0.40,
         "cross_corr_prior": 0.9,
@@ -149,6 +150,40 @@ if __name__ == '__main__':
     #     2000, 
     #     fails_only=False
     # )
+
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     5000, 
+    #     fails_only=True
+    # )
+
+    params_kellis_xval = params_kellis.copy()
+    params_kellis_xval.update({
+        "run_name": "split",
+        "splits": [0.5, 0.5],
+    })
+
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     dispatch(
         script_path, 

@@ -130,14 +130,16 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     with open(status_path, "w") as status_file:
         status_file.write("")
 
-    results = {}
     try:
         gene_dir = os.path.join(data_dir, name)
         gene_path = os.path.join(gene_dir, "gene_data.pickle")
-        output_path = os.path.join(gene_dir, "plasma.pickle")
+        output_path_base = os.path.join(gene_dir, "plasma_{0}.pickle")
 
         with open(params_path, "rb") as params_file:
             params = pickle.load(params_file)
+
+        output_path_base = os.path.join(gene_dir, params["run_name"], "plasma_{0}.pickle")
+
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
 
@@ -168,13 +170,14 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         clusters = load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path)
 
     except Exception as e:
+        results = {}
         all_complete = False
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
         message = repr(e)
         results["run_error_all"] = message
         results["traceback_all"] = trace
-        write_output(output_path, results)
+        write_output(output_path_base.format(0), results)
 
         with open(status_path, "w") as status_file:
             status_file.write("Fail")
@@ -185,132 +188,152 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     # print(inputs_all["total_counts"]) ####
     # print(inputs_all["agg_counts"])  ####
 
+    splits = np.array(inputs_all.get("splits", [1.]))
+    num_samples = inputs_all["counts1"].size
+    allocs_raw = num_samples * splits
+    cumu = np.cumsum(allocs_raw)
+    rems = 1 - (-cumu % 1)
+    floors = cumu - rems
+    adds = np.random.binomial(1, rems)
+    cumu_int = floors + adds + (1 - np.roll(adds, 1))
+    allocs = np.copy(cumu_int)
+    allocs[1:] -= cumu_int[:-1]
+    np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
+    partitions = np.random.permutation([allocs])
+    print(partitions) ####
+    print(np.sum(allocs, num_samples)) ####
+
     all_complete = True
-    for cluster, inputs in clusters.items():
-        result = results.setdefault(cluster, {})
-        try:
-            inputs.update(inputs_all)
-            # print(cluster) ####
-            if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
-                processed_counts = True
-                # print(inputs["total_counts"][cluster]) ####
-                inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
-                inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
-            else:
-                processed_counts = False
+    for split in range(len(splits)):
+        results = {}
+        output_path = output_path_base.format(split)
+        for cluster, inputs in clusters.items():
+            result = results.setdefault(cluster, {})
+            try:
+                inputs.update(inputs_all)
+                # print(cluster) ####
+                if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
+                    processed_counts = True
+                    # print(inputs["total_counts"][cluster]) ####
+                    inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
+                    inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
+                else:
+                    processed_counts = False
 
-            select_counts = np.logical_and(
-                inputs["counts1"] >= 1, 
-                inputs["counts2"] >= 1, 
-                np.logical_not(np.isnan(inputs["overdispersion"]))
-            )
-            result["effective_sample_size"] = np.sum(select_counts)
-            result["sample_size"] = select_counts.size
-
-            inputs["hap1"] = inputs["hap1"][select_counts]
-            inputs["hap2"] = inputs["hap2"][select_counts]
-            inputs["counts1"] = inputs["counts1"][select_counts]
-            inputs["counts2"] = inputs["counts2"][select_counts]
-            inputs["counts_total"] = inputs["counts_total"][select_counts]
-            inputs["overdispersion"] = inputs["overdispersion"][select_counts]
-            inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
-            inputs["num_cells"] = inputs["num_cells"][select_counts]
-            if processed_counts:
-                inputs["counts_norm"] = inputs["counts_norm"][select_counts]
-
-            result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
-            result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
-            result["overdispersion"] = inputs["overdispersion"]
-            # result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
-            result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
-
-            if processed_counts:
-                # print(inputs["counts_total"]) ####
-                # print(inputs["counts_norm"]) ####
-                inputs["counts_total"] = inputs["counts_total"] * np.mean(inputs["counts_norm"]) / inputs["counts_norm"]
-                result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
-            else:
-                result["avg_counts_total_scaled"] = None
-
-            if snp_filter:
-                snps_in_filter = [ind for ind, val in enumerate(inputs["snp_ids"]) if val in snp_filter]
-                inputs["snp_ids"] = inputs["snp_ids"][snps_in_filter]
-                inputs["snp_pos"] = inputs["snp_pos"][snps_in_filter]
-                inputs["hap1"] = inputs["hap1"][:, snps_in_filter]
-                inputs["hap2"] = inputs["hap2"][:, snps_in_filter]
-
-            haps_comb = inputs["hap1"] + inputs["hap2"]
-
-            if np.size(inputs["counts1"]) <= 1:
-                result["data_error"] = "Insufficient Read Counts"
-                continue
-
-            informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
-            result["informative_snps"] = informative_snps
-            result["num_snps_total"] = np.size(inputs["snp_ids"])
-            result["num_snps_informative"] = np.count_nonzero(informative_snps)
-
-            inputs["hap1"] = inputs["hap1"][:, informative_snps]
-            inputs["hap2"] = inputs["hap2"][:, informative_snps]
-
-            inputs["num_causal_prior"] = inputs["num_causal"]
-
-            if inputs["hap1"].size == 0:
-                result["data_error"] = "Insufficient Markers"
-                continue
-
-            inputs["hap_A"] = inputs["hap1"].astype(np.int)
-            inputs["hap_B"] = inputs["hap2"].astype(np.int)
-
-            inputs["counts_A"] = inputs["counts1"].astype(np.int)
-            inputs["counts_B"] = inputs["counts2"].astype(np.int)
-            inputs["total_exp"] = inputs["counts_total"].astype(np.int)
-
-            if inputs["model_flavors"] == "all":
-                model_flavors = set(["full", "indep", "eqtl", "ase", "acav", "fmb"])
-            else:
-                model_flavors = inputs["model_flavors"]
-
-            if "full" in model_flavors:
-                updates_full = {"num_ppl": None}
-                result["causal_set_full"], result["ppas_full"], result["size_probs_full"] = run_model(
-                    Finemap, inputs, updates_full, informative_snps
+                select_counts = np.logical_and(
+                    partitions == split,
+                    inputs["counts1"] >= 1, 
+                    inputs["counts2"] >= 1, 
+                    np.logical_not(np.isnan(inputs["overdispersion"]))
                 )
+                result["split"] = split
+                result["effective_sample_size"] = np.sum(select_counts)
+                result["sample_size"] = select_counts.size
 
-            if "indep" in model_flavors:
-                updates_indep = {"cross_corr_prior": 0., "num_ppl": None}
-                result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"] = run_model(
-                    Finemap, inputs, updates_indep, informative_snps, return_stats=True
-                )
-                
-            if "eqtl" in model_flavors:
-                updates_eqtl = {"qtl_only": True, "num_ppl": None}
-                result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
-                    Finemap, inputs, updates_eqtl, informative_snps
-                )
+                inputs["hap1"] = inputs["hap1"][select_counts]
+                inputs["hap2"] = inputs["hap2"][select_counts]
+                inputs["counts1"] = inputs["counts1"][select_counts]
+                inputs["counts2"] = inputs["counts2"][select_counts]
+                inputs["counts_total"] = inputs["counts_total"][select_counts]
+                inputs["overdispersion"] = inputs["overdispersion"][select_counts]
+                inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
+                inputs["num_cells"] = inputs["num_cells"][select_counts]
+                if processed_counts:
+                    inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
-            if "ase" in model_flavors:
-                updates_ase = {"as_only": True, "num_ppl": None}
-                result["causal_set_ase"], result["ppas_ase"], result["size_probs_ase"] = run_model(
-                    Finemap, inputs, updates_ase, informative_snps
-                )
+                result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
+                result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
+                result["overdispersion"] = inputs["overdispersion"]
+                # result["avg_overdispersion"] = np.nanmean(inputs["overdispersion"])
+                result["avg_num_cells"] = np.nanmean(inputs["num_cells"])
 
-            if "fmb" in model_flavors:
-                updates_fmb = {"qtl_only": True, "num_ppl": None}
-                result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
-                    FmBenner, inputs, updates_fmb, informative_snps
-                )
+                if processed_counts:
+                    # print(inputs["counts_total"]) ####
+                    # print(inputs["counts_norm"]) ####
+                    inputs["counts_total"] = inputs["counts_total"] * np.mean(inputs["counts_norm"]) / inputs["counts_norm"]
+                    result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
+                else:
+                    result["avg_counts_total_scaled"] = None
 
-        except Exception as e:
-            all_complete = False
-            trace = traceback.format_exc()
-            print(trace, file=sys.stderr)
-            message = repr(e)
-            result["run_error"] = message
-            result["traceback"] = trace
-            write_output(output_path, results)
+                if snp_filter:
+                    snps_in_filter = [ind for ind, val in enumerate(inputs["snp_ids"]) if val in snp_filter]
+                    inputs["snp_ids"] = inputs["snp_ids"][snps_in_filter]
+                    inputs["snp_pos"] = inputs["snp_pos"][snps_in_filter]
+                    inputs["hap1"] = inputs["hap1"][:, snps_in_filter]
+                    inputs["hap2"] = inputs["hap2"][:, snps_in_filter]
 
-    write_output(output_path, results)
+                haps_comb = inputs["hap1"] + inputs["hap2"]
+
+                if np.size(inputs["counts1"]) <= 1:
+                    result["data_error"] = "Insufficient Read Counts"
+                    continue
+
+                informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
+                result["informative_snps"] = informative_snps
+                result["num_snps_total"] = np.size(inputs["snp_ids"])
+                result["num_snps_informative"] = np.count_nonzero(informative_snps)
+
+                inputs["hap1"] = inputs["hap1"][:, informative_snps]
+                inputs["hap2"] = inputs["hap2"][:, informative_snps]
+
+                inputs["num_causal_prior"] = inputs["num_causal"]
+
+                if inputs["hap1"].size == 0:
+                    result["data_error"] = "Insufficient Markers"
+                    continue
+
+                inputs["hap_A"] = inputs["hap1"].astype(np.int)
+                inputs["hap_B"] = inputs["hap2"].astype(np.int)
+
+                inputs["counts_A"] = inputs["counts1"].astype(np.int)
+                inputs["counts_B"] = inputs["counts2"].astype(np.int)
+                inputs["total_exp"] = inputs["counts_total"].astype(np.int)
+
+                if inputs["model_flavors"] == "all":
+                    model_flavors = set(["full", "indep", "eqtl", "ase", "acav", "fmb"])
+                else:
+                    model_flavors = inputs["model_flavors"]
+
+                if "full" in model_flavors:
+                    updates_full = {"num_ppl": None}
+                    result["causal_set_full"], result["ppas_full"], result["size_probs_full"] = run_model(
+                        Finemap, inputs, updates_full, informative_snps
+                    )
+
+                if "indep" in model_flavors:
+                    updates_indep = {"cross_corr_prior": 0., "num_ppl": None}
+                    result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"] = run_model(
+                        Finemap, inputs, updates_indep, informative_snps, return_stats=True
+                    )
+                    
+                if "eqtl" in model_flavors:
+                    updates_eqtl = {"qtl_only": True, "num_ppl": None}
+                    result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
+                        Finemap, inputs, updates_eqtl, informative_snps
+                    )
+
+                if "ase" in model_flavors:
+                    updates_ase = {"as_only": True, "num_ppl": None}
+                    result["causal_set_ase"], result["ppas_ase"], result["size_probs_ase"] = run_model(
+                        Finemap, inputs, updates_ase, informative_snps
+                    )
+
+                if "fmb" in model_flavors:
+                    updates_fmb = {"qtl_only": True, "num_ppl": None}
+                    result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
+                        FmBenner, inputs, updates_fmb, informative_snps
+                    )
+
+            except Exception as e:
+                all_complete = False
+                trace = traceback.format_exc()
+                print(trace, file=sys.stderr)
+                message = repr(e)
+                result["run_error"] = message
+                result["traceback"] = trace
+                write_output(output_path, results)
+
+        write_output(output_path, results)
 
     with open(status_path, "w") as status_file:
         if all_complete:
