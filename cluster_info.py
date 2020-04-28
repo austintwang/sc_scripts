@@ -137,7 +137,7 @@ def make_thresh_barplot(
             if (last_marker[j] is None and xval >= 0.04) or (last_marker[j] and (xval - last_marker[j]) >= 0.08):
                 plt.text(
                     xval,
-                    model_flavors[j],
+                    j,
                     threshs[i],
                     size="xx-small",
                     weight="medium",
@@ -199,15 +199,15 @@ def plot_sets(df, out_dir):
             title, 
             os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
         )
-        # make_thresh_barplot(
-        #     df_clust,
-        #     var, 
-        #     model_flavors,
-        #     model_names, 
-        #     threshs,
-        #     title, 
-        #     os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
-        # )
+        make_thresh_barplot(
+            df_clust,
+            var, 
+            model_flavors,
+            model_names, 
+            threshs,
+            title, 
+            os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
+        )
 
 
 def get_info(genes_dir, cluster_map_path, out_dir):
