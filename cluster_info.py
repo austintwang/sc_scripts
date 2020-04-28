@@ -177,8 +177,8 @@ def plot_sets(df, out_dir):
     }
     var_dists = "Credible Set Proportion"
     var_thresh = "Credible Set Size"
-    model_flavors = model_map.keys()
-    model_names = model_map
+    model_flavors_dists = model_map_dists.keys()
+    model_flavors_thresh = model_map_thresh.keys()
     pal = sns.color_palette()
     model_colors = {
         "CredibleSetPropJoint": pal[0],
@@ -200,7 +200,7 @@ def plot_sets(df, out_dir):
         make_violin(
             df_clust,
             var_dists, 
-            model_flavors,
+            model_flavors_dists,
             model_map_dists, 
             model_colors,
             title, 
@@ -216,7 +216,7 @@ def plot_sets(df, out_dir):
         make_thresh_barplot(
             df_clust,
             var_thresh, 
-            model_flavors,
+            model_flavors_thresh,
             model_map_thresh, 
             threshs,
             title, 
