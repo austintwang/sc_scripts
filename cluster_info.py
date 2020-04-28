@@ -260,7 +260,8 @@ def get_info(genes_dir, cluster_map_path, out_dir):
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
     txt_path = os.path.join(out_dir, "cluster_info.txt")
-    data_df.to_string(txt_path)
+    with open(txt_path, "w") as txt_file:
+        data_df.to_string(txt_file)
     plot_sets(df, out_dir)
 
 
