@@ -132,6 +132,7 @@ def make_thresh_barplot(
 
     last_marker = [None for _ in range(len(model_flavors))]
     for i, t in enumerate(thresh_data[:-1]):
+        print(threshs[i]) ####
         for j, x in enumerate(t):
             xval = float(x)
             if (last_marker[j] is None and xval >= 0.04) or (last_marker[j] and (xval - last_marker[j]) >= 0.08):
@@ -185,7 +186,7 @@ def plot_sets(df, out_dir):
         "CredibleSetPropAS": pal[4],
         "CredibleSetPropQTL": pal[7],
     }
-    threshs = [1, 5, 10, 20, 50, 100]
+    threshs = [5, 10, 20, 50, 100, 200]
 
     for cluster in clusters.keys():
         df_clust = df.loc[df["Cluster"] == cluster]
