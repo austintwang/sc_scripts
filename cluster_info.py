@@ -101,10 +101,10 @@ def make_thresh_barplot(
         title, 
         result_path,
     ):
+    threshs.append(np.inf)
     model_flavors = list(model_flavors)
     thresh_data = [[] for _ in range(len(threshs))]
     for m in model_flavors:
-        lines = []
         model_data = df.loc[df["Model"] == m, var].to_numpy()
         for i, t in enumerate(threshs):
             thresh_data[i].append(str(np.nanmean((model_data <= t).astype(int))))
