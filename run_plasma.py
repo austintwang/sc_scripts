@@ -133,11 +133,12 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     try:
         gene_dir = os.path.join(data_dir, name)
         gene_path = os.path.join(gene_dir, "gene_data.pickle")
-        output_path_base = os.path.join(gene_dir, "plasma_{0}.pickle")
 
         with open(params_path, "rb") as params_file:
             params = pickle.load(params_file)
 
+        output_dir = os.path.join(gene_dir, params["run_name"])
+        os.makedirs(output_dir, exist_ok=True)
         output_path_base = os.path.join(gene_dir, params["run_name"], "plasma_{0}.pickle")
 
         with open(gene_path, "rb") as gene_file:
