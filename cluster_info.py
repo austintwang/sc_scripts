@@ -156,7 +156,7 @@ def make_thresh_barplot(
 def plot_sets(df, out_dir):
     clusters = df["Cluster"].unique()
     clusters = {
-        "_All": "All Cells",
+        "_all": "All Cells",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
