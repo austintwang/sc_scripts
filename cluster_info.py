@@ -47,7 +47,7 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
-                plasma_clust["phi"][top_snp] if ppa else np.nan,
+                plasma_clust["beta"][top_snp] if ppa else np.nan,
             ]
             # print(data_clust) ####
             data.append(data_clust)
@@ -199,15 +199,15 @@ def plot_sets(df, out_dir):
             title, 
             os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
         )
-        make_thresh_barplot(
-            df_clust,
-            var, 
-            model_flavors,
-            model_names, 
-            threshs,
-            title, 
-            os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
-        )
+        # make_thresh_barplot(
+        #     df_clust,
+        #     var, 
+        #     model_flavors,
+        #     model_names, 
+        #     threshs,
+        #     title, 
+        #     os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
+        # )
 
 
 def get_info(genes_dir, cluster_map_path, out_dir):
