@@ -107,14 +107,14 @@ def make_thresh_barplot(
         lines = []
         model_data = df.loc[df["Model"] == m, var].to_numpy()
         for i, t in enumerate(threshs):
-            thresh_data[i].append(str(np.mean((model_data <= t).astype(int))))
+            thresh_data[i].append(str(np.nanmean((model_data <= t).astype(int))))
 
     sns.set(style="whitegrid", font="Roboto")
     plt.figure(figsize=(4,2))
     palette = sns.cubehelix_palette(len(threshs), rot=-.25, light=.7)
 
     for i, t in enumerate(reversed(threshs)):
-        estimator = lambda x: np.mean((x <= t).astype(int))
+        estimator = lambda x: np.nanmean((x <= t).astype(int))
         # print(df[var]) ####
         # print(df[var].dtype) ####
         chart = sns.barplot(
