@@ -187,7 +187,7 @@ def plot_sets(df, out_dir):
             id_vars=["Gene"], 
             value_vars=model_map.keys(),
             var_name="Model",
-            val_name=var
+            value_name=var
         )
         title = clusters[cluster]
         make_violin(
