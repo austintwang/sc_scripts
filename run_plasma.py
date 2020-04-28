@@ -202,7 +202,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
     partitions = np.random.permutation([allocs])
     print(partitions) ####
-    print(np.sum(allocs, num_samples)) ####
+    print(np.sum(allocs), num_samples) ####
 
     all_complete = True
     for split in range(len(splits)):
