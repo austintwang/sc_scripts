@@ -190,7 +190,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     # print(inputs_all["agg_counts"])  ####
 
     splits = np.array(inputs_all.get("splits", [1.]))
-    num_samples = inputs_all["sample_names"].size
+    num_samples = len(inputs_all["sample_names"])
     allocs_raw = num_samples * splits
     cumu = np.cumsum(allocs_raw)
     rems = 1 - (-cumu % 1)
