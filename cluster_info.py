@@ -198,7 +198,7 @@ def plot_sets(df, out_dir):
         )
         title = clusters[cluster]
         make_violin(
-            df_clust,
+            df_dists,
             var_dists, 
             model_flavors_dists,
             model_map_dists, 
@@ -206,7 +206,7 @@ def plot_sets(df, out_dir):
             title, 
             os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
         )
-        df_dists = pd.melt(
+        df_thresh = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
             value_vars=model_map_thresh.keys(),
@@ -214,7 +214,7 @@ def plot_sets(df, out_dir):
             value_name=var_thresh
         )
         make_thresh_barplot(
-            df_clust,
+            df_thresh,
             var_thresh, 
             model_flavors_thresh,
             model_map_thresh, 
