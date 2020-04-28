@@ -194,7 +194,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     allocs_raw = num_samples * splits
     cumu = np.cumsum(allocs_raw)
     rems = 1 - (-cumu % 1)
-    floors = cumu - rems
+    floors = (cumu - rems).astype(int)
     adds = np.random.binomial(1, rems)
     cumu_int = floors + adds + (1 - np.roll(adds, 1))
     allocs = np.copy(cumu_int)
