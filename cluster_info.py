@@ -36,12 +36,12 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["sample_size"],
                 plasma_clust["num_snps_informative"],
                 plasma_clust["num_snps_total"],
-                np.sum(plasma_clust["causal_set_indep"]), 
-                np.sum(plasma_clust["causal_set_ase"]),
-                np.sum(plasma_clust["causal_set_eqtl"]),
-                np.sum(plasma_clust["causal_set_indep"]) / plasma_clust["num_snps_total"], 
-                np.sum(plasma_clust["causal_set_ase"]) / plasma_clust["num_snps_total"],
-                np.sum(plasma_clust["causal_set_eqtl"]) / plasma_clust["num_snps_total"],
+                np.sum(plasma_clust.get("causal_set_indep", np.nan)), 
+                np.sum(plasma_clust.get("causal_set_ase", np.nan)),
+                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)),
+                np.sum(plasma_clust.get("causal_set_indep", np.nan)) / plasma_clust["num_snps_total"], 
+                np.sum(plasma_clust.get("causal_set_ase", np.nan)) / plasma_clust["num_snps_total"],
+                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) / plasma_clust["num_snps_total"],
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
@@ -97,11 +97,17 @@ def make_thresh_barplot(
         model_flavors,
         model_names, 
         threshs,
-        thresh_data,
-        thresh_data_models,
         title, 
         result_path,
     ):
+
+    thresh_data = [[] for _ in range(len(threshs))]
+    for m in model_flavors:
+        lines = []
+        model_data = df.loc[df["Model"] == m, var].to_numpy()
+        for i, t in enumerate(threshs):
+            thresh_data[i].append(str(np.mean((model_data <= t).astype(int))))
+
     sns.set(style="whitegrid", font="Roboto")
     plt.figure(figsize=(4,2))
     palette = sns.cubehelix_palette(len(threshs), rot=-.25, light=.7)
@@ -173,6 +179,8 @@ def plot_sets(df, out_dir):
         "CredibleSetPropAS": pal[4],
         "CredibleSetPropQTL": pal[7],
     }
+    threshs = [1, 5, 10, 20, 50, 100]
+
     for cluster in clusters.keys():
         df_clust = pd.melt(
             df.loc[df["Cluster"] == cluster], 
@@ -197,8 +205,6 @@ def plot_sets(df, out_dir):
             model_flavors,
             model_names, 
             threshs,
-            thresh_data,
-            thresh_data_models,
             title, 
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
         )
