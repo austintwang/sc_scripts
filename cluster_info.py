@@ -165,12 +165,18 @@ def plot_sets(df, out_dir):
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
-    model_map = {
+    model_map_dists = {
         "CredibleSetPropJoint": "PLASMA-J",
         "CredibleSetPropAS": "PLASMA-AS",
         "CredibleSetPropQTL": "QTL-Only"
     }
-    var = "Credible Set Proportion"
+    model_map_thresh = {
+        "CredibleSetSizeJoint": "PLASMA-J",
+        "CredibleSetSizeAS": "PLASMA-AS",
+        "CredibleSetSizeQTL": "QTL-Only"
+    }
+    var_dists = "Credible Set Proportion"
+    var_thresh = "Credible Set Size"
     model_flavors = model_map.keys()
     model_names = model_map
     pal = sns.color_palette()
@@ -182,28 +188,36 @@ def plot_sets(df, out_dir):
     threshs = [1, 5, 10, 20, 50, 100]
 
     for cluster in clusters.keys():
-        df_clust = pd.melt(
+        df_clust = df.loc[df["Cluster"] == cluster]
+        df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
-            value_vars=model_map.keys(),
+            value_vars=model_map_dists.keys(),
             var_name="Model",
-            value_name=var
+            value_name=var_dists
         )
         title = clusters[cluster]
         make_violin(
             df_clust,
-            var, 
+            var_dists, 
             model_flavors,
-            model_names, 
+            model_map_dists, 
             model_colors,
             title, 
             os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
         )
+        df_dists = pd.melt(
+            df.loc[df["Cluster"] == cluster], 
+            id_vars=["Gene"], 
+            value_vars=model_map_thresh.keys(),
+            var_name="Model",
+            value_name=var_thresh
+        )
         make_thresh_barplot(
             df_clust,
-            var, 
+            var_thresh, 
             model_flavors,
-            model_names, 
+            model_map_thresh, 
             threshs,
             title, 
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
