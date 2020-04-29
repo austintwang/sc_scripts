@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-def read_data(plasma_data, clusters, gene_name, top_snps):
+def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
     data = []
     for c in clusters:
@@ -25,7 +25,9 @@ def read_data(plasma_data, clusters, gene_name, top_snps):
                     ppa = False
             else:
                 try:
-                    
+                    top_snp = plasma_clust["snp_ids"].index(top_snps[c])
+                except ValueError:
+                    ppa = False
             data_clust = [
                 gene_name, 
                 c, 
@@ -49,6 +51,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps):
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
+                plasma_clust["snp_id"][top_snp] is ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
             # print(data_clust) ####
@@ -94,6 +97,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         "TopSNPPhi",
         "TopSNPZBeta",
         "TopSNPBeta",
+        "TopSNPID",
         "Split",
     ]
 
@@ -202,7 +206,6 @@ def make_thresh_barplot(
     plt.clf()
 
 def plot_sets(df, out_dir):
-    clusters = df["Cluster"].unique()
     clusters = {
         "_all": "All Cells",
         "Ex": "Excitatory Neuron",
@@ -271,7 +274,61 @@ def plot_sets(df, out_dir):
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
         )
 
-def make_
+def make_scatter(
+        df,
+        var_x,
+        var_y,
+        x_label,
+        y_label, 
+        title, 
+        result_path,
+    ):
+    sns.set(style="whitegrid", font="Roboto")
+    f, ax = plt.subplots(figsize=(5, 5))
+    ax.set(xscale="log", yscale="log")
+
+    sns.scatterplot(
+        x=var_x, 
+        y=var_y, 
+        data=df, 
+    )
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.title(title)
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
+
+def plot_xval(df, out_dir):
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "Astro": "Astroglia",
+        "In": "Inhibitory Neuron",
+        "Endo": "Endothelial",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Per": "Per"
+    }
+    for key, value in clusters.items():
+        df_clust = df.loc[df["Cluster"] == key] 
+        make_scatter(
+            df_clust,
+            "TopSNPPhi_train",
+            "TopSNPPhi_test",
+            "Train Effect Size",
+            "Test Effect Size", 
+            "{0} AS Effect".format(value), 
+            os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
+        )
+        make_scatter(
+            df_clust,
+            "TopSNPBeta_train",
+            "TopSNPBeta_test",
+            "Train Effect Size",
+            "Test Effect Size", 
+            "{0} QTL Effect".format(value), 
+            os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
+        )
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
@@ -326,16 +383,13 @@ def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     plot_sets(data_df, out_dir)
 
 def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
-    data_df = make_df(run_name, num_splits, genes_dir, cluster_map_path)
-    
-    data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
-    csv_path = os.path.join(out_dir, "cluster_info.csv")
-    data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
-    txt_path = os.path.join(out_dir, "cluster_info.txt")
-    with open(txt_path, "w") as txt_file:
-        data_df.to_string(txt_file)
-    plot_sets(data_df, out_dir)
-
+    df_train = make_df(run_name, 0, genes_dir, cluster_map_path, top_snps=None)
+    top_snps_train = {}
+    for index, row in df_train.iterrows():
+        top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
+    df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps=top_snps_train)
+    df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffix=["_train", "_test"])
+    plot_xval(df_comb, out_dir)
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
@@ -351,4 +405,6 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info(run_name, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info(genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
