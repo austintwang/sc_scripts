@@ -10,7 +10,7 @@ import pandas as pd
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
-    print(gene_name) ####
+    # print(gene_name) ####
     data = []
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
@@ -22,13 +22,13 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             if top_snps is None:
                 try:
                     top_snp = np.nanargmax(plasma_clust["ppas_indep"])
-                    plasma_clust["snp_id"][top_snp]
+                    plasma_clust["snp_ids"][top_snp]
                 except (ValueError, KeyError):
                     ppa = False
             else:
                 try:
                     top_snp = plasma_clust["snp_ids"].index(top_snps[c])
-                except ValueError:
+                except (ValueError, KeyError):
                     ppa = False
             data_clust = [
                 gene_name, 
@@ -53,10 +53,10 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                plasma_clust["snp_id"][top_snp] if ppa else None,
+                plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
-            print(plasma_clust["snp_id"][top_snp] if ppa else None) ####
+            # print(plasma_clust["snp_ids"][top_snp] if ppa else None) ####
             # print(data_clust) ####
             data.append(data_clust)
     return data
