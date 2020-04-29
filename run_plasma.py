@@ -196,14 +196,15 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     rems = 1 - (-cumu % 1)
     floors = (cumu - rems).astype(int)
     adds = np.random.binomial(1, rems)
-    cumu_int = floors + adds + (1 - np.roll(adds, 1))
-    allocs = np.copy(cumu_int)
-    allocs[1:] -= cumu_int[:-1]
+    # cumu_int = floors + adds + (1 - np.roll(adds, 1))
+    # allocs = np.copy(cumu_int)
+    # allocs[1:] -= cumu_int[:-1]
+    allocs = allocs_raw + adds + (1 - np.roll(adds, 1))
     part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
     partitions = np.random.permutation(part_idxs)
     print(rems) ####
     print(adds) ####
-    print(cumu_int) ####
+    print(allocs) ####
     print(partitions) ####
     print(np.sum(allocs), num_samples) ####
 
