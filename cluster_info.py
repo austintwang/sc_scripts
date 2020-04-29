@@ -10,7 +10,7 @@ import pandas as pd
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
-    print(gene_name) ####
+    # print(gene_name) ####
     data = []
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
@@ -28,6 +28,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 except (ValueError, KeyError):
                     ppa = False
             else:
+                print(gene_name) ####
                 try:
                     top_snp = plasma_clust["snp_ids"].index(top_snps[c])
                 except (ValueError, KeyError):
@@ -60,7 +61,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust.get("split", np.nan),
             ]
             # print(plasma_clust["snp_ids"][top_snp] if ppa else None) ####
-            print(data_clust) ####
+            # print(data_clust) ####
             data.append(data_clust)
     return data
 
