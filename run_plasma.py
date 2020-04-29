@@ -194,12 +194,13 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     allocs_raw = num_samples * splits
     cumu = np.cumsum(allocs_raw)
     rems = 1 - (-cumu % 1)
-    floors = (cumu - rems).astype(int)
+    # floors = (cumu - rems).astype(int)
     adds = np.random.binomial(1, rems)
     # cumu_int = floors + adds + (1 - np.roll(adds, 1))
     # allocs = np.copy(cumu_int)
     # allocs[1:] -= cumu_int[:-1]
-    allocs = (allocs_raw + adds + (1 - np.roll(adds, 1))).astype(int)
+    allocs_int = allocs_raw - rems
+    allocs = (allocs_int + adds + (1 - np.roll(adds, 1))).astype(int)
     part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
     partitions = np.random.permutation(part_idxs)
     print(rems) ####
@@ -230,7 +231,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["counts1"] >= 1, 
                     inputs["counts2"] >= 1, 
                     np.logical_not(np.isnan(inputs["overdispersion"]))
-                ])
+                ], axis=0)
                 result["split"] = split
                 result["effective_sample_size"] = np.sum(select_counts)
                 result["sample_size"] = select_counts.size
