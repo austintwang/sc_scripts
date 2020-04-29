@@ -290,6 +290,7 @@ def make_scatter(
         var_y,
         x_label,
         y_label, 
+        lim,
         title, 
         result_path,
     ):
@@ -302,6 +303,8 @@ def make_scatter(
         y=var_y, 
         data=df, 
     )
+    plt.xlim(-lim, lim)
+    plt.ylim(-lim, lim)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.title(title)
@@ -327,6 +330,7 @@ def plot_xval(df, out_dir):
             "TopSNPPhi_test",
             "Train Effect Size",
             "Test Effect Size", 
+            15,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
@@ -335,7 +339,8 @@ def plot_xval(df, out_dir):
             "TopSNPBeta_train",
             "TopSNPBeta_test",
             "Train Effect Size",
-            "Test Effect Size", 
+            "Test Effect Size",
+            150, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
