@@ -201,6 +201,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     allocs[1:] -= cumu_int[:-1]
     part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
     partitions = np.random.permutation(part_idxs)
+    print(cumu_int) ####
     print(partitions) ####
     print(np.sum(allocs), num_samples) ####
 
