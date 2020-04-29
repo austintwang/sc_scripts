@@ -10,6 +10,7 @@ import pandas as pd
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
+    print(gene_name) ####
     data = []
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
