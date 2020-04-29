@@ -393,7 +393,7 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     for index, row in df_train.iterrows():
         top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
     df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps_train)
-    df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffix=["_train", "_test"])
+    df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     plot_xval(df_comb, out_dir)
 
 if __name__ == '__main__':
