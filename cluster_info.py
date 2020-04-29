@@ -17,8 +17,8 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
         if plasma_clust is None:
             # print(plasma_data) ####
             continue
-        if top_snps:
-            print(plasma_clust) ####
+        # if top_snps:
+        #     print(plasma_clust) ####
         if "causal_set_indep" in plasma_clust:
             # print(plasma_clust["ppas_indep"]) ####
             ppa = True
