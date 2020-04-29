@@ -171,19 +171,19 @@ if __name__ == '__main__':
         "splits": [0.5, 0.5],
     })
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_xval, 
-        params_path_kellis, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_xval, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     dispatch(
         script_path, 
