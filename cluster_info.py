@@ -15,11 +15,11 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
         if plasma_clust is None:
-            print(plasma_data) ####
+            # print(plasma_data) ####
             continue
-        print(plasma_clust) ####
+        # print(plasma_clust) ####
         if "causal_set_indep" in plasma_clust:
-            # print(plasma_clust["ppas_indep"]) ####
+            print(plasma_clust["ppas_indep"]) ####
             ppa = True
             if top_snps is None:
                 try:
@@ -60,7 +60,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust.get("split", np.nan),
             ]
             # print(plasma_clust["snp_ids"][top_snp] if ppa else None) ####
-            # print(data_clust) ####
+            print(data_clust) ####
             data.append(data_clust)
     return data
 
