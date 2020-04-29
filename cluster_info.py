@@ -330,7 +330,7 @@ def plot_xval(df, out_dir):
             "TopSNPPhi_test",
             "Train Effect Size",
             "Test Effect Size", 
-            15,
+            5,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
