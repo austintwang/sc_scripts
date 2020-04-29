@@ -10,7 +10,7 @@ import pandas as pd
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
-    # print(gene_name) ####
+    print(gene_name) ####
     data = []
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
@@ -29,6 +29,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 try:
                     top_snp = plasma_clust["snp_ids"].index(top_snps[c])
                 except (ValueError, KeyError):
+                    print("False") ####
                     ppa = False
             data_clust = [
                 gene_name, 
@@ -392,7 +393,7 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     top_snps_train = {}
     for index, row in df_train.iterrows():
         top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
-    print(top_snps_train) ####
+    # print(top_snps_train) ####
     df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps_train)
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     print(df_train) ####
