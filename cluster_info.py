@@ -71,7 +71,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         except FileNotFoundError:
             continue
 
-        data = read_data(plasma_data, clusters, g, top_snps_dict[g])
+        data = read_data(plasma_data, clusters, g, top_snps=(top_snps_dict[g] if top_snps_dict is not None else None))
         data_lst.extend(data)
 
     cols = [
@@ -285,7 +285,7 @@ def make_scatter(
     ):
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
-    ax.set(xscale="log", yscale="log")
+    # ax.set(xscale="log", yscale="log")
 
     sns.scatterplot(
         x=var_x, 
@@ -383,11 +383,11 @@ def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     plot_sets(data_df, out_dir)
 
 def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
-    df_train = make_df(run_name, 0, genes_dir, cluster_map_path, top_snps=None)
+    df_train = make_df(run_name, 0, genes_dir, cluster_map_path, None)
     top_snps_train = {}
     for index, row in df_train.iterrows():
         top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
-    df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps=top_snps_train)
+    df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps_train)
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffix=["_train", "_test"])
     plot_xval(df_comb, out_dir)
 
