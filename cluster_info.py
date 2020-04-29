@@ -54,6 +54,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["snp_id"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
+            print(plasma_clust["snp_id"][top_snp] if ppa else None) ####
             # print(data_clust) ####
             data.append(data_clust)
     return data
