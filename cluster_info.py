@@ -23,7 +23,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 try:
                     top_snp = np.nanargmax(plasma_clust["ppas_indep"])
                     plasma_clust["snp_id"][top_snp]
-                except ValueError, KeyError:
+                except (ValueError, KeyError):
                     ppa = False
             else:
                 try:
