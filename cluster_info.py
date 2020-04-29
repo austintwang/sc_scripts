@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-def read_data(plasma_data, clusters, gene_name):
+def read_data(plasma_data, clusters, gene_name, top_snps):
     # print(coloc_data) ####
     data = []
     for c in clusters:
@@ -18,10 +18,14 @@ def read_data(plasma_data, clusters, gene_name):
         if "causal_set_indep" in plasma_clust:
             # print(plasma_clust["ppas_indep"]) ####
             ppa = True
-            try:
-                top_snp = np.nanargmax(plasma_clust["ppas_indep"])
-            except ValueError:
-                ppa = False
+            if top_snps is None:
+                try:
+                    top_snp = np.nanargmax(plasma_clust["ppas_indep"])
+                except ValueError:
+                    ppa = False
+            else:
+                try:
+                    
             data_clust = [
                 gene_name, 
                 c, 
@@ -45,10 +49,56 @@ def read_data(plasma_data, clusters, gene_name):
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
+                plasma_clust.get("split", np.nan),
             ]
             # print(data_clust) ####
             data.append(data_clust)
     return data
+
+def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
+    clusters = load_clusters(cluster_map_path)
+    genes = os.listdir(genes_dir)
+    data_lst = []
+    for g in genes:
+        gene_dir = os.path.join(genes_dir, g)
+        plasma_path = os.path.join(gene_dir, run_name, "plasma_{0}.pickle")
+        try:
+            with open(plasma_path.format(split), "rb") as plasma_file:
+                plasma_data = pickle.load(plasma_file)
+        except FileNotFoundError:
+            continue
+
+        data = read_data(plasma_data, clusters, g, top_snps_dict[g])
+        data_lst.extend(data)
+
+    cols = [
+        "Gene", 
+        "Cluster", 
+        "MeanTotalCoverage",
+        "MeanTotalCoverageScaled",
+        "MeanMappedCoverage",
+        "MeanOverdispersion",
+        "MeanCellCount",
+        "UsableSampleSize",
+        "TotalSampleSize",
+        "UsableSNPCount",
+        "TotalSNPCount",
+        "CredibleSetSizeJoint", 
+        "CredibleSetSizeAS",
+        "CredibleSetSizeQTL",
+        "CredibleSetPropJoint", 
+        "CredibleSetPropAS",
+        "CredibleSetPropQTL",
+        "TopSNPPosterior",
+        "TopSNPZPhi",
+        "TopSNPPhi",
+        "TopSNPZBeta",
+        "TopSNPBeta",
+        "Split",
+    ]
+
+    data_df = pd.DataFrame(data_lst, columns=cols)
+    return data_df
 
 def load_clusters(cluster_map_path):
     with open(cluster_map_path, "rb") as cluster_map_file:
@@ -221,8 +271,9 @@ def plot_sets(df, out_dir):
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
         )
 
+def make_
 
-def get_info(genes_dir, cluster_map_path, out_dir):
+def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
     data_lst = []
@@ -263,8 +314,20 @@ def get_info(genes_dir, cluster_map_path, out_dir):
         "TopSNPPhi",
         "TopSNPZBeta",
         "TopSNPBeta",
+        "Split",
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
+    data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
+    csv_path = os.path.join(out_dir, "cluster_info.csv")
+    data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
+    txt_path = os.path.join(out_dir, "cluster_info.txt")
+    with open(txt_path, "w") as txt_file:
+        data_df.to_string(txt_file)
+    plot_sets(data_df, out_dir)
+
+def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
+    data_df = make_df(run_name, num_splits, genes_dir, cluster_map_path)
+    
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
@@ -288,4 +351,4 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info(genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info(run_name, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
