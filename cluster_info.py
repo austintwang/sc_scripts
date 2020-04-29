@@ -51,7 +51,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                plasma_clust["snp_id"][top_snp] is ppa else None,
+                plasma_clust["snp_id"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
             # print(data_clust) ####
