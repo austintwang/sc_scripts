@@ -66,6 +66,8 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     genes = os.listdir(genes_dir)
     data_lst = []
     for g in genes:
+        if (top_snps_dict is not None) and( g not in top_snps_dict):
+            continue
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, run_name, "plasma_{0}.pickle")
         try:
