@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.stats
 import os
 import pickle
 import matplotlib
@@ -56,8 +57,10 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
+                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["phi"][top_snp]))*2),
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
+                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["beta"][top_snp]))*2),
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -105,8 +108,10 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         "TopSNPPosterior",
         "TopSNPZPhi",
         "TopSNPPhi",
+        "TopSNPNLPPhi",
         "TopSNPZBeta",
         "TopSNPBeta",
+        "TopSNPNLPBeta",
         "TopSNPID",
         "Split",
     ]
@@ -288,6 +293,7 @@ def make_scatter(
         df,
         var_x,
         var_y,
+        var_h,
         x_label,
         y_label, 
         lim,
@@ -301,6 +307,7 @@ def make_scatter(
     sns.scatterplot(
         x=var_x, 
         y=var_y, 
+        hue=var_h,
         data=df, 
     )
     plt.xlim(-lim, lim)
@@ -328,6 +335,7 @@ def plot_xval(df, out_dir):
             df_clust,
             "TopSNPPhi_train",
             "TopSNPPhi_test",
+            "TopSNPNLPPhi_train",
             "Train Effect Size",
             "Test Effect Size", 
             5,
@@ -338,6 +346,7 @@ def plot_xval(df, out_dir):
             df_clust,
             "TopSNPBeta_train",
             "TopSNPBeta_test",
+            "TopSNPNLPBeta_train",
             "Train Effect Size",
             "Test Effect Size",
             150, 
@@ -384,8 +393,11 @@ def get_info(genes_dir, run_name, cluster_map_path, out_dir):
         "TopSNPPosterior",
         "TopSNPZPhi",
         "TopSNPPhi",
+        "TopSNPNLPPhi",
         "TopSNPZBeta",
         "TopSNPBeta",
+        "TopSNPNLPBeta",
+        "TopSNPID",
         "Split",
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
@@ -405,9 +417,9 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(top_snps_train) ####
     df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps_train)
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
-    print(df_train) ####
-    print(df_test) ####
-    print(df_comb) ####
+    # print(df_train) ####
+    # print(df_test) ####
+    # print(df_comb) ####
     plot_xval(df_comb, out_dir)
 
 if __name__ == '__main__':
