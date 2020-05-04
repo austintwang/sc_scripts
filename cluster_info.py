@@ -57,10 +57,10 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
+                np.nan_to_num(-np.log10(plasma_clust["num_snps_informative"]*scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
+                np.nan_to_num(-np.log10(plasma_clust["num_snps_informative"]*scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -296,10 +296,12 @@ def make_scatter(
         var_h,
         x_label,
         y_label, 
+        h_label,
         lim,
         title, 
         result_path,
     ):
+    df = df.rename({var_x: x_label, var_y: y_label, var_h: h_label})
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     # ax.set(xscale="log", yscale="log")
@@ -313,8 +315,6 @@ def make_scatter(
     )
     plt.xlim(-lim, lim)
     plt.ylim(-lim, lim)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
     plt.title(title)
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
@@ -333,23 +333,25 @@ def plot_xval(df, out_dir):
     for key, value in clusters.items():
         df_clust = df.loc[df["Cluster"] == key] 
         make_scatter(
-            df_clust,
+            df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05)],
             "TopSNPPhi_train",
             "TopSNPPhi_test",
             "TopSNPNLPPhi_train",
             "Train Effect Size",
             "Test Effect Size", 
+            "Train -Log10 Corrected p-Value",
             7,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
         make_scatter(
-            df_clust,
+            df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05)],
             "TopSNPBeta_train",
             "TopSNPBeta_test",
             "TopSNPNLPBeta_train",
             "Train Effect Size",
             "Test Effect Size",
+            "Train -Log10 Corrected p-Value",
             200, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
