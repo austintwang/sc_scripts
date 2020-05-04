@@ -114,12 +114,8 @@ if __name__ == '__main__':
     # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     params_path_kellis = os.path.join(data_path_kellis, "coloc_params.pickle")
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
-    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
-    overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names_kellis = os.listdir(genes_dir_kellis)
-    vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
 
     params_kellis = {
         "total_exp_herit_prior": 0.05,
