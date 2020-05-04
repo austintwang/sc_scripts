@@ -334,7 +334,7 @@ def plot_xval(df, out_dir):
     for key, value in clusters.items():
         df_clust = df.loc[df["Cluster"] == key] 
         make_scatter(
-            df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05/df["num_snps_informative_train"])],
+            df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05/df["UsableSNPCount_train"])],
             "TopSNPPhi_train",
             "TopSNPPhi_test",
             "TopSNPNLPPhi_test",
@@ -346,7 +346,7 @@ def plot_xval(df, out_dir):
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
         make_scatter(
-            df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05/df["num_snps_informative_train"])],
+            df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05/df["UsableSNPCount_train"])],
             "TopSNPBeta_train",
             "TopSNPBeta_test",
             "TopSNPNLPBeta_test",
