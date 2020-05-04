@@ -308,6 +308,7 @@ def make_scatter(
         x=var_x, 
         y=var_y, 
         hue=var_h,
+        hue_norm=(0, 10),
         data=df, 
     )
     plt.xlim(-lim, lim)
