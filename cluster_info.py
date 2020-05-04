@@ -359,7 +359,34 @@ def plot_xval(df, out_dir):
         )
 
 def plot_xcells(df_train, df_test, out_dir):
+    df_tr_sig = df_train.loc[df_train["TopSNPNLPPhi"] >= -np.log10(0.05)]
+    df_ts_sig = df_test.loc[df_train["TopSNPNLPPhi"] >= -np.log10(0.05)]
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "Astro": "Astroglia",
+        "In": "Inhibitory Neuron",
+        "Endo": "Endothelial",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Per": "Per"
+    }
+    for i, i_name in clusters.items():
+        for j, j_name in clusters.items():
+            df_merged = pd.merge(
+                df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
+                df_ts_sig.loc[df_ts_sig["Cluster"] == j], 
+                on=["Gene"], 
+                suffixes=["_train", "_test"]
+            )
+            x = df_merged["TopSNPPhi_train"]
+            y = df_merged["TopSNPPhi_test"]
+            se = df_merged["TopSNPPhi_test"] / df_merged["TopSNPZPhi_test"]
+            xw = np.nan_to_num(x / se)
+            yw = np.nan_to_num(y / se)
+            slope = xw.dot(yw) / xw.dot(xw)
+
 
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
