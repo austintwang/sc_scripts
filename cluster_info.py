@@ -340,7 +340,7 @@ def plot_xval(df, out_dir):
             "TopSNPNLPPhi_test",
             "Train Effect Size",
             "Test Effect Size", 
-            "Test -Log10 P",
+            "Test -log10 P",
             5,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
@@ -352,7 +352,7 @@ def plot_xval(df, out_dir):
             "TopSNPNLPBeta_test",
             "Train Effect Size",
             "Test Effect Size",
-            "Train -Log10 P",
+            "Test -log10 P",
             150, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
@@ -400,7 +400,7 @@ def plot_xcells(df_train, df_test, out_dir):
             slopes[ind_i, ind_j] = slope
 
     title = "Cross-Cell Cross-Validation Slopes"
-    make_heatmap(slopes, cluster_order, os.path.join(out_dir, "xval_stats.svg"))
+    make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
