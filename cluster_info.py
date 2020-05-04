@@ -302,6 +302,7 @@ def make_scatter(
         result_path,
     ):
     df_rn = df.rename(columns={var_x: x_label, var_y: y_label, var_h: h_label})
+    print(df_rn) ####
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     # ax.set(xscale="log", yscale="log")

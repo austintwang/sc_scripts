@@ -1,6 +1,5 @@
 import os
 import pickle
-import numpy as np
 
 def agg_counts(agg_dir, out_path):
     aggs = {"_all": {}}
