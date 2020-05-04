@@ -302,7 +302,7 @@ def make_scatter(
         result_path,
     ):
     df_rn = df.rename(columns={var_x: x_label, var_y: y_label, var_h: h_label})
-    print(df_rn) ####
+    # print(df_rn) ####
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     # ax.set(xscale="log", yscale="log")
@@ -337,10 +337,10 @@ def plot_xval(df, out_dir):
             df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05)],
             "TopSNPPhi_train",
             "TopSNPPhi_test",
-            "TopSNPNLPPhi_train",
+            "TopSNPNLPPhi_test",
             "Train Effect Size",
             "Test Effect Size", 
-            "Train -Log10 Corrected p-Value",
+            "Test -Log10 P",
             5,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
@@ -349,14 +349,18 @@ def plot_xval(df, out_dir):
             df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05)],
             "TopSNPBeta_train",
             "TopSNPBeta_test",
-            "TopSNPNLPBeta_train",
+            "TopSNPNLPBeta_test",
             "Train Effect Size",
             "Test Effect Size",
-            "Train -Log10 Corrected p-Value",
+            "Train -Log10 P",
             150, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
+
+def plot_xcells(df_train, df_test, out_dir):
+    df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
+
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
