@@ -340,7 +340,7 @@ def plot_xval(df, out_dir):
             "Train Effect Size",
             "Test Effect Size", 
             "Train -Log10 Corrected p-Value",
-            7,
+            5,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
@@ -352,7 +352,7 @@ def plot_xval(df, out_dir):
             "Train Effect Size",
             "Test Effect Size",
             "Train -Log10 Corrected p-Value",
-            200, 
+            150, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
