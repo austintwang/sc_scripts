@@ -358,7 +358,7 @@ def plot_xval(df, out_dir):
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
 
-def make_heatmap(arr, order, result_path):
+def make_heatmap(arr, order, title, result_path):
     heat_data = pd.DataFrame(data=arr, index=order, columns=order)
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
@@ -399,6 +399,7 @@ def plot_xcells(df_train, df_test, out_dir):
             slope = xw.dot(yw) / xw.dot(xw)
             slopes[ind_i, ind_j] = slope
 
+    title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes, cluster_order, os.path.join(out_dir, "xval_stats.svg"))
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
