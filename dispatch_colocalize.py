@@ -52,13 +52,72 @@ if __name__ == '__main__':
     gen_data_path = "/agusevlab/awang/gen_data"
     boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
 
-    # Kellis 48
+    # # Kellis 48
+    # data_path_kellis = "/agusevlab/awang/sc_kellis"
+    # params_path_kellis = os.path.join(data_path_kellis, "coloc_params.pickle")
+    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
+    # barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata.pickle")
+    # overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions.pickle")
+    # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+    # names_kellis = os.listdir(genes_dir_kellis)
+    # vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
+
+    # params_kellis = {
+    #     "total_exp_herit_prior": 0.05,
+    #     "imbalance_herit_prior": 0.40,
+    #     "cross_corr_prior": 0.9,
+    #     "min_causal": 1,
+    #     "num_causal": 1.,
+    #     "search_mode": "exhaustive",
+    #     "max_causal": 1,
+    #     "confidence": 0.95, 
+    #     "model_flavors_qtl": "all",
+    #     "model_flavors_gwas": "all",
+    # }
+
+    # # Alzheimers
+    # alz_path = "/agusevlab/awang/gwas_data/alz.pickle"
+    # params_kellis_alz = params_kellis.copy()
+    # params_kellis_alz["num_ppl"] = 388324
+    # params_path_kellis_alz = os.path.join(data_path_kellis, "plasma_c_alz_params.pickle")
+
+    # # dispatch(
+    # #     script_path, 
+    # #     names_kellis, 
+    # #     genes_dir_kellis, 
+    # #     "alz",
+    # #     params_kellis_alz, 
+    # #     params_path_kellis, 
+    # #     "all", 
+    # #     alz_path,
+    # #     gwas_gen_path,
+    # #     boundaries_map_path,
+    # #     2000, 
+    # #     fails_only=False
+    # # )
+
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     "alz",
+    #     params_kellis_alz, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     alz_path,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=True
+    # )
+
+    # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     params_path_kellis = os.path.join(data_path_kellis, "coloc_params.pickle")
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata.pickle")
-    overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions.pickle")
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
+    overdispersion_path_kellis = os.path.join(data_path_kellis, "overdispersions_429.pickle")
+    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names_kellis = os.listdir(genes_dir_kellis)
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "")
 
@@ -81,21 +140,6 @@ if __name__ == '__main__':
     params_kellis_alz["num_ppl"] = 388324
     params_path_kellis_alz = os.path.join(data_path_kellis, "plasma_c_alz_params.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     "alz",
-    #     params_kellis_alz, 
-    #     params_path_kellis, 
-    #     "all", 
-    #     alz_path,
-    #     gwas_gen_path,
-    #     boundaries_map_path,
-    #     2000, 
-    #     fails_only=False
-    # )
-
     dispatch(
         script_path, 
         names_kellis, 
@@ -108,9 +152,23 @@ if __name__ == '__main__':
         gwas_gen_path,
         boundaries_map_path,
         2000, 
-        fails_only=True
+        fails_only=False
     )
 
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     "alz",
+    #     params_kellis_alz, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     alz_path,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=True
+    # )
 
 
 

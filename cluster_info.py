@@ -301,17 +301,17 @@ def make_scatter(
         title, 
         result_path,
     ):
-    df = df.rename({var_x: x_label, var_y: y_label, var_h: h_label})
+    df_rn = df.rename({var_x: x_label, var_y: y_label, var_h: h_label})
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     # ax.set(xscale="log", yscale="log")
 
     sns.scatterplot(
-        x=var_x, 
-        y=var_y, 
-        hue=var_h,
+        x=x_label, 
+        y=y_label, 
+        hue=h_label,
         hue_norm=(0, 10),
-        data=df, 
+        data=df_rn, 
     )
     plt.xlim(-lim, lim)
     plt.ylim(-lim, lim)
