@@ -57,10 +57,10 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(plasma_clust["num_snps_informative"]*scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
+                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(plasma_clust["num_snps_informative"]*scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
+                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -334,7 +334,7 @@ def plot_xval(df, out_dir):
     for key, value in clusters.items():
         df_clust = df.loc[df["Cluster"] == key] 
         make_scatter(
-            df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05)],
+            df_clust.loc[df["TopSNPNLPPhi_train"] >= -np.log10(0.05/df["num_snps_informative_train"])],
             "TopSNPPhi_train",
             "TopSNPPhi_test",
             "TopSNPNLPPhi_test",
@@ -346,7 +346,7 @@ def plot_xval(df, out_dir):
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
         make_scatter(
-            df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05)],
+            df_clust.loc[df["TopSNPNLPBeta_train"] >= -np.log10(0.05/df["num_snps_informative_train"])],
             "TopSNPBeta_train",
             "TopSNPBeta_test",
             "TopSNPNLPBeta_test",
@@ -357,6 +357,15 @@ def plot_xval(df, out_dir):
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
+
+def make_heatmap(arr, order, result_path):
+    heat_data = pd.DataFrame(data=arr, index=order, columns=order)
+    sns.set(style="whitegrid", font="Roboto")
+    f, ax = plt.subplots(figsize=(5, 5))
+    sns.heatmap(heat_data, annot=True, fmt=".2g", square=True, cbar=False, annot_kws={"size": 10})
+    plt.title(title)
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
 
 def plot_xcells(df_train, df_test, out_dir):
     df_tr_sig = df_train.loc[df_train["TopSNPNLPPhi"] >= -np.log10(0.05)]
@@ -372,8 +381,10 @@ def plot_xcells(df_train, df_test, out_dir):
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
-    for i, i_name in clusters.items():
-        for j, j_name in clusters.items():
+    cluster_order = list(clusters.keys())
+    slopes = np.zeros((len(cluster_order), len(cluster_order),),)
+    for ind_i, i in enumerate(cluster_order):
+        for ind_j, j in enumerate(cluster_order):
             df_merged = pd.merge(
                 df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
                 df_ts_sig.loc[df_ts_sig["Cluster"] == j], 
@@ -386,8 +397,9 @@ def plot_xcells(df_train, df_test, out_dir):
             xw = np.nan_to_num(x / se)
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
+            slopes[ind_i, ind_j] = slope
 
-
+    make_heatmap(slopes, cluster_order, os.path.join(out_dir, "xval_stats.svg"))
 
 def get_info(genes_dir, run_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
@@ -456,6 +468,7 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_test) ####
     # print(df_comb) ####
     plot_xval(df_comb, out_dir)
+    plot_xcells(df_train, df_test, out_dir)
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
