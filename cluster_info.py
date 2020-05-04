@@ -57,10 +57,10 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
-                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["phi"][top_snp]))*2) if ppa else np.nan,
+                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["phi"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["beta"][top_snp]))*2) if ppa else np.nan,
+                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["beta"][top_snp]))*2) if ppa else np.nan),
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -338,7 +338,7 @@ def plot_xval(df, out_dir):
             "TopSNPNLPPhi_train",
             "Train Effect Size",
             "Test Effect Size", 
-            5,
+            15,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
