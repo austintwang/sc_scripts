@@ -156,7 +156,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             return
 
         inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
-        print(inputs["corr_shared"]) ####
+        # print(inputs["corr_shared"]) ####
 
         if inputs["model_flavors_gwas"] == "all":
             model_flavors_gwas = set(["eqtl"])
@@ -179,6 +179,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
         #         FmBenner, inputs, updates_fmb, informative_snps
         #     )
+        print(result) ####
 
         cluster_results = result.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
