@@ -384,11 +384,11 @@ def plot_xcells(df_train, df_test, out_dir):
     clusters = {
         "_all": "All Cells",
         "Ex": "Excitatory Neuron",
-        "Oligo": "Oligodendrocyte",
-        "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
-        # "Endo": "Endothelial",
+        "Oligo": "Oligodendrocyte",
         "OPC": "Oligodendrocyte Progenitor",
+        "Astro": "Astroglia",
+        # "Endo": "Endothelial",
         # "Per": "Per"
     }
     cluster_order = list(clusters.keys())
