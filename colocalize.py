@@ -61,7 +61,9 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
 
 def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
+    print(vals_all) ####
     np.put(vals_all, informative_snps, values)
+    print(vals_all) ####
     return vals_all
 
 def run_model(model_cls, inputs, input_updates, informative_snps):
@@ -83,8 +85,8 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
         )
 
     shape_orig = inputs["num_snps_orig"]
-    print(shape_orig) ####
-    print(informative_snps.shape) ####
+    # print(shape_orig) ####
+    # print(informative_snps.shape) ####
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
