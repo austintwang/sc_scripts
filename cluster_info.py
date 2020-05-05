@@ -368,8 +368,14 @@ def make_heatmap(arr, order, title, result_path):
     plt.clf()
 
 def plot_xcells(df_train, df_test, out_dir):
-    df_tr_sig = df_train.loc[df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])]
-    df_ts_sig = df_test.loc[df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])]
+    df_tr_sig = df_train.loc[
+        df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])
+        and abs(df_train["TopSNPPhi"]) <= 5
+    ]
+    df_ts_sig = df_test.loc[
+        df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])
+        and abs(df_train["TopSNPPhi"]) <= 5
+    ]
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     clusters = {
         "_all": "All Cells",
@@ -398,9 +404,9 @@ def plot_xcells(df_train, df_test, out_dir):
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
             slopes[ind_i, ind_j] = slope
-            print(i, j) ####
-            print(xw) ####
-            print(yw) ####
+            # print(i, j) ####
+            # print(xw) ####
+            # print(yw) ####
 
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
