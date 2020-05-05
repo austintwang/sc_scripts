@@ -374,13 +374,12 @@ def plot_xcells(df_train, df_test, out_dir):
             abs(df_train["TopSNPPhi"]) <= 5
         )
     ]
-    df_ts_sig = df_test.loc[
-        np.logical_and(
-            df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-            abs(df_train["TopSNPPhi"]) <= 5
-        )
-    ]
-    df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
+    # df_ts_sig = df_test.loc[
+    #     np.logical_and(
+    #         df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
+    #         abs(df_train["TopSNPPhi"]) <= 5
+    #     )
+    # ]
     clusters = {
         "_all": "All Cells",
         "Ex": "Excitatory Neuron",
