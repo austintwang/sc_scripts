@@ -374,6 +374,7 @@ def plot_xcells(df_train, df_test, out_dir):
             abs(df_train["TopSNPPhi"]) <= 5
         )
     ]
+    df_ts_sig = df_test
     # df_ts_sig = df_test.loc[
     #     np.logical_and(
     #         df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
