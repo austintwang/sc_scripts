@@ -138,7 +138,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             "snp_pos": gene_data["markers"],
             "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]])
         }
-        print(inputs) ####
+        # print(inputs) ####
         inputs.update(params)
     
         result = {"z_beta": inputs["z_beta"].copy()}
@@ -156,6 +156,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             return
 
         inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
+        print(inputs["corr_shared"]) ####
 
         if inputs["model_flavors_gwas"] == "all":
             model_flavors_gwas = set(["eqtl"])
