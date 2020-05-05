@@ -82,7 +82,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
             inputs["search_iterations"]
         )
 
-    shape_orig = np.shape(inputs["z_beta"])
+    shape_orig = inputs["num_snps_orig"]
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
@@ -138,7 +138,8 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         inputs = {
             "snp_ids": gene_data["marker_ids"],
             "snp_pos": gene_data["markers"],
-            "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]])
+            "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
+            "num_snps_orig": len(gene_data["marker_ids"])
         }
         # print(inputs) ####
         inputs.update(params)
