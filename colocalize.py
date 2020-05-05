@@ -87,7 +87,9 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
+    print(ppas_inf) ####
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
+    print(ppas) ####
     size_probs = model.get_size_probs()    
         
     return causal_set, ppas, size_probs
@@ -179,7 +181,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
         #         FmBenner, inputs, updates_fmb, informative_snps
         #     )
-        print(result) ####
+        # print(result) ####
 
         cluster_results = result.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
