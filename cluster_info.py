@@ -398,6 +398,9 @@ def plot_xcells(df_train, df_test, out_dir):
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
             slopes[ind_i, ind_j] = slope
+            print(i, j) ####
+            print(xw) ####
+            print(yw) ####
 
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
