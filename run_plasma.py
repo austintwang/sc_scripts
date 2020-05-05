@@ -17,7 +17,8 @@ from . import Finemap, FmBenner
 
 def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
-    np.put(vals_all, informative_snps, values)
+    vals_all[informative_snps] = values
+    # np.put(vals_all, informative_snps, values)
     return vals_all
 
 def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=False):
