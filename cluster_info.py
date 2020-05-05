@@ -369,12 +369,16 @@ def make_heatmap(arr, order, title, result_path):
 
 def plot_xcells(df_train, df_test, out_dir):
     df_tr_sig = df_train.loc[
-        df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])
-        and abs(df_train["TopSNPPhi"]) <= 5
+        np.logical_and(
+            df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
+            abs(df_train["TopSNPPhi"]) <= 5
+        )
     ]
     df_ts_sig = df_test.loc[
-        df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"])
-        and abs(df_train["TopSNPPhi"]) <= 5
+        np.logical_and(
+            df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
+            abs(df_train["TopSNPPhi"]) <= 5
+        )
     ]
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     clusters = {
