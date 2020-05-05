@@ -496,6 +496,8 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_comb) ####
     plot_xval(df_comb, out_dir)
     plot_xcells(df_train, df_test, out_dir)
+    df_train.to_csv(os.path.join(out_dir, "train.csv"), sep="\t", index=False, na_rep="None")
+    df_test.to_csv(os.path.join(out_dir, "test.csv"), sep="\t", index=False, na_rep="None")    
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
