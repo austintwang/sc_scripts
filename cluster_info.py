@@ -408,6 +408,19 @@ def plot_xcells(df_train, df_test, out_dir):
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
             slopes[ind_i, ind_j] = slope
+
+            make_scatter(
+                df_merged,
+                "TopSNPPhi_train",
+                "TopSNPPhi_test",
+                "TopSNPNLPPhi_test",
+                "Train Effect Size",
+                "Test Effect Size", 
+                "Test -log10 P",
+                5,
+                "{0} to {1}".format(clusters[i], clusters[j]), 
+                os.path.join(out_dir, "xcell_{0}_{1}.svg".format(clusters[i], clusters[j])),
+            )
             # print(i, j) ####
             # print(xw) ####
             # print(yw) ####
