@@ -93,9 +93,9 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
-    print(ppas_inf) ####
+    # print(ppas_inf) ####
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
-    print(ppas) ####
+    # print(ppas) ####
     size_probs = model.get_size_probs()    
         
     return causal_set, ppas, size_probs
