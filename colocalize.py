@@ -60,7 +60,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     return ld
 
 def restore_informative(shape, values, informative_snps, default):
-    vals_all = np.full(shape, default)
+    vals_all = np.full(shape, 0)
     print(vals_all) ####
     print(informative_snps) ####
     print(vals_all[informative_snps]) ####
