@@ -63,6 +63,7 @@ def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
     print(vals_all) ####
     print(informative_snps) ####
+    print(vals_all[informative_snps]) ####
     print(values) ####
     np.put(vals_all, informative_snps, values)
     print(vals_all) ####
