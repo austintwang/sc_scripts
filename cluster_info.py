@@ -419,7 +419,7 @@ def plot_xcells(df_train, df_test, out_dir):
                 "Test -log10 P",
                 5,
                 "{0} to {1}".format(clusters[i], clusters[j]), 
-                os.path.join(out_dir, "xcell_{0}_{1}.svg".format(clusters[i], clusters[j])),
+                os.path.join(out_dir, "xcell_{0}_{1}.svg".format(i, j)),
             )
             # print(i, j) ####
             # print(xw) ####
