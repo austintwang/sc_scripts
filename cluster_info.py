@@ -377,9 +377,9 @@ def plot_xcells(df_train, df_test, out_dir):
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
-        "Endo": "Endothelial",
+        # "Endo": "Endothelial",
         "OPC": "Oligodendrocyte Progenitor",
-        "Per": "Per"
+        # "Per": "Per"
     }
     cluster_order = list(clusters.keys())
     slopes = np.zeros((len(cluster_order), len(cluster_order),),)
