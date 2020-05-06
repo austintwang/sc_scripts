@@ -403,7 +403,7 @@ def plot_xcells(df_train, df_test, out_dir):
             )
             x = df_merged["TopSNPPhi_train"]
             y = df_merged["TopSNPPhi_test"]
-            se = df_merged["TopSNPPhi_test"] / df_merged["TopSNPZPhi_test"]
+            se = df_merged["TopSNPPhi_train"] / df_merged["TopSNPZPhi_train"]
             xw = np.nan_to_num(x / se)
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
