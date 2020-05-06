@@ -25,7 +25,7 @@ if __name__ == '__main__':
         name = i.split("_")[0]
         path = os.path.join(neur_dir, i)
         out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
-        get_gwas_data(gwas_path_alz, out_path)
+        get_gwas_data(path, out_path)
 
 
     # gwas_path_alz = os.path.join(gwas_dir, "INTERNAL", "AlzheimersProxyMetaIGAP_Marioni2018.sumstats.gz")
