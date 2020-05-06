@@ -130,41 +130,28 @@ if __name__ == '__main__':
         "model_flavors_gwas": "all",
     }
 
-    # Alzheimers
-    alz_path = "/agusevlab/awang/gwas_data/alz.pickle"
-    params_kellis_alz = params_kellis.copy()
-    params_kellis_alz["num_ppl"] = 388324
-    params_path_kellis_alz = os.path.join(data_path_kellis, "plasma_c_alz_params.pickle")
+    gwas_dir = "/agusevlab/awang/gwas_data"
+    for i in os.path.listdir(gwas_dir):
+        gwas_path = os.path.join(gwas_dir, i)
+        gwas_name = i.split(".")[0]
+        params_kellis_test = params_kellis.copy()
+        params_kellis_test["num_ppl"] = 388324
+        params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_{0}_params.pickle".format(gwas_name))
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        "alz",
-        params_kellis_alz, 
-        params_path_kellis, 
-        "all", 
-        alz_path,
-        gwas_gen_path,
-        boundaries_map_path,
-        2000, 
-        fails_only=False
-    )
-
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     "alz",
-    #     params_kellis_alz, 
-    #     params_path_kellis, 
-    #     "all", 
-    #     alz_path,
-    #     gwas_gen_path,
-    #     boundaries_map_path,
-    #     2000, 
-    #     fails_only=True
-    # )
+        dispatch(
+            script_path, 
+            names_kellis, 
+            genes_dir_kellis, 
+            gwas_name,
+            params_kellis_test, 
+            params_path_kellis, 
+            "all", 
+            gwas_path,
+            gwas_gen_path,
+            boundaries_map_path,
+            2000, 
+            fails_only=False
+        )
 
 
 
