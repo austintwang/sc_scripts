@@ -49,8 +49,8 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
         data = read_data(plasma_data, coloc_data, clusters, g)
         data_lst.extend(data)
 
-    pp4_name = "{0} PP4".format(gwas_name)
-    cols = ["Gene", "Cluster", "Credible Set Prop", pp4_name]
+    pp4_name = "{0}PP4".format(gwas_name)
+    cols = ["Gene", "Cluster", "CredibleSetProp", pp4_name]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=[pp4_name], ascending=False, inplace=True)
     data_df.to_csv(os.path.join(out_dir, gwas_name + ".csv"), index=False)
