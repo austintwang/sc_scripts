@@ -69,7 +69,26 @@ if __name__ == '__main__':
 
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
-
     out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
-
-    interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
+    gwass = [
+        "AlzheimersMaternal",
+        "AlzheimersPaternal",
+        "AlzheimersProxyMetaIGAP",
+        "BD_Ruderfer2018",
+        "BDSCZ_Ruderfer2018",
+        "CD_deLange2017",
+        "DepressedAffect_Nagel2018",
+        "Depression_Nagel2018",
+        "IBD_deLange2017",
+        "Intelligence_SavageJansen2018",
+        "MDD_Wray2018",
+        "Neuroticism_Nagel2018",
+        "ReactionTime_Davies2018",
+        "SCZ_Ruderfer2018",
+        "SCZvsBD_Ruderfer2018",
+        "UC_deLange2017",
+        "VerbalNumericReasoning_Davies2018",
+        "Worry_Nagel2018"
+    ]
+    for g in gwass:
+        interpret_genes(genes_dir_kellis, g, cluster_map_path_kellis, out_path_kellis)
