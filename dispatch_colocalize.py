@@ -131,7 +131,7 @@ if __name__ == '__main__':
     }
 
     gwas_dir = "/agusevlab/awang/gwas_data"
-    for i in os.path.listdir(gwas_dir):
+    for i in os.listdir(gwas_dir):
         gwas_path = os.path.join(gwas_dir, i)
         gwas_name = i.split(".")[0]
         params_kellis_test = params_kellis.copy()
