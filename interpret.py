@@ -26,7 +26,7 @@ def load_clusters(cluster_map_path):
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
 
-def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
+def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
     data_lst = []
@@ -53,14 +53,23 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_path):
     cols = ["Gene", "Cluster", "Credible Set Prop", pp4_name]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=[pp4_name], ascending=False, inplace=True)
-    data_df.to_csv(out_path, sep="\t", index=False)
+    data_df.to_csv(os.path.join(out_dir, gwas_name + ".csv"), index=False)
+    with open(os.path.join(out_dir, gwas_name + ".txt"), "w") as txt_file:
+        data_df.to_string(txt_file)
 
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
+    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
+    # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+
+    # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/alz.txt"
+
+    # interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
+
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes")
 
-    out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/alz.txt"
+    out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/alz.txt"
 
     interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)

@@ -48,7 +48,7 @@ if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
     script_path = os.path.join(curr_path, "colocalize.py")
 
-    gwas_gen_path = "/agusevlab/awang/gwas_data/gen/LDREF/1000G.EUR"
+    gwas_gen_path = "/agusevlab/awang/gwas_data/gen/LDREF/1000G.EUR."
     gen_data_path = "/agusevlab/awang/gen_data"
     boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
 
@@ -165,6 +165,14 @@ if __name__ == '__main__':
     #     2000, 
     #     fails_only=True
     # )
+
+
+
+    gwas_gen_path_ros = "/agusevlab/awang/sc_kellis/gen/impute/rosmap1709-chr"
+    alz_path = "/agusevlab/awang/gwas_data/alz.pickle"
+    params_kellis_alz = params_kellis.copy()
+    params_kellis_alz["num_ppl"] = 388324
+    params_path_kellis_ros = os.path.join(data_path_kellis, "plasma_c_ros_params.pickle")
 
 
 
