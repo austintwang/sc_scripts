@@ -13,7 +13,7 @@ def get_gwas_data(gwas_path, out_path):
             zscr = float(data[3])
             markers[marker] = zscr
             if not sample_size:
-                sample_size = int(data[4]) 
+                sample_size = int(data[4].rstrip()) 
     markers["_size"] = sample_size
 
     with open(out_path, "wb") as out_file:
