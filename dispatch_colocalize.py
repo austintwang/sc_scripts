@@ -135,7 +135,7 @@ if __name__ == '__main__':
         gwas_path = os.path.join(gwas_dir, i)
         gwas_name = i.split(".")[0]
         params_kellis_test = params_kellis.copy()
-        params_kellis_test["num_ppl"] = 388324
+        # params_kellis_test["num_ppl"] = 388324
         params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_{0}_params.pickle".format(gwas_name))
 
         dispatch(

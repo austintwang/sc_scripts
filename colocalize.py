@@ -151,6 +151,9 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
         }
         # print(inputs) ####
         inputs.update(params)
+
+        if inputs.get("num_ppl") is None:
+            inputs["num_ppl"] = gwas_data["_size"]
     
         result = {"z_beta": inputs["z_beta"].copy()}
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
