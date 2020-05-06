@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
     # interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
 
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
 
     out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/alz.txt"
 
