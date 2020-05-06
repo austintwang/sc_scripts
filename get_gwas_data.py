@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     for i in gwas_files:
         name = i.split("_")[0]
-        path = os.path.join(neur_dir, gwas_files)
+        path = os.path.join(neur_dir, i)
         out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
         get_gwas_data(gwas_path_alz, out_path)
 
