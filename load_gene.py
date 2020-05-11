@@ -121,8 +121,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
         total_counts_dir = os.path.join(gene_dir, "total_counts")
         print(ignore_total) ####
-        if ignore_total or (not os.isdir(total_counts_dir)):
-            print(ignore_total or (not os.isdir(total_counts_dir))) ####
+        if ignore_total or (not os.path.isdir(total_counts_dir)):
+            # print(ignore_total or (not os.isdir(total_counts_dir))) ####
             total_counts = False
         else:
             total_counts = {"_all": {}}
