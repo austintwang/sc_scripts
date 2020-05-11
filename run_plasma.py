@@ -225,7 +225,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                 inputs.update(inputs_all)
                 print(cluster) ####
                 # print(inputs["total_counts"].keys()) ####
-                print(inputs["total_counts"]) ####
+                # print(inputs["total_counts"]) ####
                 if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                     processed_counts = True
                     # print(inputs["total_counts"][cluster]) ####
@@ -312,9 +312,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
                 results["hap_A"] = inputs["hap_A"]
                 results["hap_B"] = inputs["hap_B"]
-                results["counts_A"] = results["counts_A"]
-                results["counts_B"] = results["counts_B"]
-                results["total_exp"] = results["total_exp"]
+                results["counts_A"] = inputs["counts_A"]
+                results["counts_B"] = inputs["counts_B"]
+                results["total_exp"] = inputs["total_exp"]
 
                 if inputs["model_flavors"] == "all":
                     model_flavors = set(["full", "indep", "eqtl", "ase", "acav", "fmb"])
