@@ -119,6 +119,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
 
         total_counts_dir = os.path.join(gene_dir, "total_counts")
+        print(ignore_total) ####
         if ignore_total:
             total_counts = False
         else:
