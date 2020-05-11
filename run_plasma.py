@@ -53,6 +53,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
         z_beta = restore_informative(shape_orig, model.total_exp_stats, informative_snps, np.nan)
         phi = restore_informative(shape_orig, model.phi, informative_snps, np.nan)
         beta = restore_informative(shape_orig, model.beta, informative_snps, np.nan)
+        imbalance_errors = restore_informative(shape_orig, model.imbalance_errors, informative_snps, np.nan)
 
     gc.collect()
 
@@ -223,6 +224,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                 if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                     processed_counts = True
                     # print(inputs["total_counts"][cluster]) ####
+                    print(inputs["total_counts"][cluster]) ####
+                    print(inputs["agg_counts"]) ####
                     inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                     inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                 else:
@@ -311,7 +314,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
                 if "indep" in model_flavors:
                     updates_indep = {"cross_corr_prior": 0., "num_ppl": None}
-                    result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"] = run_model(
+                    result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"], result["imbalance_errors"] = run_model(
                         Finemap, inputs, updates_indep, informative_snps, return_stats=True
                     )
                     
