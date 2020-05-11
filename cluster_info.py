@@ -428,7 +428,7 @@ def plot_xcells(df_train, df_test, out_dir):
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
 
-def get_info(run_name, genes_dir, run_name, cluster_map_path, out_dir):
+def get_info(run_name, genes_dir, cluster_map_path, out_dir):
     # clusters = load_clusters(cluster_map_path)
     # genes = os.listdir(genes_dir)
     # data_lst = []
