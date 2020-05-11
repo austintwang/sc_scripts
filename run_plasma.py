@@ -230,7 +230,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     print(inputs["counts_total"]) ####
                     print(inputs["counts_norm"]) ####
                     print(np.count_nonzero(~np.isnan(inputs["counts_total"]))) ####
-                    print(inputs["counts_total"].size) ####
+                    print(np.count_nonzero(~np.isnan(inputs["counts_norm"]))) ####
                 else:
                     processed_counts = False
 
