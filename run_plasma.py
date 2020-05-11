@@ -61,7 +61,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
 
     # print(causal_set) ####
     if return_stats:
-        return causal_set, ppas, size_probs, z_phi, z_beta, phi, beta
+        return causal_set, ppas, size_probs, z_phi, z_beta, phi, beta, imbalance_errors
     else:
         return causal_set, ppas, size_probs
 

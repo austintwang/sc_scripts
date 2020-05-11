@@ -54,5 +54,9 @@ if __name__ == '__main__':
 
     job_data_dir = os.path.join(data_dir, "job_data")
 
+    # dispatch(script_path, names, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 2000)
+
+    genes_dir = os.path.join(base_dir, "genes_429")
     dispatch(script_path, names, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 2000)
+
 
