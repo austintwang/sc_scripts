@@ -428,53 +428,53 @@ def plot_xcells(df_train, df_test, out_dir):
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
 
-def get_info(genes_dir, run_name, cluster_map_path, out_dir):
-    clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)
-    data_lst = []
-    for g in genes:
-        gene_dir = os.path.join(genes_dir, g)
-        plasma_path = os.path.join(gene_dir, "plasma.pickle")
-        if os.path.isdir(plasma_path):
-            plasma_path = os.path.join(plasma_path, "output.pickle")
-        try:
-            with open(plasma_path, "rb") as plasma_file:
-                plasma_data = pickle.load(plasma_file)
-        except FileNotFoundError:
-            continue
+def get_info(run_name, genes_dir, run_name, cluster_map_path, out_dir):
+    # clusters = load_clusters(cluster_map_path)
+    # genes = os.listdir(genes_dir)
+    # data_lst = []
+    # for g in genes:
+    #     gene_dir = os.path.join(genes_dir, g)
+    #     plasma_path = os.path.join(gene_dir, "plasma.pickle")
+    #     if os.path.isdir(plasma_path):
+    #         plasma_path = os.path.join(plasma_path, "output.pickle")
+    #     try:
+    #         with open(plasma_path, "rb") as plasma_file:
+    #             plasma_data = pickle.load(plasma_file)
+    #     except FileNotFoundError:
+    #         continue
 
-        data = read_data(plasma_data, clusters, g)
-        data_lst.extend(data)
+    #     data = read_data(plasma_data, clusters, g)
+    #     data_lst.extend(data)
 
-    cols = [
-        "Gene", 
-        "Cluster", 
-        "MeanTotalCoverage",
-        "MeanTotalCoverageScaled",
-        "MeanMappedCoverage",
-        "MeanOverdispersion",
-        "MeanCellCount",
-        "UsableSampleSize",
-        "TotalSampleSize",
-        "UsableSNPCount",
-        "TotalSNPCount",
-        "CredibleSetSizeJoint", 
-        "CredibleSetSizeAS",
-        "CredibleSetSizeQTL",
-        "CredibleSetPropJoint", 
-        "CredibleSetPropAS",
-        "CredibleSetPropQTL",
-        "TopSNPPosterior",
-        "TopSNPZPhi",
-        "TopSNPPhi",
-        "TopSNPNLPPhi",
-        "TopSNPZBeta",
-        "TopSNPBeta",
-        "TopSNPNLPBeta",
-        "TopSNPID",
-        "Split",
-    ]
-    data_df = pd.DataFrame(data_lst, columns=cols)
+    # cols = [
+    #     "Gene", 
+    #     "Cluster", 
+    #     "MeanTotalCoverage",
+    #     "MeanTotalCoverageScaled",
+    #     "MeanMappedCoverage",
+    #     "MeanOverdispersion",
+    #     "MeanCellCount",
+    #     "UsableSampleSize",
+    #     "TotalSampleSize",
+    #     "UsableSNPCount",
+    #     "TotalSNPCount",
+    #     "CredibleSetSizeJoint", 
+    #     "CredibleSetSizeAS",
+    #     "CredibleSetSizeQTL",
+    #     "CredibleSetPropJoint", 
+    #     "CredibleSetPropAS",
+    #     "CredibleSetPropQTL",
+    #     "TopSNPPosterior",
+    #     "TopSNPZPhi",
+    #     "TopSNPPhi",
+    #     "TopSNPNLPPhi",
+    #     "TopSNPZBeta",
+    #     "TopSNPBeta",
+    #     "TopSNPNLPBeta",
+    #     "TopSNPID",
+    #     "Split",
+    # ]
+    data_df = make_df(run_name, 0, genes_dir, cluster_map_path, None)
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
@@ -513,6 +513,6 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info(genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
