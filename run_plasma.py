@@ -229,7 +229,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                     print(inputs["counts_total"]) ####
                     print(inputs["counts_norm"]) ####
-                    print(np.count_nonzero((inputs["counts_total"] != np.nan).astype(int))) ####
+                    print(np.count_nonzero(~np.isnan(inputs["counts_total"]))) ####
                     print(inputs["counts_total"].size) ####
                 else:
                     processed_counts = False
