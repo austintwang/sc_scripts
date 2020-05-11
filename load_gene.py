@@ -89,7 +89,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         boundaries_map = pickle.load(boundaries_map_file)
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
-    ignore_total = bool(ignore_total) 
+    ignore_total = ignore_total == "True" 
     if ignore_total:
         total_counts_norm = None
     else:
@@ -99,7 +99,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
     radius = int(radius)
     min_maf = float(min_maf)
     min_info = float(min_info)
-    well_only = bool(well_only)
+    well_only = well_only == "True"
     # print(barcodes_map) ####
 
     if gene_name.split(".")[0] in tss_map:
