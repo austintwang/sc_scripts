@@ -56,12 +56,13 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
         phi = restore_informative(shape_orig, model.phi, informative_snps, np.nan)
         beta = restore_informative(shape_orig, model.beta, informative_snps, np.nan)
         imbalance_errors = model.imbalance_errors 
+        imbalance = model.imbalance
 
     gc.collect()
 
     # print(causal_set) ####
     if return_stats:
-        return causal_set, ppas, size_probs, z_phi, z_beta, phi, beta, imbalance_errors
+        return causal_set, ppas, size_probs, z_phi, z_beta, phi, beta, imbalance_errors, imbalance
     else:
         return causal_set, ppas, size_probs
 
@@ -309,6 +310,12 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                 inputs["counts_B"] = inputs["counts2"].astype(np.int)
                 inputs["total_exp"] = inputs["counts_total"].astype(np.int)
 
+                results["hap_A"] = inputs["hap_A"]
+                results["hap_B"] = inputs["hap_B"]
+                results["counts_A"] = results["counts_A"]
+                results["counts_B"] = results["counts_B"]
+                results["total_exp"] = results["total_exp"]
+
                 if inputs["model_flavors"] == "all":
                     model_flavors = set(["full", "indep", "eqtl", "ase", "acav", "fmb"])
                 else:
@@ -322,7 +329,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
                 if "indep" in model_flavors:
                     updates_indep = {"cross_corr_prior": 0., "num_ppl": None}
-                    result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"], result["imbalance_errors"] = run_model(
+                    result["causal_set_indep"], result["ppas_indep"], result["size_probs_indep"], result["z_phi"], result["z_beta"] , result["phi"], result["beta"], result["imbalance_errors"], result["imbalance"] = run_model(
                         Finemap, inputs, updates_indep, informative_snps, return_stats=True
                     )
                     
