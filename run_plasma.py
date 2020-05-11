@@ -16,9 +16,9 @@ if __name__ == '__main__' and __package__ is None:
 from . import Finemap, FmBenner
 
 def restore_informative(shape, values, informative_snps, default):
-    print(shape) ####
-    print(values) ####
-    print(informative_snps) ####
+    # print(shape) ####
+    # print(values) ####
+    # print(informative_snps) ####
     vals_all = np.full(shape, default)
     vals_all[informative_snps] = values
     return vals_all
@@ -55,7 +55,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
         z_beta = restore_informative(shape_orig, model.total_exp_stats, informative_snps, np.nan)
         phi = restore_informative(shape_orig, model.phi, informative_snps, np.nan)
         beta = restore_informative(shape_orig, model.beta, informative_snps, np.nan)
-        imbalance_errors = restore_informative(shape_orig, model.imbalance_errors, informative_snps, np.nan)
+        imbalance_errors = model.imbalance_errors 
 
     gc.collect()
 
