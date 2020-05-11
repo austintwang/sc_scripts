@@ -223,12 +223,14 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                 if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                     processed_counts = True
                     # print(inputs["total_counts"][cluster]) ####
-                    print(inputs["total_counts"][cluster]) ####
-                    print(inputs["agg_counts"][cluster]) ####
+                    # print(inputs["total_counts"][cluster]) ####
+                    # print(inputs["agg_counts"][cluster]) ####
                     inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                     inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                     print(inputs["counts_total"]) ####
                     print(inputs["counts_norm"]) ####
+                    print(np.count_nonzero(inputs["counts_total"] != np.nan)) ####
+                    print(inputs["counts_total"].size) ####
                 else:
                     processed_counts = False
 
