@@ -18,7 +18,6 @@ from . import Finemap, FmBenner
 def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
     vals_all[informative_snps] = values
-    # np.put(vals_all, informative_snps, values)
     return vals_all
 
 def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=False):
@@ -225,9 +224,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     processed_counts = True
                     # print(inputs["total_counts"][cluster]) ####
                     print(inputs["total_counts"][cluster]) ####
-                    print(inputs["agg_counts"]) ####
+                    print(inputs["agg_counts"][cluster]) ####
                     inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                     inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
+                    print(inputs["counts_total"]) ####
+                    print(inputs["counts_norm"]) ####
                 else:
                     processed_counts = False
 
