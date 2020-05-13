@@ -65,7 +65,7 @@ def make_violin(
     for art in ax.get_children():
         if isinstance(art, matplotlib.collections.PolyCollection):
             art.set_edgecolor((0., 0., 0.))
-    plt.xlim(0., 1.)
+    plt.xlim(xmin=0.)
     chart.set_yticklabels([model_names[m] for m in model_flavors])
     plt.ylabel("")
     plt.title(title)
