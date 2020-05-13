@@ -456,7 +456,7 @@ def plot_xcells(df_train, df_test, out_dir):
     make_heatmap(nlp_1s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_1.svg"))
 
     title = "Cross-Cell Cross-Validation Storey Pi"
-    make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
+    make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_pi.svg"))
 
 def get_info(run_name, genes_dir, cluster_map_path, out_dir):
     # clusters = load_clusters(cluster_map_path)
