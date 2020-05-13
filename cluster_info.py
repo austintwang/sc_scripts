@@ -374,7 +374,6 @@ def plot_xcells(df_train, df_test, out_dir):
             abs(df_train["TopSNPPhi"]) <= 5
         )
     ]
-    df_ts_sig = df_test
     # df_ts_sig = df_test.loc[
     #     np.logical_and(
     #         df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
@@ -393,11 +392,15 @@ def plot_xcells(df_train, df_test, out_dir):
     }
     cluster_order = list(clusters.keys())
     slopes = np.zeros((len(cluster_order), len(cluster_order),),)
+    slope_ses = np.zeros((len(cluster_order), len(cluster_order),),)
+    nlp_0s = np.zeros((len(cluster_order), len(cluster_order),),)
+    nlp_1s = np.zeros((len(cluster_order), len(cluster_order),),)
+    storey_pis = np.zeros((len(cluster_order), len(cluster_order),),)
     for ind_i, i in enumerate(cluster_order):
         for ind_j, j in enumerate(cluster_order):
             df_merged = pd.merge(
                 df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
-                df_ts_sig.loc[df_ts_sig["Cluster"] == j], 
+                df_test.loc[df_ts_sig["Cluster"] == j], 
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
             )
@@ -408,6 +411,21 @@ def plot_xcells(df_train, df_test, out_dir):
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
             slopes[ind_i, ind_j] = slope
+            res = yw - xw * slope
+            slope_se = np.sqrt(res.dot(res) / (res.size * xw.dot(xw)))
+            slope_ses[ind_i, ind_j] = slope_se
+
+            z_0 = slope / slope_se
+            nlp_0 = -np.log10(scipy.stats.norm.sf(z_0))
+            nlp_0s[ind_i, ind_j] = nlp_0
+
+            z_1 = (1 - slope) / slope_se
+            nlp_1 = -np.log10(scipy.stats.norm.sf(z_1))
+            nlp_1s[ind_i, ind_j] = nlp_0
+
+            num_sig_train = df_merged.shape[0]
+            num_sig_test = np.sum(df_merged["TopSNPNLPPhi_test"] >= -np.log10(0.05/df_train["UsableSNPCount_test"]))
+            storey_pis[ind_i, ind_j] = num_sig_test / num_sig_train
 
             make_scatter(
                 df_merged,
@@ -426,7 +444,19 @@ def plot_xcells(df_train, df_test, out_dir):
             # print(yw) ####
 
     title = "Cross-Cell Cross-Validation Slopes"
-    make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xval_stats.svg"))
+    make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
+
+    title = "Cross-Cell Cross-Validation Slope Standard Errors"
+    make_heatmap(slope_ses, cluster_order, title, os.path.join(out_dir, "xcell_stats_se.svg"))
+
+    title = "Cross-Cell Cross-Validation Significance from Zero"
+    make_heatmap(nlp_0s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_0.svg"))
+
+    title = "Cross-Cell Cross-Validation Significance from One"
+    make_heatmap(nlp_1s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_1.svg"))
+
+    title = "Cross-Cell Cross-Validation Storey Pi"
+    make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
 
 def get_info(run_name, genes_dir, cluster_map_path, out_dir):
     # clusters = load_clusters(cluster_map_path)
@@ -494,8 +524,8 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_train) ####
     # print(df_test) ####
     # print(df_comb) ####
-    plot_xval(df_comb, out_dir)
-    plot_xcells(df_train, df_test, out_dir)
+    plot_xval(df_comb, os.path.join(out_dir, "xvals"))
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"))
     df_train.to_csv(os.path.join(out_dir, "train.csv"), sep="\t", index=False, na_rep="None")
     df_test.to_csv(os.path.join(out_dir, "test.csv"), sep="\t", index=False, na_rep="None")    
 
