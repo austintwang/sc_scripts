@@ -1,6 +1,11 @@
 import numpy as np
 import os
 import pickle
+import matplotlib
+matplotlib.use('Agg')
+matplotlib.rcParams['agg.path.chunksize'] = 10000
+import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
