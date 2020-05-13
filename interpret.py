@@ -23,8 +23,8 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
             coloc_clust.get("h4_eqtl_eqtl")
-        ],
-        print(data_clust) ####
+        ]
+        # print(data_clust) ####
         data.append(data_clust)
     return data
 
