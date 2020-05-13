@@ -19,6 +19,17 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             data_clust = [gene_name, c, np.mean(plasma_clust["causal_set_indep"]), coloc_clust["h4_indep_eqtl"]]
             # print(data_clust) ####
             data.append(data_clust)
+        data_clust = [
+            gene_name, 
+            c, 
+            np.mean(plasma_clust.get("causal_set_indep")), 
+            np.mean(plasma_clust.get("causal_set_eqtl")),
+            coloc_clust.get("h4_indep_eqtl"),
+            coloc_clust.get("h4_ase_eqtl"),
+            coloc_clust.get("h4_eqtl_eqtl")
+        ],
+        # print(data_clust) ####
+        data.append(data_clust)
     return data
 
 def load_clusters(cluster_map_path):
@@ -71,34 +82,25 @@ def plot_sets(df, out_dir):
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
-    model_map_dists = {
-        "CredibleSetPropJoint": "PLASMA-J",
-        "CredibleSetPropAS": "PLASMA-AS",
-        "CredibleSetPropQTL": "QTL-Only"
+    model_map = {
+        "PP4Joint": "PLASMA/C-J",
+        "PP4AS": "PLASMA/C-AS",
+        "PP4QTL": "QTL-Only"
     }
-    model_map_thresh = {
-        "CredibleSetSizeJoint": "PLASMA-J",
-        "CredibleSetSizeAS": "PLASMA-AS",
-        "CredibleSetSizeQTL": "QTL-Only"
-    }
-    var_dists = "Credible Set Proportion"
-    var_thresh = "Credible Set Size"
-    model_flavors_dists = model_map_dists.keys()
-    model_flavors_thresh = model_map_thresh.keys()
+    var_dists = "PP4 Score"
+    model_flavors = model_map.keys()
     pal = sns.color_palette()
     model_colors = {
-        "CredibleSetPropJoint": pal[0],
-        "CredibleSetPropAS": pal[4],
-        "CredibleSetPropQTL": pal[7],
+        "PP4Joint": pal[0],
+        "PP4AS": pal[4],
+        "PP4QTL": pal[7],
     }
-    threshs = [5, 10, 20, 50, 100, 200]
-
     for cluster in clusters.keys():
         df_clust = df.loc[df["Cluster"] == cluster]
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
-            value_vars=model_map_dists.keys(),
+            value_vars=model_map.keys(),
             var_name="Model",
             value_name=var_dists
         )
@@ -106,11 +108,11 @@ def plot_sets(df, out_dir):
         make_violin(
             df_dists,
             var_dists, 
-            model_flavors_dists,
-            model_map_dists, 
+            model_flavors,
+            model_map, 
             model_colors,
             title, 
-            os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
+            os.path.join(out_dir, "pp4s_{0}.svg".format(cluster)),
         )
 
 def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
@@ -136,13 +138,29 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
         data = read_data(plasma_data, coloc_data, clusters, g)
         data_lst.extend(data)
 
-    pp4_name = "{0}PP4".format(gwas_name)
-    cols = ["Gene", "Cluster", "CredibleSetProp", pp4_name]
+    pp4_name = "PP4{0}"
+    cols = [
+        "Gene", 
+        "Cluster", 
+        "CredibleSetPropIndep",
+        "CredibleSetPropGWAS",
+        "PP4Joint",
+        "PP4AS",
+        "PP4QTL"
+    ]
+    model_map = {
+        pp4_name.format("Indep"): "PLASMA/C-J",
+        pp4_name.format("AS"): "PLASMA/C-AS",
+        pp4_name.format("QTL"): "QTL-Only"
+    }
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=[pp4_name], ascending=False, inplace=True)
-    data_df.to_csv(os.path.join(out_dir, gwas_name + ".csv"), index=False)
-    with open(os.path.join(out_dir, gwas_name + ".txt"), "w") as txt_file:
+    out_dir_gwas = os.path.join(out_dir, gwas_name)
+    os.makedirs(out_dir_gwas, exist_ok=True)
+    data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
+    with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
+    plot_sets(df, out_dir_gwas)
 
 
 if __name__ == '__main__':
