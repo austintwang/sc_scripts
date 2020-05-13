@@ -150,7 +150,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
-    plot_sets(df, out_dir_gwas)
+    plot_sets(data_df, out_dir_gwas)
 
 
 if __name__ == '__main__':
