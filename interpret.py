@@ -191,4 +191,5 @@ if __name__ == '__main__':
         "Worry"
     ]
     for g in gwass:
+        print(g) ####
         interpret_genes(genes_dir_kellis, g, cluster_map_path_kellis, out_path_kellis)
