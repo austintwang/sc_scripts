@@ -143,11 +143,6 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
         "PP4AS",
         "PP4QTL"
     ]
-    model_map = {
-        pp4_name.format("Indep"): "PLASMA/C-J",
-        pp4_name.format("AS"): "PLASMA/C-AS",
-        pp4_name.format("QTL"): "QTL-Only"
-    }
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=["PP4Joint"], ascending=False, inplace=True)
     out_dir_gwas = os.path.join(out_dir, gwas_name)
