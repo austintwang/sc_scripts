@@ -400,7 +400,7 @@ def plot_xcells(df_train, df_test, out_dir):
         for ind_j, j in enumerate(cluster_order):
             df_merged = pd.merge(
                 df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
-                df_test.loc[df_ts_sig["Cluster"] == j], 
+                df_test.loc[df_test["Cluster"] == j], 
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
             )

@@ -26,6 +26,93 @@ def load_clusters(cluster_map_path):
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
 
+def make_violin(
+        df,
+        var, 
+        model_flavors,
+        model_names, 
+        model_colors,
+        title, 
+        result_path,
+    ):
+    sns.set(style="whitegrid", font="Roboto")
+    plt.figure(figsize=(4,2))
+
+    palette = [model_colors[m] for m in model_flavors]
+    names = [model_names[m] for m in model_flavors]
+    chart = sns.violinplot(
+        x=var, 
+        y="Model", 
+        data=df, 
+        order=model_flavors, 
+        palette=palette,
+        cut=0,
+        scale="width"
+    )
+    ax = plt.gca()
+    for art in ax.get_children():
+        if isinstance(art, matplotlib.collections.PolyCollection):
+            art.set_edgecolor((0., 0., 0.))
+    plt.xlim(0., 1.)
+    chart.set_yticklabels([model_names[m] for m in model_flavors])
+    plt.ylabel("")
+    plt.title(title)
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
+
+def plot_sets(df, out_dir):
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "Astro": "Astroglia",
+        "In": "Inhibitory Neuron",
+        "Endo": "Endothelial",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Per": "Per"
+    }
+    model_map_dists = {
+        "CredibleSetPropJoint": "PLASMA-J",
+        "CredibleSetPropAS": "PLASMA-AS",
+        "CredibleSetPropQTL": "QTL-Only"
+    }
+    model_map_thresh = {
+        "CredibleSetSizeJoint": "PLASMA-J",
+        "CredibleSetSizeAS": "PLASMA-AS",
+        "CredibleSetSizeQTL": "QTL-Only"
+    }
+    var_dists = "Credible Set Proportion"
+    var_thresh = "Credible Set Size"
+    model_flavors_dists = model_map_dists.keys()
+    model_flavors_thresh = model_map_thresh.keys()
+    pal = sns.color_palette()
+    model_colors = {
+        "CredibleSetPropJoint": pal[0],
+        "CredibleSetPropAS": pal[4],
+        "CredibleSetPropQTL": pal[7],
+    }
+    threshs = [5, 10, 20, 50, 100, 200]
+
+    for cluster in clusters.keys():
+        df_clust = df.loc[df["Cluster"] == cluster]
+        df_dists = pd.melt(
+            df.loc[df["Cluster"] == cluster], 
+            id_vars=["Gene"], 
+            value_vars=model_map_dists.keys(),
+            var_name="Model",
+            value_name=var_dists
+        )
+        title = clusters[cluster]
+        make_violin(
+            df_dists,
+            var_dists, 
+            model_flavors_dists,
+            model_map_dists, 
+            model_colors,
+            title, 
+            os.path.join(out_dir, "sets_{0}.svg".format(cluster)),
+        )
+
 def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
