@@ -10,7 +10,7 @@ import seaborn as sns
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_name):
-    # print(coloc_data) ####
+    print(coloc_data.keys()) ####
     data = []
     top_z = np.nanmax(coloc_data["z_beta"])
     if not "clusters" in coloc_data:
