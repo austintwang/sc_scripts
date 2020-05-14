@@ -150,7 +150,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
         "Cluster", 
         "CredibleSetPropIndep",
         "CredibleSetPropGWAS",
-        "GWASSig"
+        "GWASSig",
         "PP4Joint",
         "PP4AS",
         "PP4QTL",
