@@ -11,6 +11,7 @@ import pandas as pd
 def read_data(plasma_data, coloc_data, clusters, gene_name):
     # print(coloc_data) ####
     data = []
+    top_z = np.nanmax(coloc_data["z_beta"])
     if not "clusters" in coloc_data:
         return data
     for c in clusters:
@@ -20,7 +21,6 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
-        top_z = np.nanmax(coloc_clust["z_beta"])
         top_nlp = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z))*2))
         data_clust = [
             gene_name, 
