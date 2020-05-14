@@ -15,6 +15,8 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
     if not "clusters" in coloc_data:
         return data
     top_z = np.nanmax(coloc_data["z_beta"])
+    top_nlp = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z))*2))
+    num_informative = np.sum(top_nlp.get("informative_snps", np.nan))
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
         coloc_clust = coloc_data["clusters"].get(c, None)
@@ -22,7 +24,6 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
-        top_nlp = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z))*2))
         data_clust = [
             gene_name, 
             c, 
@@ -32,7 +33,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
             coloc_clust.get("h4_eqtl_eqtl"),
-            np.sum(coloc_clust.get("informative_snps", np.nan))
+            num_informative
         ]
         print(data_clust) ####
         data.append(data_clust)
