@@ -34,7 +34,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             coloc_clust.get("h4_eqtl_eqtl"),
             np.sum(coloc_clust.get("informative_snps", np.nan))
         ]
-        # print(data_clust) ####
+        print(data_clust) ####
         data.append(data_clust)
     return data
 
