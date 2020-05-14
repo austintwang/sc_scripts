@@ -20,14 +20,18 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
+        top_z = np.nanmax(coloc_clust["z_beta"])
+        top_nlp = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z))*2))
         data_clust = [
             gene_name, 
             c, 
             np.mean(plasma_clust.get("causal_set_indep", np.nan)), 
             np.mean(plasma_clust.get("causal_set_eqtl", np.nan)),
+            top_nlp,
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
-            coloc_clust.get("h4_eqtl_eqtl")
+            coloc_clust.get("h4_eqtl_eqtl"),
+            np.sum(coloc_clust.get("informative_snps", np.nan))
         ]
         # print(data_clust) ####
         data.append(data_clust)
@@ -97,7 +101,7 @@ def plot_sets(df, out_dir):
         "PP4QTL": pal[7],
     }
     for cluster in clusters.keys():
-        df_clust = df.loc[df["Cluster"] == cluster]
+        df_clust = df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(0.05/df["UsableSNPCount"]))]
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
@@ -144,9 +148,11 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
         "Cluster", 
         "CredibleSetPropIndep",
         "CredibleSetPropGWAS",
+        "GWASSig"
         "PP4Joint",
         "PP4AS",
-        "PP4QTL"
+        "PP4QTL",
+        "UsableSNPCount",
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=["PP4Joint"], ascending=False, inplace=True)
