@@ -103,7 +103,7 @@ def plot_sets(df, out_dir):
         "PP4QTL": pal[7],
     }
     for cluster in clusters.keys():
-        df_clust = df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(0.05/df["UsableSNPCount"]))]
+        df_clust = df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))]
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
