@@ -424,7 +424,7 @@ def plot_xcells(df_train, df_test, out_dir):
             nlp_1s[ind_i, ind_j] = nlp_1
 
             num_sig_train = df_merged.shape[0]
-            num_sig_test = np.sum(df_merged["TopSNPNLPPhi_test"] >= -np.log10(0.05/df_merged["UsableSNPCount_test"]))
+            num_sig_test = np.sum(df_merged["TopSNPNLPPhi_test"] >= -np.log10(0.05))
             storey_pis[ind_i, ind_j] = num_sig_test / num_sig_train
 
             make_scatter(
