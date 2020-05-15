@@ -71,7 +71,7 @@ def make_violin(
     for art in ax.get_children():
         if isinstance(art, matplotlib.collections.PolyCollection):
             art.set_edgecolor((0., 0., 0.))
-    plt.xlim(xmin=0.)
+    plt.xlim(0, 1)
     chart.set_yticklabels([model_names[m] for m in model_flavors])
     plt.ylabel("")
     plt.title(title)
@@ -103,9 +103,8 @@ def plot_sets(df, out_dir):
         "PP4QTL": pal[7],
     }
     for cluster in clusters.keys():
-        df_clust = df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))]
         df_dists = pd.melt(
-            df.loc[df["Cluster"] == cluster], 
+            df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))], 
             id_vars=["Gene"], 
             value_vars=model_map.keys(),
             var_name="Model",
