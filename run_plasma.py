@@ -194,7 +194,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     # print(inputs_all["total_counts"]) ####
     # print(inputs_all["agg_counts"])  ####
 
-    splits = np.array(inputs_all.get("splits"), [None])
+    splits = np.array(inputs_all.get("splits", [None]))
     num_samples = len(inputs_all["sample_names"])
     if splits[0] is None:
         partitions = np.full(-1, num_samples)
