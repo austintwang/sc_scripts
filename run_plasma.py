@@ -207,6 +207,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         allocs = (allocs_int + adds + (1 - np.roll(adds, 1))).astype(int)
         part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
         partitions = np.random.permutation(part_idxs)
+        print(partitions) ####
 
     all_complete = True
     for split in range(len(splits)):
