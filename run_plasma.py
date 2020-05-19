@@ -194,25 +194,19 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     # print(inputs_all["total_counts"]) ####
     # print(inputs_all["agg_counts"])  ####
 
-    splits = np.array(inputs_all.get("splits", [1.]))
+    splits = np.array(inputs_all.get("splits"), [None])
     num_samples = len(inputs_all["sample_names"])
-    allocs_raw = num_samples * splits
-    cumu = np.cumsum(allocs_raw)
-    rems = 1 - (-cumu % 1)
-    # floors = (cumu - rems).astype(int)
-    adds = np.random.binomial(1, rems)
-    # cumu_int = floors + adds + (1 - np.roll(adds, 1))
-    # allocs = np.copy(cumu_int)
-    # allocs[1:] -= cumu_int[:-1]
-    allocs_int = allocs_raw - rems
-    allocs = (allocs_int + adds + (1 - np.roll(adds, 1))).astype(int)
-    part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
-    partitions = np.random.permutation(part_idxs)
-    # print(rems) ####
-    # print(adds) ####
-    # print(allocs) ####
-    # print(partitions) ####
-    # print(np.sum(allocs), num_samples) ####
+    if splits[0] is None:
+        partitions = np.full(-1, num_samples)
+    else:
+        allocs_raw = num_samples * splits
+        cumu = np.cumsum(allocs_raw)
+        rems = 1 - (-cumu % 1)
+        adds = np.random.binomial(1, rems)
+        allocs_int = allocs_raw - rems
+        allocs = (allocs_int + adds + (1 - np.roll(adds, 1))).astype(int)
+        part_idxs = np.concatenate([np.full(val, ind) for ind, val in enumerate(allocs)])
+        partitions = np.random.permutation(part_idxs)
 
     all_complete = True
     for split in range(len(splits)):
@@ -241,7 +235,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     processed_counts = False
 
                 select_counts = np.logical_and.reduce([
-                    partitions == split,
+                    partitions != split,
                     inputs["counts1"] >= 1, 
                     inputs["counts2"] >= 1, 
                     np.logical_not(np.isnan(inputs["overdispersion"]))
