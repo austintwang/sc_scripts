@@ -211,7 +211,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
         for split in range(len(splits)):
             results = {}
             out_prefix = "x" if all_but else "i"
-            output_path = output_path_base.format(out_prefix + split)
+            output_path = output_path_base.format(out_prefix + str(split))
             for cluster, inputs in clusters.items():
                 result = results.setdefault(cluster, {})
                 try:
