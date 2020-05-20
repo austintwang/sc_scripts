@@ -503,7 +503,7 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
         slopes_ses_all.append(slope_ses)
 
 
-    slopes_meta = np.stack(slopes_all).nanmean(axis=0)
+    slopes_meta = np.stack(slopes_all).mean(axis=0)
     slopes_ses_meta = np.sqrt((np.stack(slopes_ses_all)**2).sum(axis=0)/len(slopes_ses_all)**2)
     z_0s = slopes_meta / slopes_ses_meta
     z_1s = (1 - slopes_meta) / slopes_ses_meta
