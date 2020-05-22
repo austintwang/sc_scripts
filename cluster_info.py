@@ -503,8 +503,12 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
         slopes_ses_all.append(slope_ses)
 
 
-    slopes_meta = np.stack(slopes_all).mean(axis=0)
-    slopes_ses_meta = np.sqrt((np.stack(slopes_ses_all)**2).sum(axis=0)/len(slopes_ses_all)**2)
+    slopes_stacked = np.stack(slopes_all)
+    slopes_ses_stacked = np.stack(slopes_ses_all)
+    weights = 1 / slopes_ses_stacked**2
+    norms = np.sum(weights, axis=0)
+    slopes_meta = np.sum(slopes_stacked * weights, axis=0) / norms
+    slopes_ses_meta = 1 / norms
     z_0s = slopes_meta / slopes_ses_meta
     z_1s = (1 - slopes_meta) / slopes_ses_meta
     nlp_0s = -np.log10(scipy.stats.norm.sf(z_0s))
