@@ -511,8 +511,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
     slopes_ses_meta = 1 / norms
     z_0s = slopes_meta / slopes_ses_meta
     z_1s = (1 - slopes_meta) / slopes_ses_meta
-    nlp_0s = -np.log10(scipy.stats.norm.sf(z_0s))
-    nlp_1s = -np.log10(scipy.stats.norm.sf(z_1s))
+    nlp_0s = -scipy.stats.norm.logsf(z_0s) / np.log(10)
+    nlp_1s = -scipy.stats.norm.logsf(z_1s) / np.log(10)
 
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes_meta, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
