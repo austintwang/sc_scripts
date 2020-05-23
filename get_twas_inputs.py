@@ -13,6 +13,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
 
     for cluster, result in plasma_data.items():
         cluster_dir = os.path.join(out_gene_dir, cluster)
+        print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         np.savetxt("hapA.txt", result["hap_A"])
         np.savetxt("hapB.txt", result["hap_B"])
