@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 def write_gene(gene_name, gene_path_base, out_path_base):
-    gene_path = os.path.join(gene_path_base)
+    gene_path = os.path.join(gene_path_base, gene_name)
     plasma_path = os.path.join(gene_path, "plasma.pickle") # Update after plasma rerun
     with open(plasma_path, "rb") as plasma_file:
         plasma_data = pickle.load(plasma_file)
