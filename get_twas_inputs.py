@@ -4,7 +4,7 @@ import numpy as np
 
 def write_gene(gene_name, gene_path_base, out_path_base):
     gene_path = os.path.join(gene_path_base, gene_name)
-    plasma_path = os.path.join(gene_path, "plasma.pickle") # Update after plasma rerun
+    plasma_path = os.path.join(gene_path, "combined", "plasma_0.pickle") # Update after plasma rerun
     with open(plasma_path, "rb") as plasma_file:
         plasma_data = pickle.load(plasma_file)
 
@@ -13,7 +13,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
 
     for cluster, result in plasma_data.items():
         cluster_dir = os.path.join(out_gene_dir, cluster)
-        print(result) ####
+        # print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         np.savetxt("hapA.txt", result["hap_A"])
         np.savetxt("hapB.txt", result["hap_B"])
