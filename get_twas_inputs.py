@@ -21,7 +21,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
         np.savetxt("countsB.txt", result["counts_B"])
         np.savetxt("countsTotal.txt", result["total_exp"])
         np.savetxt("sampleErr.txt", np.sqrt(result["imbalance_errors"]))
-        np.savetxt("snpIds.txt", result["snp_ids"])
+        np.savetxt("snpIds.txt", result["snp_ids"], fmt="%s")
 
 def get_twas_inputs(gene_path_base, out_path_base):
     for gene in os.listdir(gene_path_base):
