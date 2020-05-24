@@ -7,6 +7,9 @@ import gzip
 import glob
 import numpy as np
 
+def process(counts_arr):
+    logtrans = np.log2(counts_arr )
+
 def parse(counts_path, col_path, row_names, out_dir, agg_out_dir, file_name):
     with gzip.open(col_path, "r") as col_file:
         col_names = col_file.read().decode('utf-8').strip().split("\n")
