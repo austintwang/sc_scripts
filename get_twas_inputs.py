@@ -3,7 +3,6 @@ import pickle
 import numpy as np
 
 def write_gene(gene_name, gene_path_base, out_path_base):
-    print(gene_name) ####
     gene_path = os.path.join(gene_path_base, gene_name)
     plasma_path = os.path.join(gene_path, "combined", "plasma_i0.pickle") # Update after plasma rerun
     with open(plasma_path, "rb") as plasma_file:
@@ -11,6 +10,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
 
     out_gene_dir = os.path.join(out_path_base, gene_name)
     os.makedirs(out_gene_dir, exist_ok=True)
+    print(gene_name) ####
 
     for cluster, result in plasma_data.items():
         # print(cluster) ####
@@ -31,10 +31,10 @@ def write_gene(gene_name, gene_path_base, out_path_base):
 
 def get_twas_inputs(gene_path_base, out_path_base):
     for gene in os.listdir(gene_path_base):
-        # try:
-        write_gene(gene, gene_path_base, out_path_base)
-        # except:
-        #   continue
+        try:
+            write_gene(gene, gene_path_base, out_path_base)
+        except FileNotFoundError:
+          continue
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
