@@ -291,6 +291,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     result["snp_ids"] = inputs["snp_ids"]
                     result["num_snps_informative"] = np.count_nonzero(informative_snps)
 
+                    inputs["hap_A"] = inputs["hap1"].astype(np.int)
+                    inputs["hap_B"] = inputs["hap2"].astype(np.int)
+
                     inputs["hap1"] = inputs["hap1"][:, informative_snps]
                     inputs["hap2"] = inputs["hap2"][:, informative_snps]
 
@@ -299,9 +302,6 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     if inputs["hap1"].size == 0:
                         result["data_error"] = "Insufficient Markers"
                         continue
-
-                    inputs["hap_A"] = inputs["hap1"].astype(np.int)
-                    inputs["hap_B"] = inputs["hap2"].astype(np.int)
 
                     inputs["counts_A"] = inputs["counts1"].astype(np.int)
                     inputs["counts_B"] = inputs["counts2"].astype(np.int)
