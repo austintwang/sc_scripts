@@ -19,8 +19,8 @@ def write_gene(gene_name, gene_path_base, out_path_base):
         # print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         try:
-            np.savetxt(os.path.join(cluster_dir, "hapA.txt"), result["hap_A"])
-            np.savetxt(os.path.join(cluster_dir, "hapB.txt"), result["hap_B"])
+            np.savetxt(os.path.join(cluster_dir, "hapA.txt"), result["hap_A"], fmt='%i')
+            np.savetxt(os.path.join(cluster_dir, "hapB.txt"), result["hap_B"], fmt='%i')
             np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  result["counts_A"])
             np.savetxt(os.path.join(cluster_dir, "countsB.txt"), result["counts_B"])
             np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), result["total_exp"])
