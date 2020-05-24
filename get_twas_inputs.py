@@ -19,13 +19,13 @@ def write_gene(gene_name, gene_path_base, out_path_base):
         # print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         try:
-            np.savetxt("hapA.txt", result["hap_A"])
-            np.savetxt("hapB.txt", result["hap_B"])
-            np.savetxt("countsA.txt",  result["counts_A"])
-            np.savetxt("countsB.txt", result["counts_B"])
-            np.savetxt("countsTotal.txt", result["total_exp"])
-            np.savetxt("sampleErr.txt", np.sqrt(result["imbalance_errors"]))
-            np.savetxt("snpIds.txt", result["snp_ids"], fmt="%s")
+            np.savetxt(os.path.join(cluster_dir, "hapA.txt"), result["hap_A"])
+            np.savetxt(os.path.join(cluster_dir, "hapB.txt"), result["hap_B"])
+            np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  result["counts_A"])
+            np.savetxt(os.path.join(cluster_dir, "countsB.txt"), result["counts_B"])
+            np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), result["total_exp"])
+            np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), np.sqrt(result["imbalance_errors"]))
+            np.savetxt(os.path.join(cluster_dir, "snpIds.txt"), result["snp_ids"], fmt="%s")
         except KeyError:
             continue
 
