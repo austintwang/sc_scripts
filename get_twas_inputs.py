@@ -13,18 +13,21 @@ def write_gene(gene_name, gene_path_base, out_path_base):
     os.makedirs(out_gene_dir, exist_ok=True)
 
     for cluster, result in plasma_data.items():
-        print(cluster) ####
-        print(result.keys()) ####
+        # print(cluster) ####
+        # print(result.keys()) ####
         cluster_dir = os.path.join(out_gene_dir, cluster)
         # print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
-        np.savetxt("hapA.txt", result["hap_A"])
-        np.savetxt("hapB.txt", result["hap_B"])
-        np.savetxt("countsA.txt",  result["counts_A"])
-        np.savetxt("countsB.txt", result["counts_B"])
-        np.savetxt("countsTotal.txt", result["total_exp"])
-        np.savetxt("sampleErr.txt", np.sqrt(result["imbalance_errors"]))
-        np.savetxt("snpIds.txt", result["snp_ids"], fmt="%s")
+        try:
+            np.savetxt("hapA.txt", result["hap_A"])
+            np.savetxt("hapB.txt", result["hap_B"])
+            np.savetxt("countsA.txt",  result["counts_A"])
+            np.savetxt("countsB.txt", result["counts_B"])
+            np.savetxt("countsTotal.txt", result["total_exp"])
+            np.savetxt("sampleErr.txt", np.sqrt(result["imbalance_errors"]))
+            np.savetxt("snpIds.txt", result["snp_ids"], fmt="%s")
+        except KeyError:
+            continue
 
 def get_twas_inputs(gene_path_base, out_path_base):
     for gene in os.listdir(gene_path_base):
