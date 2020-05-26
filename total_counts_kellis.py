@@ -24,7 +24,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
             col_names = col_file.read().decode('utf-8').strip().split("\n")
         # print(col_names) ####
         counts_agg_arr = np.zeros(len(col_names))
-        counts_arr = np.zeros(len(col_names), len(row_names))
+        counts_arr = np.zeros((len(col_names), len(row_names)),)
 
         with gzip.open(counts_path, "r") as counts_file:
             for i, cl, gl in zip(range(len(row_names)), counts_file, row_names):
