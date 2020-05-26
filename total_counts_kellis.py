@@ -9,6 +9,7 @@ import numpy as np
 
 def process(counts_arr):
     logtrans = np.log2(counts_arr + 1)
+    logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
     pcs = np.hstack(np.array([[1]]), u[:,:10])
     regs = np.linalg.lstsq(pcs, logtrans)
