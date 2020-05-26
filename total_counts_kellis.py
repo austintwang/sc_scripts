@@ -60,7 +60,7 @@ def load_counts(name, pattern, base_path, rows_path, genes_dir, agg_out_dir):
     with gzip.open(rows_path, "rb") as row_file:
         row_names = row_file.read().decode('utf-8').strip().split("\n")
     counts_paths = glob.glob(os.path.join(base_path, pattern + ".s1.gz"))
-    col_paths = [i.replace(".s1.gz", ".cols.gz") for i in counts_path]
+    col_paths = [i.replace(".s1.gz", ".cols.gz") for i in counts_paths]
     print(counts_paths) ####
     print(col_paths) ####
     parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, name)
