@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     base_dir = "/agusevlab/awang/sc_kellis"
     genes_dir = os.path.join(base_dir, "genes")
-    agg_out_dir = os.path.join(base_dir, "agg_counts")
+    agg_out_dir = os.path.join(base_dir, "agg_counts_processed")
 
     data_dir = os.path.join(base_dir, "snRNAseq_PFC_eQTL")
     counts_dir = os.path.join(data_dir, "result", "aggregate", "merged", "broad")

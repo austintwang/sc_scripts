@@ -57,7 +57,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
             pickle.dump(counts_dct, out_file)
 
     counts_agg_dct = dict(zip(col_names_all, counts_agg_all))
-    with open(os.path.join(agg_out_dir, file_name), "wb") as agg_out_file:
+    with open(os.path.join(agg_out_dir, name), "wb") as agg_out_file:
         pickle.dump(counts_agg_dct, agg_out_file)
 
 def load_counts(name, pattern, base_path, rows_path, genes_dir, agg_out_dir):
