@@ -38,8 +38,10 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
 
     counts_agg_all = np.concatenate(counts_agg_arrs)
     counts_all = np.concatenate(counts_arrs , axis=0)
-
+    print(counts_all) ####
+    
     counts_out = process(counts_all)
+    print(counts_out) ####
     for i, gl in enumerate(row_names):
         counts_dct = dict(zip(col_names_all, counts_out[:,i]))
         gene = gl.strip()
@@ -61,8 +63,8 @@ def load_counts(name, pattern, base_path, rows_path, genes_dir, agg_out_dir):
         row_names = row_file.read().decode('utf-8').strip().split("\n")
     counts_paths = glob.glob(os.path.join(base_path, pattern + ".s1.gz"))
     col_paths = [i.replace(".s1.gz", ".cols.gz") for i in counts_paths]
-    print(counts_paths) ####
-    print(col_paths) ####
+    # print(counts_paths) ####
+    # print(col_paths) ####
     parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, name)
 
 if __name__ == '__main__':
