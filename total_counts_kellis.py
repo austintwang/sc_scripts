@@ -19,7 +19,7 @@ def process(counts_arr):
 def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
     counts_agg_arrs = []
     counts_arrs = []
-    col_names_allt = []
+    col_names_all = []
     for counts_path, col_path in zip(counts_paths, col_paths):
         with gzip.open(col_path, "r") as col_file:
             col_names = col_file.read().decode('utf-8').strip().split("\n")
