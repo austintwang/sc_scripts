@@ -51,7 +51,7 @@ if __name__ == '__main__':
         for i in glob.glob(os.path.join(counts_dir, "*.s1.gz"))
     }
     clusters = {i: "*_{0}".format(i) for i in names}
-    clusters["_all"] = "*"
+    # clusters["_all"] = "*"
     rows_path = os.path.join(data_dir, "auxiliary", "all_features.gz")
 
     job_data_dir = os.path.join(data_dir, "job_data_processed")

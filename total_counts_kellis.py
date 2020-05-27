@@ -16,10 +16,10 @@ def process(counts_arr):
     res = logtrans - pcs @ regs
     return res
 
-def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
+def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, sums):
     counts_agg_arrs = []
     counts_arrs = []
-    col_names_all = []
+    col_names_lst = []
     for counts_path, col_path in zip(counts_paths, col_paths):
         with gzip.open(col_path, "r") as col_file:
             col_names = col_file.read().decode('utf-8').strip().split("\n")
@@ -43,9 +43,11 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
     print(counts_all) ####
 
     counts_out = process(counts_all)
+    counts_agg_out = counts_out.sum(axis=1)
     print(counts_out) ####
     for i, gl in enumerate(row_names):
         counts_dct = dict(zip(col_names_all, counts_out[:,i]))
+        counts_dct_raw = dict(zip(col_names_all, counts_all[:,i]))
         gene = gl.strip()
         out_pattern = os.path.join(out_dir, gene + ".*")
         out_match = glob.glob(out_pattern)
@@ -55,10 +57,15 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
         os.makedirs(gene_counts_dir, exist_ok=True)
         with open(os.path.join(gene_counts_dir, name), "wb") as out_file:
             pickle.dump(counts_dct, out_file)
+        with open(os.path.join(gene_counts_dir, name + '_raw'), "wb") as out_file:
+            pickle.dump(counts_dct, out_file)
 
-    counts_agg_dct = dict(zip(col_names_all, counts_agg_all))
+    counts_agg_dct = dict(zip(col_names_all, counts_agg_out))
+    counts_agg_dct_raw = dict(zip(col_names_all, counts_agg_all))
     with open(os.path.join(agg_out_dir, name), "wb") as agg_out_file:
         pickle.dump(counts_agg_dct, agg_out_file)
+    with open(os.path.join(agg_out_dir, name + '_raw'), "wb") as agg_out_file:
+        pickle.dump(counts_agg_dct_raw, agg_out_file)
 
 def load_counts(name, pattern, base_path, rows_path, genes_dir, agg_out_dir):
     with gzip.open(rows_path, "rb") as row_file:
