@@ -16,7 +16,7 @@ def process(counts_arr):
     res = logtrans - pcs @ regs
     return res
 
-def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, sums):
+def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
     counts_agg_arrs = []
     counts_arrs = []
     col_names_lst = []
