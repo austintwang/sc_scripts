@@ -59,6 +59,6 @@ if __name__ == '__main__':
     # dispatch(script_path, names, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 2000)
 
     genes_dir = os.path.join(base_dir, "genes_429")
-    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 2000)
+    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 10000)
 
 
