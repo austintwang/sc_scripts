@@ -119,13 +119,14 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
 
-        total_counts_dir = os.path.join(gene_dir, "total_counts")
+        total_counts_dir = os.path.join(gene_dir, "total_counts_processed")
         # print(ignore_total) ####
         if ignore_total or (not os.path.isdir(total_counts_dir)):
             # print(ignore_total or (not os.isdir(total_counts_dir))) ####
             total_counts = False
         else:
-            total_counts = {"_all": {}}
+            # total_counts = {"_all": {}}
+            total_counts = {}
             fnames = os.listdir(total_counts_dir)
             cell_types = counts_process_fn(fnames)
             for fname, cell_type in zip(fnames, cell_types):
@@ -133,10 +134,10 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
                 with open(path, "rb") as count_file:
                     counts = pickle.load(count_file)
                     total_counts.setdefault(cell_type, {}).update(counts)
-                    for k, v in counts.items():
-                        # print(k) ####
-                        total_counts["_all"].setdefault(k, 0)
-                        total_counts["_all"][k] += v
+                    # for k, v in counts.items():
+                    #     # print(k) ####
+                    #     total_counts["_all"].setdefault(k, 0)
+                    #     total_counts["_all"][k] += v
             # print(total_counts) ####
 
 
