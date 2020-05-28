@@ -36,7 +36,7 @@ def load_data(counts_paths, col_paths, row_names):
             counts_agg_dict.setdefault(sample, 0)
             counts_agg_dict[sample] += counts
 
-        for sample, counts in zip(col_names, counts_agg):
+        for sample, counts in zip(col_names, counts_arr):
             counts_agg_dict.setdefault(sample, 0)
             counts_agg_dict[sample] += counts
 
