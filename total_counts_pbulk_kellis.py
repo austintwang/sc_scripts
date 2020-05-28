@@ -37,12 +37,12 @@ def load_data(counts_paths, col_paths, row_names):
             counts_agg_dict[sample] += counts
 
         for sample, counts in zip(col_names, counts_arr):
-            counts_agg_dict.setdefault(sample, 0)
-            counts_agg_dict[sample] += counts
+            counts_dict.setdefault(sample, 0)
+            counts_dict[sample] += counts
 
     samples = list(counts_dict.keys())
-    counts_arr = np.stack(counts_dict[i] for i in samples)
-    counts_agg_arr = np.stack(counts_agg_dict[i] for i in samples)
+    counts_arr = np.stack([counts_dict[i] for i in samples])
+    counts_agg_arr = np.stack([counts_agg_dict[i] for i in samples])
 
     return samples, counts_arr, counts_agg_arr
 
