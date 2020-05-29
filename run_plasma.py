@@ -234,12 +234,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     else:
                         processed_counts = False
 
-                    select_counts = np.logical_and.reduce([
-                        np.logical_xor(partitions == split, all_but),
-                        inputs["counts1"] >= 1, 
-                        inputs["counts2"] >= 1, 
-                        np.logical_not(np.isnan(inputs["overdispersion"]))
-                    ], axis=0)
+                    select_counts = np.logical_xor(partitions == split, all_but)
                     result["split"] = split
                     result["effective_sample_size"] = np.sum(select_counts)
                     result["sample_size"] = select_counts.size
@@ -254,6 +249,13 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["num_cells"] = inputs["num_cells"][select_counts]
                     if processed_counts:
                         inputs["counts_norm"] = inputs["counts_norm"][select_counts]
+
+                    inputs["mask_imbalance"] = np.logical_and.reduce([
+                        inputs["counts1"] >= 1, 
+                        inputs["counts2"] >= 1, 
+                        np.logical_not(np.isnan(inputs["overdispersion"]))
+                    ], axis=0)
+                    inputs["mask_total_exp"] = np.logical_not(np.isnan(inputs["counts_total"]))
 
                     result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
                     result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
