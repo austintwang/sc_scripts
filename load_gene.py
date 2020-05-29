@@ -138,7 +138,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
                     #     # print(k) ####
                     #     total_counts["_all"].setdefault(k, 0)
                     #     total_counts["_all"][k] += v
-            print(total_counts) ####
+            # print(total_counts) ####
 
 
         agg_counts = {}
