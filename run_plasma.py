@@ -281,13 +281,17 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         inputs["hap1"] = inputs["hap1"][:, snps_in_filter]
                         inputs["hap2"] = inputs["hap2"][:, snps_in_filter]
 
-                    haps_comb = inputs["hap1"] + inputs["hap2"]
+                    haps_comb = (inputs["hap1"] + inputs["hap2"])[mask_total_exp]
+                    haps_diff = (inputs["hap1"] - inputs["hap2"])[mask_imbalance]
 
-                    if np.size(inputs["counts1"]) <= 1:
+                    if np.size(inputs["counts1"][mask_imbalance]) <= 1:
                         result["data_error"] = "Insufficient Read Counts"
                         continue
 
-                    informative_snps = np.nonzero(np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)))[0]
+                    informative_snps = np.nonzero(np.logical_and([
+                        np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)),
+                        np.logical_not(np.all(haps_diff == haps_diff[0,:], axis=0)),
+                    ]))[0]
                     result["informative_snps"] = informative_snps
                     result["num_snps_total"] = np.size(inputs["snp_ids"])
                     result["snp_ids"] = inputs["snp_ids"]
