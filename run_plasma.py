@@ -210,7 +210,10 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     all_complete = True
     for all_but in [False, True]:
         for split in range(len(splits)):
+            select_counts = np.logical_xor(partitions == split, all_but)
             results = {}
+            results["hap_A"] = inputs_all["hap1"][select_counts]
+            results["hap_B"] = inputs_all["hap2"][select_counts]
             out_prefix = "x" if all_but else "i"
             output_path = output_path_base.format(out_prefix + str(split))
             for cluster, inputs in clusters.items():
@@ -235,7 +238,6 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     else:
                         processed_counts = False
 
-                    select_counts = np.logical_xor(partitions == split, all_but)
                     result["split"] = split
                     result["effective_sample_size"] = np.sum(select_counts)
                     result["sample_size"] = select_counts.size
@@ -298,11 +300,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     result["snp_ids"] = inputs["snp_ids"]
                     result["num_snps_informative"] = np.count_nonzero(informative_snps)
 
-                    inputs["hap_A"] = inputs["hap1"].astype(np.int)
-                    inputs["hap_B"] = inputs["hap2"].astype(np.int)
-
                     inputs["hap1"] = inputs["hap1"][:, informative_snps]
                     inputs["hap2"] = inputs["hap2"][:, informative_snps]
+
+                    inputs["hap_A"] = inputs["hap1"].astype(np.int)
+                    inputs["hap_B"] = inputs["hap2"].astype(np.int)
 
                     inputs["num_causal_prior"] = inputs["num_causal"]
 
@@ -314,8 +316,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["counts_B"] = inputs["counts2"].astype(np.int)
                     inputs["total_exp"] = inputs["counts_total"].astype(float)
 
-                    result["hap_A"] = inputs["hap_A"]
-                    result["hap_B"] = inputs["hap_B"]
+                    
                     result["counts_A"] = inputs["counts_A"]
                     result["counts_B"] = inputs["counts_B"]
                     result["total_exp"] = inputs["total_exp"]
