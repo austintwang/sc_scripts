@@ -288,10 +288,10 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         result["data_error"] = "Insufficient Read Counts"
                         continue
 
-                    informative_snps = np.nonzero(np.logical_and([
+                    informative_snps = np.nonzero(np.logical_and(
                         np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)),
                         np.logical_not(np.all(haps_diff == haps_diff[0,:], axis=0)),
-                    ]))[0]
+                    ))[0]
                     result["informative_snps"] = informative_snps
                     result["num_snps_total"] = np.size(inputs["snp_ids"])
                     result["snp_ids"] = inputs["snp_ids"]
