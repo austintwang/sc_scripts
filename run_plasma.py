@@ -212,7 +212,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             results = {}
             out_prefix = "x" if all_but else "i"
             output_path = output_path_base.format(out_prefix + str(split))
-            for cluster, inputs in clusters.items():
+            for cluster, inputs in clusters.ite1ms():
                 result = results.setdefault(cluster, {})
                 try:
                     inputs = inputs.copy()
@@ -281,8 +281,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         inputs["hap1"] = inputs["hap1"][:, snps_in_filter]
                         inputs["hap2"] = inputs["hap2"][:, snps_in_filter]
 
-                    haps_comb = (inputs["hap1"] + inputs["hap2"])[mask_total_exp]
-                    haps_diff = (inputs["hap1"] - inputs["hap2"])[mask_imbalance]
+                    haps_comb = (inputs["hap1"] + inputs["hap2"])[mask_total_exp, :]
+                    haps_diff = (inputs["hap1"] - inputs["hap2"])[mask_imbalance, :]
 
                     if np.size(inputs["counts1"][mask_imbalance]) <= 1:
                         result["data_error"] = "Insufficient Read Counts"
