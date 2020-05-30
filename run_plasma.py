@@ -45,6 +45,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
     shape_orig = np.shape(inputs["snp_ids"])
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
+    print(shape_orig, causal_set_inf.shape, informative_snps.shape) ####
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
