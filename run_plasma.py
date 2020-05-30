@@ -270,9 +270,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     if processed_counts:
                         # print(inputs["counts_total"]) ####
                         # print(inputs["counts_norm"]) ####
-                        print(processed_counts) ####
-                        print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
-                        print(np.mean(inputs["counts_norm"]) / inputs["counts_norm"]) ####
+                        # print(processed_counts) ####
+                        # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
+                        # print(np.mean(inputs["counts_norm"]) / inputs["counts_norm"]) ####
                         inputs["counts_total"] = inputs["counts_total"] * 1e6 / inputs["counts_norm"]
                         result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
                         # print(inputs["counts_total"]) ####
@@ -321,7 +321,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["total_exp"] = inputs["counts_total"].astype(float)
                     # print(inputs["counts_norm"][inputs["mask_total_exp"]]) ####
                     # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
-                    # print(inputs["total_exp"][inputs["mask_total_exp"]]) ####
+                    print(inputs["total_exp"][inputs["mask_total_exp"]]) ####
 
                     
                     result["counts_A"] = inputs["counts_A"]
