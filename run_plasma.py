@@ -259,7 +259,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         np.logical_not(np.isnan(inputs["overdispersion"]))
                     ], axis=0)
                     inputs["mask_total_exp"] = mask_total_exp = np.logical_not(np.isnan(inputs["counts_total"]))
-                    print(inputs["counts_total"][mask_total_exp]) ####
+                    # print(inputs["counts_total"][mask_total_exp]) ####
 
                     result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
                     result["avg_counts_mapped"] = np.nanmean(inputs["counts1"] + inputs["counts2"])
@@ -316,6 +316,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["counts_A"] = inputs["counts1"].astype(np.int)
                     inputs["counts_B"] = inputs["counts2"].astype(np.int)
                     inputs["total_exp"] = inputs["counts_total"].astype(float)
+                    print(inputs["total_exp"][inputs["mask_total_exp"]]) ####
 
                     
                     result["counts_A"] = inputs["counts_A"]
