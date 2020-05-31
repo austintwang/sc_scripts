@@ -223,7 +223,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs.update(inputs_all)
                     print(cluster, split, all_but) ####
                     # print(inputs["total_counts"].keys()) ####
-                    print(inputs["total_counts"].keys()) ####
+                    # print(inputs["total_counts"].keys()) ####
                     if inputs["total_counts"] and inputs["total_counts"].get(cluster, False):
                         processed_counts = True
                         # print(inputs["total_counts"][cluster]) ####
@@ -323,7 +323,6 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
                     print(inputs["total_exp"][inputs["mask_total_exp"]]) ####
 
-                    
                     result["counts_A"] = inputs["counts_A"]
                     result["counts_B"] = inputs["counts_B"]
                     result["total_exp"] = inputs["total_exp"]
