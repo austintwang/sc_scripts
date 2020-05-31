@@ -88,7 +88,7 @@ def load_counts(base_path, rows_path, genes_dir, agg_out_dir):
 
 if __name__ == '__main__':
     base_dir = "/agusevlab/awang/sc_kellis"
-    genes_dir = os.path.join(base_dir, "genes")
+    genes_dir = os.path.join(base_dir, "genes_429")
     agg_out_dir = os.path.join(base_dir, "agg_counts_processed")
 
     data_dir = os.path.join(base_dir, "snRNAseq_PFC_eQTL")
