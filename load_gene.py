@@ -98,6 +98,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
     else:
         with open(total_counts_norm_path, "rb") as total_counts_norm_file:
             total_counts_norm = pickle.load(total_counts_norm_file)
+    print(total_counts_norm.keys()) ####
 
     radius = int(radius)
     min_maf = float(min_maf)
