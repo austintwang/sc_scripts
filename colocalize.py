@@ -202,7 +202,8 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             for fg in model_flavors_gwas:
                 for fq in model_flavors_qtl:
                     try:
-                        clpps = fm_res["ppas_{0}".format(fq)] * result["ppas_{0}".format(fg)]
+                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / np.nansum(fm_res["ppas_{0}".format(fq)])
+                        clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                         # print(fm_res["ppas_{0}".format(fq)]) ####
                         # print(clpps) ####
                         h4 = np.nansum(clpps)
