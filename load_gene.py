@@ -10,6 +10,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
     genotypes_list = []
     markers = [] 
     marker_ids = []
+    marker_alleles = []
     vcf = pysam.VariantFile(vcf_path)
     samples = vcf.header.samples
     for record in vcf.fetch(contig, start, end):
@@ -34,12 +35,13 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
             genotypes_list.append(record_gens)
             markers.append((contig, record.pos-1,),)
             marker_ids.append(record.id) 
+            marker_alleles.append((record.ref, record.alt),)
 
     if len(genotypes_list) == 0:
         genotypes = np.array([])
     else:
         genotypes = np.stack(genotypes_list, axis=1)
-    return genotypes, samples, markers, marker_ids
+    return genotypes, samples, markers, marker_ids, marker_alleles
 
 def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
     # print(var_data) ####
@@ -108,7 +110,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
     if gene_name.split(".")[0] in tss_map:
         contig, start, end = boundaries_map[gene_name]
-        genotypes, samples, markers, marker_ids = read_vcf(vcf_path, contig, start, end)
+        genotypes, samples, markers, marker_ids, marker_alleles = read_vcf(vcf_path, contig, start, end)
         samples = sample_process_fn(samples)
         sample_gen_map = dict([(val, ind) for ind, val in enumerate(samples)])
         marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
@@ -116,7 +118,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
         contig, tss_pos = tss_map[gene_name.split(".")[0]]
         contig = contig[3:]
-        genotypes_nc, samples_nc, markers_nc, marker_ids_nc = read_vcf(
+        genotypes_nc, samples_nc, markers_nc, marker_ids_nc, marker_alleles_nc = read_vcf(
             vcf_path, contig, max(0, tss_pos - radius), tss_pos + radius + 1, min_maf=min_maf, min_info=min_info
         )
         samples_nc = sample_process_fn(samples_nc)
@@ -160,6 +162,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "samples": samples_nc, 
             "markers": markers_nc, 
             "marker_ids": marker_ids_nc,
+            "marker_alleles": marker_alleles_nc,
             "cell_counts": agg_counts,
             "total_counts": total_counts,
             "counts_norm": total_counts_norm
