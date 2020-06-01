@@ -572,7 +572,7 @@ def get_info(run_name, genes_dir, cluster_map_path, out_dir):
     #     "TopSNPID",
     #     "Split",
     # ]
-    data_df = make_df(run_name, 0, genes_dir, cluster_map_path, None)
+    data_df = make_df(run_name, "i0", genes_dir, cluster_map_path, None)
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
@@ -582,12 +582,12 @@ def get_info(run_name, genes_dir, cluster_map_path, out_dir):
     plot_sets(data_df, out_dir)
 
 def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
-    df_train = make_df(run_name, 0, genes_dir, cluster_map_path, None)
+    df_train = make_df(run_name, "x0", genes_dir, cluster_map_path, None)
     top_snps_train = {}
     for index, row in df_train.iterrows():
         top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
     # print(top_snps_train) ####
-    df_test = make_df(run_name, 1, genes_dir, cluster_map_path, top_snps_train)
+    df_test = make_df(run_name, "x1", genes_dir, cluster_map_path, top_snps_train)
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     # print(df_train) ####
     # print(df_test) ####
