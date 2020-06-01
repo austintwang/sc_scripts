@@ -35,7 +35,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
             genotypes_list.append(record_gens)
             markers.append((contig, record.pos-1,),)
             marker_ids.append(record.id) 
-            marker_alleles.append((record.ref, record.alt),)
+            marker_alleles.append((record.ref, record.alts[0]),)
 
     if len(genotypes_list) == 0:
         genotypes = np.array([])
