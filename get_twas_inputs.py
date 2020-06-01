@@ -11,9 +11,8 @@ def write_gene(gene_name, gene_path_base, out_path_base):
     out_gene_dir = os.path.join(out_path_base, gene_name)
     os.makedirs(out_gene_dir, exist_ok=True)
     print(gene_name) ####
-    try:
-        np.savetxt(os.path.join(out_gene_dir, "hapA.txt"), plasma_data["hap_A"], fmt='%i')
-        np.savetxt(os.path.join(out_gene_dir, "hapB.txt"), plasma_data["hap_B"], fmt='%i')
+    np.savetxt(os.path.join(out_gene_dir, "hapA.txt"), plasma_data["hap_A"], fmt='%i')
+    np.savetxt(os.path.join(out_gene_dir, "hapB.txt"), plasma_data["hap_B"], fmt='%i')
 
     for cluster, result in plasma_data.items():
         # print(cluster) ####
