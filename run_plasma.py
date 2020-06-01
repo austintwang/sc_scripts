@@ -160,8 +160,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             "hap1": gene_data["genotypes"][:,:,0],
             "hap2": gene_data["genotypes"][:,:,1],
             "sample_names": gene_data["samples"],
-            "snp_ids": gene_data["marker_ids"],
-            "snp_pos": gene_data["markers"],
+            "snp_ids": np.array(gene_data["marker_ids"]),
+            "snp_pos": np.array(gene_data["markers"]),
+            "snp_alleles": np.array(gene_data["marker_alleles"]),
             "total_counts": gene_data.get("total_counts", False),
             "agg_counts": gene_data.get("counts_norm", False)
         }
@@ -211,9 +212,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
     for all_but in [False, True]:
         for split in range(len(splits)):
             select_counts = np.logical_xor(partitions == split, all_but)
-            results = {}
-            results["hap_A"] = inputs_all["hap1"][select_counts]
-            results["hap_B"] = inputs_all["hap2"][select_counts]
+            results = {"_gen": {}}
+            results["_gen"]["hap_A"] = inputs_all["hap1"][select_counts]
+            results["_gen"]["hap_B"] = inputs_all["hap2"][select_counts]
+            results["_gen"]["snp_ids"] = inputs_all["snp_ids"][select_counts]
+            results["_gen"]["snp_alleles"] = inputs_all["snp_alleles"][select_counts]
             out_prefix = "x" if all_but else "i"
             output_path = output_path_base.format(out_prefix + str(split))
             for cluster, inputs in clusters.items():
