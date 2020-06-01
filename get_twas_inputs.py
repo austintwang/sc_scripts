@@ -15,10 +15,12 @@ def write_gene(gene_name, gene_path_base, out_path_base):
     np.savetxt(os.path.join(out_gene_dir, "hapB.txt"), plasma_data["hap_B"], fmt='%i')
 
     for cluster, result in plasma_data.items():
+        if cluster == "hap_A" or cluster == "hap_B":
+            continue
         # print(cluster) ####
         # print(result.keys()) ####
         cluster_dir = os.path.join(out_gene_dir, cluster)
-        print(result) ####
+        # print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         try:
             for i in os.listdir(cluster_dir):
