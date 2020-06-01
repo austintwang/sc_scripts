@@ -18,7 +18,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
         # print(cluster) ####
         # print(result.keys()) ####
         cluster_dir = os.path.join(out_gene_dir, cluster)
-        # print(result) ####
+        print(result) ####
         os.makedirs(cluster_dir, exist_ok=True)
         try:
             for i in os.listdir(cluster_dir):
