@@ -217,6 +217,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             results["_gen"]["hap_B"] = inputs_all["hap2"][select_counts]
             results["_gen"]["snp_ids"] = inputs_all["snp_ids"]
             results["_gen"]["snp_alleles"] = inputs_all["snp_alleles"]
+            results["_gen"]["snp_pos"] = inputs_all["snp_pos"]
             out_prefix = "x" if all_but else "i"
             output_path = output_path_base.format(out_prefix + str(split))
             for cluster, inputs in clusters.items():
