@@ -17,7 +17,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
     pos = plasma_data["_gen"]["snp_pos"]
     sid = plasma_data["_gen"]["snp_ids"]
     sal = plasma_data["_gen"]["snp_alleles"]
-    snp_data = np.stack((np.array(i) for i in zip(*pos, sid, *sal)),)
+    snp_data = np.stack((np.array([i[0][0], i[0][1] + 1, i[1], i[2][0], i[2][1]]) for i in zip(pos, sid, sal)),)
     np.savetxt(os.path.join(out_gene_dir, "snps.txt"), snp_data, fmt="%s")
 
     for cluster, result in plasma_data.items():
