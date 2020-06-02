@@ -77,19 +77,19 @@ if __name__ == '__main__':
         "cell_type_aliases": aliases_kellis
     }
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis, 
-        params_path_kellis, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     # dispatch(
     #     script_path, 
@@ -138,19 +138,19 @@ if __name__ == '__main__':
         "splits": [1.],
     }
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis, 
-    #     params_path_kellis, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis, 
+        params_path_kellis, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
