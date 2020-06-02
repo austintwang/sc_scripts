@@ -13,7 +13,11 @@ def write_gene(gene_name, gene_path_base, out_path_base):
     print(gene_name) ####
     np.savetxt(os.path.join(out_gene_dir, "hapA.txt"), plasma_data["_gen"]["hap_A"], fmt='%i')
     np.savetxt(os.path.join(out_gene_dir, "hapB.txt"), plasma_data["_gen"]["hap_B"], fmt='%i')
-    np.fromiter(, str)
+    pos = plasma_data["_gen"]["snp_pos"]
+    sid = plasma_data["_gen"]["snp_ids"]
+    sal = plasma_data["_gen"]["snp_alleles"]
+    snp_data = np.stack((np.array(i) for i in zip(*pos, sid, *sal)),)
+    np.savetxt(os.path.join(cluster_dir, "snps.txt"), snp_data, fmt="%s")
 
     for cluster, result in plasma_data.items():
         cluster_dir = os.path.join(out_gene_dir, cluster)
@@ -30,7 +34,7 @@ def write_gene(gene_name, gene_path_base, out_path_base):
             np.savetxt(os.path.join(cluster_dir, "countsB.txt"), result["counts_B"])
             np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), result["total_exp"])
             np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), np.sqrt(result["imbalance_errors"]))
-            np.savetxt(os.path.join(cluster_dir, "snpIds.txt"), result["snp_ids"], fmt="%s")
+            # np.savetxt(os.path.join(cluster_dir, "snpIds.txt"), result["snp_ids"], fmt="%s")
         except KeyError:
             for i in os.listdir(cluster_dir):
                 os.remove(os.path.join(cluster_dir, i))
