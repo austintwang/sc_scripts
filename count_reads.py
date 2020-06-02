@@ -113,7 +113,7 @@ class GeneFinder(object):
 
     def query(self, query_pos, checkpoint):
         if self.intervals[self.idx][1] > query_pos[1]:
-            print(self.idx, self.idx_checkpoint) ####
+            print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
             self.idx = self.idx_checkpoint
             self.window = self.window_checkpoint
 
