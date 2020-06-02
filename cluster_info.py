@@ -443,18 +443,6 @@ def plot_xcells(df_train, df_test, out_dir):
             # print(xw) ####
             # print(yw) ####
 
-    title = "Cross-Cell Cross-Validation Slopes"
-    make_heatmap(slopes, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
-
-    title = "Cross-Cell Cross-Validation Slope Standard Errors"
-    make_heatmap(slope_ses, cluster_order, title, os.path.join(out_dir, "xcell_stats_se.svg"))
-
-    title = "Cross-Cell Cross-Validation Significance from Zero"
-    make_heatmap(nlp_0s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_0.svg"))
-
-    title = "Cross-Cell Cross-Validation Significance from One"
-    make_heatmap(nlp_1s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_1.svg"))
-
     title = "Cross-Cell Cross-Validation Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_pi.svg"))
 
