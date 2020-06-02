@@ -18,12 +18,12 @@ class ReadBuffer(object):
     def add_read(self, chrm, posns, cell, genotype):
         markers = sorted([(chrm, pos) for pos in posns])
         # print(markers) ####
-        for marker in markers:
+        for i, marker in enumerate(markers):
             if marker not in self.buffer_data:
                 retire_marker = self.buffer[self.pos]
                 if retire_marker is not None:
                     retire_data = self.buffer_data.pop(retire_marker)
-                    self.marker_buf.add_marker(retire_marker, retire_data)
+                    self.marker_buf.add_marker(retire_marker, retire_data, i==0)
                 
                 self.buffer[self.pos] = marker
                 self.buffer_data[marker] = {}
@@ -38,7 +38,7 @@ class ReadBuffer(object):
             marker = self.buffer[idx]
             if marker is not None:
                 retire_data = self.buffer_data.pop(marker)
-                self.marker_buf.add_marker(marker, retire_data)
+                self.marker_buf.add_marker(marker, retire_data, i==0)
 
         self.marker_buf.purge()
         self.buffer = self.depth * [None]
@@ -55,10 +55,10 @@ class MarkerBuffer(object):
         self.pos = 0
         self.gene_finder = gene_finder
 
-    def add_marker(self, marker, data):
+    def add_marker(self, marker, data, checkpoint):
         # print(marker) ####
         # print(data) ####
-        genes = self.gene_finder.query(marker)
+        genes = self.gene_finder.query(marker, checkpoint)
         for g in genes:
             if g not in self.buffer_data:
                 retire_gene = self.buffer[self.pos]
@@ -107,10 +107,16 @@ class GeneFinder(object):
         self.intervals = sorted(self.exons)
         self.idx = 0
         self.window = set([])
+        self.idx_checkpoint = 0
+        self.window_checkpoint = set([])
         # print(self.intervals[0], self.intervals[-1]) ####
 
-    def query(self, query_pos):
-        while self.intervals[self.idx][1] <= query_pos[1]:
+    def query(self, query_pos, checkpoint):
+        if self.intervals[self.idx][1] > query_pos[1]:
+            self.idx = self.idx_checkpoint
+            self.window = self.window_checkpoint
+
+        while (self.intervals[self.idx][1] <= query_pos[1]) or (self.intervals[self.idx][2] < self.contig_map[query_pos[0]]):
             curr_interval = self.intervals[self.idx]
             if curr_interval[0] > self.contig_map[query_pos[0]]:
                 break
@@ -134,6 +140,9 @@ class GeneFinder(object):
             self.window.remove(i)
 
         print(query_pos, intersects) ####
+
+        self.idx_checkpoint = self.idx
+        self.window_checkpoint = self.window.copy()
 
         return [i[3] for i in intersects]
 
@@ -240,7 +249,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                     intersects = list(map(int, intersects_raw[5:].split(",")))
                     # print(intersects, intersects_raw) ####
                 except ValueError:
-                    continue
+                    continue 
 
                 readbuf.add_read(chromosome, intersects, cell, genotype)
 
