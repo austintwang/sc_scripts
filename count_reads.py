@@ -133,7 +133,7 @@ class GeneFinder(object):
         for i in retires:
             self.window.remove(i)
 
-        print(intersects) ####
+        print(query_pos, intersects) ####
 
         return [i[3] for i in intersects]
 
