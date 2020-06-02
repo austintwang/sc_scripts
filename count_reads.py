@@ -142,8 +142,9 @@ class GeneFinder(object):
 
         print(query_pos, intersects) ####
 
-        self.idx_checkpoint = self.idx
-        self.window_checkpoint = self.window.copy()
+        if checkpoint:
+            self.idx_checkpoint = self.idx
+            self.window_checkpoint = self.window.copy()
 
         return [i[3] for i in intersects]
 
