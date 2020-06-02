@@ -107,7 +107,7 @@ class GeneFinder(object):
         self.intervals = sorted(self.exons)
         self.idx = 0
         self.window = set([])
-        print(self.exons[-1]) ####
+        print(self.intervals[0], self.intervals[-1]) ####
 
     def query(self, query_pos):
         while self.intervals[self.idx][1] <= query_pos[1]:
