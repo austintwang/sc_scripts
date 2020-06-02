@@ -16,7 +16,7 @@ class ReadBuffer(object):
         self.pos = 0
 
     def add_read(self, chrm, posns, cell, genotype):
-        markers = [(chrm, pos) for pos in posns]
+        markers = sorted([(chrm, pos) for pos in posns])
         # print(markers) ####
         for marker in markers:
             if marker not in self.buffer_data:
