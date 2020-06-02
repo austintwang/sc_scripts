@@ -102,11 +102,12 @@ class GeneFinder(object):
     def __init__(self, exons, contig_order):
         print(exons[0]) ####
         self.contig_map = {val: ind for ind, val in enumerate(contig_order)}
-        print(self.contig_map) ####
+        # print(self.contig_map) ####
         self.exons = [tuple([self.contig_map[i[0]]] + i[1:]) for i in exons]
         self.intervals = sorted(self.exons)
         self.idx = 0
         self.window = set([])
+        print(self.exons) ####
 
     def query(self, query_pos):
         while self.intervals[self.idx][1] <= query_pos[1]:
