@@ -17,7 +17,7 @@ class ReadBuffer(object):
 
     def add_read(self, chrm, start, posns, cell, genotype):
         if len(posns) == 0:
-            continue
+            return
 
         markers = [(chrm, start, True),]
         markers.extend((chrm, pos, False) for pos in posns)
