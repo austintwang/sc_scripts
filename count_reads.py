@@ -121,9 +121,9 @@ class GeneFinder(object):
         if (
             (
                 (self.intervals[self.idx][1] > query_pos[1]) 
-                and (self.intervals[self.idx][2] == self.contig_map[query_pos[0]])
+                and (self.intervals[self.idx][0] == self.contig_map[query_pos[0]])
             )
-            or (self.intervals[self.idx][2] > self.contig_map[query_pos[0]])
+            or (self.intervals[self.idx][0] > self.contig_map[query_pos[0]])
         ):
             print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
             self.idx = self.idx_checkpoint
