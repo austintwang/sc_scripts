@@ -15,8 +15,9 @@ class ReadBuffer(object):
         self.marker_buf = marker_buf
         self.pos = 0
 
-    def add_read(self, chrm, posns, cell, genotype):
-        markers = sorted([(chrm, pos) for pos in posns])
+    def add_read(self, chrm, start, posns, cell, genotype):
+        markers = [(chrm, start, True),]
+        markers.extend((chrm, pos, False) for pos in posns)
         # print(markers) ####
         for i, marker in enumerate(markers):
             if marker not in self.buffer_data:
@@ -58,7 +59,7 @@ class MarkerBuffer(object):
     def add_marker(self, marker, data, checkpoint):
         # print(marker) ####
         # print(data) ####
-        genes = self.gene_finder.query(marker, checkpoint)
+        genes = self.gene_finder.query(marker)
         for g in genes:
             if g not in self.buffer_data:
                 retire_gene = self.buffer[self.pos]
@@ -70,7 +71,8 @@ class MarkerBuffer(object):
                 self.buffer_data[g] = {}
                 self.pos = (self.pos + 1) % self.depth
 
-            self.buffer_data[g][marker] = data
+            if not marker[2]:
+                self.buffer_data[g][marker[:2]] = data
 
     def purge(self):
         for i in range(self.pos, self.pos + self.depth):
@@ -111,7 +113,8 @@ class GeneFinder(object):
         self.window_checkpoint = set([])
         # print(self.intervals[0], self.intervals[-1]) ####
 
-    def query(self, query_pos, checkpoint):
+    def query(self, query_pos):
+        checkpoint = query_pos[2]
         if self.intervals[self.idx][1] > query_pos[1]:
             print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
             self.idx = self.idx_checkpoint
@@ -212,6 +215,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 # print(line) ####
                 cols = line.split("\t")
                 chromosome = cols[2]
+                start = int(cols[3])
                 tag_data = {}
                 for tag in cols[11:]:
                     tag_name = tag[:2]
@@ -253,11 +257,11 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 except ValueError:
                     continue 
 
-                readbuf.add_read(chromosome, intersects, cell, genotype)
+                readbuf.add_read(chromosome, start, intersects, cell, genotype)
 
     readbuf.purge()
 
-    print(chromosome, intersects) ####
+    # print(chromosome, intersects) ####
 
 def load_exons(boundaries_path):
     exons = []
