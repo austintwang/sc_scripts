@@ -32,7 +32,8 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             else:
                 print(gene_name) ####
                 try:
-                    top_snp = plasma_clust["snp_ids"].index(top_snps[c])
+                    # top_snp = plasma_clust["snp_ids"].index(top_snps[c])
+                    top_snp = np.argwhere(plasma_clust["snp_ids"] == top_snps[c])[0]
                 except (ValueError, KeyError):
                     print("False") ####
                     ppa = False
@@ -71,7 +72,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)
+    genes = os.listdir(genes_dir)[:5000]
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
