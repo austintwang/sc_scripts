@@ -2,6 +2,7 @@ import os
 import sys
 import pickle
 import subprocess
+import time
 import numpy as np
 
 def dispatch(script_path, names, data_dir, params, params_path, filter_path, cluster_map_path, barcodes_map_path, overdispersion_path, memory, fails_only=False):
@@ -28,6 +29,7 @@ def dispatch(script_path, names, data_dir, params, params_path, filter_path, clu
         jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
+    limit = "sbatch: error: QOSMaxSubmitJobPerUserLimit"
     for i in jobs:
         while True:
             try:
@@ -41,6 +43,9 @@ def dispatch(script_path, names, data_dir, params, params_path, filter_path, clu
                 if err == timeout:
                     print("Retrying Submit")
                     continue
+                elif err.startswith(limit):
+                    print("Waiting for queue to clear...")
+                    time.sleep(600)
                 else:
                     raise e
 
@@ -172,19 +177,19 @@ if __name__ == '__main__':
         "splits": [0.5, 0.5],
     })
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis_xval, 
-    #     params_path_kellis, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -206,19 +211,19 @@ if __name__ == '__main__':
         "splits": [0.2, 0.2, 0.2, 0.2, 0.2],
     })
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_xval, 
-        params_path_kellis, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_xval, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     # dispatch(
     #     script_path, 
