@@ -125,7 +125,7 @@ class GeneFinder(object):
             )
             or (self.intervals[self.idx][0] > self.contig_map[query_pos[0]])
         ):
-            print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
+            # print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
             self.idx = self.idx_checkpoint
             self.window = self.window_checkpoint
 
@@ -168,7 +168,7 @@ class GeneFinder(object):
         for i in retires:
             self.window.remove(i)
 
-        print(query_pos, intersects) ####
+        # print(query_pos, intersects) ####
 
         if checkpoint:
             self.idx_checkpoint = self.idx
