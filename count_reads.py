@@ -16,6 +16,9 @@ class ReadBuffer(object):
         self.pos = 0
 
     def add_read(self, chrm, start, posns, cell, genotype):
+        if len(posns) == 0:
+            continue
+
         markers = [(chrm, start, True),]
         markers.extend((chrm, pos, False) for pos in posns)
         # print(markers) ####
@@ -115,22 +118,44 @@ class GeneFinder(object):
 
     def query(self, query_pos):
         checkpoint = query_pos[2]
-        if self.intervals[self.idx][1] > query_pos[1]:
+        if (
+            (
+                (self.intervals[self.idx][1] > query_pos[1]) 
+                and (self.intervals[self.idx][2] == self.contig_map[query_pos[0]])
+            )
+            or (self.intervals[self.idx][2] > self.contig_map[query_pos[0]])
+        ):
             print(self.intervals[self.idx], self.intervals[self.idx_checkpoint]) ####
             self.idx = self.idx_checkpoint
             self.window = self.window_checkpoint
 
-        while (self.intervals[self.idx][1] <= query_pos[1]) or (self.intervals[self.idx][2] < self.contig_map[query_pos[0]]):
-            curr_interval = self.intervals[self.idx]
-            if curr_interval[0] > self.contig_map[query_pos[0]]:
+        while True:
+            next_interval = self.intervals.get(self.idx + 1)
+            if next_interval is None:
                 break
-            if curr_interval[0] < self.contig_map[query_pos[0]]:
+            if next_interval[0] > self.contig_map[query_pos[0]]:
+                break
+            if next_interval[1] > query_pos[1]:
+                break
+            if next_interval[0] < self.contig_map[query_pos[0]]:
                 self.idx += 1
-            elif curr_interval[2] < query_pos[1]: 
+            elif next_interval[2] < query_pos[1]: 
                 self.idx += 1
             else:
-                self.window.add(curr_interval)
+                self.window.add(next_interval)
                 self.idx += 1
+
+        # while (self.intervals[self.idx][1] <= query_pos[1]) or (self.intervals[self.idx][2] < self.contig_map[query_pos[0]]):
+        #     curr_interval = self.intervals[self.idx]
+        #     if curr_interval[0] > self.contig_map[query_pos[0]]:
+        #         break
+        #     if curr_interval[0] < self.contig_map[query_pos[0]]:
+        #         self.idx += 1
+        #     elif curr_interval[2] < query_pos[1]: 
+        #         self.idx += 1
+        #     else:
+        #         self.window.add(curr_interval)
+        #         self.idx += 1
 
         intersects = []
         retires = []
