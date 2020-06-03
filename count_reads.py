@@ -135,10 +135,10 @@ class GeneFinder(object):
             next_interval = self.intervals[self.idx + 1]
             if next_interval[0] > self.contig_map[query_pos[0]]:
                 break
-            if next_interval[1] > query_pos[1]:
-                break
             if next_interval[0] < self.contig_map[query_pos[0]]:
                 self.idx += 1
+            elif next_interval[1] > query_pos[1]:
+                break
             elif next_interval[2] < query_pos[1]: 
                 self.idx += 1
             else:
@@ -168,7 +168,7 @@ class GeneFinder(object):
         for i in retires:
             self.window.remove(i)
 
-        print(query_pos, self.contig_map[query_pos[0]], intersects, retires) ####
+        print(query_pos, intersects) ####
 
         if checkpoint:
             self.idx_checkpoint = self.idx
