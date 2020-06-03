@@ -168,7 +168,7 @@ class GeneFinder(object):
         for i in retires:
             self.window.remove(i)
 
-        print(query_pos, checkpoint, intersects) ####
+        print(query_pos, checkpoint, intersects, retires) ####
 
         if checkpoint:
             self.idx_checkpoint = self.idx
