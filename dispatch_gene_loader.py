@@ -2,6 +2,7 @@ import os
 import sys
 import pickle
 import subprocess
+import time
 import numpy as np
 
 def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_only, ignore_total, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, agg_counts_path, memory, fails_only=False):
@@ -25,6 +26,7 @@ def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_o
         jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
+    limit = "sbatch: error: QOSMaxSubmitJobPerUserLimit"
     for i in jobs:
         while True:
             try:
@@ -38,6 +40,9 @@ def dispatch(script_path, names, dataset_name, radius, min_maf, min_info, well_o
                 if err == timeout:
                     print("Retrying Submit")
                     continue
+                elif err.startswith(limit):
+                    print("Waiting for queue to clear...")
+                    time.sleep(600)
                 else:
                     raise e
 
