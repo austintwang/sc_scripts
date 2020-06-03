@@ -34,7 +34,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 try:
                     # top_snp = plasma_clust["snp_ids"].index(top_snps[c])
                     top_snp = np.argwhere(plasma_clust["snp_ids"] == top_snps[c])[0]
-                except (ValueError, KeyError):
+                except (ValueError, KeyError, IndexError):
                     print("False") ####
                     ppa = False
             data_clust = [
