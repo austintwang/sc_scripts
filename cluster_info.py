@@ -367,11 +367,12 @@ def make_heatmap(arr, order, title, result_path):
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-def plot_xcells(df_train, df_test, out_dir):
+def plot_xcells(df_train, df_test, out_dir, stat_name):
+    sn = stat_name
     df_tr_sig = df_train.loc[
         np.logical_and(
-            df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-            abs(df_train["TopSNPPhi"]) <= 5
+            df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
+            abs(df_train[f"TopSNP{sn}"]) <= 5
         )
     ]
     # df_ts_sig = df_test.loc[
@@ -404,9 +405,9 @@ def plot_xcells(df_train, df_test, out_dir):
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
             )
-            x = df_merged["TopSNPPhi_train"]
-            y = df_merged["TopSNPPhi_test"]
-            se = df_merged["TopSNPPhi_train"] / df_merged["TopSNPZPhi_train"]
+            x = df_merged[f"TopSNP{sn}_train"]
+            y = df_merged[f"TopSNP{sn}_test"]
+            se = df_merged[f"TopSNP{sn}_train"] / df_merged[f"TopSNPZ{sn}_train"]
             xw = np.nan_to_num(x / se)
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
@@ -424,14 +425,14 @@ def plot_xcells(df_train, df_test, out_dir):
             nlp_1s[ind_i, ind_j] = nlp_1
 
             num_sig_train = df_merged.shape[0]
-            num_sig_test = np.sum(df_merged["TopSNPNLPPhi_test"] >= -np.log10(0.05))
+            num_sig_test = np.sum(df_merged[f"TopSNPNLP{sn}_test"] >= -np.log10(0.05))
             storey_pis[ind_i, ind_j] = num_sig_test / num_sig_train
 
             make_scatter(
                 df_merged,
-                "TopSNPPhi_train",
-                "TopSNPPhi_test",
-                "TopSNPNLPPhi_test",
+                f"TopSNP{sn}_train",
+                f"TopSNP{sn}_test",
+                f"TopSNPNLP{sn}_test",
                 "Train Effect Size",
                 "Test Effect Size", 
                 "Test -log10 P",
@@ -446,7 +447,8 @@ def plot_xcells(df_train, df_test, out_dir):
     title = "Cross-Cell Cross-Validation Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_pi.svg"))
 
-def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
+def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name):
+    sn = stat_name
     clusters = {
         "_all": "All Cells",
         "Ex": "Excitatory Neuron",
@@ -463,8 +465,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
     for df_train, df_test in zip(dfs_train, dfs_test):
         df_tr_sig = df_train.loc[
             np.logical_and(
-                df_train["TopSNPNLPPhi"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-                abs(df_train["TopSNPPhi"]) <= 5
+                df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
+                abs(df_train[f"TopSNP{sn}"]) <= 5
             )
         ]
         slopes = np.zeros((len(cluster_order), len(cluster_order),),)
@@ -477,9 +479,9 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir):
                     on=["Gene"], 
                     suffixes=["_train", "_test"]
                 )
-                x = df_merged["TopSNPPhi_train"]
-                y = df_merged["TopSNPPhi_test"]
-                se = df_merged["TopSNPPhi_train"] / df_merged["TopSNPZPhi_train"]
+                x = df_merged[f"TopSNP{sn}_train"]
+                y = df_merged[f"TopSNP{sn}_test"]
+                se = df_merged[f"TopSNP{sn}_train"] / df_merged[f"TopSNPZ{sn}_train"]
                 xw = np.nan_to_num(x / se)
                 yw = np.nan_to_num(y / se)
                 slope = xw.dot(yw) / xw.dot(xw)
@@ -581,7 +583,8 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_test) ####
     # print(df_comb) ####
     plot_xval(df_comb, os.path.join(out_dir, "xvals"))
-    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"))
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"), "Phi")
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta")
     df_train.to_csv(os.path.join(out_dir, "train.csv"), sep="\t", index=False, na_rep="None")
     df_test.to_csv(os.path.join(out_dir, "test.csv"), sep="\t", index=False, na_rep="None")   
 
@@ -602,7 +605,8 @@ def get_info_xval_nfold(run_name, num_splits, genes_dir, cluster_map_path, out_d
     # print(df_train) ####
     # print(df_test) ####
     # print(df_comb) ####
-    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells"))
+    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells"), "Phi")
+    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells_beta"), "Beta")
      
 
 if __name__ == '__main__':
@@ -619,7 +623,7 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
