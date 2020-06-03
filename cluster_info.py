@@ -368,7 +368,7 @@ def make_heatmap(arr, order, title, result_path):
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-def plot_xcells(df_train, df_test, out_dir, stat_name):
+def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
     sn = stat_name
     df_tr_sig = df_train.loc[
         np.logical_and(
@@ -437,7 +437,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name):
                 "Train Effect Size",
                 "Test Effect Size", 
                 "Test -log10 P",
-                5,
+                cutoff,
                 "{0} to {1}".format(clusters[i], clusters[j]), 
                 os.path.join(out_dir, "xcell_{0}_{1}.svg".format(i, j)),
             )
@@ -584,8 +584,8 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_test) ####
     # print(df_comb) ####
     plot_xval(df_comb, os.path.join(out_dir, "xvals"))
-    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"), "Phi")
-    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta")
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"), "Phi", 5)
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta", 50)
     df_train.to_csv(os.path.join(out_dir, "train.csv"), sep="\t", index=False, na_rep="None")
     df_test.to_csv(os.path.join(out_dir, "test.csv"), sep="\t", index=False, na_rep="None")   
 
