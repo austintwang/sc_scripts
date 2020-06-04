@@ -44,15 +44,31 @@ def write_gene(gene_name, gene_path_base, out_path_base):
                 os.remove(os.path.join(cluster_dir, i))
             os.rmdir(cluster_dir)
 
-def get_twas_inputs(gene_path_base, out_path_base):
-    for gene in os.listdir(gene_path_base):
-        try:
-            write_gene(gene, gene_path_base, out_path_base)
-        except FileNotFoundError:
-          continue
+def get_twas_inputs(gene, gene_path_base, out_path_base, status_path):
+    with open(status_path, "w") as status_file:
+        status_file.write("")
+
+    try:
+        write_gene(gene, gene_path_base, out_path_base)
+    except FileNotFoundError:
+        pass
+
+    with open(status_path, "w") as status_file:
+        status_file.write("Complete")
 
 if __name__ == '__main__':
-    data_path_kellis = "/agusevlab/awang/sc_kellis"
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
-    out_dir_kellis = os.path.join(data_path_kellis, "twas_429")
-    get_twas_inputs(genes_dir_kellis, out_dir_kellis)
+    get_twas_inputs(*sys.argv[1:])
+
+
+# def get_twas_inputs(gene_path_base, out_path_base):
+#     for gene in os.listdir(gene_path_base):
+#         try:
+#             write_gene(gene, gene_path_base, out_path_base)
+#         except FileNotFoundError:
+#           continue
+
+# if __name__ == '__main__':
+#     data_path_kellis = "/agusevlab/awang/sc_kellis"
+#     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
+#     out_dir_kellis = os.path.join(data_path_kellis, "twas_429")
+#     get_twas_inputs(genes_dir_kellis, out_dir_kellis)

@@ -373,7 +373,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
     df_tr_sig = df_train.loc[
         np.logical_and(
             df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-            abs(df_train[f"TopSNP{sn}"]) <= 5
+            abs(df_train[f"TopSNP{sn}"]) <= cutoff
         )
     ]
     # df_ts_sig = df_test.loc[
@@ -448,7 +448,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
     title = "Cross-Cell Cross-Validation Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, "xcell_stats_pi.svg"))
 
-def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name):
+def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     sn = stat_name
     clusters = {
         "_all": "All Cells",
@@ -467,7 +467,7 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name):
         df_tr_sig = df_train.loc[
             np.logical_and(
                 df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-                abs(df_train[f"TopSNP{sn}"]) <= 5
+                abs(df_train[f"TopSNP{sn}"]) <= cutoff
             )
         ]
         slopes = np.zeros((len(cluster_order), len(cluster_order),),)
@@ -606,8 +606,8 @@ def get_info_xval_nfold(run_name, num_splits, genes_dir, cluster_map_path, out_d
     # print(df_train) ####
     # print(df_test) ####
     # print(df_comb) ####
-    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells"), "Phi")
-    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells_beta"), "Beta")
+    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells"), "Phi", 5)
+    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells_beta"), "Beta", 50)
      
 
 if __name__ == '__main__':
