@@ -624,9 +624,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
