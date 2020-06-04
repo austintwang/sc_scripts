@@ -2,6 +2,7 @@
 
 import os
 import pickle
+import sys
 import numpy as np
 
 def write_gene(gene_name, gene_path_base, out_path_base):
@@ -32,19 +33,21 @@ def write_gene(gene_name, gene_path_base, out_path_base):
         # print(cluster) ####
         # print(result.keys()) ####
         # print(result) ####
-        os.makedirs(cluster_dir, exist_ok=True)
         try:
-            for i in os.listdir(cluster_dir):
-                os.remove(os.path.join(cluster_dir, i))
-            np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  result["counts_A"])
-            np.savetxt(os.path.join(cluster_dir, "countsB.txt"), result["counts_B"])
-            np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), result["total_exp"])
-            np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), np.sqrt(result["imbalance_errors"]))
-            # np.savetxt(os.path.join(cluster_dir, "snpIds.txt"), result["snp_ids"], fmt="%s")
+            counts_A = result["counts_A"]
+            counts_B = result["counts_B"]
+            total_exp = result["total_exp"]
+            errs = np.sqrt(result["imbalance_errors"])
         except KeyError:
-            for i in os.listdir(cluster_dir):
-                os.remove(os.path.join(cluster_dir, i))
-            os.rmdir(cluster_dir)
+            continue
+
+        os.makedirs(cluster_dir, exist_ok=True)
+        # for i in os.listdir(cluster_dir):
+        #     os.remove(os.path.join(cluster_dir, i))
+        np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  counts_A)
+        np.savetxt(os.path.join(cluster_dir, "countsB.txt"), counts_B)
+        np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), total_exp)
+        np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), errs)
 
 def get_twas_inputs(gene, gene_path_base, out_path_base, status_path):
     with open(status_path, "w") as status_file:
