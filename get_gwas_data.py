@@ -10,10 +10,10 @@ def get_gwas_data(gwas_path, out_path):
         next(gwas_file)
         for line in gwas_file:
             data = line.decode('utf-8').split("\t")
+            if data[3] == 'Inf':
+                continue
             marker = data[0]
             zscr = float(data[3])
-            if zscr == np.inf:
-                continue
             markers[marker] = zscr
             try:
                 sample_sizes.append(int(float(data[4].rstrip())))
