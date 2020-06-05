@@ -24,10 +24,11 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node02,node13",
             script_path, gwas_name, name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path
         ]
-        print(" ".join(cmd))
+        # print(" ".join(cmd))
         jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
+    limit = "sbatch: error: QOSMaxSubmitJobPerUserLimit"
     for i in jobs:
         while True:
             try:
@@ -41,6 +42,9 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
                 if err == timeout:
                     print("Retrying Submit")
                     continue
+                elif err.startswith(limit):
+                    print("Waiting for queue to clear...")
+                    time.sleep(600)
                 else:
                     raise e
 
