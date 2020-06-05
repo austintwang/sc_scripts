@@ -20,14 +20,22 @@ def get_gwas_data(gwas_path, out_path):
         pickle.dump(markers, out_file)
 
 if __name__ == '__main__':
-    gwas_dir = "/agusevlab/DATA/GWAS/"
+    # gwas_dir = "/agusevlab/DATA/GWAS/"
     
-    neur_dir = os.path.join(gwas_dir, "INTERNAL")
-    gwas_files = os.listdir(neur_dir)
+    # neur_dir = os.path.join(gwas_dir, "INTERNAL")
+    # gwas_files = os.listdir(neur_dir)
+
+    # for i in gwas_files:
+    #     name = i.split("_")[0]
+    #     path = os.path.join(neur_dir, i)
+    #     out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
+    #     get_gwas_data(path, out_path)
+
+    # summ_dir = "/agusevlab/awang/gwas/SUMM"
 
     for i in gwas_files:
         name = i.split("_")[0]
-        path = os.path.join(neur_dir, i)
+        path = os.path.join(summ_dir, i)
         out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
         get_gwas_data(path, out_path)
 
