@@ -1,6 +1,7 @@
 import os
 import pickle
 import gzip
+import numpy as np
 
 def get_gwas_data(gwas_path, out_path):
     markers = {}
