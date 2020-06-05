@@ -7,7 +7,8 @@ def get_gwas_data(gwas_path, out_path):
     markers = {}
     sample_sizes = []
     with gzip.open(gwas_path, 'rb') as gwas_file:
-        next(gwas_file)
+        colnames = next(gwas_file)
+        print(colnames) ####
         for line in gwas_file:
             print(line) ####
             data = line.decode('utf-8').split()
