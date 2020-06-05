@@ -9,6 +9,7 @@ def get_gwas_data(gwas_path, out_path):
     with gzip.open(gwas_path, 'rb') as gwas_file:
         next(gwas_file)
         for line in gwas_file:
+            print(line) ####
             data = line.decode('utf-8').split()
             if data[3] == 'Inf':
                 continue
