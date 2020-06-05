@@ -31,7 +31,8 @@ if __name__ == '__main__':
     #     out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
     #     get_gwas_data(path, out_path)
 
-    # summ_dir = "/agusevlab/awang/gwas/SUMM"
+    summ_dir = "/agusevlab/awang/gwas/SUMM"
+    gwas_files = os.listdir(summ_dir)
 
     for i in gwas_files:
         name = i.split("_")[0]
