@@ -16,7 +16,7 @@ def get_gwas_data(gwas_path, out_path):
             try:
                 sample_sizes.append(int(float(data[4].rstrip())))
             except OverflowError as e:
-                print(data)
+                print(line)
                 print(gwas_path)
                 raise e
     markers["_size"] = np.mean(sample_sizes)
