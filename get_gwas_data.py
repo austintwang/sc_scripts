@@ -13,10 +13,10 @@ def get_gwas_data(gwas_path, out_path):
             if data[3] == 'Inf':
                 continue
             marker = data[0]
-            zscr = float(data[3])
+            zscr = float(data[4])
             markers[marker] = zscr
             try:
-                sample_sizes.append(int(float(data[4].rstrip())))
+                sample_sizes.append(int(float(data[5].rstrip())))
             except OverflowError as e:
                 print(line.decode('utf-8'))
                 print(gwas_path)
