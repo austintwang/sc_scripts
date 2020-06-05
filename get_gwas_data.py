@@ -4,7 +4,7 @@ import gzip
 
 def get_gwas_data(gwas_path, out_path):
     markers = {}
-    sample_size = False
+    sample_sizes = []
     with gzip.open(gwas_path, 'rb') as gwas_file:
         next(gwas_file)
         for line in gwas_file:
@@ -12,9 +12,8 @@ def get_gwas_data(gwas_path, out_path):
             marker = data[0]
             zscr = float(data[3])
             markers[marker] = zscr
-            if not sample_size:
-                sample_size = int(float(data[4].rstrip())) 
-    markers["_size"] = sample_size
+            sample_sizes.append(int(float(data[4].rstrip())))
+    markers["_size"] = np.mean(sample_sizes)
 
     with open(out_path, "wb") as out_file:
         pickle.dump(markers, out_file)
