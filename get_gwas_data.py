@@ -13,7 +13,12 @@ def get_gwas_data(gwas_path, out_path):
             marker = data[0]
             zscr = float(data[3])
             markers[marker] = zscr
-            sample_sizes.append(int(float(data[4].rstrip())))
+            try:
+                sample_sizes.append(int(float(data[4].rstrip())))
+            except OverflowError as e:
+                print(data)
+                print(gwas_path)
+                raise e
     markers["_size"] = np.mean(sample_sizes)
 
     with open(out_path, "wb") as out_file:
