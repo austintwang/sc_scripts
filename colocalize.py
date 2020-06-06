@@ -107,7 +107,7 @@ def write_output(output_path, result):
         os.makedirs(output_path)
 
     output_return = os.path.join(output_path, "output.pickle")
-    with open(output_return, "wb") as output_file:
+    with open(output_path, "wb") as output_file:
         pickle.dump(result, output_file)
 
     gc.collect()
@@ -121,7 +121,8 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
     finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
     if os.path.isdir(finemap_path):
         finemap_path = os.path.join(finemap_path, "output.pickle")
-    output_path = os.path.join(gene_dir, "coloc_{0}.pickle".format(gwas_name))
+    os.makedirs(os.path.join(gene_dir, "coloc"))
+    output_path = os.path.join(gene_dir, "coloc", "{0}.pickle".format(gwas_name))
 
     all_complete = True
     try:
@@ -213,7 +214,6 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
                         continue
 
         write_output(output_path, result)
-        print(result) ####
 
     except Exception as e:
         all_complete = False
