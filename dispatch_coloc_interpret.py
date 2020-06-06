@@ -58,7 +58,7 @@ if __name__ == '__main__':
     out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
     gwas_dir = "/agusevlab/awang/gwas_data"
     gwas_names = [i.split(".")[0] for i in os.listdir(gwas_dir)]
-    status_dir = os.path.join(data_path_kellis, "statuses")
+    status_dir_kellis = os.path.join(data_path_kellis, "statuses/coloc_interpret")
 
     dispatch(
         script_path, 
