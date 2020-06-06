@@ -21,7 +21,7 @@ def dispatch(script_path, data_dir, status_dir, gwas_names, cluster_map_path, ou
         err_name = os.path.join(status_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, data_dir, name, cluster_map_path, out_path
+            script_path, data_dir, name, cluster_map_path, out_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
