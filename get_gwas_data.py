@@ -43,7 +43,7 @@ if __name__ == '__main__':
     gwas_files = os.listdir(summ_dir)
 
     for i in gwas_files:
-        name = i.split("_")[0]
+        name = i.rpartition("_")[0]
         path = os.path.join(summ_dir, i)
         out_path = "/agusevlab/awang/gwas_data/{0}.pickle".format(name)
         get_gwas_data(path, out_path)
