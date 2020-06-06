@@ -49,7 +49,7 @@ def dispatch(script_path, data_dir, gwas_names, cluster_map_path, out_path, memo
 
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
-    script_path = os.path.join(curr_path, "dispatch_colocalize.py")
+    script_path = os.path.join(curr_path, "dispatch_coloc_interpret.py")
 
     data_path_kellis = "/agusevlab/awang/sc_kellis"
 
