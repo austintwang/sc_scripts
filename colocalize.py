@@ -149,7 +149,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
             "num_snps_orig": len(gene_data["marker_ids"])
         }
-        print(inputs) ####
+        # print(inputs) ####
         inputs.update(params)
 
         if inputs.get("num_ppl") is None:
@@ -205,7 +205,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
                         fm_res_scaled = fm_res["ppas_{0}".format(fq)] / np.nansum(fm_res["ppas_{0}".format(fq)])
                         clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                         # print(fm_res["ppas_{0}".format(fq)]) ####
-                        # print(clpps) ####
+                        print(clpps) ####
                         h4 = np.nansum(clpps)
                         cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                         cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
