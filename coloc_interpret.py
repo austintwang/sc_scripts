@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import numpy as np
 import scipy.stats
 import os
@@ -104,7 +106,8 @@ def plot_sets(df, out_dir):
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
-            df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))], 
+            # df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))], 
+            df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(1))], 
             id_vars=["Gene"], 
             value_vars=model_map.keys(),
             var_name="Model",
@@ -121,9 +124,55 @@ def plot_sets(df, out_dir):
             os.path.join(out_dir, "pp4s_{0}.svg".format(cluster)),
         )
 
-def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
+def calc_sumstats(df, out_dir, thresh):
+    df_coloc = df.loc[
+        df["PP4Joint"] >= thresh
+    ]
+    df_ncoloc = df.loc[
+        df["PP4Joint"] < thresh
+    ]
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "In": "Inhibitory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Astro": "Astroglia",
+        # "Endo": "Endothelial",
+        # "Per": "Per"
+    }
+    coloc_data = {}
+    dfs_clust = {}
+    for i in clusters.keys():
+        df_clust = df_coloc.loc[df_coloc["Cluster"] == i]
+        coloc_data[i] = df_clust.count()["PP4Joint"]
+        dfs_clust[i] = df_clust
+
+    df_nall = df_ncoloc.loc[df_coloc["Cluster"] == "_all"]
+    diff_data = {}
+    for i in clusters.keys():
+        df_diff = pd.merge(
+            dfs_clust[i], 
+            df_nall, 
+            on=["Gene"], 
+            suffixes=["_clust", "_all"]
+        )
+        diff_data[i] = df_diff.count()["PP4Joint_clust"]
+
+    outs = ["Cluster\tNumColoc\tNumColocDiff"]
+    for i in clusters.keys():
+        outs.append(f"{i}\t{coloc_data[i]}\t{diff_data[i]}\n")
+
+    with open(os.path.join(out_dir, "sumstats.txt"), "w") as out_file:
+        out_file.writelines(outs)
+
+def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path):
+    with open(status_path, "w") as status_file:
+        status_file.write("")
+
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -162,41 +211,46 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir):
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
+    calc_sumstats(df, out_dir, 0.5)
     plot_sets(data_df, out_dir_gwas)
 
+    with open(status_path, "w") as status_file:
+        status_file.write("Complete")
 
 if __name__ == '__main__':
-    data_path_kellis = "/agusevlab/awang/sc_kellis"
-    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
+    interpret_genes(*sys.argv[1:])
 
-    # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/alz.txt"
+    # data_path_kellis = "/agusevlab/awang/sc_kellis"
+    # # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
+    # # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
 
-    # interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
+    # # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/alz.txt"
 
-    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
-    out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
-    gwass = [
-        "AlzheimersMaternal",
-        "AlzheimersPaternal",
-        "AlzheimersProxyMetaIGAP",
-        "BD",
-        "BDSCZ",
-        "CD",
-        "DepressedAffect",
-        "Depression",
-        "IBD",
-        "Intelligence",
-        "MDD",
-        "Neuroticism",
-        "ReactionTime",
-        "SCZ",
-        "SCZvsBD",
-        "UC",
-        "VerbalNumericReasoning",
-        "Worry"
-    ]
-    for g in gwass:
-        print(g) ####
-        interpret_genes(genes_dir_kellis, g, cluster_map_path_kellis, out_path_kellis)
+    # # interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
+
+    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    # genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
+    # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
+    # gwass = [
+    #     "AlzheimersMaternal",
+    #     "AlzheimersPaternal",
+    #     "AlzheimersProxyMetaIGAP",
+    #     "BD",
+    #     "BDSCZ",
+    #     "CD",
+    #     "DepressedAffect",
+    #     "Depression",
+    #     "IBD",
+    #     "Intelligence",
+    #     "MDD",
+    #     "Neuroticism",
+    #     "ReactionTime",
+    #     "SCZ",
+    #     "SCZvsBD",
+    #     "UC",
+    #     "VerbalNumericReasoning",
+    #     "Worry"
+    # ]
+    # for g in gwass:
+    #     print(g) ####
+    #     interpret_genes(genes_dir_kellis, g, cluster_map_path_kellis, out_path_kellis)
