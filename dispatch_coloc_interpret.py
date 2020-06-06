@@ -8,7 +8,7 @@ import numpy as np
 def dispatch(script_path, data_dir, gwas_names, cluster_map_path, out_path, memory, fails_only=False):
     jobs = []
     for name in gwas_names:
-        os.mkdirs(os.path.join(data_dir, name), exist_ok=True)
+        os.makedirs(os.path.join(data_dir, name), exist_ok=True)
         status_path = os.path.join(data_dir, name, "coloc_interpret_status.txt")
         if fails_only and os.path.isfile(status_path):
             with open(status_path) as status_file:
