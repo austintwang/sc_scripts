@@ -25,7 +25,7 @@ def dispatch(script_path, names, data_dir, params, params_path, filter_path, gwa
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
             script_path, name, data_dir, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, status_path
         ]
-        # print(" ".join(cmd))
+        print(" ".join(cmd))
         jobs.append(cmd)
 
     timeout = "sbatch: error: Batch job submission failed: Socket timed out on send/recv operation"
