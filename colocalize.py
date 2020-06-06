@@ -117,7 +117,6 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
     finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
     os.makedirs(os.path.join(gene_dir, "coloc"), exist_ok=True)
     
-
     all_complete = True
 
     with open(params_path, "rb") as params_file:
@@ -146,6 +145,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
     studies = os.listdir(gwas_dir)
 
     for study in studies:
+        if study == "gen":
+            continue
         try:
             gwas_path = os.path.join(gwas_dir, study)
             gwas_name = study.split(".")[0]
