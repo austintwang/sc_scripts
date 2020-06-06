@@ -149,7 +149,7 @@ def calc_sumstats(df, out_dir, thresh):
         coloc_data[i] = df_clust.count()["PP4Joint"]
         dfs_clust[i] = df_clust
 
-    df_nall = df_ncoloc.loc[df_coloc["Cluster"] == "_all"]
+    df_nall = df_ncoloc.loc[df_ncoloc["Cluster"] == "_all"]
     diff_data = {}
     for i in clusters.keys():
         df_diff = pd.merge(
