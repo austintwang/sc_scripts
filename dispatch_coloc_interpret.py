@@ -6,9 +6,6 @@ import time
 import numpy as np
 
 def dispatch(script_path, data_dir, gwas_names, cluster_map_path, out_path, memory, fails_only=False):
-    with open(params_path, "wb") as params_file:
-        pickle.dump(params, params_file)
-
     jobs = []
     for name in gwas_names:
         status_path = os.path.join(data_dir, name, "coloc_interpret_status.txt")
