@@ -149,7 +149,7 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
             "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
             "num_snps_orig": len(gene_data["marker_ids"])
         }
-        # print(inputs) ####
+        print(inputs) ####
         inputs.update(params)
 
         if inputs.get("num_ppl") is None:
