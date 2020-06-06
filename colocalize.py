@@ -103,7 +103,6 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     return causal_set, ppas, size_probs
 
 def write_output(output_path, result):
-    output_return = os.path.join(output_path, "output.pickle")
     with open(output_path, "wb") as output_file:
         pickle.dump(result, output_file)
 
