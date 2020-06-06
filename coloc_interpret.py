@@ -173,16 +173,12 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:5000] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
-        plasma_path = os.path.join(gene_dir, "plasma.pickle")
-        if os.path.isdir(plasma_path):
-            plasma_path = os.path.join(plasma_path, "output.pickle")
-        coloc_path = os.path.join(gene_dir, "coloc_{0}.pickle".format(gwas_name))
-        if os.path.isdir(coloc_path):
-            coloc_path = os.path.join(coloc_path, "output.pickle")
+        plasma_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
+        coloc_path = os.path.join(gene_dir, "coloc", f"{gwas_name}.pickle")
         try:
             with open(plasma_path, "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
@@ -212,7 +208,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
-    calc_sumstats(data_df, out_dir_gwas, 0.05)
+    calc_sumstats(data_df, out_dir_gwas, 0.5)
     plot_sets(data_df, out_dir_gwas)
 
     with open(status_path, "w") as status_file:
