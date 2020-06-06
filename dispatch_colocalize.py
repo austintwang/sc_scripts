@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
+def dispatch(script_path, names, data_dir, params, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
     with open(params_path, "wb") as params_file:
         pickle.dump(params, params_file)
 
