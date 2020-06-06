@@ -206,24 +206,24 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             #     )
             # print(result) ####
 
-        cluster_results = result.setdefault("clusters", {})
-        for cluster, fm_res in finemap_data.items():
-            cluster_results.setdefault(cluster, {})
-            # print(fm_res.keys()) ####
-            for fg in model_flavors_gwas:
-                for fq in model_flavors_qtl:
-                    try:
-                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / np.nansum(fm_res["ppas_{0}".format(fq)])
-                        clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
-                        # print(fm_res["ppas_{0}".format(fq)]) ####
-                        # print(clpps) ####
-                        h4 = np.nansum(clpps)
-                        cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
-                        cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
-                    except KeyError:
-                        continue
+            cluster_results = result.setdefault("clusters", {})
+            for cluster, fm_res in finemap_data.items():
+                cluster_results.setdefault(cluster, {})
+                # print(fm_res.keys()) ####
+                for fg in model_flavors_gwas:
+                    for fq in model_flavors_qtl:
+                        try:
+                            fm_res_scaled = fm_res["ppas_{0}".format(fq)] / np.nansum(fm_res["ppas_{0}".format(fq)])
+                            clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
+                            # print(fm_res["ppas_{0}".format(fq)]) ####
+                            # print(clpps) ####
+                            h4 = np.nansum(clpps)
+                            cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
+                            cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
+                        except KeyError:
+                            continue
 
-        write_output(output_path, result)
+            write_output(output_path, result)
 
         except Exception as e:
             all_complete = False
