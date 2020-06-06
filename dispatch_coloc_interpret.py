@@ -58,6 +58,7 @@ if __name__ == '__main__':
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
+    gwas_dir = "/agusevlab/awang/gwas_data"
     gwas_names = [i.split(".")[0] for i in os.listdir(gwas_dir)]
 
     dispatch(
