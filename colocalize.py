@@ -108,89 +108,103 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path):
+def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
     finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
-    if os.path.isdir(finemap_path):
-        finemap_path = os.path.join(finemap_path, "output.pickle")
-    os.makedirs(os.path.join(gene_dir, "coloc"))
-    output_path = os.path.join(gene_dir, "coloc", "{0}.pickle".format(gwas_name))
+    os.makedirs(os.path.join(gene_dir, "coloc"), exist_ok=True)
+    
 
     all_complete = True
+
+    with open(params_path, "rb") as params_file:
+        params = pickle.load(params_file)
+    
     try:
-        with open(params_path, "rb") as params_file:
-            params = pickle.load(params_file)
-        with open(gwas_path, "rb") as gwas_file:
-            gwas_data = pickle.load(gwas_file)
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
-        with open(boundaries_map_path, "rb") as boundaries_map_file:
-            boundaries_map = pickle.load(boundaries_map_file)
-        if filter_path == "all":
-            snp_filter = False
-        else:
-            with open(filter_path, "rb") as filter_file:
-                snp_filter = pickle.load(filter_file)
+    except Exception as e:
+        trace = traceback.format_exc()
+        print(trace, file=sys.stderr)
+        status_file.write("Complete")
 
-        contig, start, end = boundaries_map[gene_name]
+    with open(boundaries_map_path, "rb") as boundaries_map_file:
+        boundaries_map = pickle.load(boundaries_map_file)
+    if filter_path == "all":
+        snp_filter = False
+    else:
+        with open(filter_path, "rb") as filter_file:
+            snp_filter = pickle.load(filter_file)
 
-        inputs = {
-            "snp_ids": gene_data["marker_ids"],
-            "snp_pos": gene_data["markers"],
-            "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
-            "num_snps_orig": len(gene_data["marker_ids"])
-        }
-        # print(inputs) ####
-        inputs.update(params)
+    contig, start, end = boundaries_map[gene_name]
 
-        if inputs.get("num_ppl") is None:
-            inputs["num_ppl"] = gwas_data["_size"]
-    
-        result = {"z_beta": inputs["z_beta"].copy()}
-        informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
-        result["informative_snps"] = informative_snps
-        inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
-        inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
-        inputs["num_snps"] = inputs["total_exp_stats"].size
+    studies = os.listdir(gwas_dir)
 
-        inputs["num_causal_prior"] = inputs["num_causal"]
+    for study in studies:
+        try:
+            gwas_path = os.path.join(gwas_dir, study)
+            gwas_name = study.split(".")[0]
+            output_path = os.path.join(gene_dir, "coloc", "{0}.pickle".format(gwas_name))
 
-        if inputs["num_snps"] == 0:
-            result["data_error"] = "Insufficient Markers"
-            write_output(output_path, result)
-            return
+            with open(gwas_path, "rb") as gwas_file:
+                gwas_data = pickle.load(gwas_file)
 
-        inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
-        # print(inputs["corr_shared"]) ####
+            inputs = {
+                "snp_ids": gene_data["marker_ids"],
+                "snp_pos": gene_data["markers"],
+                "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
+                "num_snps_orig": len(gene_data["marker_ids"])
+            }
+            # print(inputs) ####
+            inputs.update(params)
 
-        if inputs["model_flavors_gwas"] == "all":
-            model_flavors_gwas = set(["eqtl"])
-        else:
-            model_flavors_gwas = inputs["model_flavors_gwas"]
+            if inputs.get("num_ppl") is None:
+                inputs["num_ppl"] = gwas_data["_size"]
+        
+            result = {"z_beta": inputs["z_beta"].copy()}
+            informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
+            result["informative_snps"] = informative_snps
+            inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
+            inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
+            inputs["num_snps"] = inputs["total_exp_stats"].size
 
-        if inputs["model_flavors_qtl"] == "all":
-            model_flavors_qtl = set(["full", "indep", "eqtl", "ase", "fmb"])
-        else:
-            model_flavors_qtl = inputs["model_flavors_qtl"]
+            inputs["num_causal_prior"] = inputs["num_causal"]
 
-        if "eqtl" in model_flavors_gwas:
-            updates_eqtl = {"qtl_only": True}
-            result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
-                Finemap, inputs, updates_eqtl, informative_snps
-            )
+            if inputs["num_snps"] == 0:
+                result["data_error"] = "Insufficient Markers"
+                write_output(output_path, result)
+                return
 
-        # if "fmb" in model_flavors_gwas:
-        #     updates_fmb = {"qtl_only": True}
-        #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
-        #         FmBenner, inputs, updates_fmb, informative_snps
-        #     )
-        # print(result) ####
+            inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
+            # print(inputs["corr_shared"]) ####
+
+            if inputs["model_flavors_gwas"] == "all":
+                model_flavors_gwas = set(["eqtl"])
+            else:
+                model_flavors_gwas = inputs["model_flavors_gwas"]
+
+            if inputs["model_flavors_qtl"] == "all":
+                model_flavors_qtl = set(["full", "indep", "eqtl", "ase", "fmb"])
+            else:
+                model_flavors_qtl = inputs["model_flavors_qtl"]
+
+            if "eqtl" in model_flavors_gwas:
+                updates_eqtl = {"qtl_only": True}
+                result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
+                    Finemap, inputs, updates_eqtl, informative_snps
+                )
+
+            # if "fmb" in model_flavors_gwas:
+            #     updates_fmb = {"qtl_only": True}
+            #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
+            #         FmBenner, inputs, updates_fmb, informative_snps
+            #     )
+            # print(result) ####
 
         cluster_results = result.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
@@ -211,16 +225,16 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, gwas_pa
 
         write_output(output_path, result)
 
-    except Exception as e:
-        all_complete = False
-        trace = traceback.format_exc()
-        print(trace, file=sys.stderr)
-        message = repr(e)
-        result = {}
-        result["run_error"] = message
-        result["traceback"] = trace
-        write_output(output_path, result)
-        return
+        except Exception as e:
+            all_complete = False
+            trace = traceback.format_exc()
+            print(trace, file=sys.stderr)
+            message = repr(e)
+            result = {}
+            result["run_error"] = message
+            result["traceback"] = trace
+            write_output(output_path, result)
+            return
 
     with open(status_path, "w") as status_file:
         if all_complete:
