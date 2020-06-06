@@ -2,6 +2,7 @@ import os
 import sys
 import pickle
 import subprocess
+import time
 import numpy as np
 
 def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
@@ -154,7 +155,7 @@ if __name__ == '__main__':
             gwas_gen_path,
             boundaries_map_path,
             2000, 
-            fails_only=False
+            fails_only=(gwas_name == "Intelligence")
         )
 
 
