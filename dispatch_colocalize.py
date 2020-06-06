@@ -5,13 +5,13 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
+def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, memory, fails_only=False):
     with open(params_path, "wb") as params_file:
         pickle.dump(params, params_file)
 
     jobs = []
     for name in names:
-        status_path = os.path.join(data_dir, name, "coloc_{0}_status.txt".format(gwas_name))
+        status_path = os.path.join(data_dir, name, "coloc_status.txt")
         if fails_only and os.path.isfile(status_path):
             with open(status_path) as status_file:
                 if status_file.read() == "Complete":
@@ -23,7 +23,7 @@ def dispatch(script_path, names, data_dir, gwas_name, params, params_path, filte
         err_name = os.path.join(data_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, gwas_name, name, data_dir, params_path, filter_path, gwas_path, gwas_gen_path, boundaries_map_path, status_path
+            script_path, name, data_dir, params_path, filter_path, gwas_dir, gwas_gen_path, boundaries_map_path, status_path
         ]
         # print(" ".join(cmd))
         jobs.append(cmd)
@@ -136,27 +136,45 @@ if __name__ == '__main__':
     }
 
     gwas_dir = "/agusevlab/awang/gwas_data"
-    for i in os.listdir(gwas_dir):
-        gwas_path = os.path.join(gwas_dir, i)
-        gwas_name = i.split(".")[0]
-        params_kellis_test = params_kellis.copy()
-        # params_kellis_test["num_ppl"] = 388324
-        params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_{0}_params.pickle".format(gwas_name))
+    # for i in os.listdir(gwas_dir):
+    #     gwas_path = os.path.join(gwas_dir, i)
+    #     gwas_name = i.split(".")[0]
+    #     params_kellis_test = params_kellis.copy()
+    #     # params_kellis_test["num_ppl"] = 388324
+    #     params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_{0}_params.pickle".format(gwas_name))
 
-        dispatch(
-            script_path, 
-            names_kellis, 
-            genes_dir_kellis, 
-            gwas_name,
-            params_kellis_test, 
-            params_path_kellis, 
-            "all", 
-            gwas_path,
-            gwas_gen_path,
-            boundaries_map_path,
-            2000, 
-            fails_only=(gwas_name == "Intelligence")
-        )
+    #     dispatch(
+    #         script_path, 
+    #         names_kellis, 
+    #         genes_dir_kellis, 
+    #         gwas_name,
+    #         params_kellis_test, 
+    #         params_path_kellis, 
+    #         "all", 
+    #         gwas_path,
+    #         gwas_gen_path,
+    #         boundaries_map_path,
+    #         2000, 
+    #         fails_only=(gwas_name == "Intelligence")
+    #     )
+
+    params_kellis_test = params_kellis.copy()
+    # params_kellis_test["num_ppl"] = 388324
+    params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_params.pickle")
+
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_test, 
+        params_path_kellis, 
+        "all", 
+        gwas_dir,
+        gwas_gen_path,
+        boundaries_map_path,
+        2000, 
+        fails_only=False
+    )
 
 
 
