@@ -20,6 +20,6 @@ def load_names(names_path, out_dir):
         pickle.dump(name_to_id, out_file)
 
 if __name__ == '__main__':
-    ensembl_dir = "/agusevlab/awang/ensembl_GRCh37.p13"
+    ensembl_dir = "/agusevlab/awang/ensembl/GRCh37.p13"
     names_path = os.path.join(ensembl_dir, "ensembl_names_GRCh37.p13.txt")
     load_names(names_path, ensembl_dir)
