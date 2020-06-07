@@ -123,7 +123,7 @@ if __name__ == '__main__':
     names_kellis = os.listdir(genes_dir_kellis)
 
     params_kellis = {
-        "total_exp_herit_prior": 5e-8,
+        "total_exp_herit_prior": 1e-7,
         "imbalance_herit_prior": 0.40,
         "cross_corr_prior": 0.9,
         "min_causal": 1,
