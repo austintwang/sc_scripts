@@ -217,6 +217,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             snps_used = result["ppas_{0}".format(fg)] != np.nan
                             scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
                             print(scale) ####
+                            print(snps_used) ####
                             print(result["ppas_{0}".format(fg)]) ####
                             fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
