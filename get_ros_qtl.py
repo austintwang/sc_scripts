@@ -10,6 +10,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
         gene_to_id = pickle.load(names_file)
 
     genes = {}
+    not_found = set()
     with open(bulk_path) as bulk_file:
         colnames = next(bulk_file).strip().split()
         snpid = colnames.index("SNPid")
@@ -21,10 +22,12 @@ def get_ros_data(bulk_path, names_path, out_dir):
             marker = data[snpid]
             gene = gene_to_id.get(data[feature])
             if gene is None:
-                print(data[feature]) ####
+                not_found.add(data[feature])
                 continue
             zscr = scipy.stats.norm.ppf(float(data[pval]) / 2) * np.sign(float(data[spearman]))
             genes.setdefault(gene, {})[marker] = zscr
+
+    print(not_found)
 
     for gene, markers in genes.items():
         matches = glob.glob(os.path.join(out_dir, gene + "*"))
