@@ -214,7 +214,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 for fg in model_flavors_gwas:
                     for fq in model_flavors_qtl:
                         try:
-                            snps_used = result["ppas_{0}".format(fg)] != np.nan
+                            # snps_used = result["ppas_{0}".format(fg)] != np.nan
+                            snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
                             scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
                             print(scale) ####
                             print(snps_used) ####
