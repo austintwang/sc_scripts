@@ -19,7 +19,10 @@ def get_ros_data(bulk_path, names_path, out_dir):
         for line in bulk_file:
             data = line.split()
             marker = data[snpid]
-            gene = gene_to_id[data[feature]]
+            gene = gene_to_id.get(data[feature])
+            if gene is None:
+                print(gene) ####
+                continue
             zscr = scipy.stats.norm.ppf(float(data[pval]) / 2) * np.sign(float(data[spearman]))
             genes.setdefault(gene, {})[marker] = zscr
 
