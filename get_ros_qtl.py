@@ -10,7 +10,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
         gene_to_id = pickle.load(names_file)
 
     genes = {}
-    with gzip.open(bulk_path, 'rb') as bulk_file:
+    with open(bulk_path) as bulk_file:
         colnames = next(bulk_file).decode('utf-8').strip().split()
         snpid = colnames.index("SNPid")
         feature = colnames.index("featureName")
