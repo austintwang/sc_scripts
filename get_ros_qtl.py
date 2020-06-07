@@ -21,7 +21,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
             marker = data[snpid]
             gene = gene_to_id.get(data[feature])
             if gene is None:
-                print(gene) ####
+                print(data[feature]) ####
                 continue
             zscr = scipy.stats.norm.ppf(float(data[pval]) / 2) * np.sign(float(data[spearman]))
             genes.setdefault(gene, {})[marker] = zscr
