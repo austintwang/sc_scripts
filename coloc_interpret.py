@@ -31,7 +31,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             gene_name, 
             c, 
             np.mean(plasma_clust.get("causal_set_indep", np.nan)), 
-            np.mean(plasma_clust.get("causal_set_eqtl", np.nan)),
+            np.mean(coloc_clust.get("causal_set_eqtl", np.nan)),
             top_nlp,
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
@@ -107,8 +107,8 @@ def plot_sets(df, out_dir):
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
-            # df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))], 
-            df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(1))], 
+            df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(5e-8))], 
+            # df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(1))], 
             id_vars=["Gene"], 
             value_vars=model_map.keys(),
             var_name="Model",
