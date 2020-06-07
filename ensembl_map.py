@@ -21,5 +21,5 @@ def load_names(names_path, out_dir):
 
 if __name__ == '__main__':
     ensembl_dir = "/agusevlab/awang/ensembl"
-    names_path = os.path.join(ensembl_dir, "ensembl_names.txt")
+    names_path = os.path.join(ensembl_dir, "ensembl_names_GRCh37.p13.txt")
     load_names(names_path, ensembl_dir)

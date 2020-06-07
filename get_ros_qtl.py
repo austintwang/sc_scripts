@@ -43,6 +43,6 @@ if __name__ == '__main__':
 
     bulk_path = "/agusevlab/awang/xqtl/eQTLs_all.txt"
     out_dir = "/agusevlab/awang/sc_kellis/genes_429"
-    names_path = "/agusevlab/awang/ensembl/name_to_id.pickle"
+    names_path = "/agusevlab/awang/ensembl/GRCh37.p13/name_to_id.pickle"
 
     get_ros_data(bulk_path, names_path, out_dir)
