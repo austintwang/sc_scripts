@@ -76,7 +76,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
 
     model = model_cls(**model_inputs)
     model.initialize()
-    print(model.total_exp_var_prior)####
+    # print(model.total_exp_var_prior)####
 
     if inputs["search_mode"] == "exhaustive":
         model.search_exhaustive(inputs["min_causal"], inputs["max_causal"])
@@ -96,7 +96,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     causal_set_inf = model.get_causal_set(inputs["confidence"])
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
-    print(ppas_inf) ####
+    # print(ppas_inf) ####
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
     # print(ppas) ####
     size_probs = model.get_size_probs()    
@@ -171,7 +171,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
             result["informative_snps"] = informative_snps
             inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
-            print(inputs["total_exp_stats"]) ####
+            # print(inputs["total_exp_stats"]) ####
             inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
             inputs["num_snps"] = inputs["total_exp_stats"].size
 
