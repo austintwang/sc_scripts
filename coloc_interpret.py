@@ -17,7 +17,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
     data = []
     if not "clusters" in coloc_data:
         return data
-    top_z = np.nanmax(coloc_data["z_beta"])
+    top_z = np.nanmax(np.abs(coloc_data["z_beta"]))
     top_nlp = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z))*2))
     num_informative = np.sum(coloc_data.get("informative_snps", np.nan))
     for c in clusters:

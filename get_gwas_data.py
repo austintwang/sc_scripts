@@ -7,16 +7,19 @@ def get_gwas_data(gwas_path, out_path):
     markers = {}
     sample_sizes = []
     with gzip.open(gwas_path, 'rb') as gwas_file:
-        colnames = next(gwas_file)
+        colnames = next(gwas_file).strip().split()
+        snp = colnames.index("SNP")
+        z = colnames.index("Z")
+        n = colnames.index("N")
         for line in gwas_file:
             data = line.decode('utf-8').split()
-            if data[3] == 'Inf' or data[4] == 'Inf':
+            if data[z] == 'Inf' or data[n] == 'Inf':
                 continue
-            marker = data[0]
-            zscr = float(data[3])
+            marker = data[snp]
+            zscr = float(data[z])
             markers[marker] = zscr
             try:
-                sample_sizes.append(int(float(data[4].rstrip())))
+                sample_sizes.append(int(float(data[n].rstrip())))
             except OverflowError as e:
                 print(line.decode('utf-8'))
                 print(gwas_path)
