@@ -470,13 +470,16 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
                 abs(df_train[f"TopSNP{sn}"]) <= cutoff
             )
         ]
+        df_ts_sig = df_train.loc[
+            abs(df_test[f"TopSNP{sn}"]) <= cutoff
+        ]
         slopes = np.zeros((len(cluster_order), len(cluster_order),),)
         slope_ses = np.zeros((len(cluster_order), len(cluster_order),),)
         for ind_i, i in enumerate(cluster_order):
             for ind_j, j in enumerate(cluster_order):
                 df_merged = pd.merge(
                     df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
-                    df_test.loc[df_test["Cluster"] == j], 
+                    df_ts_sig.loc[df_test["Cluster"] == j], 
                     on=["Gene"], 
                     suffixes=["_train", "_test"]
                 )
