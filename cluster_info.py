@@ -479,7 +479,7 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
             for ind_j, j in enumerate(cluster_order):
                 df_merged = pd.merge(
                     df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
-                    df_ts_sig.loc[df_test["Cluster"] == j], 
+                    df_ts_sig.loc[df_ts_sig["Cluster"] == j], 
                     on=["Gene"], 
                     suffixes=["_train", "_test"]
                 )

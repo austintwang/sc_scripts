@@ -31,7 +31,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
             gene_name, 
             c, 
             np.mean(plasma_clust.get("causal_set_indep", np.nan)), 
-            np.mean(coloc_clust.get("causal_set_eqtl", np.nan)),
+            np.mean(coloc_data.get("causal_set_eqtl", np.nan)),
             top_nlp,
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
