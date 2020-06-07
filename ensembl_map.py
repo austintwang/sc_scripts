@@ -9,8 +9,8 @@ def load_names(names_path, out_dir):
     with open(names_path, "r") as names_file:
         for line in names_file:
             cols = line.strip("\n").split()
-            eid = line[0]
-            name = line[1]
+            eid = cols[0]
+            name = cols[1]
             id_to_name[eid] = name
             name_to_id[name] = eid
 
