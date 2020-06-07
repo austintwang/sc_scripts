@@ -11,7 +11,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
 
     genes = {}
     with open(bulk_path) as bulk_file:
-        colnames = next(bulk_file).decode('utf-8').strip().split()
+        colnames = next(bulk_file).strip().split()
         snpid = colnames.index("SNPid")
         feature = colnames.index("featureName")
         spearman = colnames.index("SpearmanRho")
@@ -21,7 +21,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
         z = colnames.index("Z")
         n = colnames.index("N")
         for line in gwas_file:
-            data = line.decode('utf-8').split()
+            data = line.split()
             marker = data[snpid]
             gene = gene_to_id[data[feature]]
             zscr = scipy.stats.norm.ppf(float(data[pval]) / 2) * np.sign(float(data[spearman]))
