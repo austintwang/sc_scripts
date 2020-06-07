@@ -171,7 +171,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
             result["informative_snps"] = informative_snps
             inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
-            # print(inputs["total_exp_stats"].dtype) ####
+            print(inputs["total_exp_stats"]) ####
             inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
             inputs["num_snps"] = inputs["total_exp_stats"].size
 
