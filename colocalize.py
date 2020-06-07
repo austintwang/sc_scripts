@@ -76,6 +76,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
 
     model = model_cls(**model_inputs)
     model.initialize()
+    print(model.total_exp_var_prior)####
 
     if inputs["search_mode"] == "exhaustive":
         model.search_exhaustive(inputs["min_causal"], inputs["max_causal"])
