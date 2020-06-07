@@ -205,7 +205,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
             #         FmBenner, inputs, updates_fmb, informative_snps
             #     )
-            # print(result) ####
+            print(result["causal_set_eqtl"]) ####
 
             cluster_results = result.setdefault("clusters", {})
             for cluster, fm_res in finemap_data.items():
