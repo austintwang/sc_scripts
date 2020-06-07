@@ -16,7 +16,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
         feature = colnames.index("featureName")
         spearman = colnames.index("SpearmanRho")
         pval = colnames.index("pValue")
-        for line in gwas_file:
+        for line in bulk_file:
             data = line.split()
             marker = data[snpid]
             gene = gene_to_id[data[feature]]
