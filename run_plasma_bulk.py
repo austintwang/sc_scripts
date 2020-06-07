@@ -65,17 +65,15 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, bulk_path, gwas_gen_path, boundaries_map_path, status_path):
+def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, bulk_gen_path, boundaries_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
+    bulk_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_in.pickle")
     finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
-    if os.path.isdir(finemap_path):
-        finemap_path = os.path.join(finemap_path, "output.pickle")
-    os.makedirs(os.path.join(gene_dir, "coloc"))
-    output_path = os.path.join(gene_dir, "coloc", "{0}.pickle".format(gwas_name))
+    output_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_out.pickle")
 
     all_complete = True
     try:
@@ -99,18 +97,22 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, bulk_pa
             "snp_ids": gene_data["marker_ids"],
             "snp_pos": gene_data["markers"],
             "z_beta": np.array([bulk_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
-            "num_snps_orig": len(gene_data["marker_ids"])
+            "num_snps_orig": len(gene_data["marker_ids"]),
+            "hap1": gene_data["genotypes"][:,:,0],
+            "hap2": gene_data["genotypes"][:,:,1],
         }
         # print(inputs) ####
         inputs.update(params)
 
         if inputs.get("num_ppl") is None:
-            inputs["num_ppl"] = gwas_data["_size"]
+            inputs["num_ppl"] = bulk_data["_size"]
     
         result = {"z_beta": inputs["z_beta"].copy()}
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
         inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
+        inputs["hap1"] = inputs["hap1"][:, informative_snps]
+        inputs["hap2"] = inputs["hap2"][:, informative_snps]
         inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
         inputs["num_snps"] = inputs["total_exp_stats"].size
 
@@ -121,26 +123,23 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, bulk_pa
             write_output(output_path, result)
             return
 
-        inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
-        # print(inputs["corr_shared"]) ####
-
-        if inputs["model_flavors_gwas"] == "all":
-            model_flavors_gwas = set(["eqtl"])
+        if inputs["model_flavors_bulk"] == "all":
+            model_flavors_bulk = set(["eqtl"])
         else:
-            model_flavors_gwas = inputs["model_flavors_gwas"]
+            model_flavors_bulk = inputs["model_flavors_bulk"]
 
         if inputs["model_flavors_qtl"] == "all":
             model_flavors_qtl = set(["full", "indep", "eqtl", "ase", "fmb"])
         else:
             model_flavors_qtl = inputs["model_flavors_qtl"]
 
-        if "eqtl" in model_flavors_gwas:
+        if "eqtl" in model_flavors_bulk:
             updates_eqtl = {"qtl_only": True}
             result["causal_set_eqtl"], result["ppas_eqtl"], result["size_probs_eqtl"] = run_model(
                 Finemap, inputs, updates_eqtl, informative_snps
             )
 
-        # if "fmb" in model_flavors_gwas:
+        # if "fmb" in model_flavors_bulk:
         #     updates_fmb = {"qtl_only": True}
         #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
         #         FmBenner, inputs, updates_fmb, informative_snps
@@ -151,13 +150,13 @@ def colocalize(gwas_name, gene_name, data_dir, params_path, filter_path, bulk_pa
         for cluster, fm_res in finemap_data.items():
             cluster_results.setdefault(cluster, {})
             # print(fm_res.keys()) ####
-            for fg in model_flavors_gwas:
+            for fg in model_flavors_bulk:
                 for fq in model_flavors_qtl:
                     try:
-                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / np.nansum(fm_res["ppas_{0}".format(fq)])
+                        snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
+                        scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
                         clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
-                        # print(fm_res["ppas_{0}".format(fq)]) ####
-                        # print(clpps) ####
                         h4 = np.nansum(clpps)
                         cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                         cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
