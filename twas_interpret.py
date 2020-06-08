@@ -32,7 +32,7 @@ def plot_heatmap(df, result_path):
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
     # print(df_plot.to_numpy()) ####
     mask = np.isnan(df_plot)
-    df_filled = df_plot.fillna(df_plot.mean())**2
+    df_filled = np.abs(df_plot.fillna(df_plot.mean()))
     # print(df_filled) ####
 
     sns.set(style="whitegrid", font="Roboto")
