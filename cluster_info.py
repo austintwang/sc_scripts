@@ -470,8 +470,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
                 abs(df_train[f"TopSNP{sn}"]) <= cutoff
             )
         ]
-        df_ts_sig = df_train.loc[
-            abs(df_train[f"TopSNP{sn}"]) <= cutoff
+        df_ts_sig = df_test.loc[
+            abs(df_test[f"TopSNP{sn}"]) <= cutoff
         ]
         slopes = np.zeros((len(cluster_order), len(cluster_order),),)
         slope_ses = np.zeros((len(cluster_order), len(cluster_order),),)
