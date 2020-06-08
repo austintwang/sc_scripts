@@ -292,7 +292,7 @@ def plot_sets(df, out_dir):
             title, 
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
         )
-        with open(os.path.join(out_dir, "threshdata_{0}.txt".format(cluster)), "a") as tdfile:
+        with open(os.path.join(out_dir, "threshdata_{0}.txt".format(cluster)), "w") as tdfile:
             tdfile.write("\t".join(map(str, threshs)) + "\n")
             tdfile.write("\t".join(model_flavors_thresh) + "\n")
             # print(thresh_data) ####
