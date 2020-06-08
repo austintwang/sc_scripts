@@ -228,7 +228,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             if study == "Intelligence_SavageJansen2018.pickle":
                                 print(cluster, fg, fq) ####
                                 # print(fm_res_scaled) ####
-                                print(zip(fm_res_scaled, inputs["z_beta"])) ####
+                                print(list(zip(fm_res_scaled, inputs["z_beta"]))) ####
                             h4 = np.nansum(clpps)
                             cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
