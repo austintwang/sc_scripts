@@ -28,6 +28,7 @@ def read_data(data_path):
 
 def plot_heatmap(df, result_path):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
+    print(df_plot) ####
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_plot)
