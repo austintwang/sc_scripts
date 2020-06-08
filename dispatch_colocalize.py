@@ -173,7 +173,7 @@ if __name__ == '__main__':
         gwas_gen_path,
         boundaries_map_path,
         2000, 
-        fails_only=False
+        fails_only=True
     )
 
 
