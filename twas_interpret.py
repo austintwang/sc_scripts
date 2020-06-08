@@ -32,11 +32,11 @@ def plot_heatmap(df, result_path):
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
     # print(df_plot.to_numpy()) ####
     mask = np.isnan(df_plot)
-    df_filled = df_plot.fillna(df_plot.mean())
+    df_filled = df_plot.fillna(df_plot.mean())**2
     # print(df_filled) ####
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_filled, mask=mask, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    g = sns.clustermap(df_filled, mask=mask, annot=df_plot, annot_kws={"size": 10, "weight": "medium"})
     g.savefig(result_path, bbox_inches='tight')
 
 def twas_interpret(in_dir, in_files, out_dir):
