@@ -36,7 +36,7 @@ def plot_heatmap(df, result_path):
     # print(df_filled) ####
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_filled, mask=mask, annot=True)
+    g = sns.clustermap(df_filled, mask=mask, annot=True, annot_kws={"size": 7})
     g.savefig(result_path, bbox_inches='tight')
 
 def twas_interpret(in_dir, in_files, out_dir):
