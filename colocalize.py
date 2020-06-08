@@ -225,8 +225,9 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                             # print(fm_res["ppas_{0}".format(fq)]) ####
-                            print(cluster, fg, fq) ####
-                            print(clpps) ####
+                            if study == "Intelligence_SavageJansen2018":
+                                print(cluster, fg, fq) ####
+                                print(clpps) ####
                             h4 = np.nansum(clpps)
                             cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
