@@ -1,7 +1,7 @@
 import os
 import pickle
 import gzip
-import pickle
+import glob
 import numpy as np
 import scipy.stats
 
