@@ -19,7 +19,7 @@ def read_data(data_path):
             cols = line.strip().split()
             gene = cols[0]
             test = cols[1]
-            z = 0. if cols[2] == "NA" else float(cols[2])
+            z = np.nan if cols[2] == "NA" else float(cols[2])
             data_lst.append([gene, test, z])
 
     cols = ["Gene", "Test", "Z"]
@@ -30,10 +30,12 @@ def plot_heatmap(df, result_path):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
     # print(np.logical_not(np.isnan(df_plot).all(1))) ####
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
-    print(df_plot.to_numpy()) ####
+    # print(df_plot.to_numpy()) ####
+    mask = np.logical_not(np.isnan(df_plot))
+    df_filled = df_plot.fillna(df.mean())
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_plot)
+    g = sns.clustermap(df_filled, mask=mask)
     g.savefig(result_path, bbox_inches='tight')
 
 def twas_interpret(in_dir, in_files, out_dir):
