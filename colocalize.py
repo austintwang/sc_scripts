@@ -148,7 +148,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
     for study in studies:
         if study == "gen":
             continue
-        print(study) ####
+        # print(study) ####
         try:
             gwas_path = os.path.join(gwas_dir, study)
             gwas_name = study.split(".")[0]
@@ -172,7 +172,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
             result["informative_snps"] = informative_snps
             inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
-            print(inputs["total_exp_stats"]) ####
+            # print(inputs["total_exp_stats"]) ####
             inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
             inputs["num_snps"] = inputs["total_exp_stats"].size
 
@@ -207,7 +207,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
             #         FmBenner, inputs, updates_fmb, informative_snps
             #     )
-            # print(result["causal_set_eqtl"]) ####
+            print(result["causal_set_eqtl"]) ####
 
             cluster_results = result.setdefault("clusters", {})
             for cluster, fm_res in finemap_data.items():
@@ -226,9 +226,9 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                             # print(fm_res["ppas_{0}".format(fq)]) ####
                             if study == "Intelligence_SavageJansen2018.pickle":
-                                print(cluster, fg, fq) ####
+                                # print(cluster, fg, fq) ####
                                 # print(fm_res_scaled) ####
-                                print(list(zip(fm_res_scaled, inputs["z_beta"]))) ####
+                                # print(list(zip(fm_res_scaled, inputs["z_beta"]))) ####
                             h4 = np.nansum(clpps)
                             cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
