@@ -94,7 +94,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     # print(informative_snps.shape) ####
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
-    print(causal_set_inf) ####
+    # print(causal_set_inf) ####
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
     print(ppas_inf) ####
@@ -149,7 +149,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
     for study in studies:
         if study == "gen":
             continue
-        print(study) ####
+        # print(study) ####
         try:
             gwas_path = os.path.join(gwas_dir, study)
             gwas_name = study.split(".")[0]
