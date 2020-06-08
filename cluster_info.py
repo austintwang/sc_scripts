@@ -59,9 +59,11 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
                 np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
+                np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"]/plasma_clust["num_snps_informative"]))*2) <= 0.05) if ppa else 0,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
                 np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
+                np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"]/plasma_clust["num_snps_informative"]))*2) <= 0.05) if ppa else 0,
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -111,14 +113,18 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         "TopSNPZPhi",
         "TopSNPPhi",
         "TopSNPNLPPhi",
+        "NumSigPhi",
         "TopSNPZBeta",
         "TopSNPBeta",
         "TopSNPNLPBeta",
+        "NumSigBeta",
         "TopSNPID",
         "Split",
     ]
 
     data_df = pd.DataFrame(data_lst, columns=cols)
+    print(data_df["NumSigPhi"].sum())
+    print(data_df["NumSigBeta"].sum())
     return data_df
 
 def load_clusters(cluster_map_path):
