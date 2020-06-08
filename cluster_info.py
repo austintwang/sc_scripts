@@ -123,8 +123,8 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     ]
 
     data_df = pd.DataFrame(data_lst, columns=cols)
-    print((data_df["TopSNPNLPPhi"] - np.log10(data_df["UsableSNPCount"]) >= 1.301 ).count_nonzero())
-    print((data_df["TopSNPNLPBeta"] - np.log10(data_df["UsableSNPCount"]) >= 1.301 ).count_nonzero())
+    print(np.count_nonzero(data_df["TopSNPNLPPhi"] - np.log10(data_df["UsableSNPCount"]) >= 1.301 ))
+    print(np.count_nonzero(data_df["TopSNPNLPBeta"] - np.log10(data_df["UsableSNPCount"]) >= 1.301 ))
     return data_df
 
 def load_clusters(cluster_map_path):
