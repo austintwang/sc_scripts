@@ -295,6 +295,7 @@ def plot_sets(df, out_dir):
         with open(os.path.join(out_dir, "threshdata_{0}.txt".format(cluster)), "a") as tdfile:
             tdfile.write("\t".join(map(str, threshs)) + "\n")
             tdfile.write("\t".join(model_flavors_thresh) + "\n")
+            print(thresh_data) ####
             np.savetxt(tdfile, np.array(thresh_data))
 
 def make_scatter(
