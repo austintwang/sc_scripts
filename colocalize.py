@@ -227,7 +227,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                             # print(fm_res["ppas_{0}".format(fq)]) ####
                             if study == "BDSCZ_Ruderfer2018.pickle":
-                                # print(cluster, fg, fq) ####
+                                print(cluster, fg, fq) ####
                                 # print(fm_res_scaled) ####
                                 print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"]))) ####
                             h4 = np.nansum(clpps)
