@@ -97,7 +97,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps):
     # print(causal_set_inf) ####
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
-    print(ppas_inf) ####
+    # print(ppas_inf) ####
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
     # print(ppas) ####
     size_probs = model.get_size_probs()    
@@ -226,10 +226,10 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                             # print(fm_res["ppas_{0}".format(fq)]) ####
-                            if study == "BDSCZ_Ruderfer2018.pickle":
-                                print(cluster, fg, fq) ####
+                            # if study == "BDSCZ_Ruderfer2018.pickle":
+                                # print(cluster, fg, fq) ####
                                 # print(fm_res_scaled) ####
-                                print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"]))) ####
+                                # print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"]))) ####
                             h4 = np.nansum(clpps)
                             cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
