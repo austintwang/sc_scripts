@@ -19,7 +19,7 @@ def read_data(data_path):
             cols = line.strip().split()
             gene = cols[0]
             test = cols[1]
-            z = np.nan if cols[2] == 0. else float(cols[2])
+            z = 0. if cols[2] == "NA" else float(cols[2])
             data_lst.append([gene, test, z])
 
     cols = ["Gene", "Test", "Z"]
