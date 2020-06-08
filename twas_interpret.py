@@ -17,9 +17,9 @@ def read_data(data_path):
     with open(data_path) as data_file:
         for line in data_file:
             cols = line.strip().split()
-            gene = line[0]
-            test = line[1]
-            z = float(line[2])
+            gene = cols[0]
+            test = cols[1]
+            z = float(cols[2])
             data_lst.append([gene, test, z])
 
     cols = ["Gene", "Test", "Z"]
