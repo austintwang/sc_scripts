@@ -19,7 +19,7 @@ def read_data(data_path):
             cols = line.strip().split()
             gene = cols[0]
             test = cols[1]
-            z = np.nan if cols[2] == 'NA' else float(cols[2])
+            z = np.nan if cols[2] == 0. else float(cols[2])
             data_lst.append([gene, test, z])
 
     cols = ["Gene", "Test", "Z"]
@@ -29,7 +29,7 @@ def read_data(data_path):
 def plot_heatmap(df, result_path):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
     # print(np.logical_not(np.isnan(df_plot).all(1))) ####
-    df_plot = df_plot[np.logical_not(np.isnan(df_plot.iloc[:,1:]).all(1))]
+    df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
     print(df_plot) ####
 
     sns.set(style="whitegrid", font="Roboto")
