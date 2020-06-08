@@ -33,6 +33,7 @@ def plot_heatmap(df, result_path):
     # print(df_plot.to_numpy()) ####
     mask = np.logical_not(np.isnan(df_plot))
     df_filled = df_plot.fillna(df.mean())
+    print(df_filled) ####
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_filled, mask=mask)
