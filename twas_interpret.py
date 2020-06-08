@@ -30,7 +30,7 @@ def plot_heatmap(df, result_path):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
     # print(np.logical_not(np.isnan(df_plot).all(1))) ####
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
-    print(df_plot) ####
+    print(df_plot.as_array()) ####
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_plot)
