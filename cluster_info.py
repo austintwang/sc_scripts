@@ -172,10 +172,12 @@ def make_thresh_barplot(
     threshs = threshs + [np.inf]
     model_flavors = list(model_flavors)
     thresh_data = [[] for _ in range(len(threshs))]
+    thresh_data_ret = [[] for _ in range(len(threshs))]
     for m in model_flavors:
         model_data = df.loc[df["Model"] == m, var].to_numpy()
         for i, t in enumerate(threshs):
             thresh_data[i].append(str(np.nanmean((model_data <= t).astype(int))))
+            thresh_data_ret[i].append(np.nansum((model_data <= t).astype(int)))
 
     sns.set(style="whitegrid", font="Roboto")
     plt.figure(figsize=(4,2))
@@ -222,7 +224,7 @@ def make_thresh_barplot(
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-    return thresh_data
+    return thresh_data_ret
 
 def plot_sets(df, out_dir):
     clusters = {
