@@ -73,6 +73,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
+    genes = genes[:100] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -221,7 +222,7 @@ def make_thresh_barplot(
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-    return thresh_data, model_flavors
+    return thresh_data
 
 def plot_sets(df, out_dir):
     clusters = {
@@ -282,7 +283,7 @@ def plot_sets(df, out_dir):
             var_name="Model",
             value_name=var_thresh
         )
-        make_thresh_barplot(
+        thresh_data = make_thresh_barplot(
             df_thresh,
             var_thresh, 
             model_flavors_thresh,
@@ -291,6 +292,9 @@ def plot_sets(df, out_dir):
             title, 
             os.path.join(out_dir, "thresh_{0}.svg".format(cluster)),
         )
+        with open(os.path.join(out_dir, "threshdata_{0}.txt".format(cluster)), "a") as tdfile:
+            tdfile.write("\t".join(model_flavors_thresh) + "\n")
+            np.savetxt(np.array(tdfile, thresh_data))
 
 def make_scatter(
         df,
