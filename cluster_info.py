@@ -314,7 +314,8 @@ def make_scatter(
         x_label,
         y_label, 
         h_label,
-        lim,
+        x_lim,
+        y_lim,
         title, 
         result_path,
     ):
@@ -331,9 +332,10 @@ def make_scatter(
         hue_norm=(0, 10),
         data=df_rn, 
     )
-    if lim is not None:
-        plt.xlim(-lim, lim)
-        plt.ylim(-lim, lim)
+    if x_lim is not None:
+        plt.xlim(-x_lim, x_lim)
+    if y_lim is not None:
+        plt.ylim(-y_lim, y_lim)
     plt.title(title)
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
@@ -385,13 +387,11 @@ def make_heatmap(arr, order, title, result_path):
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
-    sn = stat_name
+def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cutoff_train, cutoff_test):
+    sn1 = stat_name_train
+    sn2 = stat_name_test
     df_tr_sig = df_train.loc[
-        np.logical_and(
-            df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-            abs(df_train[f"TopSNP{sn}"]) <= cutoff
-        )
+        df_train[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df_train["UsableSNPCount"])
     ]
     # df_ts_sig = df_test.loc[
     #     np.logical_and(
@@ -423,9 +423,9 @@ def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
             )
-            x = df_merged[f"TopSNP{sn}_train"]
-            y = df_merged[f"TopSNP{sn}_test"]
-            se = df_merged[f"TopSNP{sn}_train"] / df_merged[f"TopSNPZ{sn}_train"]
+            x = df_merged[f"TopSNP{sn1}_train"]
+            y = df_merged[f"TopSNP{sn2}_test"]
+            se = df_merged[f"TopSNP{sn1}_train"] / df_merged[f"TopSNPZ{sn1}_train"]
             xw = np.nan_to_num(x / se)
             yw = np.nan_to_num(y / se)
             slope = xw.dot(yw) / xw.dot(xw)
@@ -443,18 +443,19 @@ def plot_xcells(df_train, df_test, out_dir, stat_name, cutoff):
             nlp_1s[ind_i, ind_j] = nlp_1
 
             num_sig_train = df_merged.shape[0]
-            num_sig_test = np.sum(df_merged[f"TopSNPNLP{sn}_test"] >= -np.log10(0.05))
+            num_sig_test = np.sum(df_merged[f"TopSNPNLP{sn2}_test"] >= -np.log10(0.05))
             storey_pis[ind_i, ind_j] = num_sig_test / num_sig_train
 
             make_scatter(
                 df_merged,
-                f"TopSNP{sn}_train",
-                f"TopSNP{sn}_test",
-                f"TopSNPNLP{sn}_test",
+                f"TopSNP{sn1}_train",
+                f"TopSNP{sn2}_test",
+                f"TopSNPNLP{sn2}_test",
                 "Train Effect Size",
                 "Test Effect Size", 
                 "Test -log10 P",
-                cutoff,
+                cutoff_train,
+                cutoff_test,
                 "{0} to {1}".format(clusters[i], clusters[j]), 
                 os.path.join(out_dir, "xcell_{0}_{1}.svg".format(i, j)),
             )
@@ -604,8 +605,10 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
     # print(df_test) ####
     # print(df_comb) ####
     plot_xval(df_comb, os.path.join(out_dir, "xvals"))
-    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells"), "Phi", 5)
-    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta", 50)
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_phi"), "Phi", "Phi", 5, 5)
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta", "Beta", 30, 30)
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_phi_beta"), "Phi", "Beta", 5, 30)
+    plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta_phi"), "Beta", "Phi", 30, 5)
     df_train.to_csv(os.path.join(out_dir, "train.csv"), sep="\t", index=False, na_rep="None")
     df_test.to_csv(os.path.join(out_dir, "test.csv"), sep="\t", index=False, na_rep="None")   
 
