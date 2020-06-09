@@ -149,7 +149,7 @@ if __name__ == '__main__':
         names_kellis, 
         genes_dir_kellis, 
         params_kellis, 
-        params_path_kellis, 
+        params_path_kellis_combined, 
         "all", 
         cluster_map_path_kellis, 
         barcodes_map_path_kellis, 
