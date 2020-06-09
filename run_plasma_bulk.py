@@ -75,14 +75,22 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
     finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
     output_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_out.pickle")
 
+    try:
+        with open(gene_path, "rb") as gene_file:
+            gene_data = pickle.load(gene_file)
+        with open(finemap_path, "rb") as finemap_file:
+            finemap_data = pickle.load(finemap_file)
+        with open(bulk_path, "rb") as bulk_file:
+            bulk_data = pickle.load(bulk_file)
+    except Exception as e:
+        trace = traceback.format_exc()
+        print(trace, file=sys.stderr)
+        status_file.write("Complete")
+
     all_complete = True
     try:
         with open(params_path, "rb") as params_file:
             params = pickle.load(params_file)
-        with open(bulk_path, "rb") as bulk_file:
-            bulk_data = pickle.load(bulk_file)
-        with open(gene_path, "rb") as gene_file:
-            gene_data = pickle.load(gene_file)
         with open(boundaries_map_path, "rb") as boundaries_map_file:
             boundaries_map = pickle.load(boundaries_map_file)
         if filter_path == "all":
