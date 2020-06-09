@@ -35,7 +35,7 @@ def get_ros_data(bulk_path, names_path, out_dir):
             continue
         target_dir = os.path.join(out_dir, matches[0], "bulk_qtl")
         os.makedirs(target_dir, exist_ok=True)
-        with open(os.path.join(target_dir, "rosmap_out.pickle"), "wb") as out_file:
+        with open(os.path.join(target_dir, "rosmap_in.pickle"), "wb") as out_file:
             pickle.dump(markers, out_file)
         print(target_dir) ####
 

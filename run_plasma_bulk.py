@@ -65,7 +65,7 @@ def write_output(output_path, result):
 
     gc.collect()
 
-def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, bulk_gen_path, boundaries_map_path, status_path):
+def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundaries_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -154,7 +154,8 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, bulk_ge
                 for fq in model_flavors_qtl:
                     try:
                         snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
-                        scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                        # scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                        scale = 1.
                         fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
                         clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                         h4 = np.nansum(clpps)
