@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
     params_kellis_test = params_kellis.copy()
     # params_kellis_test["num_ppl"] = 388324
-    params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_params.pickle")
+    # params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_params.pickle")
 
     dispatch(
         script_path, 

@@ -57,7 +57,6 @@ if __name__ == '__main__':
 
     # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
-    params_path_kellis = os.path.join(data_path_kellis, "coloc_params.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names_kellis = os.listdir(genes_dir_kellis)
 
@@ -84,7 +83,7 @@ if __name__ == '__main__':
         "rosmap",
         genes_dir_kellis, 
         params_kellis_test, 
-        params_path_kellis, 
+        params_path_kellis_test, 
         "all", 
         boundaries_map_path,
         2000, 
