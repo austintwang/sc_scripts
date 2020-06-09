@@ -104,9 +104,6 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
         # print(inputs) ####
         inputs.update(params)
 
-        if inputs.get("num_ppl") is None:
-            inputs["num_ppl"] = bulk_data["_size"]
-    
         result = {"z_beta": inputs["z_beta"].copy()}
         informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
         result["informative_snps"] = informative_snps
