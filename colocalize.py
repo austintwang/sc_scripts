@@ -219,7 +219,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                         try:
                             # snps_used = result["ppas_{0}".format(fg)] != np.nan
                             snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
-                            scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                            # scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                            scale = 1.
                             # print(scale) ####
                             # print(snps_used) ####
                             # print(result["ppas_{0}".format(fg)]) ####
