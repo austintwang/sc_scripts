@@ -208,7 +208,7 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
-    calc_sumstats(data_df, out_dir_gwas, 0.5)
+    calc_sumstats(data_df, out_dir_gwas, 0.1)
     plot_sets(data_df, out_dir_gwas)
 
     with open(status_path, "w") as status_file:
