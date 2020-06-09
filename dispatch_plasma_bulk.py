@@ -71,7 +71,7 @@ if __name__ == '__main__':
         "max_causal": 1,
         "confidence": 0.95, 
         "model_flavors_qtl": "all",
-        "model_flavors_gwas": "all",
+        "model_flavors_bulk": "all",
     }
 
     params_kellis_test = params_kellis.copy()
