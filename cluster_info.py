@@ -331,8 +331,9 @@ def make_scatter(
         hue_norm=(0, 10),
         data=df_rn, 
     )
-    plt.xlim(-lim, lim)
-    plt.ylim(-lim, lim)
+    if lim is not None:
+        plt.xlim(-lim, lim)
+        plt.ylim(-lim, lim)
     plt.title(title)
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
@@ -358,7 +359,7 @@ def plot_xval(df, out_dir):
             "Train Effect Size",
             "Test Effect Size", 
             "Test -log10 P",
-            5,
+            None,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
@@ -370,7 +371,7 @@ def plot_xval(df, out_dir):
             "Train Effect Size",
             "Test Effect Size",
             "Test -log10 P",
-            150, 
+            None, 
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
@@ -645,7 +646,7 @@ if __name__ == '__main__':
 
     get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
