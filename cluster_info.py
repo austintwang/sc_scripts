@@ -123,7 +123,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     ]
 
     data_df = pd.DataFrame(data_lst, columns=cols)
-    print(np.count_nonzero(data_df["TopSNPNLPPhi"]n >= -np.log10(0.05 / data_df["UsableSNPCount"])))
+    print(np.count_nonzero(data_df["TopSNPNLPPhi"] >= -np.log10(0.05 / data_df["UsableSNPCount"])))
     print(np.count_nonzero(data_df["TopSNPNLPBeta"] >= -np.log10(0.05 / data_df["UsableSNPCount"])))
     return data_df
 
