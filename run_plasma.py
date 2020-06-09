@@ -292,8 +292,12 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         inputs["hap1"] = inputs["hap1"][:, snps_in_filter]
                         inputs["hap2"] = inputs["hap2"][:, snps_in_filter]
 
-                    haps_comb = (inputs["hap1"] + inputs["hap2"])[mask_total_exp, :]
-                    haps_diff = (inputs["hap1"] - inputs["hap2"])[mask_imbalance, :]
+                    # haps_comb = (inputs["hap1"] + inputs["hap2"])[mask_total_exp, :]
+                    # haps_diff = (inputs["hap1"] - inputs["hap2"])[mask_imbalance, :]
+                    hap_c1 = inputs["hap1"][mask_total_exp, :]
+                    hap_c2 = inputs["hap2"][mask_total_exp, :]
+                    hap_d1 = inputs["hap1"][mask_imbalance, :]
+                    hap_d2 = inputs["hap2"][mask_imbalance, :]
 
                     if np.size(inputs["counts1"][mask_imbalance]) <= 1:
                         result["data_error"] = "Insufficient Read Counts"
@@ -301,9 +305,15 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
                     informative_snps = np.nonzero(np.logical_and.reduce([
                         # np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)),
-                        np.logical_not(np.all(haps_diff == haps_diff[0,:], axis=0)),
-                        np.sum(haps_comb, axis=0) >= 5,
-                        np.sum(2 - haps_comb, axis=0) >= 5,
+                        # np.logical_not(np.all(haps_diff == haps_diff[0,:], axis=0)),
+                        np.sum(hap_c1, axis=0) >= 5,
+                        np.sum(1 - hap_c1, axis=0) >= 5,
+                        np.sum(hap_c2, axis=0) >= 5,
+                        np.sum(1 - hap_c2, axis=0) >= 5,
+                        np.sum(hap_d1, axis=0) >= 5,
+                        np.sum(1 - hap_d1, axis=0) >= 5,
+                        np.sum(hap_d2, axis=0) >= 5,
+                        np.sum(1 - hap_d2, axis=0) >= 5,
                     ]))[0]
                     result["informative_snps"] = informative_snps
                     result["num_snps_total"] = np.size(inputs["snp_ids"])
