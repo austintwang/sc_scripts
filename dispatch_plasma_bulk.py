@@ -86,7 +86,6 @@ if __name__ == '__main__':
         params_kellis_test, 
         params_path_kellis, 
         "all", 
-        gwas_gen_path,
         boundaries_map_path,
         2000, 
         fails_only=False
