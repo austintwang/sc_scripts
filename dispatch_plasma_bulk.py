@@ -52,7 +52,7 @@ def dispatch(script_path, names, bulk_name, data_dir, params, params_path, filte
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
     script_path = os.path.join(curr_path, "run_plasma_bulk.py")
-
+    gen_data_path = "/agusevlab/awang/gen_data"
     boundaries_map_path = os.path.join(gen_data_path, "boundaries.pickle") 
 
     # Kellis 429
