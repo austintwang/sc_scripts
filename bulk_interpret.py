@@ -24,7 +24,7 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
         if plasma_clust is None or bulk_clust is None:
             continue
         if "ppas_indep" not in plasma_clust:
-            print(plasma_clust) ####
+            # print(plasma_clust) ####
             continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
@@ -65,7 +65,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:50] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
