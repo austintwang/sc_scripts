@@ -102,6 +102,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
 
 def make_heatmap(arr, order, title, result_path):
     heat_data = pd.DataFrame(data=arr, index=order, columns=["Bulk"])
+    print(heat_data) ####
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     sns.heatmap(heat_data, annot=True, fmt=".2g", square=True, cbar=False, annot_kws={"size": 10})
