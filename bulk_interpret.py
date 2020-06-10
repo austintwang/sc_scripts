@@ -131,7 +131,7 @@ def plot_xcells(df, out_dir, stat_name):
         df_merged = df_tr_sig.loc[df_tr_sig["Cluster"] == i]
         num_sig_train = df_merged.shape[0]
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
-        storey_pis[ind_i, 1] = num_sig_test / num_sig_train
+        storey_pis[ind_i, 0] = num_sig_test / num_sig_train
 
 
     title = "Cross-Cell Cross-Validation Storey Pi"
