@@ -61,7 +61,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:500] ####
+    genes = genes[:50] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -111,8 +111,8 @@ def make_heatmap(arr, order, title, result_path):
 
 def plot_xcells(df, out_dir, stat_name):
     sn1 = stat_name
-    df_tr_sig = df_train.loc[
-        df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df_train["UsableSNPCount"])
+    df_tr_sig = df.loc[
+        df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["UsableSNPCount"])
     ]
 
     clusters = {
