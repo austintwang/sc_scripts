@@ -39,7 +39,7 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
             gene_name, 
             c, 
             np.mean(plasma_clust.get("causal_set_indep", np.nan)), 
-            np.mean(coloc_data.get("causal_set_eqtl", np.nan)),
+            np.mean(bulk_data.get("causal_set_eqtl", np.nan)),
             top_z_bulk,
             top_nlp_bulk,
             top_z_phi,
