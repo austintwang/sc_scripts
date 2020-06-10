@@ -158,10 +158,15 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
             for fg in model_flavors_bulk:
                 for fq in model_flavors_qtl:
                     try:
-                        snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
-                        # scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
-                        scale = 1.
-                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
+                        snps_used = np.logical_and(
+                            np.logical_not(np.isnan(result["ppas_{0}".format(fg)])),
+                            np.logical_not(np.isnan(fm_res["ppas_{0}".format(fq)]))
+                        )
+                        scale_fm = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                        # scale_fm = 1.
+                        fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale_fm
+                        scale_bulk = np.nansum(result["ppas_{0}".format(fg)][snps_used])
+                        bulk_res_scaled = result["ppas_{0}".format(fg)] / scale_bulk
                         clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                         h4 = np.nansum(clpps)
                         print(cluster, fg, fq) ####
