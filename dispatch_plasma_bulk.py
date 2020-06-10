@@ -63,7 +63,7 @@ if __name__ == '__main__':
     params_kellis = {
         "total_exp_herit_prior": 0.05,
         "imbalance_herit_prior": 0.40,
-        "num_ppl_total_exp": 400, 
+        "num_ppl_total_exp": 494, 
         "cross_corr_prior": 0.9,
         "min_causal": 1,
         "num_causal": 1.,

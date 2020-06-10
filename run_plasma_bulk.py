@@ -169,8 +169,8 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                         bulk_res_scaled = result["ppas_{0}".format(fg)] / scale_bulk
                         clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                         h4 = np.nansum(clpps)
-                        print(cluster, fg, fq) ####
-                        print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
+                        # print(cluster, fg, fq) ####
+                        # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
                         cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
                         cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
                     except KeyError:
