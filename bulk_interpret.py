@@ -53,6 +53,11 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
         data.append(data_clust)
     return data
 
+def load_clusters(cluster_map_path):
+    with open(cluster_map_path, "rb") as cluster_map_file:
+        cluster_map = pickle.load(cluster_map_file)
+    return cluster_map.keys()
+
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
