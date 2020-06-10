@@ -72,7 +72,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
                 plasma_data = pickle.load(plasma_file)
             with open(coloc_path, "rb") as coloc_file:
                 coloc_data = pickle.load(coloc_file)
-        except FileNotFoundError:
+        except (FileNotFoundError, pickle.UnpicklingError):
             continue
 
         data = read_data_bulk(plasma_data, coloc_data, clusters, g)
