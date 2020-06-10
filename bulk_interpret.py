@@ -23,6 +23,9 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
         bulk_clust = bulk_data["clusters"].get(c, None)
         if plasma_clust is None or bulk_clust is None:
             continue
+        if "ppas_indep" not in plasma_clust:
+            print(plasma_clust) ####
+            continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
         top_snp = np.nanargmax(plasma_clust["ppas_indep"])
