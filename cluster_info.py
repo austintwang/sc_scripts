@@ -362,6 +362,7 @@ def plot_xval(df, out_dir):
             "Test Effect Size", 
             "Test -log10 P",
             None,
+            None,
             "{0} AS Effect".format(value), 
             os.path.join(out_dir, "xval_phi_{0}.svg".format(key)),
         )
@@ -374,6 +375,7 @@ def plot_xval(df, out_dir):
             "Test Effect Size",
             "Test -log10 P",
             None, 
+            None,
             "{0} QTL Effect".format(value), 
             os.path.join(out_dir, "xval_beta_{0}.svg".format(key)),
         )
