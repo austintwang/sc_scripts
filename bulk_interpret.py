@@ -66,7 +66,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, run_name, "plasma_i0.pickle")
-        coloc_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}.pickle")
+        coloc_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_out.pickle")
         try:
             with open(plasma_path, "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
