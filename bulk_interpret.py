@@ -28,6 +28,7 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
             continue
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
+        num_informative_plasma = plasma_clust["num_snps_informative"]
         top_snp = np.nanargmax(plasma_clust["ppas_indep"])
         top_z_beta = plasma_clust["z_beta"][top_snp]
         top_nlp_beta = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z_beta))*2))
