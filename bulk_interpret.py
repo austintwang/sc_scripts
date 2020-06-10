@@ -61,7 +61,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:500] ####
+    genes = genes[:50] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -75,7 +75,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
         except FileNotFoundError:
             continue
 
-        data = read_data(plasma_data, coloc_data, clusters, g)
+        data = read_data_bulk(plasma_data, coloc_data, clusters, g)
         data_lst.extend(data)
 
     cols = [
