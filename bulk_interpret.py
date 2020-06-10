@@ -92,7 +92,6 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
         "PP4Joint",
         "PP4AS",
         "PP4QTL",
-        "UsableSNPCount",
         "NumInformativeBulk",
         "NumInformativePlasma"
     ]
@@ -113,7 +112,7 @@ def make_heatmap(arr, order, title, result_path):
 def plot_xcells(df, out_dir, stat_name):
     sn1 = stat_name
     df_tr_sig = df.loc[
-        df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["UsableSNPCount"])
+        df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["NumInformativePlasma"])
     ]
     print(df_tr_sig) ####
 
