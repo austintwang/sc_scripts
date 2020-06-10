@@ -101,7 +101,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     return data_df
 
 def make_heatmap(arr, order, title, result_path):
-    heat_data = pd.DataFrame(data=arr, index=order, columns=order)
+    heat_data = pd.DataFrame(data=arr, index=order, columns=["Bulk"])
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
     sns.heatmap(heat_data, annot=True, fmt=".2g", square=True, cbar=False, annot_kws={"size": 10})
@@ -134,7 +134,7 @@ def plot_xcells(df, out_dir, stat_name):
         storey_pis[ind_i, 0] = num_sig_test / num_sig_train
 
 
-    title = "Cross-Cell Cross-Validation Storey Pi"
+    title = "Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
 
 def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base):
