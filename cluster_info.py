@@ -240,14 +240,14 @@ def calc_nlq(df, sn):
     # print(ranks) ####
     for i in ranks:
         sig = nlq.iloc[i]
-        print(i, sig) ####
+        # print(i, sig) ####
         if np.isnan(sig):
             continue
         if sig > min_sig:
             min_sig = sig
         else:
             nlq.iloc[i] = min_sig
-        # print(sig, nlq[i]) ####
+        print(sig, nlq[i]) ####
 
     df[f"TopSNPNLQ{sn}"] = nlq
 
@@ -290,8 +290,8 @@ def plot_sets(df, out_dir):
         calc_nlq(df_clust, "Phi")
         calc_nlq(df_clust, "Beta")
 
-        print(np.count_nonzero(data_df["TopSNPNLQPhi"] >= -np.log10(0.1)))
-        print(np.count_nonzero(data_df["TopSNPNLQBeta"] >= -np.log10(0.1)))
+        print(np.count_nonzero(df_clust["TopSNPNLQPhi"] >= -np.log10(0.1)))
+        print(np.count_nonzero(df_clust["TopSNPNLQBeta"] >= -np.log10(0.1)))
 
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
