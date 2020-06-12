@@ -37,6 +37,9 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 except (ValueError, KeyError, IndexError):
                     print("False") ####
                     ppa = False
+
+            num_snps_total = plasma_clust["num_snps_total"]
+            num_snps_informative = plasma_clust.get("num_snps_informative_weak", num_snps_total)
             data_clust = [
                 gene_name, 
                 c, 
@@ -47,14 +50,14 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["avg_num_cells"],
                 plasma_clust["effective_sample_size"],
                 plasma_clust["sample_size"],
-                plasma_clust["num_snps_informative"],
-                plasma_clust["num_snps_total"],
-                np.sum(plasma_clust.get("causal_set_indep", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]), 
-                np.sum(plasma_clust.get("causal_set_ase", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]),
-                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]),
-                (np.sum(plasma_clust.get("causal_set_indep", np.nan)) - plasma_clust["num_snps_total"]) / plasma_clust["num_snps_informative"] + 1, 
-                (np.sum(plasma_clust.get("causal_set_ase", np.nan)) - plasma_clust["num_snps_total"]) / plasma_clust["num_snps_informative"] + 1,
-                (np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - plasma_clust["num_snps_total"]) / plasma_clust["num_snps_informative"] + 1,
+                num_snps_informative,
+                num_snps_total,
+                np.sum(plasma_clust.get("causal_set_indep", np.nan)) - (num_snps_total - num_snps_informative), 
+                np.sum(plasma_clust.get("causal_set_ase", np.nan)) - (num_snps_total - num_snps_informative),
+                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - (num_snps_total - num_snps_informative),
+                (np.sum(plasma_clust.get("causal_set_indep", np.nan)) - num_snps_total) / num_snps_informative + 1, 
+                (np.sum(plasma_clust.get("causal_set_ase", np.nan)) - num_snps_total) / num_snps_informative + 1,
+                (np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - num_snps_total) / num_snps_informative + 1,
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
