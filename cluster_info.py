@@ -78,16 +78,17 @@ def calc_nlq(df, sn):
     ranks = np.argsort(data)
     nlq = data - np.log10(count) + np.log10(ranks + 1) 
     min_sig = 0.
-    print(ranks) ####
+    # print(ranks) ####
     for i in ranks:
         sig = nlq[i]
+        print(i, sig)
         if np.isnan(sig):
             continue
         if sig > min_sig:
             min_sig = sig
         else:
             nlq[i] = min_sig
-        print(sig, nlq[i]) ####
+        # print(sig, nlq[i]) ####
 
     df[f"TopSNPNLQ{sn}"] = nlq
 
