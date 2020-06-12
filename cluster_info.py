@@ -78,6 +78,7 @@ def calc_nlq(df, sn):
     ranks = np.argsort(data)
     nlq = data - np.log10(count) + np.log10(ranks + 1) 
     min_sig = 0.
+    print(ranks) ####
     for i in ranks:
         sig = nlq[i]
         if np.isnan(sig):
