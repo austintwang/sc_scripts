@@ -247,7 +247,7 @@ def calc_nlq(df, sn):
             min_sig = sig
         else:
             nlq.iloc[i] = min_sig
-        print(sig, nlq[i]) ####
+        print(sig, nlq.iloc[i]) ####
 
     df[f"TopSNPNLQ{sn}"] = nlq
 
