@@ -49,20 +49,20 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 plasma_clust["sample_size"],
                 plasma_clust["num_snps_informative"],
                 plasma_clust["num_snps_total"],
-                np.sum(plasma_clust.get("causal_set_indep", np.nan)), 
-                np.sum(plasma_clust.get("causal_set_ase", np.nan)),
-                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)),
-                np.sum(plasma_clust.get("causal_set_indep", np.nan)) / plasma_clust["num_snps_total"], 
-                np.sum(plasma_clust.get("causal_set_ase", np.nan)) / plasma_clust["num_snps_total"],
-                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) / plasma_clust["num_snps_total"],
+                np.sum(plasma_clust.get("causal_set_indep", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]), 
+                np.sum(plasma_clust.get("causal_set_ase", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]),
+                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - (plasma_clust["num_snps_total"] - plasma_clust["num_snps_informative"]),
+                np.sum(plasma_clust.get("causal_set_indep", np.nan)) / plasma_clust["num_snps_informative"] - 1 / plasma_clust["num_snps_total"] + 1, 
+                np.sum(plasma_clust.get("causal_set_ase", np.nan)) / plasma_clust["num_snps_informative"] - 1 / plasma_clust["num_snps_total"] + 1,
+                np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) / plasma_clust["num_snps_informative"] - 1 / plasma_clust["num_snps_total"] + 1,
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
                 plasma_clust["z_phi"][top_snp] if ppa else np.nan,
                 plasma_clust["phi"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2) if ppa else np.nan),
+                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2 / plasma_clust["num_snps_informative"]) if ppa else np.nan,
                 # np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"]))*2/plasma_clust["num_snps_informative"]) >= 1.301) if ppa else 0,
                 plasma_clust["z_beta"][top_snp] if ppa else np.nan,
                 plasma_clust["beta"][top_snp] if ppa else np.nan,
-                np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2) if ppa else np.nan),
+                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2 / plasma_clust["num_snps_informative"]) if ppa else np.nan,
                 # np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"]))*2/plasma_clust["num_snps_informative"]) >= 1.301) if ppa else 0,
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
@@ -78,7 +78,7 @@ def calc_nlq(df, sn):
     ranks = np.argsort(data)
     nlq = data - np.log10(count) + np.log10(ranks + 1) 
     min_sig = 0.
-    for i in reversed(ranks):
+    for i in ranks:
         sig = nlq[i]
         if np.isnan(sig):
             continue
