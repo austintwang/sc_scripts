@@ -72,26 +72,6 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             data.append(data_clust)
     return data
 
-def calc_nlq(df, sn):
-    data = df[f"TopSNPNLP{sn}"]
-    count = np.count_nonzero(~np.isnan(data))
-    ranks = np.argsort(data)
-    nlq = data - np.log10(count) + np.log10(ranks + 1) 
-    min_sig = 0.
-    # print(ranks) ####
-    for i in ranks:
-        sig = nlq[i]
-        print(i, sig)
-        if np.isnan(sig):
-            continue
-        if sig > min_sig:
-            min_sig = sig
-        else:
-            nlq[i] = min_sig
-        # print(sig, nlq[i]) ####
-
-    df[f"TopSNPNLQ{sn}"] = nlq
-
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
@@ -143,12 +123,6 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     ]
 
     data_df = pd.DataFrame(data_lst, columns=cols)
-
-    calc_nlq(data_df, "Phi")
-    calc_nlq(data_df, "Beta")
-
-    print(np.count_nonzero(data_df["TopSNPNLQPhi"] >= -np.log10(0.1)))
-    print(np.count_nonzero(data_df["TopSNPNLQBeta"] >= -np.log10(0.1)))
 
     return data_df
 
@@ -257,6 +231,26 @@ def make_thresh_barplot(
 
     return thresh_data_ret
 
+def calc_nlq(df, sn):
+    data = df[f"TopSNPNLP{sn}"]
+    count = np.count_nonzero(~np.isnan(data))
+    ranks = np.argsort(np.nan_to_num(data))
+    nlq = data - np.log10(count) + np.log10(ranks + 1) 
+    min_sig = 0.
+    # print(ranks) ####
+    for i in ranks:
+        sig = nlq[i]
+        print(i, sig) ####
+        if np.isnan(sig):
+            continue
+        if sig > min_sig:
+            min_sig = sig
+        else:
+            nlq[i] = min_sig
+        # print(sig, nlq[i]) ####
+
+    df[f"TopSNPNLQ{sn}"] = nlq
+
 def plot_sets(df, out_dir):
     clusters = {
         "_all": "All Cells",
@@ -291,7 +285,14 @@ def plot_sets(df, out_dir):
     threshs = [5, 10, 20, 50, 100, 200]
 
     for cluster in clusters.keys():
+        print(cluster)
         df_clust = df.loc[df["Cluster"] == cluster]
+        calc_nlq(df_clust, "Phi")
+        calc_nlq(df_clust, "Beta")
+
+        print(np.count_nonzero(data_df["TopSNPNLQPhi"] >= -np.log10(0.1)))
+        print(np.count_nonzero(data_df["TopSNPNLQBeta"] >= -np.log10(0.1)))
+
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
