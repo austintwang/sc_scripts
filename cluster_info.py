@@ -72,10 +72,27 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             data.append(data_clust)
     return data
 
+def calc_nlq(df, sn):
+    data = df[f"TopSNPNLP{sn}"]
+    count = np.count_nonzero(~np.isnan(data))
+    ranks = np.argsort(data)
+    nlq = data - np.log10(count) + np.log10(ranks + 1) 
+    min_sig = 0.
+    for i in reversed(ranks):
+        sig = nlq[i]
+        if np.isnan(sig):
+            continue
+        if sig > min_sig:
+            min_sig = sig
+        else:
+            nlq[i] = min_sig
+
+    df[f"TopSNPNLQ{sn}"] = nlq
+
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:100] ####
+    genes = genes[:100] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -123,8 +140,13 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     ]
 
     data_df = pd.DataFrame(data_lst, columns=cols)
-    print(np.count_nonzero(data_df["TopSNPNLPPhi"] >= -np.log10(0.05 / data_df["UsableSNPCount"])))
-    print(np.count_nonzero(data_df["TopSNPNLPBeta"] >= -np.log10(0.05 / data_df["UsableSNPCount"])))
+
+    calc_nlq(data_df, "Phi")
+    calc_nlq(data_df, "Beta")
+
+    print(np.count_nonzero(data_df["TopSNPNLQPhi"] >= -np.log10(0.1)))
+    print(np.count_nonzero(data_df["TopSNPNLQBeta"] >= -np.log10(0.1)))
+
     return data_df
 
 def load_clusters(cluster_map_path):
