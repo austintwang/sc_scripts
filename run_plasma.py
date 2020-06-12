@@ -315,10 +315,18 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         np.sum(hap_d2, axis=0) >= 5,
                         np.sum(1 - hap_d2, axis=0) >= 5,
                     ]))[0]
+                    informative_snps_weak = np.nonzero(np.logical_and.reduce([
+                        np.sum(hap_c1, axis=0) >= 5,
+                        np.sum(1 - hap_c1, axis=0) >= 5,
+                        np.sum(hap_c2, axis=0) >= 5,
+                        np.sum(1 - hap_c2, axis=0) >= 5,
+                    ]))[0]
                     result["informative_snps"] = informative_snps
+                    result["informative_snps_weak"] = informative_snps_weak
                     result["num_snps_total"] = np.size(inputs["snp_ids"])
                     result["snp_ids"] = inputs["snp_ids"]
                     result["num_snps_informative"] = np.count_nonzero(informative_snps)
+                    result["num_snps_informative_weak"] = np.count_nonzero(informative_snps_weak)
 
                     inputs["hap1"] = inputs["hap1"][:, informative_snps]
                     inputs["hap2"] = inputs["hap2"][:, informative_snps]
