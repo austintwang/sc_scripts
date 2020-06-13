@@ -78,7 +78,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -275,10 +275,17 @@ def plot_sets(df, out_dir):
         "CredibleSetSizeAS": "PLASMA-AS",
         "CredibleSetSizeQTL": "QTL-Only"
     }
+    model_map_thresh_prop = {
+        "CredibleSetPropJoint": "PLASMA-J",
+        "CredibleSetPropAS": "PLASMA-AS",
+        "CredibleSetPropQTL": "QTL-Only"
+    }
     var_dists = "Credible Set Proportion"
     var_thresh = "Credible Set Size"
+    var_thresh_prop = "Credible Set Proportion"
     model_flavors_dists = model_map_dists.keys()
     model_flavors_thresh = model_map_thresh.keys()
+    model_flavors_thresh_prop = model_map_thresh_prop.keys()
     pal = sns.color_palette()
     model_colors = {
         "CredibleSetPropJoint": pal[0],
@@ -286,6 +293,7 @@ def plot_sets(df, out_dir):
         "CredibleSetPropQTL": pal[7],
     }
     threshs = [5, 10, 20, 50, 100, 200]
+    threshs_prop = [0.01, 0.05, 0.1, 0.2. 0.5]
 
     for cluster in clusters.keys():
         print(cluster)
@@ -331,9 +339,31 @@ def plot_sets(df, out_dir):
         )
         with open(os.path.join(out_dir, "threshdata_{0}.txt".format(cluster)), "w") as tdfile:
             tdfile.write("\t".join(map(str, threshs)) + "\n")
-            tdfile.write("\t".join(model_flavors_thresh) + "\n")
+            tdfile.write("\t".join(model_flavors_thresh) + "\n\n")
             # print(thresh_data) ####
             np.savetxt(tdfile, np.array(thresh_data).astype(float))
+
+        df_thresh_prop = pd.melt(
+            df.loc[df["Cluster"] == cluster], 
+            id_vars=["Gene"], 
+            value_vars=model_map_thresh.keys(),
+            var_name="Model",
+            value_name=var_thresh_prop
+        )
+        thresh_data_prop = make_thresh_barplot(
+            df_thresh_prop,
+            var_thresh_prop, 
+            model_flavors_thresh_prop,
+            model_map_thresh_prop, 
+            threshs_prop,
+            title_prop, 
+            os.path.join(out_dir, "thresh_{0}_prop.svg".format(cluster)),
+        )
+        with open(os.path.join(out_dir, "threshdata_{0}_prop.txt".format(cluster)), "w") as tdfile:
+            tdfile.write("\t".join(map(str, threshs_prop)) + "\n")
+            tdfile.write("\t".join(model_flavors_thresh_prop) + "\n\n")
+            # print(thresh_data) ####
+            np.savetxt(tdfile, np.array(thresh_data_prop).astype(float))
 
 def make_scatter(
         df,
