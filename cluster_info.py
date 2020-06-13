@@ -356,7 +356,7 @@ def plot_sets(df, out_dir):
             model_flavors_thresh_prop,
             model_map_thresh_prop, 
             threshs_prop,
-            title_prop, 
+            title, 
             os.path.join(out_dir, "thresh_{0}_prop.svg".format(cluster)),
         )
         with open(os.path.join(out_dir, "threshdata_{0}_prop.txt".format(cluster)), "w") as tdfile:
