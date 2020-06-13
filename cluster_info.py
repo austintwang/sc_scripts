@@ -346,7 +346,7 @@ def plot_sets(df, out_dir):
         df_thresh_prop = pd.melt(
             df.loc[df["Cluster"] == cluster], 
             id_vars=["Gene"], 
-            value_vars=model_map_thresh.keys(),
+            value_vars=model_map_thresh_prop.keys(),
             var_name="Model",
             value_name=var_thresh_prop
         )
