@@ -39,7 +39,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                     ppa = False
 
             num_snps_total = plasma_clust["num_snps_total"]
-            num_snps_informative = plasma_clust.get("num_snps_informative_weak", num_snps_total)
+            num_snps_informative = plasma_clust.get("num_snps_informative", num_snps_total)
             data_clust = [
                 gene_name, 
                 c, 
