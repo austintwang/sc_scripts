@@ -203,11 +203,11 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                     Finemap, inputs, updates_eqtl, informative_snps
                 )
 
-            # if "fmb" in model_flavors_gwas:
-            #     updates_fmb = {"qtl_only": True}
-            #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
-            #         FmBenner, inputs, updates_fmb, informative_snps
-            #     )
+            if "fmb" in model_flavors_gwas:
+                updates_fmb = {"qtl_only": True}
+                result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
+                    FmBenner, inputs, updates_fmb, informative_snps
+                )
             # print(result["causal_set_eqtl"]) ####
 
             cluster_results = result.setdefault("clusters", {})
