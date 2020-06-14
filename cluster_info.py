@@ -415,7 +415,7 @@ def plot_sets(df, out_dir):
             )),
         ]
         data.extend(data_spec)
-        summ_data.append(data_spec)
+        summ_data.append(data)
 
     cols = ["Cluster", "NumSigComb", "NumSigPhi", "NumSigBeta", "DiffSigComb", "DiffSigPhi", "DiffSigBeta"]
     summ_df = pd.DataFrame(summ_data, columns=cols)
