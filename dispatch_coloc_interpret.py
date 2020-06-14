@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, data_dir, status_dir, gwas_names, cluster_map_path, out_path, memory, fails_only=False):
+def dispatch(script_path, data_dir, status_dir, gwas_names, gene_map_path, cluster_map_path, out_path, memory, fails_only=False):
     jobs = []
     for name in gwas_names:
         os.makedirs(os.path.join(status_dir, name), exist_ok=True)
@@ -21,7 +21,7 @@ def dispatch(script_path, data_dir, status_dir, gwas_names, cluster_map_path, ou
         err_name = os.path.join(status_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, data_dir, name, cluster_map_path, out_path, status_path
+            script_path, data_dir, gene_map_path, name, cluster_map_path, out_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -51,6 +51,8 @@ if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
     script_path = os.path.join(curr_path, "coloc_interpret.py")
 
+    gene_map_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
+
     data_path_kellis = "/agusevlab/awang/sc_kellis"
 
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
@@ -65,6 +67,7 @@ if __name__ == '__main__':
         genes_dir_kellis, 
         status_dir_kellis,
         gwas_names,
+        gene_map_path,
         cluster_map_path_kellis, 
         out_path_kellis, 
         5000, 

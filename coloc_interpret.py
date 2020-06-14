@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-def read_data(plasma_data, coloc_data, clusters, gene_name):
+def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
     # print(coloc_data.keys()) ####
     data = []
     if not "clusters" in coloc_data:
@@ -28,6 +28,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_name):
         # print(plasma_clust.keys()) ####
         # print(coloc_clust.keys()) ####
         data_clust = [
+            gene_id,
             gene_name, 
             c, 
             np.mean(plasma_clust.get("causal_set_indep", np.nan)), 
@@ -167,9 +168,12 @@ def calc_sumstats(df, out_dir, thresh):
     with open(os.path.join(out_dir, "sumstats.txt"), "w") as out_file:
         out_file.writelines(outs)
 
-def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path):
+def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_dir, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
+
+    with open(genes_map_dir, "rb") as genes_map_file:
+        genes_map = pickle.load(genes_map_file)
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
@@ -187,11 +191,12 @@ def interpret_genes(genes_dir, gwas_name, cluster_map_path, out_dir, status_path
         except (FileNotFoundError, pickle.UnpicklingError):
             continue
 
-        data = read_data(plasma_data, coloc_data, clusters, g)
+        data = read_data(plasma_data, coloc_data, clusters, g, genes_map.get(g.split(".")[0]))
         data_lst.extend(data)
 
     cols = [
         "Gene", 
+        "GeneName",
         "Cluster", 
         "CredibleSetPropIndep",
         "CredibleSetPropGWAS",
