@@ -216,7 +216,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     calc_sumstats(data_df, out_dir_gwas, 0.1)
     plot_sets(data_df, out_dir_gwas)
 
-    data_sig_df = data_df.loc[np.logical_and(df["Cluster"] == cluster, data_df["GWASSig"] >= -np.log10(5e-8))]
+    data_sig_df = data_df.loc[data_df["GWASSig"] >= -np.log10(5e-8)]
     out_dir_sig_gwas = os.path.join(out_dir, f"{gwas_name}_sig")
     os.makedirs(out_dir_sig_gwas, exist_ok=True)
     data_sig_df.to_csv(os.path.join(out_dir_sig_gwas, "data.csv"), index=False)
