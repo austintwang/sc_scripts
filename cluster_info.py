@@ -387,7 +387,7 @@ def plot_sets(df, out_dir):
             np.savetxt(tdfile, np.array(thresh_data_prop).astype(float))
 
     summ_data = []
-    for cluster, df_clust in dfs_clust:
+    for cluster, df_clust in dfs_clust.items():
         data = [
             cluster,
             np.count_nonzero(df_clust["TopSNPNLQComb"] >= -np.log10(0.1)),
