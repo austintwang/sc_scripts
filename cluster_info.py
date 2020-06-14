@@ -40,6 +40,18 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 
             num_snps_total = plasma_clust["num_snps_total"]
             num_snps_informative = plasma_clust.get("num_snps_informative", num_snps_total)
+            
+            z_phi = plasma_clust["z_phi"][top_snp] if ppa else np.nan
+            phi = plasma_clust["phi"][top_snp] if ppa else np.nan
+            nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+            
+            z_beta = plasma_clust["z_beta"][top_snp] if ppa else np.nan
+            beta = plasma_clust["beta"][top_snp] if ppa else np.nan
+            nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+
+            z_comb = (z_phi + z_beta) / np.sqrt(2)
+            nlp_comb = -scipy.stats.norm.logsf(np.abs(z_comb)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+
             data_clust = [
                 gene_name, 
                 c, 
@@ -59,14 +71,15 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 (np.sum(plasma_clust.get("causal_set_ase", np.nan)) - num_snps_total) / num_snps_informative + 1,
                 (np.sum(plasma_clust.get("causal_set_eqtl", np.nan)) - num_snps_total) / num_snps_informative + 1,
                 plasma_clust["ppas_indep"][top_snp] if ppa else np.nan,
-                plasma_clust["z_phi"][top_snp] if ppa else np.nan,
-                plasma_clust["phi"][top_snp] if ppa else np.nan,
-                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"][top_snp]))*2 * plasma_clust["num_snps_informative"]) if ppa else np.nan,
+                z_comb,
+                nlp_comb,
+                z_phi,
+                phi,
+                nlp_phi,
                 # np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_phi"]))*2/plasma_clust["num_snps_informative"]) >= 1.301) if ppa else 0,
-                plasma_clust["z_beta"][top_snp] if ppa else np.nan,
-                plasma_clust["beta"][top_snp] if ppa else np.nan,
-                -np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"][top_snp]))*2 * plasma_clust["num_snps_informative"]) if ppa else np.nan,
-                # np.count_nonzero(-np.log10(scipy.stats.norm.sf(abs(plasma_clust["z_beta"]))*2/plasma_clust["num_snps_informative"]) >= 1.301) if ppa else 0,
+                z_beta,
+                beta,
+                nlp_beta,                
                 plasma_clust["snp_ids"][top_snp] if ppa else None,
                 plasma_clust.get("split", np.nan),
             ]
@@ -78,7 +91,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -113,6 +126,8 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         "CredibleSetPropAS",
         "CredibleSetPropQTL",
         "TopSNPPosterior",
+        "TopSNPZComb",
+        "TopSNPNLPComb",
         "TopSNPZPhi",
         "TopSNPPhi",
         "TopSNPNLPPhi",
@@ -295,14 +310,20 @@ def plot_sets(df, out_dir):
     threshs = [5, 10, 20, 50, 100, 200]
     threshs_prop = [0.01, 0.05, 0.1, 0.2, 0.5]
 
+    dfs_clust = {}
+
     for cluster in clusters.keys():
-        print(cluster)
+        # print(cluster)
         df_clust = df.loc[df["Cluster"] == cluster]
+        calc_nlq(df_clust, "Comb")
         calc_nlq(df_clust, "Phi")
         calc_nlq(df_clust, "Beta")
 
-        print(np.count_nonzero(df_clust["TopSNPNLQPhi"] >= -np.log10(0.1)))
-        print(np.count_nonzero(df_clust["TopSNPNLQBeta"] >= -np.log10(0.1)))
+        # print(np.count_nonzero(df_clust["TopSNPNLQComb"] >= -np.log10(0.1)))
+        # print(np.count_nonzero(df_clust["TopSNPNLQPhi"] >= -np.log10(0.1)))
+        # print(np.count_nonzero(df_clust["TopSNPNLQBeta"] >= -np.log10(0.1)))
+
+        dfs_clust[cluster] = df_clust
 
         df_dists = pd.melt(
             df.loc[df["Cluster"] == cluster], 
@@ -364,6 +385,42 @@ def plot_sets(df, out_dir):
             tdfile.write("\t".join(model_flavors_thresh_prop) + "\n\n")
             # print(thresh_data) ####
             np.savetxt(tdfile, np.array(thresh_data_prop).astype(float))
+
+    summ_data = []
+    for cluster, df_clust in dfs_clust:
+        data = [
+            cluster,
+            np.count_nonzero(df_clust["TopSNPNLQComb"] >= -np.log10(0.1)),
+            np.count_nonzero(df_clust["TopSNPNLQPhi"] >= -np.log10(0.1)),
+            np.count_nonzero(df_clust["TopSNPNLQBeta"] >= -np.log10(0.1))
+        ]
+        df_merged = pd.merge(
+            df_clust, 
+            dfs_clust["_all"], 
+            on=["Gene"], 
+            suffixes=["_clust", "_all"]
+        )
+        data_spec = [
+            np.count_nonzero(np.logical_and(
+                df_merged["TopSNPNLQComb_clust"] >= -np.log10(0.1),
+                df_merged["TopSNPNLQComb_all"] < -np.log10(0.1)
+            )),
+            np.count_nonzero(np.logical_and(
+                df_merged["TopSNPNLQPhi_clust"] >= -np.log10(0.1),
+                df_merged["TopSNPNLQPhi_all"] < -np.log10(0.1)
+            )),
+            np.count_nonzero(np.logical_and(
+                df_merged["TopSNPNLQBeta_clust"] >= -np.log10(0.1),
+                df_merged["TopSNPNLQBeta_all"] < -np.log10(0.1)
+            )),
+        ]
+        data.extend(data_spec)
+        summ_data.append(data_spec)
+
+    cols = ["Cluster", "NumSigComb", "NumSigPhi", "NumSigBeta", "DiffSigComb", "DiffSigPhi", "DiffSigBeta"]
+    summ_df = pd.DataFrame(summ_data, columns=cols)
+    with open(txt_path, "w") as txt_file:
+        data_df.to_string(txt_file)
 
 def make_scatter(
         df,
