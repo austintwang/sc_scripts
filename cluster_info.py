@@ -419,7 +419,7 @@ def plot_sets(df, out_dir):
 
     cols = ["Cluster", "NumSigComb", "NumSigPhi", "NumSigBeta", "DiffSigComb", "DiffSigPhi", "DiffSigBeta"]
     summ_df = pd.DataFrame(summ_data, columns=cols)
-    with open(txt_path, "w") as txt_file:
+    with open(os.path.join(out_dir, "sumstats.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
 
 def make_scatter(
