@@ -400,7 +400,7 @@ def plot_sets(df, out_dir):
             on=["Gene"], 
             suffixes=["_clust", "_all"]
         )
-        df_merged["TopSNPZCombDiff"] = np.abs(df_clust["TopSNPZComb_clust"] - df_clust["TopSNPZComb_all"])
+        df_merged["TopSNPZCombDiff"] = np.abs(df_merged["TopSNPZComb_clust"] - df_merged["TopSNPZComb_all"])
         cutoff = int(len(df_merged) * 0.1)
         df_specific = df_merged.loc[("Gene", "TopSNPZCombDiff", "TopSNPZComb_clust", "TopSNPZComb_all"),:].iloc[:,cutoff]
         df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
