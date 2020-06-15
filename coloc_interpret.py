@@ -26,7 +26,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
         if plasma_clust is None or coloc_clust is None:
             continue
         # print(plasma_clust.keys()) ####
-        # print(coloc_clust.keys()) ####
+        print(coloc_clust.keys()) ####
         data_clust = [
             gene_id,
             gene_name, 
@@ -111,7 +111,7 @@ def plot_sets(df, out_dir):
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
-            df, 
+            df.loc[df["Cluster"] == cluster], 
             # df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(1))], 
             id_vars=["Gene"], 
             value_vars=model_map.keys(),
