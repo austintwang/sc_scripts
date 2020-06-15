@@ -188,7 +188,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             # print(inputs["corr_shared"]) ####
 
             if inputs["model_flavors_gwas"] == "all":
-                model_flavors_gwas = set(["eqtl"])
+                model_flavors_gwas = set(["eqtl", "fmb"])
             else:
                 model_flavors_gwas = inputs["model_flavors_gwas"]
 
