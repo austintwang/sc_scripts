@@ -97,7 +97,7 @@ def plot_sets(df, out_dir):
     model_map = {
         "PP4Joint": "PLASMA/C-J",
         "PP4AS": "PLASMA/C-AS",
-        "PP4QTL": "QTL-Only"
+        "PP4QTL": "QTL-Only",
         "PP4FINEMAP": "FINEMAP"
     }
     var_dists = "PP4 Score"
