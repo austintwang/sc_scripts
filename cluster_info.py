@@ -91,7 +91,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -400,6 +400,11 @@ def plot_sets(df, out_dir):
             on=["Gene"], 
             suffixes=["_clust", "_all"]
         )
+        df_merged["TopSNPZCombDiff"] = np.abs(df_clust["TopSNPZComb_clust"] - df_clust["TopSNPZComb_all"])
+        cutoff = int(len(df_merged) * 0.1)
+        df_specific = df_merged.loc[("Gene", "TopSNPZCombDiff", "TopSNPZComb_clust", "TopSNPZComb_all"),:].iloc[:,cutoff]
+        df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
+
         data_spec = [
             np.count_nonzero(np.logical_and(
                 df_merged["TopSNPNLQComb_clust"] >= -np.log10(0.1),
