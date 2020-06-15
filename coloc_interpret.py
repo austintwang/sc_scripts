@@ -37,6 +37,7 @@ def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
             coloc_clust.get("h4_indep_eqtl"),
             coloc_clust.get("h4_ase_eqtl"),
             coloc_clust.get("h4_eqtl_eqtl"),
+            coloc_clust.get("h4_fmb_fmb"),
             num_informative
         ]
         # print(data_clust) ####
@@ -97,6 +98,7 @@ def plot_sets(df, out_dir):
         "PP4Joint": "PLASMA/C-J",
         "PP4AS": "PLASMA/C-AS",
         "PP4QTL": "QTL-Only"
+        "PP4FINEMAP": "FINEMAP"
     }
     var_dists = "PP4 Score"
     model_flavors = model_map.keys()
@@ -105,6 +107,7 @@ def plot_sets(df, out_dir):
         "PP4Joint": pal[0],
         "PP4AS": pal[4],
         "PP4QTL": pal[7],
+        "PP4FINEMAP": pal[3],
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
@@ -177,7 +180,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -204,6 +207,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
         "PP4Joint",
         "PP4AS",
         "PP4QTL",
+        "PP4FINEMAP",
         "UsableSNPCount",
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
