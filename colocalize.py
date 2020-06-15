@@ -234,7 +234,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                                 # print(fm_res_scaled) ####
                                 # print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"], clpps))) ####
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
-                        except KeyError:
+                        except KeyError as e:
+                            print(e) ####
                             continue
 
             write_output(output_path, result)
