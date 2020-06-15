@@ -14,7 +14,7 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     sys.path.insert(0, "/agusevlab/awang/plasma")
     
-from . import Finemap
+from . import Finemap, FmBenner
 
 def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     in_path = os.path.join("/tmp", str(np.random.randint(100000000)))
