@@ -33,7 +33,7 @@ def load_gene(data, cluster, gene, genes_dir):
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
         # print(plasma_data["_gen"]["snp_pos"][ind]) ####
         pos = int(plasma_data["_gen"]["snp_pos"][ind][1]) + 1
-        rsid = plasma_data["_gen"]["snp_id"][ind]
+        rsid = plasma_data["_gen"]["snp_ids"][ind]
         ppa = plasma_clust["ppa_indep"][ind]
         data.append([contig, pos, pos + 1, rsid, ppa, gene])
 
