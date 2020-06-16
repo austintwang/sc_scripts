@@ -11,7 +11,8 @@ def load_gene(data, cluster, gene, genes_dir):
     try:
         with open(plasma_path, "rb") as plasma_file:
             plasma_data = pickle.load(plasma_file)
-    except (FileNotFoundError, pickle.UnpicklingError):
+    except (FileNotFoundError, pickle.UnpicklingError) as e:
+        print(e) ####
         return 
 
     plasma_clust = plasma_data.get(cluster)
