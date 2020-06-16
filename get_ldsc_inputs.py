@@ -25,10 +25,10 @@ def load_gene(data, cluster, gene, genes_dir):
     if cred is None:
         return
 
-    print(informative_snps) ####
-    for ind, causal, informative in zip(*zip(*enumerate(cred)), informative_snps):
-        # print(ind, causal, informative) ####
-        if causal == 0 or not informative:
+    # print(informative_snps) ####
+    for ind in informative_snps:
+        causal = cred[ind]
+        if causal == 0:
             continue
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
         pos = plasma_data["_gen"]["snp_pos"][ind][1] + 1
