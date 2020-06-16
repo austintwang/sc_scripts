@@ -24,6 +24,7 @@ def load_gene(data, cluster, gene, genes_dir):
         return
 
     for ind, causal, informative in zip(*enumerate(cred), informative_snps):
+        print(ind, causal, informative) ####
         if causal == 0 or not informative:
             continue
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
