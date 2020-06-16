@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 def load_gene(data, cluster, gene, genes_dir):
-    plasma_path = os.path.join(genes_dir, gene, "combined", "i0.pickle")
+    plasma_path = os.path.join(genes_dir, gene, "combined", "plasma_i0.pickle")
     try:
         with open(plasma_path, "rb") as plasma_file:
             plasma_data = pickle.load(plasma_file)
