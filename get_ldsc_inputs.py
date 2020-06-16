@@ -47,7 +47,8 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
     write_bed(data, out_path)
 
 def get_ldsc_inputs(clusters_dir, genes_dir, out_dir):
-    for cluster in os.listdir(clusters_dir):
+    for i in os.listdir(clusters_dir):
+        cluster = i.split(".")[0]
         load_cluster(cluster, clusters_dir, genes_dir, out_dir)
 
 if __name__ == '__main__':
