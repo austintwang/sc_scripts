@@ -34,7 +34,7 @@ def load_gene(data, cluster, gene, genes_dir):
         # print(plasma_data["_gen"]["snp_pos"][ind]) ####
         pos = int(plasma_data["_gen"]["snp_pos"][ind][1]) + 1
         rsid = plasma_data["_gen"]["snp_ids"][ind]
-        ppa = plasma_clust["ppa_indep"][ind]
+        ppa = plasma_clust["ppas_indep"][ind]
         data.append([contig, pos, pos + 1, rsid, ppa, gene])
 
 def write_bed(data, out_path):
