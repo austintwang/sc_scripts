@@ -31,7 +31,7 @@ def load_gene(data, cluster, gene, genes_dir):
         if causal == 0:
             continue
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
-        print(pos) ####
+        print(plasma_data["_gen"]["snp_pos"][ind]) ####
         pos = plasma_data["_gen"]["snp_pos"][ind][1] + 1
         rsid = plasma_data["_gen"]["snp_id"][ind]
         ppa = plasma_clust["ppa_indep"][ind]
