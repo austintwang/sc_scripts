@@ -91,7 +91,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -515,7 +515,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cut
     sn1 = stat_name_train
     sn2 = stat_name_test
     df_tr_sig = df_train.loc[
-        df_train[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df_train["UsableSNPCount"])
+        df_train[f"TopSNPNLP{sn1}"] >= -np.log10(0.05)
     ]
     # df_ts_sig = df_test.loc[
     #     np.logical_and(
@@ -547,28 +547,23 @@ def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cut
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
             )
-            x = df_merged[f"TopSNP{sn1}_train"]
-            y = df_merged[f"TopSNP{sn2}_test"]
-            se = df_merged[f"TopSNP{sn1}_train"] / df_merged[f"TopSNPZ{sn1}_train"]
-            xw = np.nan_to_num(x / se)
-            yw = np.nan_to_num(y / se)
-            slope = xw.dot(yw) / xw.dot(xw)
-            slopes[ind_i, ind_j] = slope
-            res = yw - xw * slope
-            slope_se = np.sqrt(res.dot(res) / (res.size * xw.dot(xw)))
-            slope_ses[ind_i, ind_j] = slope_se
-
-            z_0 = slope / slope_se
-            nlp_0 = -np.log10(scipy.stats.norm.sf(z_0))
-            nlp_0s[ind_i, ind_j] = nlp_0
-
-            z_1 = (1 - slope) / slope_se
-            nlp_1 = -np.log10(scipy.stats.norm.sf(z_1))
-            nlp_1s[ind_i, ind_j] = nlp_1
 
             num_sig_train = df_merged.shape[0]
-            num_sig_test = np.sum(df_merged[f"TopSNPNLP{sn2}_test"] >= -np.log10(0.05))
+            num_sig_test = np.sum(df_merged[f"TopSNPNLP{sn2}_test"] + np.log10(df_merged["UsableSNPCount_test"]) >= -np.log10(0.05))
             storey_pis[ind_i, ind_j] = num_sig_test / num_sig_train
+            
+    for ind_i, i in enumerate(cluster_order):
+        for ind_j, j in enumerate(cluster_order):
+            df_clust = df_train.loc[df_train["Cluster"] == i]
+            # calc_nlq(df_clust, "Comb")
+            calc_nlq(df_clust, "Phi")
+            calc_nlq(df_clust, "Beta")
+            df_merged = pd.merge(
+                df_clust.loc[df_clust[f"TopSnpNLQ{sn1}"] >= -np.log(0.1)], 
+                df_test.loc[df_test["Cluster"] == j], 
+                on=["Gene"], 
+                suffixes=["_train", "_test"]
+            )
 
             make_scatter(
                 df_merged,
@@ -771,9 +766,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
