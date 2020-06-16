@@ -38,9 +38,9 @@ def write_bed(data, out_path):
 
 def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
     cluster_path = os.path.join(clusters_dir, f"{cluster}.csv")
-    df = pd.read_csv(cluster_path)
+    df = pd.read_csv(cluster_path, sep="\t")
     data = []
-    print(df.columns) ####
+    # print(df.columns) ####
     for gene in df["Gene"]:
         load_gene(data, cluster, gene, genes_dir)
 
