@@ -34,7 +34,7 @@ def load_gene(data, cluster, gene, genes_dir):
 
 def write_bed(data, out_path):
     with open(out_path, "w") as out_file:
-        out_file.writelines(f"{" ".join(map(str, i))}\n" for i in data)
+        out_file.writelines(f"{' '.join(map(str, i))}\n" for i in data)
 
 def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
     cluster_path = os.path.join(clusters_dir, f"{cluster}.csv")
