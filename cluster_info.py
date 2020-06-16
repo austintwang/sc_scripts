@@ -559,7 +559,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cut
             calc_nlq(df_clust, "Phi")
             calc_nlq(df_clust, "Beta")
             df_merged = pd.merge(
-                df_clust.loc[df_clust[f"TopSnpNLQ{sn1}"] >= -np.log(0.1)], 
+                df_clust.loc[df_clust[f"TopSNPNLQ{sn1}"] >= -np.log(0.1)], 
                 df_test.loc[df_test["Cluster"] == j], 
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
