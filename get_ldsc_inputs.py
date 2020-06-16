@@ -44,7 +44,7 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
     for gene in df["Gene"]:
         load_gene(data, cluster, gene, genes_dir)
 
-    out_path = os.path.join(out_dir, cluster)
+    out_path = os.path.join(out_dir, f"{cluster}.bed")
     write_bed(data, out_path)
 
 def get_ldsc_inputs(clusters_dir, genes_dir, out_dir):
