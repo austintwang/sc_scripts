@@ -25,7 +25,7 @@ def load_gene(data, cluster, gene, genes_dir):
     if cred is None:
         return
 
-    for ind, causal, informative in zip(*enumerate(cred), informative_snps):
+    for ind, causal, informative in zip(*zip(*enumerate(cred)), informative_snps):
         print(ind, causal, informative) ####
         if causal == 0 or not informative:
             continue
