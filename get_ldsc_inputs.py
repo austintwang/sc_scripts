@@ -12,11 +12,11 @@ def load_gene(data, cluster, gene, genes_dir):
         with open(plasma_path, "rb") as plasma_file:
             plasma_data = pickle.load(plasma_file)
     except (FileNotFoundError, pickle.UnpicklingError) as e:
-        print(e) ####
+        # print(e) ####
         return 
 
     plasma_clust = plasma_data.get(cluster)
-    print(plasma_clust) ####
+    # print(plasma_clust) ####
     if cluster is None:
         return
 
@@ -31,8 +31,8 @@ def load_gene(data, cluster, gene, genes_dir):
         if causal == 0:
             continue
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
-        pos = plasma_data["_gen"]["snp_pos"][ind][1] + 1
         print(pos) ####
+        pos = plasma_data["_gen"]["snp_pos"][ind][1] + 1
         rsid = plasma_data["_gen"]["snp_id"][ind]
         ppa = plasma_clust["ppa_indep"][ind]
         data.append([contig, pos, pos + 1, rsid, ppa, gene])
