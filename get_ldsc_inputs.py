@@ -25,12 +25,14 @@ def load_gene(data, cluster, gene, genes_dir):
     if cred is None:
         return
 
+    print(informative_snps) ####
     for ind, causal, informative in zip(*zip(*enumerate(cred)), informative_snps):
-        print(ind, causal, informative) ####
+        # print(ind, causal, informative) ####
         if causal == 0 or not informative:
             continue
         contig = plasma_data["_gen"]["snp_pos"][ind][0]
         pos = plasma_data["_gen"]["snp_pos"][ind][1] + 1
+        print(pos) ####
         rsid = plasma_data["_gen"]["snp_id"][ind]
         ppa = plasma_clust["ppa_indep"][ind]
         data.append([contig, pos, pos + 1, rsid, ppa, gene])
