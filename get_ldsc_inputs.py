@@ -15,6 +15,7 @@ def load_gene(data, cluster, gene, genes_dir):
         return 
 
     plasma_clust = plasma_data.get(cluster)
+    print(plasma_clust) ####
     if cluster is None:
         return
 
