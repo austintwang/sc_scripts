@@ -31,12 +31,12 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
                 except (ValueError, KeyError):
                     ppa = False
             else:
-                print(gene_name) ####
+                # print(gene_name) ####
                 try:
                     # top_snp = plasma_clust["snp_ids"].index(top_snps[c])
                     top_snp = np.argwhere(plasma_clust["snp_ids"] == top_snps[c])[0][0]
                 except (ValueError, KeyError, IndexError):
-                    print("False") ####
+                    # print("False") ####
                     ppa = False
 
             num_snps_total = plasma_clust["num_snps_total"]
@@ -100,6 +100,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
             continue
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, run_name, "plasma_{0}.pickle")
+        print(os.path.getsize(plasma_path)) ####
         try:
             with open(plasma_path.format(split), "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
