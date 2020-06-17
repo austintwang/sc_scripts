@@ -616,7 +616,7 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
                 # calc_nlq(df_clust, "Comb")
                 calc_nlq(df_clust, stat_name)
                 df_merged = pd.merge(
-                    df_clust.loc[df_clust[f"TopSNPNLQ{sn1}"] >= -np.log(0.1)], 
+                    df_clust.loc[df_clust[f"TopSNPNLQ{sn}"] >= -np.log(0.1)], 
                     df_test.loc[df_test["Cluster"] == j], 
                     on=["Gene"], 
                     suffixes=["_train", "_test"]
