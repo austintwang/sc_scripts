@@ -141,22 +141,23 @@ if __name__ == '__main__':
         "model_flavors": "all",
         "cell_type_aliases": aliases_kellis,
         "splits": [1.],
+        "min_carriers": 5,
     }
     params_path_kellis_combined = os.path.join(data_path_kellis, "plasma_params_combined.pickle")
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis, 
-        params_path_kellis_combined, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis_combined, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     # dispatch(
     #     script_path, 
@@ -192,6 +193,42 @@ if __name__ == '__main__':
     #     2000, 
     #     fails_only=False
     # )
+
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     5000, 
+    #     fails_only=True
+    # )
+
+    params_kellis_xval = params_kellis.copy()
+    params_kellis_xval.update({
+        "run_name": "split_strict",
+        "splits": [0.5, 0.5],
+        "min_carriers": 10
+    })
+    params_path_kellis_xval = os.path.join(data_path_kellis, "plasma_params_split_strict.pickle")
+
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis_xval, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 

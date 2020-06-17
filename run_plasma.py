@@ -303,23 +303,24 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         result["data_error"] = "Insufficient Read Counts"
                         continue
 
+                    mc = inputs["min_carriers"]
                     informative_snps = np.nonzero(np.logical_and.reduce([
                         # np.logical_not(np.all(haps_comb == haps_comb[0,:], axis=0)),
                         # np.logical_not(np.all(haps_diff == haps_diff[0,:], axis=0)),
-                        np.sum(hap_c1, axis=0) >= 5,
-                        np.sum(1 - hap_c1, axis=0) >= 5,
-                        np.sum(hap_c2, axis=0) >= 5,
-                        np.sum(1 - hap_c2, axis=0) >= 5,
-                        np.sum(hap_d1, axis=0) >= 5,
-                        np.sum(1 - hap_d1, axis=0) >= 5,
-                        np.sum(hap_d2, axis=0) >= 5,
-                        np.sum(1 - hap_d2, axis=0) >= 5,
+                        np.sum(hap_c1, axis=0) >= mc,
+                        np.sum(1 - hap_c1, axis=0) >= mc,
+                        np.sum(hap_c2, axis=0) >= mc,
+                        np.sum(1 - hap_c2, axis=0) >= mc,
+                        np.sum(hap_d1, axis=0) >= mc,
+                        np.sum(1 - hap_d1, axis=0) >= mc,
+                        np.sum(hap_d2, axis=0) >= mc,
+                        np.sum(1 - hap_d2, axis=0) >= mc,
                     ]))[0]
                     informative_snps_weak = np.nonzero(np.logical_and.reduce([
-                        np.sum(hap_c1, axis=0) >= 5,
-                        np.sum(1 - hap_c1, axis=0) >= 5,
-                        np.sum(hap_c2, axis=0) >= 5,
-                        np.sum(1 - hap_c2, axis=0) >= 5,
+                        np.sum(hap_c1, axis=0) >= mc,
+                        np.sum(1 - hap_c1, axis=0) >= mc,
+                        np.sum(hap_c2, axis=0) >= mc,
+                        np.sum(1 - hap_c2, axis=0) >= mc,
                     ]))[0]
                     result["informative_snps"] = informative_snps
                     result["informative_snps_weak"] = informative_snps_weak

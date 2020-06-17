@@ -282,6 +282,7 @@ def plot_sets(df, out_dir):
         "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
         "Endo": "Endothelial",
+        "Microglia": "Microglia",
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
@@ -475,6 +476,7 @@ def plot_xval(df, out_dir):
         "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
         "Endo": "Endothelial",
+        "Microglia": "Microglia",
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
@@ -771,9 +773,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
