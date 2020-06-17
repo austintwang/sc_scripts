@@ -93,7 +93,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
     # genes = genes[:500] ####
-    tracemalloc.start() ####
+    # tracemalloc.start() ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -101,7 +101,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, run_name, "plasma_{0}.pickle")
         try:
-            print(os.path.getsize(plasma_path.format(split))) ####
+            # print(os.path.getsize(plasma_path.format(split))) ####
             with open(plasma_path.format(split), "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
         except (FileNotFoundError, pickle.UnpicklingError):
@@ -110,7 +110,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
         data = read_data(plasma_data, clusters, g, top_snps=(top_snps_dict[g] if top_snps_dict is not None else None))
         data_lst.extend(data)
 
-        print(tracemalloc.get_traced_memory()) ####
+        # print(tracemalloc.get_traced_memory()) ####
 
     cols = [
         "Gene", 
