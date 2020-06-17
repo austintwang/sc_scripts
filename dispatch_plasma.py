@@ -216,33 +216,33 @@ if __name__ == '__main__':
     })
     params_path_kellis_xval = os.path.join(data_path_kellis, "plasma_params_split_strict.pickle")
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_xval, 
-        params_path_kellis_xval, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
-
     # dispatch(
     #     script_path, 
     #     names_kellis, 
     #     genes_dir_kellis, 
-    #     params_kellis, 
-    #     params_path_kellis, 
+    #     params_kellis_xval, 
+    #     params_path_kellis_xval, 
     #     "all", 
     #     cluster_map_path_kellis, 
     #     barcodes_map_path_kellis, 
     #     overdispersion_path_kellis, 
-    #     5000, 
-    #     fails_only=True
+    #     2000, 
+    #     fails_only=False
     # )
+
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis, 
+        params_path_kellis, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        5000, 
+        fails_only=True
+    )
 
     params_kellis_xval = params_kellis.copy()
     params_kellis_xval.update({
