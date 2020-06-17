@@ -100,8 +100,8 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
             continue
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, run_name, "plasma_{0}.pickle")
-        print(os.path.getsize(plasma_path)) ####
         try:
+            print(os.path.getsize(plasma_path)) ####
             with open(plasma_path.format(split), "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
         except (FileNotFoundError, pickle.UnpicklingError):
