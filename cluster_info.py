@@ -406,10 +406,10 @@ def plot_sets(df, out_dir):
             on=["Gene"], 
             suffixes=["_clust", "_all"]
         )
-        df_merged["TopSNPZCombDiff"] = np.abs(df_merged["TopSNPZComb_clust"] - df_merged["TopSNPZComb_all"])
+        df_merged["TopSNPZ2CombDiff"] = df_merged["TopSNPZComb_clust"]**2 - df_merged["TopSNPZComb_all"]**2
         cutoff = int(len(df_merged) * 0.1)
         # print(df_merged.columns) ####
-        df_specific = df_merged.loc[:,("Gene", "TopSNPZCombDiff", "TopSNPZComb_clust", "TopSNPZComb_all")].sort_values(by="TopSNPZCombDiff", ascending=False).iloc[:cutoff]
+        df_specific = df_merged.loc[:,("Gene", "TopSNPZ2CombDiff", "TopSNPZComb_clust", "TopSNPZComb_all")].sort_values(by="TopSNPZ2CombDiff", ascending=False).iloc[:cutoff]
         df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
 
         data_spec = [
@@ -767,9 +767,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
