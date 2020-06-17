@@ -8,6 +8,7 @@ matplotlib.rcParams['agg.path.chunksize'] = 10000
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import tracemalloc ####
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
@@ -92,6 +93,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
     # genes = genes[:500] ####
+    tracemalloc.start() ####
     data_lst = []
     for g in genes:
         if (top_snps_dict is not None) and( g not in top_snps_dict):
@@ -106,6 +108,8 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
 
         data = read_data(plasma_data, clusters, g, top_snps=(top_snps_dict[g] if top_snps_dict is not None else None))
         data_lst.extend(data)
+
+        print(tracemalloc.get_traced_memory()) ####
 
     cols = [
         "Gene", 
