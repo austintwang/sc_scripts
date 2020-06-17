@@ -92,7 +92,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     # tracemalloc.start() ####
     data_lst = []
     for g in genes:
@@ -608,22 +608,16 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     slopes_all = []
     slopes_ses_all = []
     for df_train, df_test in zip(dfs_train, dfs_test):
-        df_tr_sig = df_train.loc[
-            np.logical_and(
-                df_train[f"TopSNPNLP{sn}"] >= -np.log10(0.05/df_train["UsableSNPCount"]),
-                abs(df_train[f"TopSNP{sn}"]) <= cutoff
-            )
-        ]
-        df_ts_sig = df_test.loc[
-            abs(df_test[f"TopSNP{sn}"]) <= cutoff
-        ]
         slopes = np.zeros((len(cluster_order), len(cluster_order),),)
         slope_ses = np.zeros((len(cluster_order), len(cluster_order),),)
         for ind_i, i in enumerate(cluster_order):
             for ind_j, j in enumerate(cluster_order):
+                df_clust = df_train.loc[df_train["Cluster"] == i]
+                # calc_nlq(df_clust, "Comb")
+                calc_nlq(df_clust, stat_name)
                 df_merged = pd.merge(
-                    df_tr_sig.loc[df_tr_sig["Cluster"] == i], 
-                    df_ts_sig.loc[df_ts_sig["Cluster"] == j], 
+                    df_clust.loc[df_clust[f"TopSNPNLQ{sn1}"] >= -np.log(0.1)], 
+                    df_test.loc[df_test["Cluster"] == j], 
                     on=["Gene"], 
                     suffixes=["_train", "_test"]
                 )
@@ -773,9 +767,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
