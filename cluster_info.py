@@ -410,7 +410,7 @@ def plot_sets(df, out_dir):
         threshs = [0.1, 0.2, 0.5]
         # print(df_merged.columns) ####
         df_specific = df_merged.loc[:,("Gene", "TopSNPZ2CombDiff", "TopSNPZComb_clust", "TopSNPZComb_all")].sort_values(by="TopSNPZ2CombDiff", ascending=False)
-        for ind, thresh in enumerate(threshs:):
+        for ind, thresh in enumerate(threshs):
             cutoff = int(len(df_merged) * thresh)
             df_specific.iloc[:cutoff].to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}_{thresh}.csv"), sep="\t", index=False, na_rep="None")   
 
