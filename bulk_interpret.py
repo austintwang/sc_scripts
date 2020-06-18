@@ -145,13 +145,94 @@ def plot_xcells(df, out_dir, stat_name):
     title = "Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
 
+def make_violin(
+        df,
+        var, 
+        model_flavors,
+        model_names, 
+        model_colors,
+        title, 
+        result_path,
+    ):
+    sns.set(style="whitegrid", font="Roboto")
+    plt.figure(figsize=(4,2))
+
+    palette = [model_colors[m] for m in model_flavors]
+    names = [model_names[m] for m in model_flavors]
+    chart = sns.violinplot(
+        x=var, 
+        y="Model", 
+        data=df, 
+        order=model_flavors, 
+        palette=palette,
+        cut=0,
+        scale="width"
+    )
+    ax = plt.gca()
+    for art in ax.get_children():
+        if isinstance(art, matplotlib.collections.PolyCollection):
+            art.set_edgecolor((0., 0., 0.))
+    plt.xlim(0, 1)
+    chart.set_yticklabels([model_names[m] for m in model_flavors])
+    plt.ylabel("")
+    plt.title(title)
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
+
+def plot_sets(df, out_dir):
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "Astro": "Astroglia",
+        "In": "Inhibitory Neuron",
+        "Endo": "Endothelial",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Per": "Per"
+    }
+    model_map = {
+        "PP4Joint": "PLASMA/C-J",
+        "PP4AS": "PLASMA/C-AS",
+        "PP4QTL": "QTL-Only",
+        # "PP4FINEMAP": "FINEMAP"
+    }
+    var_dists = "PP4 Score"
+    model_flavors = model_map.keys()
+    pal = sns.color_palette()
+    model_colors = {
+        "PP4Joint": pal[0],
+        "PP4AS": pal[4],
+        "PP4QTL": pal[7],
+        # "PP4FINEMAP": pal[3],
+    }
+    for cluster in clusters.keys():
+        df_dists = pd.melt(
+            df.loc[df["Cluster"] == cluster], 
+            # df.loc[np.logical_and(df["Cluster"] == cluster, df["GWASSig"] >= -np.log10(1))], 
+            id_vars=["Gene"], 
+            value_vars=model_map.keys(),
+            var_name="Model",
+            value_name=var_dists
+        )
+        title = clusters[cluster]
+        make_violin(
+            df_dists,
+            var_dists, 
+            model_flavors,
+            model_map, 
+            model_colors,
+            title, 
+            os.path.join(out_dir, "pp4s_{0}.svg".format(cluster)),
+        )
+
 def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base):
     out_dir = os.path.join(out_dir_base, bulk_name)
     df = make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path)
     plot_xcells(df, out_dir, "Phi")
     plot_xcells(df, out_dir, "Beta")
+    plot_sets(df, out_dir)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
-    df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
+    df.to_csv(csv_path, index=False, na_rep="None")
     txt_path = os.path.join(out_dir, "cluster_info.txt")
     with open(txt_path, "w") as txt_file:
         df.to_string(txt_file)
