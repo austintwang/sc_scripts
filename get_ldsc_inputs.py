@@ -48,7 +48,7 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
     # print(df.columns) ####
     max_cutoff = int(len(df) * max(threshs))
     for gene in df["Gene"]:
-        load_gene(data, cluster, gene, genes_dir)
+        load_gene(data[:max_cutoff], cluster, gene, genes_dir)
 
     for i in threshs:
         cutoff = int(len(df) * i)
