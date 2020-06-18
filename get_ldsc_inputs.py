@@ -41,7 +41,7 @@ def write_bed(data, out_path):
     with open(out_path, "w") as out_file:
         out_file.writelines(f"{' '.join(map(str, i))}\n" for i in data)
 
-def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
+def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
     cluster_path = os.path.join(clusters_dir, f"{cluster}.csv")
     df = pd.read_csv(cluster_path, sep="\t")
     data = []
@@ -49,18 +49,20 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir):
     for gene in df["Gene"]:
         load_gene(data, cluster, gene, genes_dir)
 
-    out_path = os.path.join(out_dir, f"{cluster}.bed")
-    write_bed(data, out_path)
+    for i in threshs:
+        cutoff = int(len(df) * i)
+        out_path = os.path.join(out_dir, f"{cluster}_{i}.bed")
+        write_bed(data[:cutoff], out_path)
 
-def get_ldsc_inputs(clusters_dir, genes_dir, out_dir):
+def get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs):
     for i in os.listdir(clusters_dir):
         cluster = i.split(".")[0]
-        load_cluster(cluster, clusters_dir, genes_dir, out_dir)
+        load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs)
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     genes_dir = os.path.join(data_path_kellis, "genes_429")
     out_dir = os.path.join(data_path_kellis, "ldsc_429")
     clusters_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/cell_type_spec"
-    get_ldsc_inputs(clusters_dir, genes_dir, out_dir)
+    get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs)
 
