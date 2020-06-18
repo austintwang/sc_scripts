@@ -749,7 +749,7 @@ def get_info_xval_nfold(run_name, num_splits, genes_dir, cluster_map_path, out_d
     # print(df_train) ####
     # print(df_test) ####
     # print(df_comb) ####
-    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells"), "Phi", 5)
+    plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells_phi"), "Phi", 5)
     plot_xcells_nfold(dfs_train, dfs_test, os.path.join(out_dir, "xcells_beta"), "Beta", 50)
      
 
@@ -767,9 +767,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
