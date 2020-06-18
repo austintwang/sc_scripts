@@ -44,7 +44,7 @@ def write_bed(data, out_path):
 def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
     cluster_path = os.path.join(clusters_dir, f"{cluster}.csv")
     df = pd.read_csv(cluster_path, sep="\t")
-    df = df.iloc[:100] ####
+    # df = df.iloc[:100] ####
     data = []
     # print(df.columns) ####
     cutoffs = {int(len(df) * i): i for i in threshs}
