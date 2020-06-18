@@ -54,7 +54,7 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
         if ind + 1 in cutoffs:
             thr = cutoffs[ind + 1]
             out_path = os.path.join(out_dir, f"{cluster}_{thr}.bed")
-            write_bed(data[:(ind + 1)], out_path)
+            write_bed(data, out_path)
         if ind >= max_cutoff:
             break
 
