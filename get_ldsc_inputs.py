@@ -47,14 +47,16 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
     df = df.iloc[:100] ####
     data = []
     # print(df.columns) ####
-    max_cutoff = int(len(df) * max(threshs))
-    for gene in df["Gene"]:
-        load_gene(data[:max_cutoff], cluster, gene, genes_dir)
-
-    for i in threshs:
-        cutoff = int(len(df) * i)
-        out_path = os.path.join(out_dir, f"{cluster}_{i}.bed")
-        write_bed(data[:cutoff], out_path)
+    cutoffs = {int(len(df) * i): i for i in threshs}
+    max_cutoff = max(cutoffs.keys())
+    for ind, gene in enumerate(df["Gene"]):
+        load_gene(data, cluster, gene, genes_dir)
+        if ind + 1 in cutoffs:
+            thr = cutoffs[ind + 1]
+            out_path = os.path.join(out_dir, f"{cluster}_{thr}.bed")
+            write_bed(data[:(ind + 1)], out_path)
+        if ind >= max_cutoff:
+            break
 
 def get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs):
     for i in os.listdir(clusters_dir):
