@@ -46,6 +46,7 @@ def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
     df = pd.read_csv(cluster_path, sep="\t")
     data = []
     # print(df.columns) ####
+    max_cutoff = int(len(df) * max(threshs))
     for gene in df["Gene"]:
         load_gene(data, cluster, gene, genes_dir)
 
@@ -64,5 +65,6 @@ if __name__ == '__main__':
     genes_dir = os.path.join(data_path_kellis, "genes_429")
     out_dir = os.path.join(data_path_kellis, "ldsc_429")
     clusters_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/cell_type_spec"
+    threshs = [0.1, 0.2, 0.5]
     get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs)
 
