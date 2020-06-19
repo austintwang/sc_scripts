@@ -129,7 +129,7 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
             return
 
         if inputs["model_flavors_bulk"] == "all":
-            model_flavors_bulk = set(["eqtl"])
+            model_flavors_bulk = set(["eqtl", "fmb"])
         else:
             model_flavors_bulk = inputs["model_flavors_bulk"]
 
