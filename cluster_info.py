@@ -44,14 +44,14 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             
             z_phi = plasma_clust["z_phi"][top_snp] if ppa else np.nan
             phi = plasma_clust["phi"][top_snp] if ppa else np.nan
-            nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+            nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2) - np.log10(num_snps_informative)
             
             z_beta = plasma_clust["z_beta"][top_snp] if ppa else np.nan
             beta = plasma_clust["beta"][top_snp] if ppa else np.nan
-            nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+            nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2) - np.log10(num_snps_informative)
 
             z_comb = (z_phi + z_beta) / np.sqrt(2)
-            nlp_comb = -scipy.stats.norm.logsf(np.abs(z_comb)) / np.log(10) + np.log10(2) - np.log10(num_snps_informative)
+            nlp_comb = -scipy.stats.norm.logsf(np.abs(z_comb)) / np.log(10) - np.log10(2) - np.log10(num_snps_informative)
 
             data_clust = [
                 gene_name, 
@@ -769,11 +769,11 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     out_dir_strict = os.path.join(out_dir_kellis, "strict")
 
