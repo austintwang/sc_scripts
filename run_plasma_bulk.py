@@ -119,11 +119,11 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
         inputs["hap_A"] = inputs["hap1"][:, informative_snps]
         inputs["hap_B"] = inputs["hap2"][:, informative_snps]
         inputs["snp_ids"] = np.array(inputs["snp_ids"])[informative_snps]
-        inputs["num_snps"] = inputs["total_exp_stats"].size
+        inputs["num_snps_total_exp"] = inputs["total_exp_stats"].size
 
         inputs["num_causal_prior"] = inputs["num_causal"]
 
-        if inputs["num_snps"] == 0:
+        if inputs["num_snps_total_exp"] == 0:
             result["data_error"] = "Insufficient Markers"
             write_output(output_path, result)
             return
@@ -144,11 +144,11 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                 Finemap, inputs, updates_eqtl, informative_snps
             )
 
-        # if "fmb" in model_flavors_bulk:
-        #     updates_fmb = {"qtl_only": True}
-        #     result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
-        #         FmBenner, inputs, updates_fmb, informative_snps
-        #     )
+        if "fmb" in model_flavors_bulk:
+            updates_fmb = {"qtl_only": True}
+            result["causal_set_fmb"], result["ppas_fmb"], result["size_probs_fmb"] = run_model(
+                FmBenner, inputs, updates_fmb, informative_snps
+            )
         # print(result) ####
 
         cluster_results = result.setdefault("clusters", {})
@@ -167,7 +167,7 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                         fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale_fm
                         scale_bulk = np.nansum(result["ppas_{0}".format(fg)][snps_used])
                         bulk_res_scaled = result["ppas_{0}".format(fg)] / scale_bulk
-                        clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
+                        clpps = fm_res_scaled * bulk_res_scaled
                         h4 = np.nansum(clpps)
                         # print(cluster, fg, fq) ####
                         # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
