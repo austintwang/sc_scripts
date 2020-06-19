@@ -124,6 +124,7 @@ def plot_xcells(df, out_dir, stat_name):
         df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["NumInformativePlasma"])
     ]
     print(df_tr_sig) ####
+    print(df) ####
 
     clusters = {
         "_all": "All Cells",
