@@ -34,11 +34,11 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
         except ValueError:
             continue
         top_z_beta = plasma_clust["z_beta"][top_snp]
-        top_nlp_beta = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z_beta))*2))
+        top_nlp_beta = -scipy.stats.norm.logsf(np.abs(top_z_beta)) / np.log(10) - np.log10(2)
         top_z_phi = plasma_clust["z_phi"][top_snp]
-        top_nlp_phi = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z_phi))*2))
+        top_nlp_phi = -scipy.stats.norm.logsf(np.abs(top_z_phi)) / np.log(10) - np.log10(2)
         top_z_bulk = bulk_data["z_beta"][top_snp]
-        top_nlp_bulk = np.nan_to_num(-np.log10(scipy.stats.norm.sf(abs(top_z_bulk))*2))
+        top_nlp_bulk = -scipy.stats.norm.logsf(np.abs(top_z_bulk)) / np.log(10) - np.log10(2)
         data_clust = [
             gene_name, 
             c, 
@@ -137,7 +137,7 @@ def plot_xcells(df, out_dir, stat_name):
     storey_pis = np.zeros((len(cluster_order), 1,),)
     for ind_i, i in enumerate(cluster_order):
         df_merged = df_tr_sig.loc[df_tr_sig["Cluster"] == i]
-        num_sig_train = df_merged.shape[0]
+        num_sig_train = np.count_nonzero(~np.isnan(df_merged["TopSNPNLPBulk"]))
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
         storey_pis[ind_i, 0] = num_sig_test / num_sig_train
 
