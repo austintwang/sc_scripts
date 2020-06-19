@@ -53,6 +53,7 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
             bulk_clust.get("h4_indep_eqtl"),
             bulk_clust.get("h4_ase_eqtl"),
             bulk_clust.get("h4_eqtl_eqtl"),
+            bulk_clust.get("h4_fmb_fmb"),
             num_informative_bulk,
             num_informative_plasma,
         ]
@@ -99,6 +100,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
         "PP4Joint",
         "PP4AS",
         "PP4QTL",
+        "PP4FINEMAP",
         "NumInformativeBulk",
         "NumInformativePlasma"
     ]
@@ -130,6 +132,7 @@ def plot_xcells(df, out_dir, stat_name):
         "Oligo": "Oligodendrocyte",
         "OPC": "Oligodendrocyte Progenitor",
         "Astro": "Astroglia",
+        "Microglia": "Microglia",
         # "Endo": "Endothelial",
         # "Per": "Per"
     }
@@ -195,7 +198,7 @@ def plot_sets(df, out_dir):
         "PP4Joint": "PLASMA/C-J",
         "PP4AS": "PLASMA/C-AS",
         "PP4QTL": "QTL-Only",
-        # "PP4FINEMAP": "FINEMAP"
+        "PP4FINEMAP": "FINEMAP"
     }
     var_dists = "PP4 Score"
     model_flavors = model_map.keys()
@@ -204,7 +207,7 @@ def plot_sets(df, out_dir):
         "PP4Joint": pal[0],
         "PP4AS": pal[4],
         "PP4QTL": pal[7],
-        # "PP4FINEMAP": pal[3],
+        "PP4FINEMAP": pal[3],
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
