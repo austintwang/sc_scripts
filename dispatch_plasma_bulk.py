@@ -20,7 +20,7 @@ def dispatch(script_path, names, bulk_name, data_dir, params, params_path, filte
             with open(status_path, "w") as status_file:
                 status_file.write("")
 
-        err_name = os.path.join(data_dir, name, "coloc_%j.out")
+        err_name = os.path.join(data_dir, name, f"{bulk_name}_fm_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
             script_path, name, bulk_name, data_dir, params_path, filter_path, boundaries_map_path, status_path
