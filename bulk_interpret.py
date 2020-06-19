@@ -84,8 +84,9 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
             continue
 
         data = read_data_bulk(plasma_data, coloc_data, clusters, g)
+        print(data) ####
         data_lst.extend(data)
-    print(data_lst) ####
+    # print(data_lst) ####
 
     cols = [
         "Gene", 
