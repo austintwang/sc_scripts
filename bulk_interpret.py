@@ -69,7 +69,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:500] ####
+    genes = genes[:1000] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
