@@ -140,9 +140,10 @@ def plot_xcells(df, out_dir, stat_name):
     storey_pis = np.zeros((len(cluster_order), 1,),)
     for ind_i, i in enumerate(cluster_order):
         df_merged = df_tr_sig.loc[df_tr_sig["Cluster"] == i]
-        print(df_merged["TopSNPNLPBulk"].dtype) ####
+        # print(df_merged["TopSNPNLPBulk"].dtype) ####
         num_sig_train = np.count_nonzero(~np.isnan(pd.to_numeric(df_merged["TopSNPNLPBulk"])))
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
+        print(num_sig_train, num_sig_test)
         storey_pis[ind_i, 0] = num_sig_test / num_sig_train
 
 
