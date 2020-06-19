@@ -11,7 +11,7 @@ import pandas as pd
 
 def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
     # print(bulk_data.get("run_error")) ####
-    print(bulk_data.get("traceback")) ####
+    # print(bulk_data.get("traceback")) ####
     data = []
     if not "clusters" in bulk_data:
         return data
