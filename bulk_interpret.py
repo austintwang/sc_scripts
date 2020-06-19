@@ -10,7 +10,7 @@ import seaborn as sns
 import pandas as pd
 
 def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
-    # print(coloc_data.keys()) ####
+    print(bulk_data.keys()) ####
     data = []
     if not "clusters" in bulk_data:
         return data
@@ -84,7 +84,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
             continue
 
         data = read_data_bulk(plasma_data, coloc_data, clusters, g)
-        print(data) ####
+        # print(data) ####
         data_lst.extend(data)
     # print(data_lst) ####
 
