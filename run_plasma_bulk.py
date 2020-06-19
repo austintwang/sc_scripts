@@ -169,10 +169,19 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                         scale_bulk = np.nansum(result["ppas_{0}".format(fg)][snps_used])
                         bulk_res_scaled = result["ppas_{0}".format(fg)] / scale_bulk
                         clpps = fm_res_scaled * bulk_res_scaled
-                        h4 = np.nansum(clpps)
+                        # h4 = np.nansum(clpps)
+                        h4 = np.nansum(fm_res_scaled * bulk_res_scaled)
+                        h3 = np.nansum(fm_res_scaled) * np.nansum(bulk_res_scaled) - h4
+                        h0 = (1 - np.nansum(fm_res_scaled)) * (1 - np.nansum(bulk_res_scaled))
+                        h1 = np.nansum(fm_res_scaled) * (1 - np.nansum(bulk_res_scaled))
+                        h2 = (1 - np.nansum(fm_res_scaled)) * np.nansum(bulk_res_scaled)
                         # print(cluster, fg, fq) ####
                         # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
                         cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
+                        cluster_results[cluster]["h0_{0}_{1}".format(fq, fg)] = h0
+                        cluster_results[cluster]["h1_{0}_{1}".format(fq, fg)] = h1
+                        cluster_results[cluster]["h2_{0}_{1}".format(fq, fg)] = h2
+                        cluster_results[cluster]["h3_{0}_{1}".format(fq, fg)] = h3
                         cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
                     except KeyError:
                         continue
