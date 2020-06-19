@@ -14,7 +14,7 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     sys.path.insert(0, "/agusevlab/awang/plasma")
     
-from . import Finemap
+from . import Finemap, FmBenner
 
 def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
