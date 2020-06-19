@@ -85,6 +85,7 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
 
         data = read_data_bulk(plasma_data, coloc_data, clusters, g)
         data_lst.extend(data)
+    print(data_lst) ####
 
     cols = [
         "Gene", 
@@ -123,8 +124,8 @@ def plot_xcells(df, out_dir, stat_name):
     df_tr_sig = df.loc[
         df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["NumInformativePlasma"])
     ]
-    print(df_tr_sig) ####
-    print(df) ####
+    # print(df_tr_sig) ####
+    # print(df) ####
 
     clusters = {
         "_all": "All Cells",
