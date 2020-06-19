@@ -132,7 +132,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
     except Exception as e:
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
-        status_file.write("Complete")
+        with open(status_path, "w") as status_file:
+            status_file.write("Complete")
 
     with open(boundaries_map_path, "rb") as boundaries_map_file:
         boundaries_map = pickle.load(boundaries_map_file)

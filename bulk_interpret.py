@@ -69,7 +69,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -140,6 +140,7 @@ def plot_xcells(df, out_dir, stat_name):
     storey_pis = np.zeros((len(cluster_order), 1,),)
     for ind_i, i in enumerate(cluster_order):
         df_merged = df_tr_sig.loc[df_tr_sig["Cluster"] == i]
+        print(df_merged["TopSNPNLPBulk"].dtype) ####
         num_sig_train = np.count_nonzero(~np.isnan(df_merged["TopSNPNLPBulk"]))
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
         storey_pis[ind_i, 0] = num_sig_test / num_sig_train

@@ -85,7 +85,8 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
     except Exception as e:
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
-        status_file.write("Complete")
+        with open(status_path, "w") as status_file:
+            status_file.write("Complete")
 
     all_complete = True
     try:
