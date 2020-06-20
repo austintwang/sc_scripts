@@ -171,10 +171,10 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                         clpps = fm_res_scaled * bulk_res_scaled
                         # h4 = np.nansum(clpps)
                         h4 = np.nansum(fm_res_scaled * bulk_res_scaled)
-                        h3 = np.nansum(fm_res_scaled) * np.nansum(bulk_res_scaled) - h4
-                        h0 = (1 - np.nansum(fm_res_scaled)) * (1 - np.nansum(bulk_res_scaled))
-                        h1 = np.nansum(fm_res_scaled) * (1 - np.nansum(bulk_res_scaled))
-                        h2 = (1 - np.nansum(fm_res_scaled)) * np.nansum(bulk_res_scaled)
+                        h3 = np.nansum(fm_res_scaled[snps_used]) * np.nansum(bulk_res_scaled[snps_used]) - h4
+                        h0 = (1 - np.nansum(fm_res_scaled[snps_used])) * (1 - np.nansum(bulk_res_scaled[snps_used]))
+                        h1 = np.nansum(fm_res_scaled[snps_used]) * (1 - np.nansum(bulk_res_scaled[snps_used]))
+                        h2 = (1 - np.nansum(fm_res_scaled[snps_used])) * np.nansum(bulk_res_scaled[snps_used])
                         # print(cluster, fg, fq) ####
                         # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
                         cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
