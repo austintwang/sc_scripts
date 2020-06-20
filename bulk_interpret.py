@@ -239,7 +239,7 @@ def plot_sets(df, out_dir, hyp):
         f"PP{h}QTL": "QTL-Only",
         f"PP{h}FINEMAP": "FINEMAP"
     }
-    var_dists = "PP4 Score"
+    var_dists = f"PP{h} Score"
     model_flavors = model_map.keys()
     pal = sns.color_palette()
     model_colors = {
