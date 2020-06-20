@@ -262,7 +262,7 @@ def plot_sets(df, out_dir, hyp):
         # df_dists[f"PP{h}QTL"] = np.nan_to_num(df_dists[f"PP{h}QTL"])
         # df_dists[f"PP{h}FINEMAP"] = np.nan_to_num(df_dists[f"PP{h}FINEMAP"])
         title = clusters[cluster]
-        print(df_dists) ####
+        # print(df_dists) ####
         make_violin(
             df_dists,
             var_dists, 
