@@ -86,7 +86,7 @@ def load_clusters(cluster_map_path):
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
@@ -257,11 +257,12 @@ def plot_sets(df, out_dir, hyp):
             var_name="Model",
             value_name=var_dists
         )
-        df_dists[f"PP{h}Joint"] = np.nan_to_num(df_dists[f"PP{h}Joint"])
-        df_dists[f"PP{h}AS"] = np.nan_to_num(df_dists[f"PP{h}AS"])
-        df_dists[f"PP{h}QTL"] = np.nan_to_num(df_dists[f"PP{h}QTL"])
-        df_dists[f"PP{h}FINEMAP"] = np.nan_to_num(df_dists[f"PP{h}FINEMAP"])
+        # df_dists[f"PP{h}Joint"] = np.nan_to_num(df_dists[f"PP{h}Joint"])
+        # df_dists[f"PP{h}AS"] = np.nan_to_num(df_dists[f"PP{h}AS"])
+        # df_dists[f"PP{h}QTL"] = np.nan_to_num(df_dists[f"PP{h}QTL"])
+        # df_dists[f"PP{h}FINEMAP"] = np.nan_to_num(df_dists[f"PP{h}FINEMAP"])
         title = clusters[cluster]
+        print(df_dists) ####
         make_violin(
             df_dists,
             var_dists, 
