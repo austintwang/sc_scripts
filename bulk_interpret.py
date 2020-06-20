@@ -51,6 +51,22 @@ def read_data_bulk(plasma_data, bulk_data, clusters, gene_name):
             top_nlp_phi,
             top_z_beta,
             top_nlp_beta,
+            bulk_clust.get("h0_indep_eqtl"),
+            bulk_clust.get("h0_ase_eqtl"),
+            bulk_clust.get("h0_eqtl_eqtl"),
+            bulk_clust.get("h0_fmb_fmb"),
+            bulk_clust.get("h1_indep_eqtl"),
+            bulk_clust.get("h1_ase_eqtl"),
+            bulk_clust.get("h1_eqtl_eqtl"),
+            bulk_clust.get("h1_fmb_fmb"),
+            bulk_clust.get("h2_indep_eqtl"),
+            bulk_clust.get("h2_ase_eqtl"),
+            bulk_clust.get("h2_eqtl_eqtl"),
+            bulk_clust.get("h2_fmb_fmb"),
+            bulk_clust.get("h3_indep_eqtl"),
+            bulk_clust.get("h3_ase_eqtl"),
+            bulk_clust.get("h3_eqtl_eqtl"),
+            bulk_clust.get("h3_fmb_fmb"),
             bulk_clust.get("h4_indep_eqtl"),
             bulk_clust.get("h4_ase_eqtl"),
             bulk_clust.get("h4_eqtl_eqtl"),
@@ -100,6 +116,22 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
         "TopSNPNLPPhi",
         "TopSNPZBeta",
         "TopSNPNLPBeta",
+        "PP0Joint",
+        "PP0AS",
+        "PP0QTL",
+        "PP0FINEMAP",
+        "PP1Joint",
+        "PP1AS",
+        "PP1QTL",
+        "PP1FINEMAP",
+        "PP2Joint",
+        "PP2AS",
+        "PP2QTL",
+        "PP2FINEMAP",
+        "PP3Joint",
+        "PP3AS",
+        "PP3QTL",
+        "PP3FINEMAP",
         "PP4Joint",
         "PP4AS",
         "PP4QTL",
@@ -188,7 +220,8 @@ def make_violin(
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
-def plot_sets(df, out_dir):
+def plot_sets(df, out_dir, hyp):
+    h = hyp
     clusters = {
         "_all": "All Cells",
         "Ex": "Excitatory Neuron",
@@ -201,19 +234,19 @@ def plot_sets(df, out_dir):
         "Per": "Per"
     }
     model_map = {
-        "PP4Joint": "PLASMA/C-J",
-        "PP4AS": "PLASMA/C-AS",
-        "PP4QTL": "QTL-Only",
-        "PP4FINEMAP": "FINEMAP"
+        f"PP{h}Joint": "PLASMA/C-J",
+        f"PP{h}AS": "PLASMA/C-AS",
+        f"PP{h}QTL": "QTL-Only",
+        f"PP{h}FINEMAP": "FINEMAP"
     }
     var_dists = "PP4 Score"
     model_flavors = model_map.keys()
     pal = sns.color_palette()
     model_colors = {
-        "PP4Joint": pal[0],
-        "PP4AS": pal[4],
-        "PP4QTL": pal[7],
-        "PP4FINEMAP": pal[3],
+        f"PP{h}Joint": pal[0],
+        f"PP{h}AS": pal[4],
+        f"PP{h}QTL": pal[7],
+        f"PP{h}FINEMAP": pal[3],
     }
     for cluster in clusters.keys():
         df_dists = pd.melt(
@@ -232,7 +265,7 @@ def plot_sets(df, out_dir):
             model_map, 
             model_colors,
             title, 
-            os.path.join(out_dir, "pp4s_{0}.svg".format(cluster)),
+            os.path.join(out_dir, f"pp{h}s_{cluster}.svg"),
         )
 
 def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base):
@@ -240,7 +273,11 @@ def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base
     df = make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path)
     plot_xcells(df, out_dir, "Phi")
     plot_xcells(df, out_dir, "Beta")
-    plot_sets(df, out_dir)
+    plot_sets(df, out_dir, "0")
+    plot_sets(df, out_dir, "1")
+    plot_sets(df, out_dir, "2")
+    plot_sets(df, out_dir, "3")
+    plot_sets(df, out_dir, "4")
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     df.to_csv(csv_path, index=False, na_rep="None")
     txt_path = os.path.join(out_dir, "cluster_info.txt")
