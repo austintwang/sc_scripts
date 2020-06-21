@@ -115,7 +115,7 @@ def analyze_list(gene_ids, genes_dir, gene_map_path, out_dir):
     data_lst = []
     for g in gene_ids:
         gene_dir = os.path.join(genes_dir, g)
-        plasma_path = os.path.join(gene_dir, run_name, "plasma_i0.pickle")
+        plasma_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
         bulk_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_out.pickle")
         try:
             with open(plasma_path, "rb") as plasma_file:
