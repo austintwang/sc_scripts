@@ -96,7 +96,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
                 [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2), "Single-Cell AS"],
                 [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_bulk)) / np.log(10) - np.log10(2), "Bulk"],
             ]
-            pp_list.extend(pp_data)
+            pp_lst.extend(pp_data)
 
     pp_cols = [
         "Position", 
