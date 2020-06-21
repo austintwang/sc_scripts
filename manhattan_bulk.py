@@ -112,6 +112,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
         "-log10 p-Value", 
         "Source"
     ]
+    print(pp_lst)
 
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
 
