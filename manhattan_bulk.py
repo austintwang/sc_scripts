@@ -90,7 +90,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
         print(plasma_clust.get("run_error")) ####
         pp_lst = []
         for spos, z_beta, z_phi, z_bulk in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], bulk_data["z_beta"]):
-            pos = int(spos) + 1
+            pos = int(spos[1]) + 1
             pp_data = [
                 [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2), "Single-Cell Total"],
                 [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2), "Single-Cell AS"],
