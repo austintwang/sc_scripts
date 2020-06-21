@@ -143,8 +143,8 @@ def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
     data_df.sort_values(by=["PP4Joint"], ascending=False, inplace=True)
     return data_df
 
-def make_heatmap(arr, order, title, result_path):
-    heat_data = pd.DataFrame(data=arr, index=order, columns=["Bulk"])
+def make_heatmap(arr, idx, cols, title, result_path):
+    heat_data = pd.DataFrame(data=arr, index=idx, columns=cols)
     print(heat_data) ####
     sns.set(style="whitegrid", font="Roboto")
     f, ax = plt.subplots(figsize=(5, 5))
@@ -193,9 +193,9 @@ def plot_xcells(df, out_dir, stat_name):
 
 
     title = "scQTL to Bulk Replication Storey Pi"
-    make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
+    make_heatmap(storey_pis, cluster_order, ["Bulk"], title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
     title = "Bulk to scQTL Replication Storey Pi"
-    make_heatmap(storey_pis_rev, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}_rev.svg"))
+    make_heatmap(storey_pis_rev, ["Bulk"], cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}_rev.svg"))
 
 def make_violin(
         df,
