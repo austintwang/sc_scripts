@@ -33,7 +33,7 @@ def plot_manhattan(pp_df, gene_name, out_dir):
     g = sns.FacetGrid(
         pp_df, 
         row="Cluster", 
-        column="Source",
+        col="Source",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
         palette=pal,
