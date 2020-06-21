@@ -158,7 +158,7 @@ def plot_xcells(df, out_dir, stat_name):
     df_tr_sig = df.loc[
         df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["NumInformativePlasma"])
     ]
-    df_ts_sit = df.loc[
+    df_ts_sig = df.loc[
         df[f"TopSNPNLPBulk"] >= -np.log10(0.05/df["NumInformativeBulk"])
     ]
     # print(df_tr_sig) ####
