@@ -82,6 +82,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
+    print(bulk_data.keys()) ####
     for clust, clust_name in clusters.items():
         plasma_clust = plasma_data.get(clust)
         if plasma_clust is None:
