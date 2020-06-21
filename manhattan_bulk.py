@@ -39,8 +39,8 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         # hue_kws={"marker":["o", "o", "D"]},
         palette=pal,
         margin_titles=True, 
-        height=1.7, 
-        aspect=3
+        height=3, 
+        aspect=2
     )
 
     # for k, v in regions.items():
