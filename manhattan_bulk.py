@@ -138,7 +138,7 @@ if __name__ == '__main__':
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/rosmap/manhattan"
 
     gene_ids = [
-        "ENSG00000162601.9_2",
+        # "ENSG00000162601.9_2",
         "ENSG00000152642.10_3",
         "ENSG00000130749.9_2",
         "ENSG00000204120.14_3",
