@@ -158,6 +158,9 @@ def plot_xcells(df, out_dir, stat_name):
     df_tr_sig = df.loc[
         df[f"TopSNPNLP{sn1}"] >= -np.log10(0.05/df["NumInformativePlasma"])
     ]
+    df_ts_sit = df.loc[
+        df[f"TopSNPNLPBulk"] >= -np.log10(0.05/df["NumInformativeBulk"])
+    ]
     # print(df_tr_sig) ####
     # print(df) ####
 
@@ -174,17 +177,25 @@ def plot_xcells(df, out_dir, stat_name):
     }
     cluster_order = list(clusters.keys())
     storey_pis = np.zeros((len(cluster_order), 1,),)
+    storey_pis_rev = np.zeros((1, len(cluster_order),),)
     for ind_i, i in enumerate(cluster_order):
         df_merged = df_tr_sig.loc[df_tr_sig["Cluster"] == i]
         # print(df_merged["TopSNPNLPBulk"].dtype) ####
         num_sig_train = np.count_nonzero(~np.isnan(pd.to_numeric(df_merged["TopSNPNLPBulk"])))
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
-        print(num_sig_train, num_sig_test)
+        # print(num_sig_train, num_sig_test)
         storey_pis[ind_i, 0] = num_sig_test / num_sig_train
 
+        df_merged_rev = df_ts_sig.loc[df_ts_sig["Cluster"] == i]
+        num_sig_train_rev = np.count_nonzero(~np.isnan(pd.to_numeric(df_merged_rev[f"TopSNPNLP{sn1}"])))
+        num_sig_test_rev = np.sum(df_merged_rev[f"TopSNPNLP{sn1}"] >= -np.log10(0.05))
+        storey_pis_rev[0, ind_i] = num_sig_test_rev / num_sig_train_rev
 
-    title = "Bulk Replication Storey Pi"
+
+    title = "scQTL to Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
+    title = "Bulk to scQTL Replication Storey Pi"
+    make_heatmap(storey_pis_rev, cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}_rev.svg"))
 
 def make_violin(
         df,
