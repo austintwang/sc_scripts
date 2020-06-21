@@ -25,7 +25,7 @@ import scipy.stats
 
 #     return region_plot
 
-def plot_manhattan(pp_df, gene_name, out_dir):
+def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
@@ -67,7 +67,7 @@ def plot_manhattan(pp_df, gene_name, out_dir):
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
     g.fig.suptitle(gene_name)
-    plt.savefig(os.path.join(out_dir, "{0}.svg".format(gene_name)))
+    plt.savefig(os.path.join(out_dir, f"{gene_id}.svg"))
     plt.clf()
     plt.close()
 
@@ -117,7 +117,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
 
     gene_name = gene_map.get(gene_id.split(".")[0], gene_id)
-    plot_manhattan(pp_df, gene_name, out_dir)
+    plot_manhattan(pp_df, gene_name, gene_id, out_dir)
 
 def analyze_list(gene_ids, genes_dir, gene_map_path, bulk_name, out_dir):
     with open(gene_map_path, "rb") as gene_map_file:
