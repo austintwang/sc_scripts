@@ -101,6 +101,8 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
                 pp_lst.extend(pp_data)
         except KeyError as e:
             print(e)
+            print(clust)
+            print(plasma_clust.keys())
             continue
 
     pp_cols = [
@@ -112,7 +114,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
 
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
 
-    gene_name = genes_map.get(gene_id.split(".")[0], gene_id)
+    gene_name = gene_map.get(gene_id.split(".")[0], gene_id)
     plot_manhattan(pp_df, gene_name, out_dir)
 
 def analyze_list(gene_ids, genes_dir, gene_map_path, bulk_name, out_dir):
