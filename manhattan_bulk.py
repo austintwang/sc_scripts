@@ -26,7 +26,7 @@ import scipy.stats
 #     return region_plot
 
 def plot_manhattan(pp_df, gene_name, out_dir):
-    print(pp_df) ####
+    # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
     pal = sns.xkcd_palette(["dark slate blue", "blood red"])
@@ -108,7 +108,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
 
     pp_cols = [
         "Position", 
-        "Cluster"
+        "Cluster",
         "-log10 p-Value", 
         "Source"
     ]
