@@ -108,7 +108,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
     gene_name = genes_map.get(gene_id.split(".")[0], gene_id)
     plot_manhattan(pp_df, gene_name, out_dir)
 
-def analyze_list(gene_ids, gene_dir, gene_map_path, out_dir):
+def analyze_list(gene_ids, genes_dir, gene_map_path, out_dir):
     with open(gene_map_path, "rb") as gene_map_file:
         gene_map = pickle.load(gene_map_file)
 
@@ -144,7 +144,7 @@ if __name__ == '__main__':
         "ENSG00000113070.7_2"
     ]
 
-    analyze_list(gene_ids, gene_dir, gene_map_path, out_dir)
+    analyze_list(gene_ids, genes_dir, gene_map_path, out_dir)
 
 
 
