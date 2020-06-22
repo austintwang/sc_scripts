@@ -171,9 +171,9 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
 
     comp_cols = [
-        "Cluster"
-        "Z-Score Single-Cell"
-        "Z-Score Bulk"
+        "Cluster",
+        "Z-Score Single-Cell",
+        "Z-Score Bulk",
         "Source"
     ]
     comp_df = pd.DataFrame(comp_lst, columns=comp_cols)
