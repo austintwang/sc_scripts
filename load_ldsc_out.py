@@ -34,7 +34,7 @@ def load_ldsc_out(name, res_dir_base, out_dir):
         "H2", 
         "H2StdError", 
         "Enrichment", 
-        "EnrichmentStdError", 
+        "EnrichmentStdError",
         "EnrichmentP"
     ]
     df = pd.DataFrame(data_lst, columns=cols)
