@@ -10,6 +10,7 @@ def add_data(res_path, data_lst):
     with open(res_path) as res_file:
         header = next(res_file)
         cols = {val: ind for ind, val in enumerate(header)}
+        print(cols) ####
         for line in res_file:
             vals = line.strip().split()
             info = vals[cols["GWAS"]]
