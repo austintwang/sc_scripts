@@ -26,9 +26,7 @@ def read_data(data_path):
     data_df = pd.DataFrame(data_lst, columns=cols)
     return data_df
 
-def plot_heatmap(df, result_path, namemap_path):
-    with open(namemap_path) as namemap_file:
-        namemap = pickle.load(namemap_file)
+def plot_heatmap(df, result_path, namemap):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
     # print(np.logical_not(np.isnan(df_plot).all(1))) ####
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
@@ -41,17 +39,20 @@ def plot_heatmap(df, result_path, namemap_path):
     g = sns.clustermap(df_filled, mask=mask, annot=True, annot_kws={"size": 10, "weight": "medium"})
     g.savefig(result_path, bbox_inches='tight')
 
-def twas_interpret(in_dir, in_files, out_dir):
+def twas_interpret(in_dir, in_files, namemap_path, out_dir):
+    with open(namemap_path) as namemap_file:
+        namemap = pickle.load(namemap_file)
     for i in in_files:
         data_path = os.path.join(in_dir, i)
         gwas_name = i.split(".")[1]
         os.makedirs(os.path.join(out_dir, i), exist_ok=True)
         result_path = os.path.join(out_dir, i, "tops.svg")
         df = read_data(data_path)
-        plot_heatmap(df, result_path)
+        plot_heatmap(df, result_path, namemap)
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/twas_res"
     in_files = ["PLOT.AlzheimersProxyMetaIGAP_Marioni2018"]
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/twas"
-    twas_interpret(in_dir, in_files, out_dir)
+    namemap_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
+    twas_interpret(in_dir, in_files, namemap_path, out_dir)
