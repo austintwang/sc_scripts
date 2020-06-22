@@ -15,6 +15,8 @@ import pandas as pd
 def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
     # print(coloc_data.keys()) ####
     data = []
+    data_sig = []
+    locus_sig = False
     if not "clusters" in coloc_data:
         return data
     top_z = np.nanmax(np.abs(coloc_data["z_beta"]))
@@ -42,12 +44,175 @@ def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
         ]
         # print(data_clust) ####
         data.append(data_clust)
-    return data
+        if top_nlp >= -np.log10(5e-8):
+            data_sig.append(data_clust)
+            locus_sig = True
+
+    return data, data_sig, locus_sig
 
 def load_clusters(cluster_map_path):
     with open(cluster_map_path, "rb") as cluster_map_file:
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
+
+def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
+    # print(pp_df) ####
+    sns.set(style="ticks", font="Roboto")
+
+    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+
+    g = sns.FacetGrid(
+        pp_df, 
+        row="Cluster", 
+        col="Source",
+        # hue="Causal",
+        # hue_kws={"marker":["o", "o", "D"]},
+        palette=pal,
+        margin_titles=True, 
+        height=3, 
+        aspect=2
+    )
+
+    # for k, v in regions.items():
+    #     if k in annot_colormap:
+    #         g.map(region_plotter(v, bounds, annot_colormap[k]))
+
+    g.map(
+        sns.scatterplot, 
+        "Position", 
+        "-log10 p-Value",
+        # size="Causal", 
+        legend=False,
+        # color=".3", 
+        linewidth=0,
+        # hue_order=[2, 1, 0],
+        # sizes={0:9, 1:12},
+        s=9
+    )
+
+    x_formatter = matplotlib.ticker.ScalarFormatter()
+    for i, ax in enumerate(g.fig.axes): 
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=30)
+        ax.xaxis.set_major_formatter(x_formatter)
+    
+    # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    g.fig.suptitle(gene_name)
+    os.makedirs(os.path.join(out_dir, "manhattan"), exist_ok=True)
+    plt.savefig(os.path.join(out_dir, "manhattan", f"{gene_id}.svg"))
+    plt.clf()
+    plt.close()
+
+def plot_comparison(comp_df, gene_name, gene_id, out_dir):
+    # print(pp_df) ####
+    sns.set(style="ticks", font="Roboto")
+
+    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+
+    g = sns.FacetGrid(
+        comp_df, 
+        row="Cluster", 
+        col="Source",
+        # hue="Causal",
+        # hue_kws={"marker":["o", "o", "D"]},
+        palette=pal,
+        margin_titles=True, 
+        height=2, 
+        aspect=1
+    )
+
+    # for k, v in regions.items():
+    #     if k in annot_colormap:
+    #         g.map(region_plotter(v, bounds, annot_colormap[k]))
+
+    g.map(
+        sns.scatterplot, 
+        "Z-Score Single-Cell", 
+        "Z-Score Bulk",
+        # size="Causal", 
+        legend=False,
+        # color=".3", 
+        linewidth=0,
+        # hue_order=[2, 1, 0],
+        # sizes={0:9, 1:12},
+        s=9
+    )
+
+    x_formatter = matplotlib.ticker.ScalarFormatter()
+    for i, ax in enumerate(g.fig.axes): 
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=30)
+        ax.xaxis.set_major_formatter(x_formatter)
+    
+    # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    g.fig.suptitle(gene_name)
+    os.makedirs(os.path.join(out_dir, "comparison"), exist_ok=True)
+    plt.savefig(os.path.join(out_dir, "comparison", f"{gene_id}.svg"))
+    plt.clf()
+    plt.close()
+
+def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
+    clusters = {
+        "_all": "All Cells",
+        "Ex": "Excitatory Neuron",
+        "Oligo": "Oligodendrocyte",
+        "Astro": "Astroglia",
+        "In": "Inhibitory Neuron",
+        "Endo": "Endothelial",
+        "Microglia": "Microglia",
+        "OPC": "Oligodendrocyte Progenitor",
+        "Per": "Per"
+    }
+    # print(coloc_data.keys()) ####
+    pp_lst = []
+    comp_lst = []
+    for clust, clust_name in clusters.items():
+        plasma_clust = plasma_data.get(clust)
+        if plasma_clust is None:
+            continue
+        # print(plasma_clust.get("run_error")) ####
+        # print(plasma_clust.keys()) ####
+        try:
+            for spos, z_beta, z_phi, z_coloc in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"]):
+                pos = int(spos[1]) + 1
+                nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
+                nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
+                nlp_coloc = -scipy.stats.norm.logsf(np.abs(z_coloc)) / np.log(10) - np.log10(2)
+                pp_data = [
+                    [pos, clust_name, nlp_beta, z_beta, "Single-Cell Total"],
+                    [pos, clust_name, nlp_phi, z_phi, "Single-Cell AS"],
+                    [pos, clust_name, nlp_coloc, z_coloc, "GWAS"],
+                ]
+                pp_lst.extend(pp_data)
+                comp_data = [
+                    [clust_name, z_beta, z_coloc, "Total"],
+                    [clust_name, z_phi, z_coloc, "AS"],
+                ]
+                comp_lst.extend(comp_data)
+        except KeyError as e:
+            print(e)
+            print(clust)
+            # print(plasma_clust.keys())
+            continue
+
+    pp_cols = [
+        "Position", 
+        "Cluster",
+        "-log10 p-Value", 
+        "Z-Score",
+        "Source"
+    ]
+    pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
+
+    comp_cols = [
+        "Cluster",
+        "Z-Score Single-Cell",
+        "Z-Score GWAS",
+        "Source"
+    ]
+    comp_df = pd.DataFrame(comp_lst, columns=comp_cols)
+
+    gene_name = gene_map.get(gene_id.split(".")[0], gene_id)
+    plot_manhattan(pp_df, gene_name, gene_id, out_dir)
+    plot_comparison(comp_df, gene_name, gene_id, out_dir)
 
 def make_violin(
         df,
@@ -182,6 +347,8 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     genes = os.listdir(genes_dir)
     # genes = genes[:500] ####
     data_lst = []
+    data_sig_lst = []
+    sig_genes = {}
     for g in genes:
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
@@ -194,8 +361,11 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
         except (FileNotFoundError, pickle.UnpicklingError):
             continue
 
-        data = read_data(plasma_data, coloc_data, clusters, g, genes_map.get(g.split(".")[0]))
+        data, data_sig, locus_sig = read_data(plasma_data, coloc_data, clusters, g, genes_map.get(g.split(".")[0]))
         data_lst.extend(data)
+        data_sig_lst.extend(data_sig)
+        if locus_sig:
+            sig_genes[g] = [plasma_data, coloc_data]
 
     cols = [
         "Gene", 
@@ -220,7 +390,8 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     calc_sumstats(data_df, out_dir_gwas, 0.1)
     plot_sets(data_df, out_dir_gwas)
 
-    data_sig_df = data_df.loc[data_df["GWASSig"] >= -np.log10(5e-8)]
+    # data_sig_df = data_df.loc[data_df["GWASSig"] >= -np.log10(5e-8)]
+    data_sig_df = pd.DataFrame(data_sig_lst, columns=cols)
     out_dir_sig_gwas = os.path.join(out_dir, f"{gwas_name}_sig")
     os.makedirs(out_dir_sig_gwas, exist_ok=True)
     data_sig_df.to_csv(os.path.join(out_dir_sig_gwas, "data.csv"), index=False)
@@ -228,6 +399,9 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
         data_sig_df.to_string(txt_file)
     calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
     plot_sets(data_sig_df, out_dir_sig_gwas)
+
+    for g, data in sig_genes.items()
+        analyze_locus(g, data[0], data[1], genes_map, out_dir_sig_gwas)
 
     with open(status_path, "w") as status_file:
         status_file.write("Complete")
