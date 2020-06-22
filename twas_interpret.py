@@ -17,7 +17,7 @@ def read_data(data_path, namemap):
     with open(data_path) as data_file:
         for line in data_file:
             cols = line.strip().split()
-            gene = namemap.get(cols[0].split('.'), cols[0])
+            gene = namemap.get(cols[0].split('.')[0], cols[0])
             test = cols[1]
             z = np.nan if cols[2] == "NA" else float(cols[2])
             data_lst.append([gene, test, z])
