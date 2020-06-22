@@ -16,6 +16,7 @@ def add_data(res_path, data_lst):
             info = vals[cols["GWAS"]]
             study, paramstr = info.split(".", 1)
             params = paramstr.split("_")
+            print(params) ####
             threshold = float(params[2])
             window = int(params[3].split(".")[0].strip("pmkb"))
             data_lst.append([study, threshold, window] + [vals[cols[i]] for i in fields])
