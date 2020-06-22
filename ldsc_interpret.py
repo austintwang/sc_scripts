@@ -26,7 +26,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     for thresh, window in params:
         df_sub = df.loc[np.logical_and(df["Threshold"] == thresh, df["Window"] == window)]
         title = f"Top {thresh}, {window} kb window"
-        result_path = os.path.join(out_dir, "name", f"heatmap_t_{thresh}_w_{window}.svg")
+        result_path = os.path.join(out_dir, name, f"heatmap_t_{thresh}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path)
 
 if __name__ == '__main__':
