@@ -16,9 +16,9 @@ def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment")
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
-    g.fig.suptitle(title)
-    g.savefig(result_path, bbox_inches='tight')
+    sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    plt.title(title)
+    plt.savefig(result_path, bbox_inches='tight')
 
 def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
