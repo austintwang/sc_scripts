@@ -17,7 +17,7 @@ def plot_heatmap(df, title, result_path):
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_plot, annot=True, annot_kws={"size": 10, "weight": "medium"})
-    g.title(title)
+    g.fig.suptitle(title)
     g.savefig(result_path, bbox_inches='tight')
 
 def ldsc_interpret(in_dir, name, params, out_dir):
