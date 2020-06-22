@@ -32,6 +32,5 @@ def ldsc_interpret(in_dir, name, out_dir):
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/ldsc_res/agg/"
     name = "results_chisq"
-    in_files = ["PLOT.AlzheimersProxyMetaIGAP_Marioni2018"]
-    out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/twas"
-    twas_interpret(in_dir, in_files, out_dir)
+    out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/ldsc"
+    twas_interpret(in_dir, name, out_dir)
