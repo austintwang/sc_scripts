@@ -151,8 +151,8 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
                 ]
                 pp_lst.extend(pp_data)
                 comp_data = [
-                    [clust_name, z_beta, z_bulk, "Total"]
-                    [clust_name, z_phi, z_bulk, "AS"]
+                    [clust_name, z_beta, z_bulk, "Total"],
+                    [clust_name, z_phi, z_bulk, "AS"],
                 ]
                 comp_lst.extend(comp_data)
         except KeyError as e:
