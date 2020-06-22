@@ -127,7 +127,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     g.map(
         sns.scatterplot, 
         "Z-Score Single-Cell", 
-        "Z-Score Bulk",
+        "Z-Score GWAS",
         # size="Causal", 
         legend=False,
         # color=".3", 
@@ -188,7 +188,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
                 ]
                 comp_lst.extend(comp_data)
         except KeyError as e:
-            print(e)
+            # print(e)
             print(clust)
             # print(plasma_clust.keys())
             # print(plasma_clust.get("data_error")) ####
