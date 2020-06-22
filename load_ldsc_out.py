@@ -16,12 +16,12 @@ def add_data(res_path, data_lst):
             vals = line.strip().split()
             info = vals[cols["GWAS"]]
             study, paramstr = info.split(".", 1)
-            threshold_match = re.search(r"joint_sc_(.*)(_|\.)", paramstr)   
+            threshold_match = re.search(r"joint_sc_(.*?)(_|\.)", paramstr)   
             if threshold_match is None:
                 threshold = 0.1
             else:
                 threshold = float(threshold_match.group(1))
-            window_match = re.search(r"pm(.*)kb", paramstr)
+            window_match = re.search(r"pm(.*?)kb", paramstr)
             if window_match is None:
                 window = 10
             else:
