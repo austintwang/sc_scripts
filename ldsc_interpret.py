@@ -13,7 +13,7 @@ import seaborn as sns
 import pandas as pd
 
 def plot_heatmap(df, title, result_path):
-    df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment")
+    df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
 
     sns.set(style="whitegrid", font="Roboto")
     sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
