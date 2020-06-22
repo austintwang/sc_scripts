@@ -400,7 +400,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
     plot_sets(data_sig_df, out_dir_sig_gwas)
 
-    for g, data in sig_genes.items()
+    for g, data in sig_genes.items():
         analyze_locus(g, data[0], data[1], genes_map, out_dir_sig_gwas)
 
     with open(status_path, "w") as status_file:
