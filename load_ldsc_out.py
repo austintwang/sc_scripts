@@ -4,7 +4,8 @@ import gzip
 import glob
 import re
 import numpy as np
-import scipy.stats
+import pandas as pd
+# import scipy.stats
 
 def add_data(res_path, data_lst):
     fields = ["CT", "Prop._SNPs", "Prop._h2", "Prop._h2_std_error", "Enrichment", "Enrichment_std_error", "Enrichment_p"]
@@ -16,7 +17,7 @@ def add_data(res_path, data_lst):
             vals = line.strip().split()
             info = vals[cols["GWAS"]]
             study, paramstr = info.split(".", 1)
-            threshold_match = re.search(r"joint_sc_(.*?)(_|\.)", paramstr)   
+            threshold_match = re.search(r"joint_sc_(.*?)(_|\.results)", paramstr)   
             if threshold_match is None:
                 threshold = 0.1
             else:
