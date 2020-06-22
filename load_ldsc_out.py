@@ -2,6 +2,7 @@ import os
 import pickle
 import gzip
 import glob
+import re
 import numpy as np
 import scipy.stats
 
@@ -15,10 +16,17 @@ def add_data(res_path, data_lst):
             vals = line.strip().split()
             info = vals[cols["GWAS"]]
             study, paramstr = info.split(".", 1)
-            params = paramstr.split("_")
-            print(params) ####
-            threshold = float(params[2])
-            window = int(params[3].split(".")[0].strip("pmkb"))
+            threshold_match = re.search(r"joint_sc_(.*)(_|\.)", paramstr)   
+            if threshold_match is None:
+                threshold = 0.1
+            else
+                threshold = float(threshold_match.group(1))
+            window_match = re.search(r"pm(.*)kb", paramstr)
+            if window_match is None:
+                window = 10
+            else
+                window = int(window_match.group(1))
+            print(threshold, window) ####
             data_lst.append([study, threshold, window] + [vals[cols[i]] for i in fields])
 
 def load_ldsc_out(name, res_dir_base, out_dir):
