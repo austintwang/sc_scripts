@@ -190,7 +190,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         except KeyError as e:
             print(e)
             print(clust)
-            # print(plasma_clust.keys())
+            print(plasma_clust.keys())
             continue
 
     pp_cols = [
@@ -345,7 +345,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:1000] ####
+    genes = genes[:500] ####
     data_lst = []
     data_sig_lst = []
     sig_genes = {}
