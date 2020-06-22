@@ -26,7 +26,7 @@ def add_data(res_path, data_lst):
                 window = 10
             else:
                 window = int(window_match.group(1))
-            print(threshold, window) ####
+            print(paramstr, threshold, window) ####
             data_lst.append([study, threshold, window] + [vals[cols[i]] for i in fields])
 
 def load_ldsc_out(name, res_dir_base, out_dir):
