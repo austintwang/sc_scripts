@@ -19,12 +19,12 @@ def add_data(res_path, data_lst):
             threshold_match = re.search(r"joint_sc_(.*)(_|\.)", paramstr)   
             if threshold_match is None:
                 threshold = 0.1
-            else
+            else:
                 threshold = float(threshold_match.group(1))
             window_match = re.search(r"pm(.*)kb", paramstr)
             if window_match is None:
                 window = 10
-            else
+            else:
                 window = int(window_match.group(1))
             print(threshold, window) ####
             data_lst.append([study, threshold, window] + [vals[cols[i]] for i in fields])
