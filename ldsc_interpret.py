@@ -33,4 +33,4 @@ if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/ldsc_res/agg/"
     name = "results_chisq"
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/ldsc"
-    twas_interpret(in_dir, name, out_dir)
+    ldsc_interpret(in_dir, name, out_dir)
