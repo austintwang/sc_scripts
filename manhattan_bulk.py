@@ -67,7 +67,53 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
     g.fig.suptitle(gene_name)
-    plt.savefig(os.path.join(out_dir, f"{gene_id}.svg"))
+    plt.savefig(os.path.join(out_dir, "manhattan", f"{gene_id}.svg"))
+    plt.clf()
+    plt.close()
+
+def plot_comparison(comp_df, gene_name, gene_id, out_dir):
+    # print(pp_df) ####
+    sns.set(style="ticks", font="Roboto")
+
+    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+
+    g = sns.FacetGrid(
+        comp_df, 
+        row="Cluster", 
+        col="Source",
+        # hue="Causal",
+        # hue_kws={"marker":["o", "o", "D"]},
+        palette=pal,
+        margin_titles=True, 
+        height=2, 
+        aspect=1
+    )
+
+    # for k, v in regions.items():
+    #     if k in annot_colormap:
+    #         g.map(region_plotter(v, bounds, annot_colormap[k]))
+
+    g.map(
+        sns.scatterplot, 
+        "Z-Score Single-Cell", 
+        "Z-Score Bulk",
+        # size="Causal", 
+        legend=False,
+        # color=".3", 
+        linewidth=0,
+        # hue_order=[2, 1, 0],
+        # sizes={0:9, 1:12},
+        s=9
+    )
+
+    x_formatter = matplotlib.ticker.ScalarFormatter()
+    for i, ax in enumerate(g.fig.axes): 
+        ax.set_xticklabels(ax.get_xticklabels(), rotation=30)
+        ax.xaxis.set_major_formatter(x_formatter)
+    
+    # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    g.fig.suptitle(gene_name)
+    plt.savefig(os.path.join(out_dir, "comparison", f"{gene_id}.svg"))
     plt.clf()
     plt.close()
 
@@ -85,6 +131,7 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
     }
     # print(bulk_data.keys()) ####
     pp_lst = []
+    comp_lst = []
     for clust, clust_name in clusters.items():
         plasma_clust = plasma_data.get(clust)
         if plasma_clust is None:
@@ -94,12 +141,20 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
         try:
             for spos, z_beta, z_phi, z_bulk in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], bulk_data["z_beta"]):
                 pos = int(spos[1]) + 1
+                nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
+                nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
+                nlp_bulk = -scipy.stats.norm.logsf(np.abs(z_bulk)) / np.log(10) - np.log10(2)
                 pp_data = [
-                    [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2), "Single-Cell Total"],
-                    [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2), "Single-Cell AS"],
-                    [pos, clust_name, -scipy.stats.norm.logsf(np.abs(z_bulk)) / np.log(10) - np.log10(2), "Bulk"],
+                    [pos, clust_name, nlp_beta, z_beta, "Single-Cell Total"],
+                    [pos, clust_name, nlp_phi, z_phi, "Single-Cell AS"],
+                    [pos, clust_name, nlp_bulk, z_bulk, "Bulk"],
                 ]
                 pp_lst.extend(pp_data)
+                comp_data = [
+                    [clust_name, z_beta, z_bulk, "Total"]
+                    [clust_name, z_phi, z_bulk, "AS"]
+                ]
+                comp_lst.extend(comp_data)
         except KeyError as e:
             print(e)
             print(clust)
@@ -110,14 +165,22 @@ def analyze_locus(gene_id, plasma_data, bulk_data, gene_map, out_dir):
         "Position", 
         "Cluster",
         "-log10 p-Value", 
+        "Z-Score",
         "Source"
     ]
-    # print(pp_lst) ####
-
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
+
+    comp_cols = [
+        "Cluster"
+        "Z-Score Single-Cell"
+        "Z-Score Bulk"
+        "Source"
+    ]
+    comp_df = pd.DataFrame(comp_lst, columns=comp_cols)
 
     gene_name = gene_map.get(gene_id.split(".")[0], gene_id)
     plot_manhattan(pp_df, gene_name, gene_id, out_dir)
+    plot_comparison(comp_df, gene_name, gene_id, out_dir)
 
 def analyze_list(gene_ids, genes_dir, gene_map_path, bulk_name, out_dir):
     with open(gene_map_path, "rb") as gene_map_file:
@@ -144,7 +207,7 @@ if __name__ == '__main__':
 
     genes_dir = os.path.join(data_path_kellis, "genes_429")
     gene_map_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
-    out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/rosmap/manhattan"
+    out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/rosmap"
 
     gene_ids = [
         "ENSG00000005059.15_3",
