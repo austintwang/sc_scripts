@@ -9,8 +9,8 @@ def add_data(res_path, data_lst):
     fields = ["CT", "Prop._SNPs", "Prop._h2", "Prop._h2_std_error", "Enrichment", "Enrichment_std_error", "Enrichment_p"]
     with open(res_path) as res_file:
         header = next(res_file)
-        cols = {val: ind for ind, val in enumerate(header)}
-        print(cols) ####
+        cols = {val: ind for ind, val in enumerate(header.strip().split())}
+        # print(cols) ####
         for line in res_file:
             vals = line.strip().split()
             info = vals[cols["GWAS"]]
