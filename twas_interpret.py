@@ -41,7 +41,7 @@ def plot_heatmap(df, result_path, namemap):
 
 def twas_interpret(in_dir, in_files, namemap_path, out_dir):
     with open(namemap_path) as namemap_file:
-        namemap = pickle.load(namemap_file)
+        namemap = pickle.load(namemap_file, 'rb')
     for i in in_files:
         data_path = os.path.join(in_dir, i)
         gwas_name = i.split(".")[1]
