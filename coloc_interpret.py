@@ -194,7 +194,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
             # print(plasma_clust.get("data_error")) ####
             continue
 
-    if len(pp_lst == 0) or len(comp_lst == 0):
+    if len(pp_lst) == 0 or len(comp_lst) == 0:
         return
 
     pp_cols = [
