@@ -24,7 +24,7 @@ def add_data(res_path, data_lst):
                 threshold = float(threshold_match.group(1))
             window_match = re.search(r"pm(.*?)kb", paramstr)
             if window_match is None:
-                window = 10
+                window = 0
             else:
                 window = int(window_match.group(1))
             print(paramstr, threshold, window) ####
