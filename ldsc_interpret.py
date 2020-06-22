@@ -16,7 +16,7 @@ def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment")
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_plot, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
     g.fig.suptitle(title)
     g.savefig(result_path, bbox_inches='tight')
 
