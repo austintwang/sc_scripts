@@ -19,6 +19,8 @@ def plot_heatmap(df, title, result_path):
     sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
     plt.title(title)
     plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
+    plt.close()
 
 def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
