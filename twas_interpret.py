@@ -12,12 +12,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-def read_data(data_path):
+def read_data(data_path, namemap):
     data_lst = []
     with open(data_path) as data_file:
         for line in data_file:
             cols = line.strip().split()
-            gene = cols[0]
+            gene = namemap.get(cols[0].split('.'), cols[0])
             test = cols[1]
             z = np.nan if cols[2] == "NA" else float(cols[2])
             data_lst.append([gene, test, z])
@@ -26,7 +26,7 @@ def read_data(data_path):
     data_df = pd.DataFrame(data_lst, columns=cols)
     return data_df
 
-def plot_heatmap(df, result_path, namemap):
+def plot_heatmap(df, result_path):
     df_plot = df.pivot(index="Gene", columns="Test", values="Z")
     # print(np.logical_not(np.isnan(df_plot).all(1))) ####
     # df_plot = df_plot[np.logical_not(np.isnan(df_plot).all(1))]
@@ -47,8 +47,8 @@ def twas_interpret(in_dir, in_files, namemap_path, out_dir):
         gwas_name = i.split(".")[1]
         os.makedirs(os.path.join(out_dir, i), exist_ok=True)
         result_path = os.path.join(out_dir, i, "tops.svg")
-        df = read_data(data_path)
-        plot_heatmap(df, result_path, namemap)
+        df = read_data(data_path, namemap)
+        plot_heatmap(df, result_path)
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/twas_res"
