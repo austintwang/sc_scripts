@@ -191,6 +191,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
             print(e)
             print(clust)
             print(plasma_clust.keys())
+            print(plasma_clust.get("data_error")) ####
             continue
 
     pp_cols = [
