@@ -203,7 +203,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
 
             inputs["corr_shared"], gwas_alleles = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
             # print(inputs["corr_shared"]) ####
-            alleles_diff = np.fromiter(q[0] == g[0] for q, g in zip(inputs["snp_alleles"], gwas_alleles), bool)
+            alleles_diff = np.fromiter((q[0] == g[0] for q, g in zip(inputs["snp_alleles"], gwas_alleles)), bool)
             result["z_beta"] = inputs["z_beta"] * alleles_diff
 
             if inputs["model_flavors_gwas"] == "all":
