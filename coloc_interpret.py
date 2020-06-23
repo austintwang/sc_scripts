@@ -349,7 +349,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:500] ####
+    # genes = genes[:500] ####
     data_lst = []
     data_sig_lst = []
     sig_genes = {}
