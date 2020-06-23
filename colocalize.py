@@ -49,7 +49,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
             # print(data) ####
             id1 = data[2]
             id2 = data[5]
-            corr = float(data[6])
+            corr = float(data[-1])
             idx1 = marker_map[id1]
             idx2 = marker_map[id2]
             ld[idx1, idx2] = corr
