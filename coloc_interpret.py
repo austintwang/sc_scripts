@@ -260,6 +260,7 @@ def plot_sets(df, out_dir):
         "Astro": "Astroglia",
         "In": "Inhibitory Neuron",
         "Endo": "Endothelial",
+        "Microglia": "Microglia",
         "OPC": "Oligodendrocyte Progenitor",
         "Per": "Per"
     }
@@ -312,6 +313,7 @@ def calc_sumstats(df, out_dir, thresh):
         "Oligo": "Oligodendrocyte",
         "OPC": "Oligodendrocyte Progenitor",
         "Astro": "Astroglia",
+        "Microglia": "Microglia",
         # "Endo": "Endothelial",
         # "Per": "Per"
     }
