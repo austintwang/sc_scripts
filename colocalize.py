@@ -72,7 +72,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     for path in glob.glob(out_path_base):
         os.remove(path)
 
-    print(alleles) ####
+    # print(alleles) ####
     return ld, alleles
 
 def restore_informative(shape, values, informative_snps, default):
@@ -207,6 +207,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             # print(inputs["corr_shared"]) ####
             # print(len(gwas_alleles), len(inputs["snp_alleles"]), len(inputs["z_beta"])) ####
             alleles_diff = np.fromiter((q[0] == g[0] for q, g in zip(np.array(inputs["snp_alleles"])[informative_snps], gwas_alleles)), bool)
+            print(alleles_diff) ####
             result["z_beta"] = inputs["z_beta"].copy()
             result["z_beta"][informative_snps] *= alleles_diff
 
