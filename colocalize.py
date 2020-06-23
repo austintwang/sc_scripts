@@ -39,13 +39,13 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     os.remove(in_path)
 
     ld = np.ones((num_snps, num_snps),)
-    alleles = [None] * num_snps
+    alleles = [(None, None)] * num_snps
     marker_map = dict([(val, ind) for ind, val in enumerate(marker_ids)])
 
     with open(out_path_freq, "r") as out_file_freq:
         next(out_file_freq)
         for line in out_file_freq:
-            print(line) ####
+            # print(line) ####
             data = line.strip().split()
             snpid = data[1]
             a1 = data[2]
@@ -72,6 +72,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     for path in glob.glob(out_path_base):
         os.remove(path)
 
+    print(alleles) ####
     return ld, alleles
 
 def restore_informative(shape, values, informative_snps, default):
