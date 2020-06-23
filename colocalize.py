@@ -50,7 +50,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
             snpid = data[1]
             a1 = data[2]
             a2 = data[3]
-            alleles[marker_map[snpid]]
+            alleles[marker_map[snpid]] = (a2, a1)
 
     with open(out_path, "r") as out_file:
         next(out_file)
