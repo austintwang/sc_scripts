@@ -44,7 +44,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
 
     with open(out_path_freq, "r") as out_file_freq:
         next(out_file_freq)
-        for line in out_file:
+        for line in out_file_freq:
             data = line.strip().split()
             snpid = data[1]
             a1 = data[2]
