@@ -20,11 +20,13 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     in_path = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path_base = os.path.join("/tmp", str(np.random.randint(100000000)))
     out_path = out_path_base + ".ld"
+    out_path_freq = out_path_base + ".frq"
     cmd = [
         "/agusevlab/awang/plink/plink", 
         "--bfile", gwas_gen_path + contig, 
         "--r",
-        "in-phase",
+        # "in-phase",
+        "--freq",
         "--extract", in_path, 
         "--out", out_path_base
     ]
@@ -37,18 +39,29 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     os.remove(in_path)
 
     ld = np.ones((num_snps, num_snps),)
+    alleles = [None] * num_snps
     marker_map = dict([(val, ind) for ind, val in enumerate(marker_ids)])
+
+    with open(out_path_freq, "r") as out_file_freq:
+        next(out_file_freq)
+        for line in out_file:
+            data = line.strip().split()
+            snpid = data[1]
+            a1 = data[2]
+            a2 = data[3]
+            alleles[marker_map[snpid]]
 
     with open(out_path, "r") as out_file:
         next(out_file)
         for line in out_file:
-            print(line) ####
+            # print(line) ####
             # if line == "\n":
             #     continue
             data = line.strip().split()
             # print(data) ####
             id1 = data[2]
             id2 = data[5]
+            pair = data[6]
             corr = float(data[-1])
             idx1 = marker_map[id1]
             idx2 = marker_map[id2]
@@ -58,7 +71,7 @@ def run_plink_ld(gwas_gen_path, marker_ids, num_snps, contig):
     for path in glob.glob(out_path_base):
         os.remove(path)
 
-    return ld
+    return ld, alleles
 
 def restore_informative(shape, values, informative_snps, default):
     vals_all = np.full(shape, default)
@@ -163,6 +176,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             inputs = {
                 "snp_ids": gene_data["marker_ids"],
                 "snp_pos": gene_data["markers"],
+                "snp_alleles": gene_data["marker_alleles"],
                 "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
                 "num_snps_orig": len(gene_data["marker_ids"])
             }
@@ -171,7 +185,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
 
             inputs["num_ppl_total_exp"] = gwas_data["_size"]
         
-            result = {"z_beta": inputs["z_beta"].copy()}
+            # result = {"z_beta": inputs["z_beta"].copy()}
+            result = {}
             informative_snps = np.logical_not(np.isnan(inputs["z_beta"]))
             result["informative_snps"] = informative_snps
             inputs["total_exp_stats"] = inputs["z_beta"][informative_snps]
@@ -186,8 +201,10 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 write_output(output_path, result)
                 return
 
-            inputs["corr_shared"] = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
+            inputs["corr_shared"], gwas_alleles = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
             # print(inputs["corr_shared"]) ####
+            alleles_diff = np.fromiter(q[0] == g[0] for q, g in zip(inputs["snp_alleles"], gwas_alleles), bool)
+            result["z_beta"] = inputs["z_beta"] * alleles_diff
 
             if inputs["model_flavors_gwas"] == "all":
                 model_flavors_gwas = set(["eqtl", "fmb"])
