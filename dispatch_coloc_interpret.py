@@ -70,7 +70,7 @@ if __name__ == '__main__':
         gene_map_path,
         cluster_map_path_kellis, 
         out_path_kellis, 
-        5000, 
+        7000, 
         fails_only=False
     )
 
