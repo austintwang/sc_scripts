@@ -68,7 +68,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        palette=pal,
+        # palette=pal,
         margin_titles=True, 
         height=3, 
         aspect=2
@@ -82,7 +82,6 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         sns.scatterplot, 
         "Position", 
         "-log10 p-Value",
-        hue="CLPP",
         # size="Causal", 
         legend=False,
         # color=".3", 
