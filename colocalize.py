@@ -179,8 +179,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 "snp_ids": gene_data["marker_ids"],
                 "snp_pos": gene_data["markers"],
                 "snp_alleles": gene_data["marker_alleles"],
-                "z_beta": np.array([gwas_data.get(i[0], np.nan) for i in gene_data["marker_ids"]]),
-                "alleles_gwas": np.array([gwas_data.get((i[1], i[2]), (None, None)) for i in gene_data["marker_ids"]]),
+                "z_beta": np.array([gwas_data.get(i, (np.nan,))[0] for i in gene_data["marker_ids"]]),
+                "alleles_gwas": np.array([gwas_data.get(i, (None, None, None))[1:] for i in gene_data["marker_ids"]]),
                 "num_snps_orig": len(gene_data["marker_ids"])
             }
             # print(inputs) ####
