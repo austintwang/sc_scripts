@@ -208,7 +208,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             # print(inputs["corr_shared"]) ####
             # print(len(gwas_alleles), len(inputs["snp_alleles"]), len(inputs["z_beta"])) ####
             alleles_diff_gwas = np.fromiter((q[0] == g[0] for q, g in zip(inputs["alleles_gwas"][informative_snps], ld_alleles)), bool)
-            result["total_exp_stats"] *= (alleles_diff_gwas.astype(int) * 2 - 1)
+            inputs["total_exp_stats"] *= (alleles_diff_gwas.astype(int) * 2 - 1)
             # print(alleles_diff) ####
             alleles_diff_qtl = np.fromiter((q[0] == g[0] for q, g in zip(np.array(inputs["snp_alleles"]), inputs["alleles_gwas"])), bool)
             result["z_beta"] = inputs["z_beta"].copy()
