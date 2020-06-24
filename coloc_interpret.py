@@ -106,15 +106,16 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
-    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+    # pal = sns.xkcd_palette(["dark slate blue", "blood red"])
 
     g = sns.FacetGrid(
         comp_df, 
         row="Cluster", 
         col="Source",
+        hue="CLPP"
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        palette=pal,
+        # palette=pal,
         margin_titles=True, 
         height=2, 
         aspect=1
@@ -168,18 +169,21 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         plasma_clust = plasma_data.get(clust)
         if plasma_clust is None:
             continue
+        coloc_clust = coloc_data["clusters"].get(clust)
+        if coloc_clust is None:
+            continue
         # print(plasma_clust.get("run_error")) ####
         # print(plasma_clust.keys()) ####
         try:
-            for spos, z_beta, z_phi, z_coloc in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"]):
+            for spos, z_beta, z_phi, z_coloc, clpp in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"], coloc_clust["clpp_indep_eqtl"]):
                 pos = int(spos[1]) + 1
                 nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
                 nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
                 nlp_coloc = -scipy.stats.norm.logsf(np.abs(z_coloc)) / np.log(10) - np.log10(2)
                 pp_data = [
-                    [pos, clust_name, nlp_beta, z_beta, "Single-Cell Total"],
-                    [pos, clust_name, nlp_phi, z_phi, "Single-Cell AS"],
-                    [pos, clust_name, nlp_coloc, z_coloc, "GWAS"],
+                    [pos, clust_name, nlp_beta, z_beta, clpp, "Single-Cell Total"],
+                    [pos, clust_name, nlp_phi, z_phi, clpp, "Single-Cell AS"],
+                    [pos, clust_name, nlp_coloc, z_coloc, clpp, "GWAS"],
                 ]
                 pp_lst.extend(pp_data)
                 comp_data = [
@@ -202,6 +206,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Cluster",
         "-log10 p-Value", 
         "Z-Score",
+        "CLPP",
         "Source"
     ]
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
