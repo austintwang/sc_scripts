@@ -89,7 +89,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         # hue_order=[2, 1, 0],
         # sizes={0:9, 1:12},
         s=9
-    )
+    ).add_legend()
 
     x_formatter = matplotlib.ticker.ScalarFormatter()
     for i, ax in enumerate(g.fig.axes): 
