@@ -210,6 +210,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Source"
     ]
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
+    print(pp_df) ####
 
     comp_cols = [
         "Cluster",
