@@ -209,7 +209,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             alleles_diff = np.fromiter((q[0] == g[0] for q, g in zip(np.array(inputs["snp_alleles"])[informative_snps], gwas_alleles)), bool)
             # print(alleles_diff) ####
             result["z_beta"] = inputs["z_beta"].copy()
-            result["z_beta"][informative_snps] *= alleles_diff
+            result["z_beta"][informative_snps] *= (alleles_diff.astype(int) * 2 - 1)
 
             if inputs["model_flavors_gwas"] == "all":
                 model_flavors_gwas = set(["eqtl", "fmb"])
