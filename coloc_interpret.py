@@ -112,7 +112,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         comp_df, 
         row="Cluster", 
         col="Source",
-        hue="CLPP"
+        hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
         # palette=pal,
