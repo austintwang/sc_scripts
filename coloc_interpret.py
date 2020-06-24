@@ -97,6 +97,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "manhattan"), exist_ok=True)
     plt.savefig(os.path.join(out_dir, "manhattan", f"{gene_id}.svg"))
