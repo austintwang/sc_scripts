@@ -12,13 +12,17 @@ def get_gwas_data(gwas_path, out_path):
         snp = colnames.index("SNP")
         z = colnames.index("Z")
         n = colnames.index("N")
+        a1 = colnames.index("A1")
+        a2 = colnames.index("A2")
         for line in gwas_file:
             data = line.decode('utf-8').split()
             if data[z] == 'Inf' or data[n] == 'Inf':
                 continue
             marker = data[snp]
             zscr = float(data[z])
-            markers[marker] = zscr
+            ref = data[a2]
+            alt = data[a1]
+            markers[marker] = (zscr, ref, alt)
             try:
                 sample_sizes.append(int(float(data[n].rstrip())))
             except OverflowError as e:
