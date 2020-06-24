@@ -59,12 +59,13 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
-    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+    # pal = sns.xkcd_palette(["dark slate blue", "blood red"])
 
     g = sns.FacetGrid(
         pp_df, 
         row="Cluster", 
         col="Source",
+        hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
         palette=pal,
@@ -81,6 +82,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         sns.scatterplot, 
         "Position", 
         "-log10 p-Value",
+        hue="CLPP",
         # size="Causal", 
         legend=False,
         # color=".3", 
@@ -106,16 +108,16 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
-    # pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
 
     g = sns.FacetGrid(
         comp_df, 
         row="Cluster", 
         col="Source",
-        hue="CLPP",
+        # hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        # palette=pal,
+        palette=pal,
         margin_titles=True, 
         height=2, 
         aspect=1
@@ -210,7 +212,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Source"
     ]
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
-    print(pp_df) ####
+    # print(pp_df) ####
 
     comp_cols = [
         "Cluster",
