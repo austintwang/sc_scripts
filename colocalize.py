@@ -179,7 +179,8 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 "snp_ids": gene_data["marker_ids"],
                 "snp_pos": gene_data["markers"],
                 "snp_alleles": gene_data["marker_alleles"],
-                "z_beta": np.array([gwas_data.get(i, np.nan) for i in gene_data["marker_ids"]]),
+                "z_beta": np.array([gwas_data.get(i[0], np.nan) for i in gene_data["marker_ids"]]),
+                "alleles_gwas": np.array([gwas_data.get((i[1], i[2]), (None, None)) for i in gene_data["marker_ids"]]),
                 "num_snps_orig": len(gene_data["marker_ids"])
             }
             # print(inputs) ####
@@ -203,13 +204,15 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 write_output(output_path, result)
                 return
 
-            inputs["corr_shared"], gwas_alleles = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
+            inputs["corr_shared"], ld_alleles = run_plink_ld(gwas_gen_path, inputs["snp_ids"], inputs["num_snps"], contig)
             # print(inputs["corr_shared"]) ####
             # print(len(gwas_alleles), len(inputs["snp_alleles"]), len(inputs["z_beta"])) ####
-            alleles_diff = np.fromiter((q[0] == g[0] for q, g in zip(np.array(inputs["snp_alleles"])[informative_snps], gwas_alleles)), bool)
+            alleles_diff_gwas = np.fromiter((q[0] == g[0] for q, g in zip(inputs["alleles_gwas"][informative_snps], ld_alleles)), bool)
+            result["total_exp_stats"] *= (alleles_diff_gwas.astype(int) * 2 - 1)
             # print(alleles_diff) ####
+            alleles_diff_qtl = np.fromiter((q[0] == g[0] for q, g in zip(np.array(inputs["snp_alleles"]), inputs["alleles_gwas"])), bool)
             result["z_beta"] = inputs["z_beta"].copy()
-            result["z_beta"][informative_snps] *= (alleles_diff.astype(int) * 2 - 1)
+            result["z_beta"] *= (alleles_diff_qtl.astype(int) * 2 - 1)
 
             if inputs["model_flavors_gwas"] == "all":
                 model_flavors_gwas = set(["eqtl", "fmb"])
