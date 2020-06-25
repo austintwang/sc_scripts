@@ -93,7 +93,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         "-log10 p-Value",
         "CLPP",
         # size="Causal", 
-        legend=False,
+        # legend=False,
         # color=".3", 
         linewidth=0,
         vmin=vmin,
