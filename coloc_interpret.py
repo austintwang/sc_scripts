@@ -84,7 +84,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     #         g.map(region_plotter(v, bounds, annot_colormap[k]))
 
     vmin = 0
-    vmax = 1
+    vmax = 0.1
     cmap = sns.cubehelix_palette(as_cmap=True)
 
     g.map(
@@ -133,10 +133,10 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         comp_df, 
         row="Cluster", 
         col="Source",
-        hue="CLPP",
+        # hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        palette="seismic",
+        # palette="seismic",
         margin_titles=True, 
         height=2, 
         aspect=1
@@ -146,14 +146,22 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     #     if k in annot_colormap:
     #         g.map(region_plotter(v, bounds, annot_colormap[k]))
 
+    vmin = 0
+    vmax = 0.1
+    cmap = sns.cubehelix_palette(as_cmap=True)
+
     g.map(
-        sns.scatterplot, 
+        facet_scatter, 
         "Z-Score Single-Cell", 
         "Z-Score GWAS",
+        "CLPP",
         # size="Causal", 
-        legend=False,
+        # legend=False,
         # color=".3", 
         linewidth=0,
+        vmin=vmin,
+        vmax=vmax,
+        cmap=cmap,
         # hue_order=[2, 1, 0],
         # sizes={0:9, 1:12},
         s=9
@@ -163,6 +171,11 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     for i, ax in enumerate(g.fig.axes): 
         ax.set_xticklabels(ax.get_xticklabels(), rotation=30)
         ax.xaxis.set_major_formatter(x_formatter)
+
+    g.fig.subplots_adjust(right=.92)
+    cax = g.fig.add_axes([.94, .25, .02, .6])
+    points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=cmap)
+    g.fig.colorbar(points, cax=cax)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
     # plt.colorbar()
