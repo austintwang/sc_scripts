@@ -55,6 +55,11 @@ def load_clusters(cluster_map_path):
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
 
+def facet_scatter(x, y, c, **kwargs):
+    """Draw scatterplot with point colors from a faceted DataFrame columns."""
+    kwargs.pop("color")
+    plt.scatter(x, y, c=c, **kwargs)
+
 def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
@@ -65,10 +70,10 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         pp_df, 
         row="Cluster", 
         col="Source",
-        hue="CLPP",
+        # hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        palette="seismic",
+        # palette="seismic",
         margin_titles=True, 
         height=3, 
         aspect=2
@@ -78,14 +83,22 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
     #     if k in annot_colormap:
     #         g.map(region_plotter(v, bounds, annot_colormap[k]))
 
+    vmin = 0
+    vmax = 1
+    cmap = sns.cubehelix_palette(as_cmap=True)
+
     g.map(
-        sns.scatterplot, 
+        facet_scatter, 
         "Position", 
         "-log10 p-Value",
+        "CLPP",
         # size="Causal", 
         legend=False,
         # color=".3", 
         linewidth=0,
+        vmin=vmin,
+        vmax=vmax,
+        cmap=cmap,
         # hue_order=[2, 1, 0],
         # sizes={0:9, 1:12},
         s=9
@@ -97,7 +110,12 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
-    plt.colorbar()
+    # plt.colorbar()
+    g.fig.subplots_adjust(right=.92)
+    cax = g.fig.add_axes([.94, .25, .02, .6])
+    points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=cmap)
+    g.fig.colorbar(points, cax=cax)
+
     plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "manhattan"), exist_ok=True)
@@ -147,7 +165,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
-    plt.colorbar()
+    # plt.colorbar()
     plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "comparison"), exist_ok=True)
@@ -216,7 +234,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Source"
     ]
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
-    print(pp_df.dtypes) ####
+    # print(pp_df.dtypes) ####
 
     comp_cols = [
         "Cluster",
