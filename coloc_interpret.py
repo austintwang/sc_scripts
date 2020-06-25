@@ -57,8 +57,10 @@ def load_clusters(cluster_map_path):
 
 def facet_scatter(x, y, c, **kwargs):
     """Draw scatterplot with point colors from a faceted DataFrame columns."""
-    print(kwargs) ####
+    # print(kwargs) ####
     kwargs.pop("color")
+    print(kwargs) ####
+    print(c) ####
     plt.scatter(x, y, c=c, **kwargs)
 
 def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
