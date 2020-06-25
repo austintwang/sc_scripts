@@ -57,6 +57,7 @@ def load_clusters(cluster_map_path):
 
 def facet_scatter(x, y, c, **kwargs):
     """Draw scatterplot with point colors from a faceted DataFrame columns."""
+    print(kwargs) ####
     kwargs.pop("color")
     plt.scatter(x, y, c=c, **kwargs)
 
@@ -172,14 +173,14 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         ax.set_xticklabels(ax.get_xticklabels(), rotation=30)
         ax.xaxis.set_major_formatter(x_formatter)
 
-    g.fig.subplots_adjust(right=.92)
+    g.fig.subplots_adjust(right=.8)
     cax = g.fig.add_axes([.94, .25, .02, .6])
     points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=cmap)
     g.fig.colorbar(points, cax=cax)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
     # plt.colorbar()
-    plt.subplots_adjust(top=0.9)
+    plt.subplots_adjust(top=0.85)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "comparison"), exist_ok=True)
     plt.savefig(os.path.join(out_dir, "comparison", f"{gene_id}.svg"))
