@@ -117,7 +117,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        palette=pal,
+        # palette=pal,
         margin_titles=True, 
         height=2, 
         aspect=1
@@ -146,6 +146,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "comparison"), exist_ok=True)
     plt.savefig(os.path.join(out_dir, "comparison", f"{gene_id}.svg"))
@@ -182,7 +183,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
                 nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
                 nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
                 nlp_coloc = -scipy.stats.norm.logsf(np.abs(z_coloc)) / np.log(10) - np.log10(2)
-                print(clpp) ####
+                # print(clpp) ####
                 pp_data = [
                     [pos, clust_name, nlp_beta, z_beta, clpp, "Single-Cell Total"],
                     [pos, clust_name, nlp_phi, z_phi, clpp, "Single-Cell AS"],
@@ -213,7 +214,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Source"
     ]
     pp_df = pd.DataFrame(pp_lst, columns=pp_cols)
-    # print(pp_df) ####
+    print(pp_df.dtypes) ####
 
     comp_cols = [
         "Cluster",
