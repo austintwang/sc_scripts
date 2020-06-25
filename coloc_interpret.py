@@ -108,13 +108,13 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
     # print(pp_df) ####
     sns.set(style="ticks", font="Roboto")
 
-    pal = sns.xkcd_palette(["dark slate blue", "blood red"])
+    # pal = sns.xkcd_palette(["dark slate blue", "blood red"])
 
     g = sns.FacetGrid(
         comp_df, 
         row="Cluster", 
         col="Source",
-        # hue="CLPP",
+        hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
         palette=pal,
@@ -182,6 +182,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
                 nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
                 nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
                 nlp_coloc = -scipy.stats.norm.logsf(np.abs(z_coloc)) / np.log(10) - np.log10(2)
+                print(clpp) ####
                 pp_data = [
                     [pos, clust_name, nlp_beta, z_beta, clpp, "Single-Cell Total"],
                     [pos, clust_name, nlp_phi, z_phi, clpp, "Single-Cell AS"],
@@ -189,8 +190,8 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
                 ]
                 pp_lst.extend(pp_data)
                 comp_data = [
-                    [clust_name, z_beta, z_coloc, "Total"],
-                    [clust_name, z_phi, z_coloc, "AS"],
+                    [clust_name, z_beta, z_coloc, clpp, "Total"],
+                    [clust_name, z_phi, z_coloc, clpp, "AS"],
                 ]
                 comp_lst.extend(comp_data)
         except KeyError as e:
@@ -218,6 +219,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         "Cluster",
         "Z-Score Single-Cell",
         "Z-Score GWAS",
+        "CLPP",
         "Source"
     ]
     comp_df = pd.DataFrame(comp_lst, columns=comp_cols)
@@ -359,7 +361,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     data_sig_lst = []
     sig_genes = {}
