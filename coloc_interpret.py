@@ -68,7 +68,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        # palette=pal,
+        palette="seismic",
         margin_titles=True, 
         height=3, 
         aspect=2
@@ -89,7 +89,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         # hue_order=[2, 1, 0],
         # sizes={0:9, 1:12},
         s=9
-    ).add_legend()
+    )
 
     x_formatter = matplotlib.ticker.ScalarFormatter()
     for i, ax in enumerate(g.fig.axes): 
@@ -97,6 +97,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    plt.colorbar()
     plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "manhattan"), exist_ok=True)
@@ -117,7 +118,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         hue="CLPP",
         # hue="Causal",
         # hue_kws={"marker":["o", "o", "D"]},
-        # palette=pal,
+        palette="seismic",
         margin_titles=True, 
         height=2, 
         aspect=1
@@ -146,6 +147,7 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
         ax.xaxis.set_major_formatter(x_formatter)
     
     # plt.subplots_adjust(top=0.9, bottom = 0.13, right = 0.96)
+    plt.colorbar()
     plt.subplots_adjust(top=0.9)
     g.fig.suptitle(gene_name)
     os.makedirs(os.path.join(out_dir, "comparison"), exist_ok=True)
