@@ -237,6 +237,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 )
             # print(result["causal_set_eqtl"]) ####
 
+            coloc_ratio = inputs["coloc_ratio_prior"]
             cluster_results = result.setdefault("clusters", {})
             for cluster, fm_res in finemap_data.items():
                 cluster_results.setdefault(cluster, {})
@@ -255,12 +256,15 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
                             # print(fm_res["ppas_{0}".format(fq)]) ####
                             h4 = np.nansum(clpps)
-                            cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
+                            h4_scaled = h4 * coloc_ratio / (h4 * coloc_ratio + (1 - h4)) 
+                            clpps_scaled = clpps * coloc_ratio / (h4 * coloc_ratio + (1 - h4)) 
+
+                            cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps_scaled
                             # if study == "BDSCZ_Ruderfer2018.pickle" and cluster == "Ex":
                                 # print(cluster, fg, fq) ####
                                 # print(fm_res_scaled) ####
                                 # print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"], clpps))) ####
-                            cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
+                            cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4_scaled
                         except KeyError as e:
                             # print(e) ####
                             continue

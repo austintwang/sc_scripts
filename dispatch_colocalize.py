@@ -130,7 +130,8 @@ if __name__ == '__main__':
         "num_causal": 1.,
         "search_mode": "exhaustive",
         "max_causal": 1,
-        "confidence": 0.95, 
+        "confidence": 0.95,
+        "coloc_ratio_prior": 100, 
         "model_flavors_qtl": "all",
         "model_flavors_gwas": "all",
     }

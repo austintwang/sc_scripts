@@ -230,19 +230,19 @@ if __name__ == '__main__':
     #     fails_only=False
     # )
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_xval, 
-        params_path_kellis_xval, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=True
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_xval, 
+    #     params_path_kellis_xval, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     params_kellis_xval = params_kellis.copy()
     params_kellis_xval.update({
