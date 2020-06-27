@@ -8,7 +8,8 @@ import glob
 import numpy as np
 
 def process(counts_arr):
-    logtrans = np.log2(counts_arr + 1)
+    counts_norm = counts_arr * 1e6 / np.sum(counts_arr, axis=1, keepdims=True)
+    logtrans = np.log2(counts_norm + 1)
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])

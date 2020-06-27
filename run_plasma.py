@@ -235,6 +235,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         # print(inputs["agg_counts"][cluster]) ####
                         inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
                         inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
+                        counts_raw_total = np.array([inputs["total_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
+                        counts_raw_norm = np.array([inputs["agg_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
+                        results["counts_raw"] = counts_raw_total / counts_raw_norm
                         # print(inputs["counts_total"]) ####
                         # print(inputs["counts_norm"]) ####
                         # print(np.count_nonzero(~np.isnan(inputs["counts_total"]))) ####

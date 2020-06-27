@@ -151,7 +151,7 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                 FmBenner, inputs, updates_fmb, informative_snps
             )
         # print(result) ####
-
+        coloc_ratio = inputs["coloc_ratio_prior"]
         cluster_results = result.setdefault("clusters", {})
         for cluster, fm_res in finemap_data.items():
             cluster_results.setdefault(cluster, {})
@@ -175,14 +175,21 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
                         h0 = (1 - np.nansum(fm_res_scaled[snps_used])) * (1 - np.nansum(bulk_res_scaled[snps_used]))
                         h1 = np.nansum(fm_res_scaled[snps_used]) * (1 - np.nansum(bulk_res_scaled[snps_used]))
                         h2 = (1 - np.nansum(fm_res_scaled[snps_used])) * np.nansum(bulk_res_scaled[snps_used])
+
+                        clpps_scaled = clpps * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                        h0_scaled = h0 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                        h1_scaled = h1 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                        h2_scaled = h2 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                        h3_scaled = h3 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                        h4_scaled = h4 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
                         # print(cluster, fg, fq) ####
                         # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
-                        cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps
-                        cluster_results[cluster]["h0_{0}_{1}".format(fq, fg)] = h0
-                        cluster_results[cluster]["h1_{0}_{1}".format(fq, fg)] = h1
-                        cluster_results[cluster]["h2_{0}_{1}".format(fq, fg)] = h2
-                        cluster_results[cluster]["h3_{0}_{1}".format(fq, fg)] = h3
-                        cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4
+                        cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps_scaled
+                        cluster_results[cluster]["h0_{0}_{1}".format(fq, fg)] = h0_scaled
+                        cluster_results[cluster]["h1_{0}_{1}".format(fq, fg)] = h1_scaled
+                        cluster_results[cluster]["h2_{0}_{1}".format(fq, fg)] = h2_scaled
+                        cluster_results[cluster]["h3_{0}_{1}".format(fq, fg)] = h3_scaled
+                        cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4_scaled
                     except KeyError:
                         continue
 
