@@ -280,7 +280,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         # print(processed_counts) ####
                         # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
                         # print(np.mean(inputs["counts_norm"]) / inputs["counts_norm"]) ####
-                        inputs["counts_total"] = inputs["counts_total"] * 1e3 / inputs["counts_norm"]
+                        # inputs["counts_total"] = inputs["counts_total"] * 1e3 / inputs["counts_norm"]
                         result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
                         # print(inputs["counts_total"]) ####
                         # print(result["avg_counts_total_scaled"]) ####
