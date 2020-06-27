@@ -55,6 +55,18 @@ def load_clusters(cluster_map_path):
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
 
+def plot_heatmap(df, title, result_path):
+    df_plot = df.pivot(index="GeneName", columns="Cluster", values="PP4Joint")
+    mask = np.isnan(df_plot)
+    df_filled = np.abs(df_plot.fillna(df_plot.mean()))
+
+    sns.set(style="whitegrid", font="Roboto")
+    g = sns.clustermap(df_filled, mask=mask, vmin=0, vmax=1)
+    g.fig.suptitle(title)
+    g.savefig(os.path.join(result_path, "heatmap.svg"), bbox_inches='tight')
+    plt.clf()
+    plt.close()
+
 def facet_scatter(x, y, c, **kwargs):
     """Draw scatterplot with point colors from a faceted DataFrame columns."""
     # print(kwargs) ####
@@ -453,6 +465,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
         data_sig_df.to_string(txt_file)
     calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
     plot_sets(data_sig_df, out_dir_sig_gwas)
+    plot_heatmap(data_sig_df, gwas_name, out_dir_sig_gwas)
 
     for g, data in sig_genes.items():
         analyze_locus(g, data[0], data[1], genes_map, out_dir_sig_gwas)
