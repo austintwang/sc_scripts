@@ -164,7 +164,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             "snp_pos": np.array(gene_data["markers"]),
             "snp_alleles": np.array(gene_data["marker_alleles"]),
             "total_counts": gene_data.get("total_counts", False),
-            "agg_counts": gene_data.get("counts_norm", False)
+            "agg_counts": gene_data.get("counts_norm", False),
+            "tss": gene_data.get("tss")
         }
         inputs_all.update(params)
 
@@ -218,6 +219,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             results["_gen"]["snp_ids"] = inputs_all["snp_ids"]
             results["_gen"]["snp_alleles"] = inputs_all["snp_alleles"]
             results["_gen"]["snp_pos"] = inputs_all["snp_pos"]
+            results["_gen"]["snp_pos"] = inputs_all["tss"]
             out_prefix = "x" if all_but else "i"
             output_path = output_path_base.format(out_prefix + str(split))
             for cluster, inputs in clusters.items():
