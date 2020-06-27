@@ -167,7 +167,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "cell_counts": agg_counts,
             "total_counts": total_counts,
             "counts_norm": total_counts_norm,
-            "tss": tss,
+            "tss": tss_pos,
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")
         with open(out_path, "wb") as out_file:
