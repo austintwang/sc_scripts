@@ -108,25 +108,6 @@ if __name__ == '__main__':
     vcf_path_kellis = os.path.join(data_path_kellis, "gen", "impute", "rosmap_phased.vcf.gz")
     agg_counts_path = os.path.join(data_path_kellis, "agg_counts.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis,
-    #     "Kellis",
-    #     radius, 
-    #     min_maf,
-    #     min_info,
-    #     True,
-    #     False,
-    #     genes_dir_kellis, 
-    #     vcf_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     boundaries_map_path, 
-    #     tss_map_path, 
-    #     agg_counts_path,
-    #     2000, 
-    #     fails_only=False
-    # )
-
     dispatch(
         script_path, 
         names_kellis,
@@ -142,9 +123,28 @@ if __name__ == '__main__':
         boundaries_map_path, 
         tss_map_path, 
         agg_counts_path,
-        5000, 
-        fails_only=True
+        2000, 
+        fails_only=False
     )
+
+    # dispatch(
+    #     script_path, 
+    #     names_kellis,
+    #     "Kellis",
+    #     radius, 
+    #     min_maf,
+    #     min_info,
+    #     True,
+    #     False,
+    #     genes_dir_kellis, 
+    #     vcf_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     boundaries_map_path, 
+    #     tss_map_path, 
+    #     agg_counts_path,
+    #     5000, 
+    #     fails_only=True
+    # )
 
 
 
