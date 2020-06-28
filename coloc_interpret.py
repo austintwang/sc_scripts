@@ -413,7 +413,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     with open(genes_map_dir, "rb") as genes_map_file:
         genes_map = pickle.load(genes_map_file)
 
-    print(sorted(genes_map.values())) ####
+    # print(sorted(genes_map.values())) ####
 
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
@@ -421,7 +421,9 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     data_lst = []
     data_sig_lst = []
     sig_genes = {}
+    # names = set() ####
     for g in genes:
+        gene_name = genes_map.get(g.split(".")[0], g)
         gene_dir = os.path.join(genes_dir, g)
         plasma_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
         coloc_path = os.path.join(gene_dir, "coloc", f"{gwas_name}.pickle")
@@ -433,7 +435,7 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
         except (FileNotFoundError, pickle.UnpicklingError):
             continue
 
-        data, data_sig, locus_sig = read_data(plasma_data, coloc_data, clusters, g, genes_map.get(g.split(".")[0]))
+        data, data_sig, locus_sig = read_data(plasma_data, coloc_data, clusters, g, gene_name)
         data_lst.extend(data)
         data_sig_lst.extend(data_sig)
         if locus_sig:
