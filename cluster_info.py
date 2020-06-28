@@ -255,7 +255,7 @@ def make_thresh_barplot(
 
     return thresh_data_ret
 
-def plot_upset(df, st, sn, thresh, clusters, result_path):
+def make_upset_plot(df, st, sn, thresh, clusters, result_path):
     df_select = df[f"TopSNP{st}{sn}"] >= -np.log10(thresh)
     sets_data = {}
     for i in df_select:
@@ -410,6 +410,13 @@ def plot_sets(df, out_dir):
             tdfile.write("\t".join(model_flavors_thresh_prop) + "\n\n")
             # print(thresh_data) ####
             np.savetxt(tdfile, np.array(thresh_data_prop).astype(float))
+
+    df_all = pd.concat(df_clust.values())
+    st = "NLQ"
+    sn = "Comb"
+    thresh = 0.1
+    clusters = list(clusters.keys())
+    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{st}_{sn}.svg"))
 
     summ_data = []
     for cluster, df_clust in dfs_clust.items():
