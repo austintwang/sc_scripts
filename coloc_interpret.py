@@ -413,6 +413,8 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     with open(genes_map_dir, "rb") as genes_map_file:
         genes_map = pickle.load(genes_map_file)
 
+    print(sorted(genes_map.values())) ####
+
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
     genes = genes[:500] ####
