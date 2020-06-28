@@ -225,7 +225,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         coloc_clust = coloc_data["clusters"].get(clust)
         if coloc_clust is None:
             continue
-        if np.isscalar(plasma_data["_gen"]["snp_pos"]) ####
+        if np.isscalar(plasma_data["_gen"]["snp_pos"]): ####
             continue ####
         # print(plasma_clust.get("run_error")) ####
         # print(plasma_clust.keys()) ####
