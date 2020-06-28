@@ -93,7 +93,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     # tracemalloc.start() ####
     data_lst = []
     for g in genes:
@@ -416,7 +416,7 @@ def plot_sets(df, out_dir):
     sn = "Comb"
     thresh = 0.1
     clusters = list(clusters.keys())
-    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{st}_{sn}.svg"))
+    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{st}_{sn}_{thresh}.svg"))
 
     summ_data = []
     for cluster, df_clust in dfs_clust.items():
@@ -594,7 +594,7 @@ def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cut
             calc_nlq(df_clust, "Phi")
             calc_nlq(df_clust, "Beta")
             df_merged = pd.merge(
-                df_clust.loc[df_clust[f"TopSNPNLQ{sn1}"] >= -np.log(0.1)], 
+                df_clust.loc[df_clust[f"TopSNPNLQ{sn1}"] >= -np.log(0.25)], 
                 df_test.loc[df_test["Cluster"] == j], 
                 on=["Gene"], 
                 suffixes=["_train", "_test"]
@@ -752,11 +752,11 @@ if __name__ == '__main__':
 
     get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    out_dir_strict = os.path.join(out_dir_kellis, "strict")
+    # out_dir_strict = os.path.join(out_dir_kellis, "strict")
 
-    get_info_xval("split_strict", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_strict)
+    # get_info_xval("split_strict", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_strict)
 
