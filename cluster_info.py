@@ -411,7 +411,7 @@ def plot_sets(df, out_dir):
             # print(thresh_data) ####
             np.savetxt(tdfile, np.array(thresh_data_prop).astype(float))
 
-    df_all = pd.concat(df_clust.values())
+    df_all = pd.concat(dfs_clust.values())
     st = "NLQ"
     sn = "Comb"
     thresh = 0.1
