@@ -269,8 +269,8 @@ def make_upset_plot(df, st, sn, thresh, clusters, result_path):
         counts[idx_tuple] += 1
     indices, values = zip(*counts.items())
     index = pd.MultiIndex.from_tuples(indices, names=clusters)
-    print(indices) ####
-    print(index) ####
+    # print(indices) ####
+    # print(index) ####
     setcounts = pd.Series(values, index=index)
     upsetplot.plot(setcounts)
     plt.savefig(result_path, bbox_inches='tight')
@@ -416,10 +416,11 @@ def plot_sets(df, out_dir):
 
     df_all = pd.concat(dfs_clust.values())
     st = "NLQ"
-    sn = "Comb"
     thresh = 0.1
     clusters = list(clusters.keys())
-    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{sn}_{st}_{thresh}.svg"))
+    make_upset_plot(df_all, st, "Comb", thresh, clusters, os.path.join(out_dir, f"upset_Comb_{st}_{thresh}.svg"))
+    make_upset_plot(df_all, st, "Phi", thresh, clusters, os.path.join(out_dir, f"upset_Phi_{st}_{thresh}.svg"))
+    make_upset_plot(df_all, st, "Phi", thresh, clusters, os.path.join(out_dir, f"upset_Phi_{st}_{thresh}.svg"))
 
     summ_data = []
     for cluster, df_clust in dfs_clust.items():
