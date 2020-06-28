@@ -93,7 +93,7 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
 def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
     clusters = load_clusters(cluster_map_path)
     genes = os.listdir(genes_dir)
-    genes = genes[:500] ####
+    # genes = genes[:500] ####
     # tracemalloc.start() ####
     data_lst = []
     for g in genes:
@@ -420,7 +420,7 @@ def plot_sets(df, out_dir):
     clusters = list(clusters.keys())
     make_upset_plot(df_all, st, "Comb", thresh, clusters, os.path.join(out_dir, f"upset_Comb_{st}_{thresh}.svg"))
     make_upset_plot(df_all, st, "Phi", thresh, clusters, os.path.join(out_dir, f"upset_Phi_{st}_{thresh}.svg"))
-    make_upset_plot(df_all, st, "Phi", thresh, clusters, os.path.join(out_dir, f"upset_Phi_{st}_{thresh}.svg"))
+    make_upset_plot(df_all, st, "Beta", thresh, clusters, os.path.join(out_dir, f"upset_Beta_{st}_{thresh}.svg"))
 
     summ_data = []
     for cluster, df_clust in dfs_clust.items():
