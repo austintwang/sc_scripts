@@ -260,7 +260,7 @@ def make_upset_plot(df, st, sn, thresh, clusters, result_path):
     sets_data = {}
     # print(df_select) ####
     for index, row in df_select.iterrows():
-        print(i) ####
+        # print(i) ####
         sets_data.setdefault(row["Gene"], set()).add(row["Cluster"])
     counts = {}
     for key, value in sets_data.items():
