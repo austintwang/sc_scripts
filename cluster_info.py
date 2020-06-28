@@ -271,8 +271,8 @@ def make_upset_plot(df, st, sn, thresh, clusters, result_path):
     index = pd.MultiIndex.from_tuples(indices, names=clusters)
     # print(indices) ####
     # print(index) ####
-    setcounts = pd.Series(values, index=index).sort_values(ascending=False)
-    upsetplot.plot(setcounts)
+    setcounts = pd.Series(values, index=index)
+    upsetplot.plot(setcounts, sort_by="cardinality")
     plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
 
