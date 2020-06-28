@@ -228,6 +228,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         # print(plasma_clust.get("run_error")) ####
         # print(plasma_clust.keys()) ####
         try:
+            print(plasma_data["_gen"]) ####
             for spos, z_beta, z_phi, z_coloc, clpp in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"], coloc_clust["clpp_indep_eqtl"]):
                 pos = int(spos[1]) + 1
                 nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
