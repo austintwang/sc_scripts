@@ -269,6 +269,7 @@ def make_upset_plot(df, st, sn, thresh, clusters, result_path):
         counts[idx_tuple] += 1
     indices, values = zip(*counts.items())
     index = pd.MultiIndex.from_tuples(indices, names=clusters)
+    print(indices) ####
     print(index) ####
     setcounts = pd.Series(values, index=index)
     upsetplot.plot(setcounts)
