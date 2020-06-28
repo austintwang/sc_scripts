@@ -8,6 +8,7 @@ matplotlib.rcParams['agg.path.chunksize'] = 10000
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import upsetplot
 import tracemalloc ####
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
@@ -253,6 +254,24 @@ def make_thresh_barplot(
     plt.clf()
 
     return thresh_data_ret
+
+def plot_upset(df, st, sn, thresh, clusters, result_path):
+    df_select = df[f"TopSNP{st}{sn}"] >= -np.log10(thresh)
+    sets_data = {}
+    for i in df_select:
+        sets_data.setdefault(i["Gene"], set()).add(i["Cluster"])
+    counts = {}
+    for key, value in sets_data.items():
+        idx_tuple = tuple(c in value for c in clusters)
+        counts.setdefault(idx_tuple, 0)
+        counts[idx_tuple] += 1
+    indices, values = zip(*counts.items())
+    index = pd.MultiIndex.from_tuples(indices, names=clusters)
+    print(index) ####
+    setcounts = pd.Series(values, index=index)
+    upsetplot.plot(setcounts)
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
 
 def calc_nlq(df, sn):
     data = df[f"TopSNPNLP{sn}"]
@@ -661,51 +680,6 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     make_heatmap(nlp_1s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_1.svg"))
 
 def get_info(run_name, genes_dir, cluster_map_path, out_dir):
-    # clusters = load_clusters(cluster_map_path)
-    # genes = os.listdir(genes_dir)
-    # data_lst = []
-    # for g in genes:
-    #     gene_dir = os.path.join(genes_dir, g)
-    #     plasma_path = os.path.join(gene_dir, "plasma.pickle")
-    #     if os.path.isdir(plasma_path):
-    #         plasma_path = os.path.join(plasma_path, "output.pickle")
-    #     try:
-    #         with open(plasma_path, "rb") as plasma_file:
-    #             plasma_data = pickle.load(plasma_file)
-    #     except FileNotFoundError:
-    #         continue
-
-    #     data = read_data(plasma_data, clusters, g)
-    #     data_lst.extend(data)
-
-    # cols = [
-    #     "Gene", 
-    #     "Cluster", 
-    #     "MeanTotalCoverage",
-    #     "MeanTotalCoverageScaled",
-    #     "MeanMappedCoverage",
-    #     "MeanOverdispersion",
-    #     "MeanCellCount",
-    #     "UsableSampleSize",
-    #     "TotalSampleSize",
-    #     "UsableSNPCount",
-    #     "TotalSNPCount",
-    #     "CredibleSetSizeJoint", 
-    #     "CredibleSetSizeAS",
-    #     "CredibleSetSizeQTL",
-    #     "CredibleSetPropJoint", 
-    #     "CredibleSetPropAS",
-    #     "CredibleSetPropQTL",
-    #     "TopSNPPosterior",
-    #     "TopSNPZPhi",
-    #     "TopSNPPhi",
-    #     "TopSNPNLPPhi",
-    #     "TopSNPZBeta",
-    #     "TopSNPBeta",
-    #     "TopSNPNLPBeta",
-    #     "TopSNPID",
-    #     "Split",
-    # ]
     data_df = make_df(run_name, "i0", genes_dir, cluster_map_path, None)
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")

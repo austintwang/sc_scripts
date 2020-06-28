@@ -59,6 +59,7 @@ def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="GeneName", columns="Cluster", values="PP4Joint")
     mask = np.isnan(df_plot)
     df_filled = np.abs(df_plot.fillna(df_plot.mean()))
+    df_filled.fillna(0, inplace=True)
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_filled, mask=mask, vmin=0, vmax=1)
