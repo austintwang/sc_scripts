@@ -258,10 +258,10 @@ def make_thresh_barplot(
 def make_upset_plot(df, st, sn, thresh, clusters, result_path):
     df_select = df.loc[df[f"TopSNP{st}{sn}"] >= -np.log10(thresh), :]
     sets_data = {}
-    print(df_select) ####
-    for i in df_select:
+    # print(df_select) ####
+    for index, row in df_select.iterrows:
         print(i) ####
-        sets_data.setdefault(i["Gene"], set()).add(i["Cluster"])
+        sets_data.setdefault(row["Gene"], set()).add(row["Cluster"])
     counts = {}
     for key, value in sets_data.items():
         idx_tuple = tuple(c in value for c in clusters)
