@@ -416,7 +416,7 @@ def plot_sets(df, out_dir):
     sn = "Comb"
     thresh = 0.1
     clusters = list(clusters.keys())
-    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{st}_{sn}_{thresh}.svg"))
+    make_upset_plot(df_all, st, sn, thresh, clusters, os.path.join(out_dir, f"upset_{sn}_{st}_{thresh}.svg"))
 
     summ_data = []
     for cluster, df_clust in dfs_clust.items():
