@@ -259,7 +259,7 @@ def make_upset_plot(df, st, sn, thresh, clusters, result_path):
     df_select = df.loc[df[f"TopSNP{st}{sn}"] >= -np.log10(thresh), :]
     sets_data = {}
     # print(df_select) ####
-    for index, row in df_select.iterrows:
+    for index, row in df_select.iterrows():
         print(i) ####
         sets_data.setdefault(row["Gene"], set()).add(row["Cluster"])
     counts = {}
