@@ -8,6 +8,7 @@ import glob
 import numpy as np
 
 def process(counts_arr):
+    print(1e6 / np.sum(counts_arr, axis=1, keepdims=True)) ####
     counts_norm = counts_arr * 1e6 / np.sum(counts_arr, axis=1, keepdims=True)
     # print(counts_norm) ####
     logtrans = np.log2(counts_norm + 1)
