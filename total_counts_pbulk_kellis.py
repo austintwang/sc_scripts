@@ -79,7 +79,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
         with open(os.path.join(gene_counts_dir, name), "wb") as out_file:
             pickle.dump(counts_dct, out_file)
         with open(os.path.join(gene_counts_dir, name + '_raw'), "wb") as out_file:
-            pickle.dump(counts_dct, out_file)
+            pickle.dump(counts_dct_raw, out_file)
 
     counts_agg_dct = dict(zip(col_names_all, counts_agg_out))
     counts_agg_dct_raw = dict(zip(col_names_all, counts_agg_all))
