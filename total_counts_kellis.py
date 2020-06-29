@@ -45,7 +45,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
 
     counts_agg_all = np.concatenate(counts_agg_arrs)
     counts_all = np.concatenate(counts_arrs , axis=0)
-    # print(counts_all.shape) ####
+    print(counts_all.shape) ####
     # print(counts_all) ####
 
     counts_out = process(counts_all)
