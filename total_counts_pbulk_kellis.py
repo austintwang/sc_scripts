@@ -12,7 +12,7 @@ def process(counts_arr):
     logtrans = np.log2(counts_norm + 1)
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
-    print(s[:10]) ####
+    print(s[:10] / np.sum(s)) ####
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])
     regs, *rest = np.linalg.lstsq(pcs, logtrans)
     res = logtrans - pcs @ regs
@@ -58,7 +58,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
 
     counts_out = process(counts_all)
     counts_agg_out = counts_out.sum(axis=1)
-    print(counts_out) ####
+    # print(counts_out) ####
     for i, gl in enumerate(row_names):
         counts_dct = dict(zip(col_names_all, counts_out[:,i]))
         counts_dct_raw = dict(zip(col_names_all, counts_all[:,i]))
