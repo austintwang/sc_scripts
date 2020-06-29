@@ -10,6 +10,7 @@ import numpy as np
 def process(counts_arr):
     counts_norm = counts_arr / np.mean(counts_arr, axis=1, keepdims=True)
     logtrans = np.log2(counts_norm + 1)
+    logtrans = np.log2(counts_arr + 1) ####
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
     print(s[:10] / np.sum(s)) ####
