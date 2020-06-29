@@ -13,6 +13,7 @@ def process(counts_arr):
     logtrans = np.log2(counts_norm + 1)
     # logtrans = np.log2(counts_arr + 1) ####
     logtrans = scipy.stats.rankdata(counts_arr, axis=0) / counts_arr.shape[0] ####
+    logtrans = scipy.stats.rankdata(counts_norm, axis=0) / counts_arr.shape[0] ####
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
     print(s[:10] / np.sum(s)) ####
