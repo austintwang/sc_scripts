@@ -8,17 +8,18 @@ import glob
 import numpy as np
 
 def process(counts_arr):
-    counts_norm = counts_arr / np.mean(counts_arr, axis=1, keepdims=True)
-    logtrans = np.log2(counts_norm + 1)
+    # counts_norm = counts_arr / np.mean(counts_arr, axis=1, keepdims=True)
+    # logtrans = np.log2(counts_norm + 1)
+    logtrans = np.log2(counts_arr + 1)
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
     u, s, vh = np.linalg.svd(logtrans)
-    print(s[:10]) ####
+    # print(s[:10]) ####
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])
     regs, *rest = np.linalg.lstsq(pcs, logtrans)
     res = logtrans - pcs @ regs
-    ss_res = np.sum(res**2, axis=0) ####
+    # ss_res = np.sum(res**2, axis=0) ####
     ss_tot = np.sum((logtrans - np.mean(logtrans, axis=0, keepdims=True))**2, axis=0) ####
-    print(1 - ss_res / ss_tot) ####
+    # print(1 - ss_res / ss_tot) ####
     return res
 
 def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
