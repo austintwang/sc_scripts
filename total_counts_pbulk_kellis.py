@@ -18,7 +18,8 @@ def process(counts_arr):
     res = logtrans - pcs @ regs
     ss_res = np.sum(res**2, axis=0) ####
     ss_tot = np.sum((logtrans - np.mean(logtrans, axis=0, keepdims=True))**2, axis=0) ####
-    print(1 - ss_res / ss_tot) ####
+    print(list(1 - ss_res / ss_tot)) ####
+    print(ss_res, ss_tot)
     return res
 
 def load_data(counts_paths, col_paths, row_names):
