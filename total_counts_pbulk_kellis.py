@@ -65,7 +65,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
         gene = gl.strip()
         out_pattern = os.path.join(out_dir, gene + ".*")
         out_match = glob.glob(out_pattern)
-        print(out_match) ####
+        # print(out_match) ####
         if len(out_match) == 0:
             continue
         gene_counts_dir = os.path.join(out_match[0], "processed_counts")
