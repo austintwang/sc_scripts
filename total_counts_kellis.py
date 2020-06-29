@@ -9,16 +9,16 @@ import numpy as np
 
 def process(counts_arr):
     counts_norm = counts_arr * 1e6 / np.sum(counts_arr, axis=1, keepdims=True)
-    print(counts_norm) ####
+    # print(counts_norm) ####
     logtrans = np.log2(counts_norm + 1)
-    print(logtrans) ####
+    # print(logtrans) ####
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
-    print(logtrans) ####
+    # print(logtrans) ####
     u, s, vh = np.linalg.svd(logtrans)
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])
     regs, *rest = np.linalg.lstsq(pcs, logtrans)
     res = logtrans - pcs @ regs
-    print(res) ####
+    # print(res) ####
     return res
 
 def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
@@ -44,12 +44,12 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
 
     counts_agg_all = np.concatenate(counts_agg_arrs)
     counts_all = np.concatenate(counts_arrs , axis=0)
-    print(counts_all.shape) ####
-    print(counts_all) ####
+    # print(counts_all.shape) ####
+    # print(counts_all) ####
 
     counts_out = process(counts_all)
     counts_agg_out = counts_out.sum(axis=1)
-    print(counts_out) ####
+    # print(counts_out) ####
     for i, gl in enumerate(row_names):
         counts_dct = dict(zip(col_names_all, counts_out[:,i]))
         counts_dct_raw = dict(zip(col_names_all, counts_all[:,i]))
