@@ -9,8 +9,11 @@ import numpy as np
 
 def process(counts_arr):
     counts_norm = counts_arr * 1e6 / np.sum(counts_arr, axis=1, keepdims=True)
+    print(counts_norm) ####
     logtrans = np.log2(counts_norm + 1)
+    print(logtrans) ####
     logtrans = logtrans - np.mean(logtrans, axis=0, keepdims=True)
+    print(logtrans) ####
     u, s, vh = np.linalg.svd(logtrans)
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])
     regs, *rest = np.linalg.lstsq(pcs, logtrans)
