@@ -15,6 +15,7 @@ def process(counts_arr):
     pcs = np.hstack([np.ones((u.shape[0], 1),), u[:,:10]])
     regs, *rest = np.linalg.lstsq(pcs, logtrans)
     res = logtrans - pcs @ regs
+    print(res) ####
     return res
 
 def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name):
