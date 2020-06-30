@@ -9,7 +9,8 @@ def build_list(data_dir, contig, out_dir):
         try:
             with open(gene_path, "rb") as gene_file:
                 gene_data = pickle.load(gene_file)
-                if gene_data["markers"][0] == contig:
+                if gene_data["markers"][0][0] == contig:
+                    print(gene_data["markers"][0][0]) ####
                     gene_list.append(gene_name)
         except Exception as e:
             continue

@@ -159,29 +159,19 @@ if __name__ == '__main__':
         fails_only=False
     )
 
-    params_kellis = {
+    params_kellis_coloc = params_kellis.copy()
+    params_kellis_coloc.update({
         "run_name": "combined_coloc",
-        "total_exp_herit_prior": 0.05,
-        "imbalance_herit_prior": 0.40,
-        "cross_corr_prior": 0.9,
         "min_causal": 0,
-        "num_causal": 1.,
-        "search_mode": "exhaustive",
-        "max_causal": 1,
-        "confidence": 0.95, 
-        "model_flavors": "all",
-        "cell_type_aliases": aliases_kellis,
-        "splits": [1.],
-        "min_carriers": 5,
-    }
-    params_path_kellis_combined = os.path.join(data_path_kellis, "plasma_params_combined_coloc.pickle")
+    })
+    params_path_kellis_coloc = os.path.join(data_path_kellis, "plasma_params_combined_coloc.pickle")
 
     # dispatch(
     #     script_path, 
     #     names_kellis, 
     #     genes_dir_kellis, 
-    #     params_kellis, 
-    #     params_path_kellis_combined, 
+    #     params_kellis_coloc, 
+    #     params_path_kellis_coloc, 
     #     "all", 
     #     cluster_map_path_kellis, 
     #     barcodes_map_path_kellis, 
@@ -194,8 +184,8 @@ if __name__ == '__main__':
     #     script_path, 
     #     names_kellis, 
     #     genes_dir_kellis, 
-    #     params_kellis, 
-    #     params_path_kellis, 
+    #     params_kellis_coloc, 
+    #     params_path_kellis_coloc, 
     #     "all", 
     #     cluster_map_path_kellis, 
     #     barcodes_map_path_kellis, 
@@ -310,8 +300,39 @@ if __name__ == '__main__':
     #     fails_only=True
     # )
 
+    
+    flags_lst = []
+    for c1 in ["", "c"]:
+        for gn in ["", "r", "l"]:
+            for pc in ["", "f", "t"]:
+                for c2 in ["", "c"]:
+                    flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
 
+    for flags in flags_lst:
+        params_kellis_test = params_kellis.copy()
+        params_kellis_test.update({
+            "run_name": f"test_{flags}",
+            "pre_flags": f"test_{flags}",
+        })
+        params_path_kellis_xval = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
+
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis, 
+            params_path_kellis_combined, 
+            "all", 
+            cluster_map_path_kellis, 
+            barcodes_map_path_kellis, 
+            overdispersion_path_kellis, 
+            2000, 
+            fails_only=False
+        )
 
 
 
