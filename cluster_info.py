@@ -766,3 +766,14 @@ if __name__ == '__main__':
 
     # get_info_xval("split_strict", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_strict)
 
+    flags_lst = []
+    for c1 in ["", "c"]:
+        for gn in ["", "r", "l"]:
+            for pc in ["", "f", "t"]:
+                for c2 in ["", "c"]:
+                    flags_lst.append(f"{c1}{gn}m{pc}{c2}")
+
+    out_dir_test = os.path.join(out_dir_kellis, "test_preprocess")
+    for flags in flags_lst:
+        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+

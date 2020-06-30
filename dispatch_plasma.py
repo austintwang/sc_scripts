@@ -318,14 +318,14 @@ if __name__ == '__main__':
             "run_name": f"test_{flags}",
             "pre_flags": f"test_{flags}",
         })
-        params_path_kellis_xval = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
+        params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
 
         dispatch(
             script_path, 
             names_test, 
             genes_dir_kellis, 
-            params_kellis, 
-            params_path_kellis_combined, 
+            params_kellis_test, 
+            params_path_kellis_test, 
             "all", 
             cluster_map_path_kellis, 
             barcodes_map_path_kellis, 
