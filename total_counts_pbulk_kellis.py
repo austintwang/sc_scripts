@@ -115,7 +115,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags)
                 continue
             gene_counts_dir = os.path.join(out_match[0], "processed_counts")
             os.makedirs(gene_counts_dir, exist_ok=True)
-            with open(os.path.join(gene_counts_dir, name), "wb") as out_file:
+            with open(os.path.join(gene_counts_dir, name + flag), "wb") as out_file:
                 pickle.dump(counts_dct, out_file)
             # with open(os.path.join(gene_counts_dir, name + '_raw'), "wb") as out_file:
             #     pickle.dump(counts_dct_raw, out_file)
