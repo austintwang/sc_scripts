@@ -235,11 +235,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         # print(inputs["total_counts"][cluster]) ####
                         # print(inputs["total_counts"][cluster]) ####
                         # print(inputs["agg_counts"][cluster]) ####
-                        inputs["counts_total"] = np.array([inputs["total_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
-                        inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
-                        counts_raw_total = np.array([inputs["total_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
-                        counts_raw_norm = np.array([inputs["agg_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
-                        results["counts_raw"] = counts_raw_total / counts_raw_norm
+                        inputs["counts_total"] = np.array([inputs["total_counts"][cluster][inputs["pre_flags"]].get(i, np.nan) for i in inputs["sample_names"]])
+                        # inputs["counts_norm"] = np.array([inputs["agg_counts"][cluster].get(i, np.nan) for i in inputs["sample_names"]])
+                        # counts_raw_total = np.array([inputs["total_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
+                        # counts_raw_norm = np.array([inputs["agg_counts"][f"{cluster}_raw"].get(i, np.nan) for i in inputs["sample_names"]])
+                        results["counts_raw"] = np.array([inputs["total_counts"][cluster]["cm"].get(i, np.nan) for i in inputs["sample_names"]])
                         # print(inputs["counts_total"]) ####
                         # print(inputs["counts_norm"]) ####
                         # print(np.count_nonzero(~np.isnan(inputs["counts_total"]))) ####
@@ -282,7 +282,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                         # print(processed_counts) ####
                         # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
                         # print(np.mean(inputs["counts_norm"]) / inputs["counts_norm"]) ####
-                        inputs["counts_total"] = inputs["counts_total"] * 1e3 / inputs["counts_norm"]
+                        # inputs["counts_total"] = inputs["counts_total"] * 1e3 / inputs["counts_norm"]
                         result["avg_counts_total_scaled"] = np.nanmean(inputs["counts_total"])
                         # print(inputs["counts_total"]) ####
                         # print(result["avg_counts_total_scaled"]) ####
