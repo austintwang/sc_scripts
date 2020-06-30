@@ -127,14 +127,14 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags)
     # with open(os.path.join(agg_out_dir, name + '_raw'), "wb") as agg_out_file:
     #     pickle.dump(counts_agg_dct_raw, agg_out_file)
 
-def load_counts(base_path, rows_path, genes_dir, agg_out_dir):
+def load_counts(base_path, rows_path, genes_dir, agg_out_dir, flags):
     with gzip.open(rows_path, "rb") as row_file:
         row_names = row_file.read().decode('utf-8').strip().split("\n")
     counts_paths = glob.glob(os.path.join(base_path, "*.s1.gz"))
     col_paths = [i.replace(".s1.gz", ".cols.gz") for i in counts_paths]
     # print(counts_paths) ####
     # print(col_paths) ####
-    parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, "_all")
+    parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, "_all", flags)
 
 if __name__ == '__main__':
     base_dir = "/agusevlab/awang/sc_kellis"
