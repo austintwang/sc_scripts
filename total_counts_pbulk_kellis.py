@@ -155,7 +155,7 @@ if __name__ == '__main__':
                 for c2 in ["", "c"]:
                     flags.append(f"{c1}{gn}m{pc}{c2}")
 
-    flags = ["m", "mc", "mf"] ####
+    # flags = ["m", "mc", "mf"] ####
 
     load_counts(counts_dir, rows_path, genes_dir, agg_out_dir, flags)
 
