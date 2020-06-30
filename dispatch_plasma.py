@@ -316,7 +316,7 @@ if __name__ == '__main__':
         params_kellis_test = params_kellis.copy()
         params_kellis_test.update({
             "run_name": f"test_{flags}",
-            "pre_flags": f"test_{flags}",
+            "pre_flags": flags,
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
 
