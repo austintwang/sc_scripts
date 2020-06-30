@@ -95,11 +95,11 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
     ignore_total = ignore_total == "True" 
-    if ignore_total:
-        total_counts_norm = None
-    else:
-        with open(total_counts_norm_path, "rb") as total_counts_norm_file:
-            total_counts_norm = pickle.load(total_counts_norm_file)
+    # if ignore_total:
+    #     total_counts_norm = None
+    # else:
+    #     with open(total_counts_norm_path, "rb") as total_counts_norm_file:
+    #         total_counts_norm = pickle.load(total_counts_norm_file)
     # print(total_counts_norm.keys()) ####
 
     radius = int(radius)
@@ -136,6 +136,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             total_counts = {}
             fnames = os.listdir(total_counts_dir)
             cell_types = counts_process_fn(fnames)
+            print(cell_types) ####
             for fname, cell_type in zip(fnames, cell_types):
                 path = os.path.join(total_counts_dir, fname)
                 with open(path, "rb") as count_file:
@@ -166,7 +167,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "marker_alleles": marker_alleles_nc,
             "cell_counts": agg_counts,
             "total_counts": total_counts,
-            "counts_norm": total_counts_norm,
+            # "counts_norm": total_counts_norm,
             "tss": tss_pos,
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")
