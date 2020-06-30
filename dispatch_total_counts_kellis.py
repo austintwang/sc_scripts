@@ -7,14 +7,14 @@ import subprocess
 import numpy as np
 
 
-def dispatch(script_path, clusters, base_path, rows_path, genes_dir, agg_out_dir, job_data_dir, memory):
+def dispatch(script_path, clusters, base_path, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, memory):
     jobs = []
     for file_name, pattern in clusters.items():
         os.makedirs(os.path.join(job_data_dir, file_name), exist_ok=True)
         err_name = os.path.join(job_data_dir, file_name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", file_name, "-o", err_name, "-x", "node02,node13",
-            script_path, file_name, pattern, base_path, rows_path, genes_dir, agg_out_dir
+            script_path, file_name, pattern, base_path, rows_path, genes_dir, agg_out_dir, *flags
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -59,6 +59,14 @@ if __name__ == '__main__':
     # dispatch(script_path, names, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 2000)
 
     genes_dir = os.path.join(base_dir, "genes_429")
-    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, 20000)
+
+    flags = []
+    for c1 in ["", "c"]:
+        for gn in ["", "r", "l"]:
+            for pc in ["", "f", "t"]:
+                for c2 in ["", "c"]:
+                    flags.append(f"{c1}{gn}m{pc}{c2}")
+
+    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, 20000)
 
 

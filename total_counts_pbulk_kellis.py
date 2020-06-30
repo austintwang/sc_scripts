@@ -18,7 +18,7 @@ def genes_center(arr):
     return arr - np.mean(arr, axis=0, keepdims=True)
 
 def logtrans(arr):
-    return np.log2(counts_arr + 1)
+    return np.log2(arr + 1)
 
 def regress_pca(arr, num_pc):
     u, s, vh = np.linalg.svd(arr)
@@ -95,12 +95,12 @@ def load_data(counts_paths, col_paths, row_names):
 
     return samples, counts_arr, counts_agg_arr
 
-def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags):
+def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_list):
     col_names_all, counts_all, counts_agg_all = load_data(counts_paths, col_paths, row_names)
     print(counts_all.shape) ####
     print(counts_all) ####
 
-    processed = process(counts_all, flags)
+    processed = process(counts_all, flags_list)
     # counts_agg_out = counts_out.sum(axis=1)
     # print(counts_out) ####
     for flags, counts_out in processed.items():
@@ -115,7 +115,7 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags)
                 continue
             gene_counts_dir = os.path.join(out_match[0], "processed_counts")
             os.makedirs(gene_counts_dir, exist_ok=True)
-            with open(os.path.join(gene_counts_dir, name + flag), "wb") as out_file:
+            with open(os.path.join(gene_counts_dir, name + flags), "wb") as out_file:
                 pickle.dump(counts_dct, out_file)
             # with open(os.path.join(gene_counts_dir, name + '_raw'), "wb") as out_file:
             #     pickle.dump(counts_dct_raw, out_file)
