@@ -134,8 +134,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         else:
             # total_counts = {"_all": {}}
             total_counts = {}
-            fnames = os.listdir(total_counts_dir)
-            cell_types = counts_process_fn(fnames)
+            fnames = [i for i in os.listdir(total_counts_dir) if i.endswith(".pickle")]
+            cell_types = [i.split(".")[0] for i in fnames]
             print(cell_types) ####
             for fname, cell_type in zip(fnames, cell_types):
                 path = os.path.join(total_counts_dir, fname)
