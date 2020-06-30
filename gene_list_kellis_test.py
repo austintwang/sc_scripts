@@ -1,4 +1,7 @@
-def build_list(data_dir, contig):
+import os
+import pickle
+
+def build_list(data_dir, contig, out_dir):
     gene_list = []
     for gene_name in os.listdir(data_dir):
         gene_dir = os.path.join(data_dir, gene_name)
@@ -10,10 +13,14 @@ def build_list(data_dir, contig):
                     gene_list.append(gene_name)
         except Exception as e:
             continue
+
+    print(len(gene_list)) ####
+    with open(os.path.join(out_dir, f"list_429_test_{contig}.pickle"), "wb") as out_file:
+        pickle.dump(gene_list, out_file)
             
 if __name__ == '__main__':
     # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
 
-    build_list(data_dir, "22")
+    build_list(genes_dir_kellis, "22", data_path_kellis)
