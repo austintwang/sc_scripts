@@ -67,6 +67,6 @@ if __name__ == '__main__':
                 for c2 in ["", "c"]:
                     flags.append(f"{c1}{gn}m{pc}{c2}")
 
-    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, 20000)
+    dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, 50000)
 
 
