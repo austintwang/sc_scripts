@@ -89,19 +89,22 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_
     processed = process(counts_all, flags_list)
     # counts_agg_out = counts_out.sum(axis=1)
     # print(counts_out) ####
-    for flags, counts_out in processed.items():
-        for i, gl in enumerate(row_names):
+    
+    for i, gl in enumerate(row_names):
+        out_data = {}
+        for flags, counts_out in processed.items():
             counts_dct = dict(zip(col_names_all, counts_out[:,i]))
-            # counts_dct_raw = dict(zip(col_names_all, counts_all[:,i]))
-            gene = gl.strip()
-            out_pattern = os.path.join(out_dir, gene + ".*")
-            out_match = glob.glob(out_pattern)
-            if len(out_match) == 0:
-                continue
-            gene_counts_dir = os.path.join(out_match[0], "processed_counts")
-            os.makedirs(gene_counts_dir, exist_ok=True)
-            with open(os.path.join(gene_counts_dir, name), "wb") as out_file:
-                pickle.dump(counts_dct, out_file)
+            out_data[flags] = counts_dct
+        # counts_dct_raw = dict(zip(col_names_all, counts_all[:,i]))
+        gene = gl.strip()
+        out_pattern = os.path.join(out_dir, gene + ".*")
+        out_match = glob.glob(out_pattern)
+        if len(out_match) == 0:
+            continue
+        gene_counts_dir = os.path.join(out_match[0], "processed_counts")
+        os.makedirs(gene_counts_dir, exist_ok=True)
+        with open(os.path.join(gene_counts_dir, f"{name}.pickle"), "wb") as out_file:
+            pickle.dump(counts_dct, out_file)
         # with open(os.path.join(gene_counts_dir, name + '_raw'), "wb") as out_file:
         #     pickle.dump(counts_dct, out_file)
 
