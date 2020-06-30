@@ -141,6 +141,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
                 path = os.path.join(total_counts_dir, fname)
                 with open(path, "rb") as count_file:
                     counts = pickle.load(count_file)
+                    print(counts) ####
                     total_counts.setdefault(cell_type, {}).update(counts)
                     # for k, v in counts.items():
                     #     # print(k) ####
