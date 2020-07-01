@@ -352,7 +352,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["total_exp"] = inputs["counts_total"].astype(float)
                     # print(list(inputs["total_exp"])) ####
                     # print(inputs["counts_norm"][inputs["mask_total_exp"]]) ####
-                    print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
+                    # print(inputs["counts_total"][inputs["mask_total_exp"]]) ####
                     # print(inputs["total_exp"][inputs["mask_total_exp"]]) ####
 
                     result["counts_A"] = inputs["counts_A"]
