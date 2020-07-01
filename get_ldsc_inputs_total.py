@@ -13,8 +13,8 @@ def load_gene(data, clusters, gene, genes_dir):
     try:
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
-    except (FileNotFoundError, pickle.UnpicklingError) as e:
-        # print(e) ####
+    except Exception as e:
+        print(e) ####
         return 
 
     try:
@@ -29,7 +29,7 @@ def load_gene(data, clusters, gene, genes_dir):
         try:
             # print(total_counts[c].keys()) ####
             counts = total_counts[c]["cm"]
-        except (KeyError, TypeError) as e:
+        except Exception as e:
             print(e)
             continue
         for sample, phen in counts.items():
