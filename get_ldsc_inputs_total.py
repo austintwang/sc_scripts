@@ -27,7 +27,7 @@ def load_gene(data, clusters, gene, genes_dir):
     expression_dct = {}
     for c in clusters:
         try:
-            print(total_counts.keys()) ####
+            print(total_counts[c].keys()) ####
             counts = total_counts[c]["cm"]
         except KeyError:
             continue
