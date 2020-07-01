@@ -782,5 +782,5 @@ if __name__ == '__main__':
 
     out_dir_test = os.path.join(out_dir_kellis, "test_preprocess")
     for flags in flags_lst:
-        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis, glist=names_test)
+        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_test, glist=names_test)
 
