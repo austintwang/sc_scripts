@@ -90,9 +90,12 @@ def read_data(plasma_data, clusters, gene_name, top_snps=None):
             data.append(data_clust)
     return data
 
-def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict):
+def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict, glist=None):
     clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)
+    if glist is None:
+        genes = os.listdir(genes_dir)
+    else:
+        genes = glist
     # genes = genes[:500] ####
     # tracemalloc.start() ####
     data_lst = []
@@ -692,8 +695,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     title = "Cross-Cell Cross-Validation Significance from One"
     make_heatmap(nlp_1s, cluster_order, title, os.path.join(out_dir, "xcell_stats_nlp_1.svg"))
 
-def get_info(run_name, genes_dir, cluster_map_path, out_dir):
-    data_df = make_df(run_name, "i0", genes_dir, cluster_map_path, None)
+def get_info(run_name, genes_dir, cluster_map_path, out_dir, glist=None):
+    data_df = make_df(run_name, "i0", genes_dir, cluster_map_path, None, glist=glist)
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
@@ -773,7 +776,11 @@ if __name__ == '__main__':
                 for c2 in ["", "c"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
+
     out_dir_test = os.path.join(out_dir_kellis, "test_preprocess")
     for flags in flags_lst:
-        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis, glist=names_test)
 
