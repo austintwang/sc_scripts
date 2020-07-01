@@ -70,7 +70,7 @@ def get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path):
         load_gene(data, clusters, gene, genes_dir)
 
     for c in clusters:
-        out_path = os.path.join(out_dir, f"t_{c}.bed")
+        out_path = os.path.join(out_dir, f"{c}_t.bed")
         write_bed(data[c], out_path)
 
 
