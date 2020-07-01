@@ -64,13 +64,13 @@ def get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path):
     data = {c: [] for c in clusters}
     with open(gene_list_path, "rb") as gene_list_file:
         gene_list = pickle.load(gene_list_file)
-    gene_list = gene_list[:500] ####
+    gene_list = gene_list[:100] ####
     
     for gene in gene_list:
         load_gene(data, clusters, gene, genes_dir)
 
     for c in clusters:
-        out_path = os.path.join(out_dir, f"t_{cluster}.bed")
+        out_path = os.path.join(out_dir, f"t_{c}.bed")
         write_bed(data[c], out_path)
 
 
@@ -79,7 +79,6 @@ if __name__ == '__main__':
     genes_dir = os.path.join(data_path_kellis, "genes_429")
     out_dir = os.path.join(data_path_kellis, "ldsc_429_exp")
     gene_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
-    clusters_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/cell_type_spec"
     clusters = ["_all", "Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]
 
     get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path)
