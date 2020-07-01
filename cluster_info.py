@@ -13,7 +13,7 @@ import tracemalloc ####
 
 def read_data(plasma_data, clusters, gene_name, top_snps=None):
     # print(coloc_data) ####
-    # print(gene_name) ####
+    print(gene_name) ####
     data = []
     for c in clusters:
         plasma_clust = plasma_data.get(c, None)
@@ -782,5 +782,6 @@ if __name__ == '__main__':
 
     out_dir_test = os.path.join(out_dir_kellis, "test_preprocess")
     for flags in flags_lst:
+        print(flags) ####
         get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, out_dir_test, glist=names_test)
 
