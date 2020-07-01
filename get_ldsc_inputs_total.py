@@ -27,9 +27,10 @@ def load_gene(data, clusters, gene, genes_dir):
     expression_dct = {}
     for c in clusters:
         try:
-            print(total_counts[c].keys()) ####
+            # print(total_counts[c].keys()) ####
             counts = total_counts[c]["cm"]
-        except KeyError:
+        except (KeyError, TypeError) as e:
+            print(e)
             continue
         for sample, phen in counts.items():
             expression_dct.setdefault(sample, {})[c] = phen
@@ -50,7 +51,7 @@ def load_gene(data, clusters, gene, genes_dir):
     t_scores = diff_mean / (diff_std / np.sqrt(num_samps))
 
     for i, c in enumerate(clusters):
-        data[c].append([contig, tss_pos - 100000, tss_pos + 100000, gene, t_scores[i]])
+        data[c].append([contig, tss_pos - 100000, tss_pos + 100000, gene, np.abs(t_scores[i])])
 
 def write_bed(data, out_path):
     with open(out_path, "w") as out_file:
