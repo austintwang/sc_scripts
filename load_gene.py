@@ -116,7 +116,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
         # print(marker_gen_map.keys()) ####
 
-        tss = tss_map[gene_name.split(".")[0]]
+        contig, tss_pos = tss = tss_map[gene_name.split(".")[0]]
         print(tss_map[gene_name.split(".")[0]]) ####
         contig = contig[3:]
         genotypes_nc, samples_nc, markers_nc, marker_ids_nc, marker_alleles_nc = read_vcf(

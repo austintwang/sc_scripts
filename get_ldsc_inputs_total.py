@@ -31,84 +31,43 @@ def load_gene(data, clusters, gene, genes_dir):
         expression_lst.append([cluster_data.get(c, np.nan) for c in clusters])
 
     expression_arr = np.array(expression_lst)
+    exp_sum = np.nansum(expression_arr, axis=1, keep_dims=True)
+    exp_valid = ~np.isnan(expression_arr)
+    num_valid = np.sum(exp_valid, axis=1, keep_dims=True)
+    exp_rest = (exp_sum - expression_arr) / (num_valid - 1)
+    exp_diff = expression_arr - exp_rest
+    diff_mean = np.nanmean(exp_diff, axis=0)
+    diff_std = np.nanstd(exp_diff, axis=0)
+    num_samps = np.sum(exp_valid, axis=0)
+    t_scores = diff_mean / (diff_std / np.sqrt(num_samps))
 
-
-    inputs_all = {
-        "hap1": gene_data["genotypes"][:,:,0],
-        "hap2": gene_data["genotypes"][:,:,1],
-        "sample_names": gene_data["samples"],
-        "snp_ids": np.array(gene_data["marker_ids"]),
-        "snp_pos": np.array(gene_data["markers"]),
-        "snp_alleles": np.array(gene_data["marker_alleles"]),
-        "total_counts": gene_data.get("total_counts", False),
-        "agg_counts": gene_data.get("counts_norm", False),
-        "tss": gene_data.get("tss")
-    }
-
-
-
-
-    plasma_path = os.path.join(genes_dir, gene, "combined", "plasma_i0.pickle")
-    try:
-        with open(plasma_path, "rb") as plasma_file:
-            plasma_data = pickle.load(plasma_file)
-    except (FileNotFoundError, pickle.UnpicklingError) as e:
-        # print(e) ####
-        return 
-
-    plasma_clust = plasma_data.get(cluster)
-    # print(plasma_clust) ####
-    if cluster is None:
-        return
-
-    informative_snps = plasma_clust["informative_snps"]
-    cred = plasma_clust.get("causal_set_indep")
-    if cred is None:
-        return
-
-    # print(informative_snps) ####
-    for ind in informative_snps:
-        causal = cred[ind]
-        if causal == 0:
-            continue
-        contig = plasma_data["_gen"]["snp_pos"][ind][0]
-        # print(plasma_data["_gen"]["snp_pos"][ind]) ####
-        pos = int(plasma_data["_gen"]["snp_pos"][ind][1]) + 1
-        rsid = plasma_data["_gen"]["snp_ids"][ind]
-        ppa = plasma_clust["ppas_indep"][ind]
-        data.append([contig, pos, pos + 1, rsid, ppa, gene])
+    for i, c in enumerate(clusters):
+        data[c].append([contig, tss_pos - 100000, tss_pos + 100000, gene, t_scores[i]])
 
 def write_bed(data, out_path):
     with open(out_path, "w") as out_file:
-        out_file.writelines(f"{' '.join(map(str, i))}\n" for i in data)
+        out_file.writelines(f"{' '.join(map(str, i))}\n" for i in sorted(data))
 
-def load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs):
-    cluster_path = os.path.join(clusters_dir, f"{cluster}.csv")
-    df = pd.read_csv(cluster_path, sep="\t")
-    # df = df.iloc[:100] ####
-    data = []
-    # print(df.columns) ####
-    cutoffs = {int(len(df) * i): i for i in threshs}
-    max_cutoff = max(cutoffs.keys())
-    for ind, gene in enumerate(df["Gene"]):
-        load_gene(data, cluster, gene, genes_dir)
-        if ind + 1 in cutoffs:
-            thr = cutoffs[ind + 1]
-            out_path = os.path.join(out_dir, f"{cluster}_{thr}.bed")
-            write_bed(data, out_path)
-        if ind >= max_cutoff:
-            break
+def get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path):
+    data = {c: [] for c in clusters}
+    with open(gene_list_path, "rb") as gene_list_file:
+        gene_list = pickle.load(gene_list_file)
+    
+    for gene in gene_list:
+        load_gene(data, clusters, gene, genes_dir)
 
-def get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs):
-    for i in os.listdir(clusters_dir):
-        cluster = i.split(".")[0]
-        load_cluster(cluster, clusters_dir, genes_dir, out_dir, threshs)
+    for c in clusters:
+        out_path = os.path.join(out_dir, f"t_{cluster}.bed")
+        write_bed(data[c], out_path)
+
 
 if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     genes_dir = os.path.join(data_path_kellis, "genes_429")
-    out_dir = os.path.join(data_path_kellis, "ldsc_429")
+    out_dir = os.path.join(data_path_kellis, "ldsc_429_exp")
+    gene_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
     clusters_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/cell_type_spec"
-    threshs = [0.1, 0.2, 0.5]
-    get_ldsc_inputs(clusters_dir, genes_dir, out_dir, threshs)
+    clusters = ["_all", "Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]
+
+    get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path)
 
