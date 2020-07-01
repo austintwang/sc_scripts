@@ -17,12 +17,19 @@ def load_gene(data, clusters, gene, genes_dir):
         # print(e) ####
         return 
 
-    total_counts = gene_data["total_counts"]
-    contig, tss_pos = gene_data["tss"]
+    try:
+        total_counts = gene_data["total_counts"]
+        contig, tss_pos = gene_data["tss"]
+    except Exception as e:
+        print(e)
+        return
 
     expression_dct = {}
     for c in clusters:
-        counts = total_counts[c]["cm"]
+        try:
+            counts = total_counts[c]["cm"]
+        except KeyError:
+            continue
         for sample, phen in counts.items():
             expression_dct.setdefault(sample, {})[c] = phen
 
@@ -52,6 +59,7 @@ def get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path):
     data = {c: [] for c in clusters}
     with open(gene_list_path, "rb") as gene_list_file:
         gene_list = pickle.load(gene_list_file)
+    gene_list = gene_list[:500] ####
     
     for gene in gene_list:
         load_gene(data, clusters, gene, genes_dir)

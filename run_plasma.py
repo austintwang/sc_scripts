@@ -260,8 +260,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["overdispersion"] = inputs["overdispersion"][select_counts]
                     inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
                     inputs["num_cells"] = inputs["num_cells"][select_counts]
-                    if processed_counts:
-                        inputs["counts_norm"] = inputs["counts_norm"][select_counts]
+                    # if processed_counts:
+                    #     inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
                     inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
                         inputs["counts1"] >= 1, 
