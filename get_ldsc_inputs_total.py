@@ -39,6 +39,7 @@ def load_gene(data, clusters, gene, genes_dir):
     for gene, cluster_data in expression_dct.items():
         expression_lst.append([cluster_data.get(c, np.nan) for c in clusters])
 
+    print(expression_lst) ####
     expression_arr = np.array(expression_lst)
     exp_sum = np.nansum(expression_arr, axis=1, keepdims=True)
     exp_valid = ~np.isnan(expression_arr)
