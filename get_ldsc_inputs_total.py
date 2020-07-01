@@ -36,7 +36,7 @@ def load_gene(data, clusters, gene, genes_dir):
             expression_dct.setdefault(sample, {})[c] = phen
 
     expression_lst = []
-    for gene, cluster_data in expression_dct.items():
+    for sample_name, cluster_data in expression_dct.items():
         expression_lst.append([cluster_data.get(c, np.nan) for c in clusters])
     if len(expression_lst) == 0:
         return
