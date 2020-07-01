@@ -38,9 +38,9 @@ def load_gene(data, clusters, gene, genes_dir):
         expression_lst.append([cluster_data.get(c, np.nan) for c in clusters])
 
     expression_arr = np.array(expression_lst)
-    exp_sum = np.nansum(expression_arr, axis=1, keep_dims=True)
+    exp_sum = np.nansum(expression_arr, axis=1, keepdims=True)
     exp_valid = ~np.isnan(expression_arr)
-    num_valid = np.sum(exp_valid, axis=1, keep_dims=True)
+    num_valid = np.sum(exp_valid, axis=1, keepdims=True)
     exp_rest = (exp_sum - expression_arr) / (num_valid - 1)
     exp_diff = expression_arr - exp_rest
     diff_mean = np.nanmean(exp_diff, axis=0)
