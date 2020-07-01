@@ -64,7 +64,7 @@ def get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path):
     data = {c: [] for c in clusters}
     with open(gene_list_path, "rb") as gene_list_file:
         gene_list = pickle.load(gene_list_file)
-    gene_list = gene_list[:100] ####
+    # gene_list = gene_list[:100] ####
     
     for gene in gene_list:
         load_gene(data, clusters, gene, genes_dir)
