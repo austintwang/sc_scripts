@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     genes_dir = os.path.join(base_dir, "genes_429")
 
-    flags = []
+    flags = ["c"]
     for c1 in ["", "c"]:
         for gn in ["", "r", "l"]:
             for pc in ["", "f", "t"]:
