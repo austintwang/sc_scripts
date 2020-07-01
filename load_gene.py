@@ -116,7 +116,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         marker_gen_map = dict([(val, ind) for ind, val in enumerate(markers)])
         # print(marker_gen_map.keys()) ####
 
-        contig, tss_pos = tss_map[gene_name.split(".")[0]]
+        tss = tss_map[gene_name.split(".")[0]]
         print(tss_map[gene_name.split(".")[0]]) ####
         contig = contig[3:]
         genotypes_nc, samples_nc, markers_nc, marker_ids_nc, marker_alleles_nc = read_vcf(
@@ -136,12 +136,12 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             total_counts = {}
             fnames = [i for i in os.listdir(total_counts_dir) if i.endswith(".pickle")]
             cell_types = [i.split(".")[0] for i in fnames]
-            print(cell_types) ####
+            # print(cell_types) ####
             for fname, cell_type in zip(fnames, cell_types):
                 path = os.path.join(total_counts_dir, fname)
                 with open(path, "rb") as count_file:
                     counts = pickle.load(count_file)
-                    print(counts) ####
+                    # print(counts) ####
                     total_counts.setdefault(cell_type, {}).update(counts)
                     # for k, v in counts.items():
                     #     # print(k) ####
@@ -169,7 +169,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "cell_counts": agg_counts,
             "total_counts": total_counts,
             # "counts_norm": total_counts_norm,
-            "tss": tss_pos,
+            "tss": tss,
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")
         with open(out_path, "wb") as out_file:
