@@ -28,7 +28,7 @@ def load_gene(data, clusters, gene, genes_dir):
     for c in clusters:
         try:
             # print(total_counts[c].keys()) ####
-            counts = total_counts[c]["cm"]
+            counts = total_counts[c]["c"]
         except Exception as e:
             print(e)
             continue
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     genes_dir = os.path.join(data_path_kellis, "genes_429")
     out_dir = os.path.join(data_path_kellis, "ldsc_429_exp")
     gene_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
-    clusters = ["_all", "Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]
+    clusters = ["Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]
 
     get_ldsc_inputs_total(clusters, genes_dir, out_dir, gene_list_path)
 
