@@ -306,7 +306,7 @@ if __name__ == '__main__':
     for c1 in ["", "c"]:
         for gn in ["", "r", "l"]:
             for pc in ["", "f", "t"]:
-                for c2 in ["", "c"]:
+                for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
