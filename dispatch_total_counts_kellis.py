@@ -64,7 +64,7 @@ if __name__ == '__main__':
     for c1 in ["", "c"]:
         for gn in ["", "r", "l"]:
             for pc in ["", "f", "t"]:
-                for c2 in ["", "c"]:
+                for c2 in ["", "c", "n"]:
                     flags.append(f"{c1}{gn}m{pc}{c2}")
 
     dispatch(script_path, clusters, counts_dir, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, 50000)

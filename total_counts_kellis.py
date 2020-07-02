@@ -10,6 +10,9 @@ import numpy as np
 def cluster_norm(arr):
     return arr / np.mean(arr, axis=1, keepdims=True)
 
+def null_inv(arr):
+    return np.ones(arr.shape) / np.mean(arr, axis=1, keepdims=True)
+
 def rank_norm(arr):
     return np.argsort(-arr, axis=0) / arr.shape[0]
 
@@ -34,6 +37,7 @@ def process(arr, flags_list):
         "l": logtrans,
         "f": lambda x: regress_pca(x, 5),
         "t": lambda x: regress_pca(x, 10),
+        "n": null_inv
     }
     processed = {}
     for flags in flags_list:
