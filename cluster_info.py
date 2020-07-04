@@ -759,9 +759,9 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
@@ -773,7 +773,7 @@ if __name__ == '__main__':
     for c1 in ["", "c"]:
         for gn in ["", "r", "l"]:
             for pc in ["", "f", "t"]:
-                for c2 in ["", "c"]:
+                for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
@@ -781,8 +781,8 @@ if __name__ == '__main__':
         names_test = pickle.load(names_test_file)
 
     out_dir_test = os.path.join(out_dir_kellis, "test_preprocess")
-    # for flags in flags_lst:
-    #     print(flags) ####
-    #     os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
-    #     get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
+    for flags in flags_lst:
+        print(flags) ####
+        os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
+        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
 
