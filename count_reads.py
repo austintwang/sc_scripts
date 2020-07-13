@@ -117,6 +117,7 @@ class GeneFinder(object):
         # print(self.intervals[0], self.intervals[-1]) ####
 
     def query(self, query_pos):
+        print(query_pos) ####
         checkpoint = query_pos[2]
         if (
             (
@@ -204,7 +205,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
         # contig_order = sorted(contigs.keys(), key=contigs.get)
         # print(contig_order) ####
         contig_order = [i["SN"] for i in contig_data]
-        print(contig_order) ####
+        # print(contig_order) ####
         gene_finder = GeneFinder(exons, contig_order)
         markerbuf = MarkerBuffer(10, out_pattern, gene_finder)
         readbuf = ReadBuffer(10, markerbuf)
