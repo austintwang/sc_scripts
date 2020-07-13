@@ -5,8 +5,10 @@ def cleanup(genes_dir, wildcards):
 	for i in os.listdir(genes_dir):
 		for w in wildcards:
 			rm = os.path.join(genes_dir, i, w)
-			print(rm)
-			os.remove(rm)
+			matches = glob.glob(rm)
+			for m in matches:
+				print(m)
+				os.remove(m)
 
 if __name__ == '__main__':
     # Kellis 429
