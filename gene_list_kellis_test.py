@@ -3,6 +3,7 @@ import pickle
 
 def build_list(data_dir, contig, out_dir):
     gene_list = []
+    contig_set = set() ####
     for gene_name in os.listdir(data_dir):
         gene_dir = os.path.join(data_dir, gene_name)
         gene_path = os.path.join(gene_dir, "gene_data.pickle")
@@ -10,13 +11,15 @@ def build_list(data_dir, contig, out_dir):
             with open(gene_path, "rb") as gene_file:
                 gene_data = pickle.load(gene_file)
                 # print(gene_data["markers"][0][0]) ####
+                contig_set.add(gene_data["markers"][0][0]) ####
                 if gene_data["markers"][0][0] == contig:
-                    print(gene_data["markers"][0][0]) ####
+                    # print(gene_data["markers"][0][0]) ####
                     gene_list.append(gene_name)
         except Exception as e:
             continue
 
     print(len(gene_list)) ####
+    print(sorted(list(contig_set))) ####
     with open(os.path.join(out_dir, f"list_429_test_{contig}.pickle"), "wb") as out_file:
         pickle.dump(gene_list, out_file)
             
