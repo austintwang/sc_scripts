@@ -24,4 +24,6 @@ if __name__ == '__main__':
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
 
-    build_list(genes_dir_kellis, "22", data_path_kellis)
+    # build_list(genes_dir_kellis, "22", data_path_kellis)
+    build_list(genes_dir_kellis, "10", data_path_kellis)
+    build_list(genes_dir_kellis, "1", data_path_kellis)
