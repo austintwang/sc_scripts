@@ -7,7 +7,7 @@ def cleanup(genes_dir, wildcards):
 			rm = os.path.join(genes_dir, i, w)
 			matches = glob.glob(rm)
 			for m in matches:
-				print(m)
+				# print(m)
 				os.remove(m)
 
 if __name__ == '__main__':
