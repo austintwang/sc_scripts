@@ -154,10 +154,12 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_
 def load_counts(name, patterns, base_path, rows_path, genes_dir, agg_out_dir, *args):
     with gzip.open(rows_path, "rb") as row_file:
         row_names = row_file.read().decode('utf-8').strip().split("\n")
+    counts_paths = []
     col_paths = []
     for p in patterns.split(","):
-        counts_paths = glob.glob(os.path.join(base_path, p + ".s1.gz"))
-        col_paths.extend(i.replace(".s1.gz", ".cols.gz") for i in counts_paths)
+        counts_matches = glob.glob(os.path.join(base_path, p + ".s1.gz"))
+        counts_paths.extend(counts_matches)
+        col_paths.extend(i.replace(".s1.gz", ".cols.gz") for i in counts_matches)
     # print(counts_paths) ####
     # print(col_paths) ####
     parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, name, args)
