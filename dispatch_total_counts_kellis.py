@@ -51,15 +51,15 @@ if __name__ == '__main__':
         for i in glob.glob(os.path.join(counts_dir, "*.s1.gz"))
     }
     clusters = {
-        # "Ex": ["*_Ex"],
-        # "Oligo": ["*_Oligo"],
-        # "Astro": ["*_Astro"],
-        # "In": ["*_In"],
-        # "Endo": ["*_Endo"],
-        # "Microglia": ["*_Microglia"],
-        # "OPC": ["*_OPC"],
-        # "Per": ["*_Per"],
-        # "_neur": [f"*_{i}" for i in ["Ex", "In"]],
+        "Ex": ["*_Ex"],
+        "Oligo": ["*_Oligo"],
+        "Astro": ["*_Astro"],
+        "In": ["*_In"],
+        "Endo": ["*_Endo"],
+        "Microglia": ["*_Microglia"],
+        "OPC": ["*_OPC"],
+        "Per": ["*_Per"],
+        "_neur": [f"*_{i}" for i in ["Ex", "In"]],
         "_glia": [f"*_{i}" for i in ["Oligo", "Astro", "Microglia", "OPC"]],
         "_all": [f"*_{i}" for i in ["Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]],
     }
