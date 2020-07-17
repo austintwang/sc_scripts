@@ -9,12 +9,12 @@ import numpy as np
 
 def dispatch(script_path, clusters, base_path, rows_path, genes_dir, agg_out_dir, job_data_dir, flags, memory):
     jobs = []
-    for file_name, pattern in clusters.items():
+    for file_name, patterns in clusters.items():
         os.makedirs(os.path.join(job_data_dir, file_name), exist_ok=True)
         err_name = os.path.join(job_data_dir, file_name, "load_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", file_name, "-o", err_name, "-x", "node02,node13",
-            script_path, file_name, pattern, base_path, rows_path, genes_dir, agg_out_dir, *flags
+            script_path, file_name, ",".join(patterns), base_path, rows_path, genes_dir, agg_out_dir, *flags
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -50,7 +50,18 @@ if __name__ == '__main__':
         (os.path.splitext(os.path.splitext(os.path.basename(i))[0])[0]).split("_")[-1] 
         for i in glob.glob(os.path.join(counts_dir, "*.s1.gz"))
     }
-    clusters = {i: "*_{0}".format(i) for i in names}
+    clusters = {
+        "Ex": ["*_Ex"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "Oligo": ["*_Oligo"],
+        "": [f"*_{i}" for i in []],
+    }
     # clusters["_all"] = "*"
     rows_path = os.path.join(data_dir, "auxiliary", "all_features.gz")
 

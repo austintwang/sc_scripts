@@ -64,10 +64,9 @@ def process(arr, flags_list):
 #     # print(1 - ss_res / ss_tot) ####
 #     return res
 
-def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_list):
-    counts_agg_arrs = []
-    counts_arrs = []
-    col_names_all = []
+def load_data(counts_paths, col_paths, row_names):
+    counts_agg_dict = {}
+    counts_dict = {}
     for counts_path, col_path in zip(counts_paths, col_paths):
         with gzip.open(col_path, "r") as col_file:
             col_names = col_file.read().decode('utf-8').strip().split("\n")
@@ -81,14 +80,47 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_
                 counts_arr[:, i] = counts_gene
                 counts_agg_arr += counts_gene
 
-        counts_agg_arrs.append(counts_agg_arr)
-        counts_arrs.append(counts_arr)
-        col_names_all.extend(col_names)
+        for sample, counts in zip(col_names, counts_agg_arr):
+            counts_agg_dict.setdefault(sample, 0)
+            counts_agg_dict[sample] += counts
 
-    counts_agg_all = np.concatenate(counts_agg_arrs)
-    counts_all = np.concatenate(counts_arrs , axis=0)
-    # print(counts_all.shape) ####
-    # print(counts_all) ####
+        for sample, counts in zip(col_names, counts_arr):
+            counts_dict.setdefault(sample, 0)
+            counts_dict[sample] += counts
+
+    samples = list(counts_dict.keys())
+    counts_arr = np.stack([counts_dict[i] for i in samples])
+    counts_agg_arr = np.stack([counts_agg_dict[i] for i in samples])
+
+    return samples, counts_arr, counts_agg_arr
+
+def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_list):
+    # counts_agg_arrs = []
+    # counts_arrs = []
+    # col_names_all = []
+    # for counts_path, col_path in zip(counts_paths, col_paths):
+    #     with gzip.open(col_path, "r") as col_file:
+    #         col_names = col_file.read().decode('utf-8').strip().split("\n")
+    #     # print(col_names) ####
+    #     counts_agg_arr = np.zeros(len(col_names))
+    #     counts_arr = np.zeros((len(col_names), len(row_names)),)
+
+    #     with gzip.open(counts_path, "r") as counts_file:
+    #         for i, cl, gl in zip(range(len(row_names)), counts_file, row_names):
+    #             counts_gene = np.fromiter(map(float, cl.decode('utf-8').strip().split(" ")), float)
+    #             counts_arr[:, i] = counts_gene
+    #             counts_agg_arr += counts_gene
+
+    #     counts_agg_arrs.append(counts_agg_arr)
+    #     counts_arrs.append(counts_arr)
+    #     col_names_all.extend(col_names)
+
+    # counts_agg_all = np.concatenate(counts_agg_arrs)
+    # counts_all = np.concatenate(counts_arrs , axis=0)
+    # # print(counts_all.shape) ####
+    # # print(counts_all) ####
+
+    col_names_all, counts_all, counts_agg_all = load_data(counts_paths, col_paths, row_names)
 
     processed = process(counts_all, flags_list)
     # counts_agg_out = counts_out.sum(axis=1)
@@ -119,11 +151,13 @@ def parse(counts_paths, col_paths, row_names, out_dir, agg_out_dir, name, flags_
     # with open(os.path.join(agg_out_dir, name + '_raw'), "wb") as agg_out_file:
     #     pickle.dump(counts_agg_dct_raw, agg_out_file)
 
-def load_counts(name, pattern, base_path, rows_path, genes_dir, agg_out_dir, *args):
+def load_counts(name, patterns, base_path, rows_path, genes_dir, agg_out_dir, *args):
     with gzip.open(rows_path, "rb") as row_file:
         row_names = row_file.read().decode('utf-8').strip().split("\n")
-    counts_paths = glob.glob(os.path.join(base_path, pattern + ".s1.gz"))
-    col_paths = [i.replace(".s1.gz", ".cols.gz") for i in counts_paths]
+    col_paths = []
+    for p in patterns.split(","):
+        counts_paths = glob.glob(os.path.join(base_path, p + ".s1.gz"))
+        col_paths.extend(i.replace(".s1.gz", ".cols.gz") for i in counts_paths)
     # print(counts_paths) ####
     # print(col_paths) ####
     parse(counts_paths, col_paths, row_names, genes_dir, agg_out_dir, name, args)

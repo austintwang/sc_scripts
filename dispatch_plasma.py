@@ -348,6 +348,20 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_split_{flags}.pickle")
 
+        # dispatch(
+        #     script_path, 
+        #     names_test, 
+        #     genes_dir_kellis, 
+        #     params_kellis_test, 
+        #     params_path_kellis_test, 
+        #     "all", 
+        #     cluster_map_path_kellis, 
+        #     barcodes_map_path_kellis, 
+        #     overdispersion_path_kellis, 
+        #     2000, 
+        #     fails_only=False
+        # )
+
         dispatch(
             script_path, 
             names_test, 
@@ -358,8 +372,8 @@ if __name__ == '__main__':
             cluster_map_path_kellis, 
             barcodes_map_path_kellis, 
             overdispersion_path_kellis, 
-            2000, 
-            fails_only=False
+            5000, 
+            fails_only=True
         )
 
 
