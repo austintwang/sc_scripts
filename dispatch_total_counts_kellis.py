@@ -53,14 +53,15 @@ if __name__ == '__main__':
     clusters = {
         "Ex": ["*_Ex"],
         "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "Oligo": ["*_Oligo"],
-        "": [f"*_{i}" for i in []],
+        "Astro": ["*_Astro"],
+        "In": ["*_In"],
+        "Endo": ["*_Endo"],
+        "Microglia": ["*_Microglia"],
+        "OPC": ["*_OPC"],
+        "Per": ["*_Per"],
+        "_neur": [f"*_{i}" for i in ["Ex", "In"]],
+        "_glia": [f"*_{i}" for i in ["Oligo", "Astro", "Microglia", "OPC"]],
+        "_all": [f"*_{i}" for i in ["Ex", "Oligo", "Astro", "In", "Endo", "Microglia", "OPC", "Per"]],
     }
     # clusters["_all"] = "*"
     rows_path = os.path.join(data_dir, "auxiliary", "all_features.gz")
