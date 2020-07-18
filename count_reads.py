@@ -102,10 +102,13 @@ class MarkerBuffer(object):
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
-        contig = list(data.keys())[0][0] ####
-        if contig != self.curr_contig: ####
-            print(contig)
-            self.curr_contig = contig
+        try: ####
+            contig = list(data.keys())[0][0] ####
+            if contig != self.curr_contig: ####
+                print(contig)
+                self.curr_contig = contig
+        except IndexError:
+            pass
         # print(list(data.keys())[0][0]) ####
 
 
