@@ -93,14 +93,15 @@ class MarkerBuffer(object):
     def _retire(self, gene, data):
         out_path = self.out_pattern.format(gene)
         out_dir = os.path.dirname(out_path)
-        try:
-            os.makedirs(out_dir)
-        except FileExistsError:
-            pass
-
+        # try:
+        #     os.makedirs(out_dir)
+        # except FileExistsError:
+        #     pass
+        os.makedirs(out_dir, exist_ok=True)
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
+        print(data) ####
 
 
 class GeneFinder(object):
