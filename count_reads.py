@@ -58,6 +58,7 @@ class MarkerBuffer(object):
         self.buffer_data = {}
         self.pos = 0
         self.gene_finder = gene_finder
+        self.curr_contig = None ####
 
     def add_marker(self, marker, data, checkpoint):
         # print(marker) ####
@@ -101,7 +102,11 @@ class MarkerBuffer(object):
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
-        print(data) ####
+        contig = list(data.keys())[0][0] ####
+        if contig != self.curr_contig: ####
+            print(contig)
+            self.curr_contig = contig
+        # print(list(data.keys())[0][0]) ####
 
 
 class GeneFinder(object):
@@ -118,7 +123,7 @@ class GeneFinder(object):
         # print(self.intervals[0], self.intervals[-1]) ####
 
     def query(self, query_pos):
-        print(query_pos) ####
+        # print(query_pos) ####
         checkpoint = query_pos[2]
         if (
             (
@@ -293,7 +298,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
 def load_exons(boundaries_path):
     exons = []
-    curr_contig = None ####
+    # curr_contig = None ####
     with open(boundaries_path, "r") as boundaries_file:
         for line in boundaries_file:
             if line.startswith("##"):
@@ -307,9 +312,9 @@ def load_exons(boundaries_path):
                 gene = data[-1].split(";")[0].split(" ")[1].strip("\"")
                 exons.append([contig, start, end, gene])
                 # print(contig, start, end, gene) ####
-                if contig != curr_contig: ####
-                    print(contig)
-                    curr_contig = contig
+                # if contig != curr_contig: ####
+                #     print(contig)
+                #     curr_contig = contig
 
     return exons
 
