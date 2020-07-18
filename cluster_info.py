@@ -705,13 +705,13 @@ def get_info(run_name, genes_dir, cluster_map_path, out_dir, glist=None):
         data_df.to_string(txt_file)
     plot_sets(data_df, out_dir)
 
-def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir):
-    df_train = make_df(run_name, "x0", genes_dir, cluster_map_path, None)
+def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir, glist=None):
+    df_train = make_df(run_name, "x0", genes_dir, cluster_map_path, None, glist=glist)
     top_snps_train = {}
     for index, row in df_train.iterrows():
         top_snps_train.setdefault(row["Gene"], {})[row["Cluster"]] = row["TopSNPID"]
     # print(top_snps_train) ####
-    df_test = make_df(run_name, "x1", genes_dir, cluster_map_path, top_snps_train)
+    df_test = make_df(run_name, "x1", genes_dir, cluster_map_path, top_snps_train, glist=glist)
     df_comb = pd.merge(df_train, df_test, on=["Gene", "Cluster"], suffixes=["_train", "_test"])
     # print(df_train) ####
     # print(df_test) ####
