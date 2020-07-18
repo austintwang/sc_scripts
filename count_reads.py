@@ -293,6 +293,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
 def load_exons(boundaries_path):
     exons = []
+    curr_contig = None ####
     with open(boundaries_path, "r") as boundaries_file:
         for line in boundaries_file:
             if line.startswith("##"):
@@ -305,7 +306,10 @@ def load_exons(boundaries_path):
                 end = int(data[4])
                 gene = data[-1].split(";")[0].split(" ")[1].strip("\"")
                 exons.append([contig, start, end, gene])
-                print(contig, start, end, gene) ####
+                # print(contig, start, end, gene) ####
+                if contig != curr_contig: ####
+                    print(contig)
+                    curr_contig = contig
 
     return exons
 
