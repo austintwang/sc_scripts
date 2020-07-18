@@ -793,4 +793,4 @@ if __name__ == '__main__':
 
     for flags in flags_lst:
         os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
-        get_info_xval(f"test_split_{flags}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
+        get_info_xval(f"test_split_{flags}", 2, genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
