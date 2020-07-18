@@ -298,13 +298,14 @@ def load_exons(boundaries_path):
             if line.startswith("##"):
                 continue
             data = line.split("\t")
-            print(data) ####
+            # print(data) ####
             if data[2] == "exon":
                 contig = data[0]
                 start = int(data[3])
                 end = int(data[4])
                 gene = data[-1].split(";")[0].split(" ")[1].strip("\"")
                 exons.append([contig, start, end, gene])
+                print(contig, start, end, gene) ####
 
     return exons
 
