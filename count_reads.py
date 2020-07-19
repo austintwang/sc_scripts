@@ -58,7 +58,8 @@ class MarkerBuffer(object):
         self.buffer_data = {}
         self.pos = 0
         self.gene_finder = gene_finder
-        self.curr_contig = None ####
+        # self.curr_contig = None ####
+        self.freqs = {} ####
 
     def add_marker(self, marker, data, checkpoint):
         # print(marker) ####
@@ -104,9 +105,12 @@ class MarkerBuffer(object):
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
         try: ####
             contig = list(data.keys())[0][0] ####
-            if contig != self.curr_contig: ####
-                print(contig)
-                self.curr_contig = contig
+            self.freqs.setdefault(contig)
+            self.freqs[contig] += 1
+            print(self.freqs) ####
+            # if contig != self.curr_contig: ####
+            #     print(contig)
+            #     self.curr_contig = contig
         except IndexError:
             pass
         # print(list(data.keys())[0][0]) ####
@@ -124,8 +128,8 @@ class GeneFinder(object):
         self.idx_checkpoint = 0
         self.window_checkpoint = set([])
         # print(self.intervals[0], self.intervals[-1]) ####
-        for i in self.intervals[:100]: ####
-            print(i)
+        # for i in self.intervals[:100]: ####
+        #     print(i)
 
     def query(self, query_pos):
         # print(query_pos) ####
