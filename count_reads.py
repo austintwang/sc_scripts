@@ -124,7 +124,8 @@ class GeneFinder(object):
         self.idx_checkpoint = 0
         self.window_checkpoint = set([])
         # print(self.intervals[0], self.intervals[-1]) ####
-        print("\n".join(self.intervals[:100])) ####
+        for i in self.intervals[:100]: ####
+            print(i)
 
     def query(self, query_pos):
         # print(query_pos) ####
