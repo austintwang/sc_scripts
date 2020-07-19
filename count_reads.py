@@ -105,7 +105,7 @@ class MarkerBuffer(object):
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
         try: ####
             contig = list(data.keys())[0][0] ####
-            self.freqs.setdefault(contig)
+            self.freqs.setdefault(contig, 1)
             self.freqs[contig] += 1
             print(self.freqs) ####
             # if contig != self.curr_contig: ####
