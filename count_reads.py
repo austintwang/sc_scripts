@@ -148,7 +148,8 @@ class GeneFinder(object):
 
         while True:
             if self.contig_map[query_pos[0]] != self.curr_contig: ####
-                print(self.window) ####
+                print(self.intervals[self.idx], self.intervals[self.idx + 1])
+                print(query_pos) ####
             if (self.idx + 1) == len(self.intervals):
                 break
             next_interval = self.intervals[self.idx + 1]
