@@ -716,6 +716,7 @@ def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir, gl
     # print(df_train) ####
     # print(df_test) ####
     # print(df_comb) ####
+    os.makedirs(os.path.join(out_dir, "xvals"), exist_ok=True)
     plot_xval(df_comb, os.path.join(out_dir, "xvals"))
     plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_phi"), "Phi", "Phi", 5, 5)
     plot_xcells(df_train, df_test, os.path.join(out_dir, "xcells_beta"), "Beta", "Beta", 30, 30)
