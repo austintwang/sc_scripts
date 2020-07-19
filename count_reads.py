@@ -59,7 +59,7 @@ class MarkerBuffer(object):
         self.pos = 0
         self.gene_finder = gene_finder
         # self.curr_contig = None ####
-        self.freqs = {} ####
+        # self.freqs = {} ####
 
     def add_marker(self, marker, data, checkpoint):
         # print(marker) ####
@@ -103,16 +103,16 @@ class MarkerBuffer(object):
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
-        try: ####
-            contig = list(data.keys())[0][0] ####
-            self.freqs.setdefault(contig, 0)
-            self.freqs[contig] += 1
-            print(self.freqs) ####
-            # if contig != self.curr_contig: ####
-            #     print(contig)
-            #     self.curr_contig = contig
-        except IndexError:
-            pass
+        # try: ####
+        #     contig = list(data.keys())[0][0] ####
+        #     self.freqs.setdefault(contig, 0)
+        #     self.freqs[contig] += 1
+        #     print(self.freqs) ####
+        #     # if contig != self.curr_contig: ####
+        #     #     print(contig)
+        #     #     self.curr_contig = contig
+        # except IndexError:
+        #     pass
         # print(list(data.keys())[0][0]) ####
 
 
