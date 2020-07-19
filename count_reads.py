@@ -127,6 +127,7 @@ class GeneFinder(object):
         self.window = set([])
         self.idx_checkpoint = 0
         self.window_checkpoint = set([])
+        self.curr_contig = 0 ####
         # print(self.intervals[0], self.intervals[-1]) ####
         # for i in self.intervals[:100]: ####
         #     print(i)
@@ -146,6 +147,8 @@ class GeneFinder(object):
             self.window = self.window_checkpoint
 
         while True:
+            if self.contig_map[query_pos[0]] != self.curr_contig: ####
+                print(self.window) ####
             if (self.idx + 1) == len(self.intervals):
                 break
             next_interval = self.intervals[self.idx + 1]
@@ -160,6 +163,9 @@ class GeneFinder(object):
             else:
                 self.window.add(next_interval)
                 self.idx += 1
+
+        if self.contig_map[query_pos[0]] != self.curr_contig: ####
+                self.curr_contig = self.contig_map[query_pos[0]]
 
         # while (self.intervals[self.idx][1] <= query_pos[1]) or (self.intervals[self.idx][2] < self.contig_map[query_pos[0]]):
         #     curr_interval = self.intervals[self.idx]
