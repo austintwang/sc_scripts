@@ -68,7 +68,7 @@ def get_failed_jobs(bam_map):
     fails = set()
     for k, v in bam_map.items():
         if not os.path.isfile(k):
-            fails.add(i)
+            fails.add(k)
     # for i in names:
     #     out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
     #     if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
