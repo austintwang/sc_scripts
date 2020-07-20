@@ -32,10 +32,11 @@ def count_bam(bam_path):
             # if (wasp_pass is None) or int(wasp_pass[-1]) != 1:
             #     continue
 
-            contig_counts.setdefault(chromosome, 0) ####
-            contig_counts[chromosome] += 1 ####
-            if start % 100000 == 0:
-                print(contig_counts) ####
+            if len(chromosome) <= 2:
+                contig_counts.setdefault(chromosome, 0) ####
+                contig_counts[chromosome] += 1 ####
+                if start % 100000 == 0:
+                    print(contig_counts) ####
 
             # # print(line.get_tag("vA")) ####
             # genotype_raw = tag_data.get("vA", None)
