@@ -311,6 +311,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
                 contig_counts.setdefault(chromosome, 0) ####
                 contig_counts[chromosome] += 1 ####
+                print(contig_counts) ####
 
     readbuf.purge()
 
