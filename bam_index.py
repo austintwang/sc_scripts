@@ -64,12 +64,15 @@ def dispatch_star(bam_map, out_path_base, memory, paired=False, selection=None):
     #             else:
     #                 raise e
 
-def get_failed_jobs(names, out_path_base):
+def get_failed_jobs(bam_map):
     fails = set()
-    for i in names:
-        out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+    for k, v in bam_map.items():
+        if not os.path.isfile(k):
             fails.add(i)
+    # for i in names:
+    #     out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
+    #     if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+    #         fails.add(i)
     return fails
 
 if __name__ == '__main__':
@@ -86,8 +89,13 @@ if __name__ == '__main__':
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "processed_429")
     # print(bam_map_kellis_429) ####
 
+    # dispatch_star(
+    #     bam_map_kellis_429, out_path_base_kellis_429, 5000
+    # )
+
+    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429)
     dispatch_star(
-        bam_map_kellis_429, out_path_base_kellis_429, 20000
+        bam_map_kellis_429, out_path_base_kellis_429, 5000, selection=fail_kellis_429
     )
 
     # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)

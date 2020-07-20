@@ -91,6 +91,7 @@ if __name__ == '__main__':
 
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "partitioned_429")
     contigs = [str(i) for i in range(1, 23)]
+    
     # print(bam_map_kellis_429) ####
 
     dispatch(
