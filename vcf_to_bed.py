@@ -15,6 +15,6 @@ if __name__ == '__main__':
     genotypes_dir = "/agusevlab/awang/sc_le/genotypes/"
     if not os.path.exists(genotypes_dir):
         os.makedirs(genotypes_dir)
-    in_path = os.path.join(genotypes_dir, "HRC.r1-1.GRCh37.wgs.mac5.sites.vcf.gz")
+    in_path = os.path.join(genotypes_dir, "HRC.r1-1.GRCh37.wgs.mac5.sites.vcf")
     out_path = os.path.join(genotypes_dir, "hrc_sites.bed")
     convert(in_path, out_path)
