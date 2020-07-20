@@ -317,7 +317,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                 except ValueError:
                     continue 
 
-                # readbuf.add_read(chromosome, start, intersects, cell, genotype)
+                readbuf.add_read(chromosome, start, intersects, cell, genotype)
 
                 # contig_counts.setdefault(chromosome, 0) ####
                 # contig_counts[chromosome] += 1 ####
