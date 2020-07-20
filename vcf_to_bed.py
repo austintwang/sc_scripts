@@ -10,6 +10,8 @@ def convert(in_path, out_path):
             bam_out.write(line)
             contig_freqs.setdefault(rec.contig, 0) ####
             contig_freqs[rec.contig] += 1 ####
+            if rec.pos % 1000 == 0:
+                print(contig_freqs) ####
 
 if __name__ == '__main__':
     genotypes_dir = "/agusevlab/awang/sc_le/genotypes/"
