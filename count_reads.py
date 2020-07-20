@@ -272,6 +272,11 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                     if tag_name in req_tags:
                         tag_data[tag_name] = tag[2:]
 
+                contig_counts.setdefault(chromosome, 0) ####
+                contig_counts[chromosome] += 1 ####
+                if start % 10000 == 0:
+                    print(contig_counts) ####
+
                 wasp_pass = tag_data.get("vW")
                 if (wasp_pass is None) or int(wasp_pass[-1]) != 1:
                     continue
@@ -309,10 +314,10 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
                 # readbuf.add_read(chromosome, start, intersects, cell, genotype)
 
-                contig_counts.setdefault(chromosome, 0) ####
-                contig_counts[chromosome] += 1 ####
-                if start % 1000 == 0:
-                    print(contig_counts) ####
+                # contig_counts.setdefault(chromosome, 0) ####
+                # contig_counts[chromosome] += 1 ####
+                # if start % 1000 == 0:
+                #     print(contig_counts) ####
 
     readbuf.purge()
 
