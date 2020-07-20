@@ -36,7 +36,7 @@ def dispatch_star(bam_map, out_path_base, memory, paired=False, selection=None):
         out_path = os.path.join(out_path_base, k)
         if not os.path.exists(out_path):
             os.makedirs(out_path)
-        out_prefix = os.path.join(out_path, k)
+        out_prefix = os.path.join(out_path, f"idx_{k}")
         cmd = format_command(k, v, out_prefix, memory)
         jobs.append(cmd)
 
