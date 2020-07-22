@@ -33,8 +33,8 @@ def format_command(job_name, bam_path, contig, res_dir, err_dir, memory):
     return cmd
 
 def dispatch(bam_map, out_path_base, memory, contigs, selection=None):
-    if selection is not None:
-        bam_map = {k: v for k, v in bam_map.items() if k in selection}
+    # if selection is not None:
+    #     bam_map = {k: v for k, v in bam_map.items() if k in selection}
 
     jobs = []
     for k, v in bam_map.items():
@@ -43,8 +43,9 @@ def dispatch(bam_map, out_path_base, memory, contigs, selection=None):
         os.makedirs(res_dir, exist_ok=True)
         os.makedirs(err_dir, exist_ok=True)
         for c in contigs:
-            cmd = format_command(k, v, c, res_dir, err_dir, memory)
-            jobs.append(cmd)
+            if selection is None or (k, c) in selection:
+                cmd = format_command(k, v, c, res_dir, err_dir, memory)
+                jobs.append(cmd)
 
     # print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
     with open("exec.sh", "w") as script_file:
@@ -70,12 +71,14 @@ def dispatch(bam_map, out_path_base, memory, contigs, selection=None):
     #             else:
     #                 raise e
 
-def get_failed_jobs(names, out_path_base):
+def get_failed_jobs(bam_map, contigs, out_path_base):
+    res_dir = os.path.join(out_path_base, "raw")
     fails = set()
-    for i in names:
-        out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
-            fails.add(i)
+    for k in bam_map.keys():
+        for c in contigs:
+            if not os.path.isfile(os.path.join(res_dir, f"{k}_{v}.bam")):
+                fails.add((k, c),)
+
     return fails
 
 if __name__ == '__main__':
@@ -91,14 +94,14 @@ if __name__ == '__main__':
 
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "partitioned_429")
     contigs = [str(i) for i in range(1, 23)]
-    
+
     # print(bam_map_kellis_429) ####
 
     dispatch(
         bam_map_kellis_429, out_path_base_kellis_429, contigs, 5000
     )
 
-    # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
+    # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429, contigs, out_path_base_kellis_429)
     # dispatch_star(
     #     bam_map_kellis_429, out_path_base_kellis_429, 260000, selection=fail_kellis_429
     # )

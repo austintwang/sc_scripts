@@ -19,7 +19,7 @@ def format_command(job_name, bam_path, out_prefix, memory):
         job_name,
         "-o",
         err_name,
-        # "-x", "node03,node06,node07,node11,node13",
+        "-x", "node09,node10,node11,node19",
         "--wrap='{0}'".format(" ".join(idx_cmd)) 
     ]
 
