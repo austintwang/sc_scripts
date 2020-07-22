@@ -67,7 +67,8 @@ def dispatch_star(bam_map, out_path_base, memory, paired=False, selection=None):
 def get_failed_jobs(bam_map):
     fails = set()
     for k, v in bam_map.items():
-        if not os.path.isfile(k + ".bai"):
+        print(v + ".bai") ####
+        if not os.path.isfile(v + ".bai"):
             fails.add(k)
     # for i in names:
     #     out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
