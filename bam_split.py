@@ -32,10 +32,10 @@ def format_command(job_name, bam_path, contig, res_dir, err_dir, memory):
 
     return cmd
 
-def dispatch(bam_map, out_path_base, memory, contigs, selection=None):
+def dispatch(bam_map, out_path_base, contigs, memory, selection=None):
     # if selection is not None:
     #     bam_map = {k: v for k, v in bam_map.items() if k in selection}
-    print(contigs) ####
+    # print(contigs) ####
     jobs = []
     for k, v in bam_map.items():
         res_dir = os.path.join(out_path_base, k, "raw")
