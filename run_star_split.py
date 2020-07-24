@@ -45,7 +45,7 @@ def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, geno
         "--wrap='{0}'".format(" ".join(star_cmd)) 
     ]
 
-    # print(" ".join(cmd))
+    print(" ".join(cmd))
 
     return cmd
 
