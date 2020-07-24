@@ -165,7 +165,8 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             "snp_alleles": np.array(gene_data["marker_alleles"]),
             "total_counts": gene_data.get("total_counts", False),
             "agg_counts": gene_data.get("counts_norm", False),
-            "tss": gene_data.get("tss")
+            "tss": gene_data.get("tss"),
+            "sample_masks": gene_data.get("sample_masks", {})
         }
         inputs_all.update(params)
 

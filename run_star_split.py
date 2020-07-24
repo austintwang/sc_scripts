@@ -4,14 +4,15 @@ import pickle
 import subprocess
 import numpy as np
 
-def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
-    threads = str(min(64, 400 // (1400000 // memory)))
+def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
+    # threads = str(min(64, 400 // (1400000 // memory)))
     # threads = str(24) ####
+    threads = str(1)
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
         "--readFilesType", "SAM {0}".format("PE" if paired else "SE"),
-        "--readFilesCommand", "samtools", "view", "-h", "-L", vcf_path,
+        "--readFilesCommand", readcmd, str(contig), vcf_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
         "--limitBAMsortRAM", str(int((memory - 6000) * 1e6)),
@@ -48,7 +49,7 @@ def format_command(job_name, bam_path, bed_path, vcf_path, genome_path, boundari
 
     return cmd
 
-def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, whitelist_path, out_path_base, memory, paired=False, selection=None):
+def dispatch_star(bam_map, vcf_map, bed_map, contigs, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base, memory, paired=False, selection=None):
     if selection is not None:
         bam_map = {k: v for k, v in bam_map.items() if k in selection}
         vcf_map = {k: v for k, v in vcf_map.items() if k in selection}
@@ -56,14 +57,15 @@ def dispatch_star(bam_map, vcf_map, bed_map, genome_path, boundaries_path, white
 
     jobs = []
     for k, v in bam_map.items():
-        out_path = os.path.join(out_path_base, k)
-        if not os.path.exists(out_path):
-            os.makedirs(out_path)
-        out_prefix = os.path.join(out_path, k)
         vcf_path = vcf_map[k]
         bed_path = bed_map[k]
-        cmd = format_command(k, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory)
-        jobs.append(cmd)
+        for c in contigs:
+            out_path = os.path.join(out_path_base, k, c)
+            if not os.path.exists(out_path):
+                os.makedirs(out_path)
+            out_prefix = os.path.join(out_path, f"{k}_{c}")
+            cmd = format_command(k, c, readcmd, v, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory)
+            jobs.append(cmd)
 
     # print(" & ".join([" ".join(cmd) for cmd in jobs])) ####
     with open("exec.sh", "w") as script_file:
@@ -103,108 +105,10 @@ if __name__ == '__main__':
     whitelist_path = "/agusevlab/DATA/SCRNA/737K-august-2016.txt"
     vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
     bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
+    contigs = [str(i) for i in range(1, 23)]
+    curr_path = os.path.abspath(os.path.dirname(__file__))
+    readcmd = os.path.join(curr_path, "bam_stream.py")
 
-    # Ye lab (except "flare" bams)
-    bam_path_ye = "/agusevlab/awang/sc_le/bam/"
-    ye_non_flare = {
-        "immvar_8_31-1" : "immvarYE_0831_1.bam.1",
-        "immvar_8_31-2" : "immvarYE_0831_2.bam.1",
-        "immvar_8_31-3" : "immvarYE_0831_3.bam.1",
-        "immvar_8_31-4" : "immvarYE_0831_4.bam.1",
-        "immvar_9_07-1" : "immvarYE_0907_1.bam.1",
-        "immvar_9_07-2" : "immvarYE_0907_2.bam.1",
-        "immvar_9_07-3" : "immvarYE_0907_3.bam.1",
-        "immvar_9_07-4" : "immvarYE_0907_4.bam.1",
-        "immvar_8_30-1" : "immvarYE_8_30_1.bam.1",
-        "immvar_8_30-2" : "immvarYE_8_30_2.bam.1",
-        "immvar_8_30-3" : "immvarYE_8_30_3.bam.1",
-        "immvar_8_30-4" : "immvarYE_8_30_4.bam.1",
-        "YE110-1" : "YE110_1.bam.1",
-        "YE110-2" : "YE110_2.bam.1",
-        "YE110-3" : "YE110_3.bam.1",
-        "YE110-4" : "YE110_4.bam.1",
-        "YE_7-13-1" : "YE_7_13_1.bam.1",
-        "YE_7-13-2" : "YE_7_13_2.bam.1",
-        "YE_7-13-3" : "YE_7_13_3.bam.1",
-        "YE_7-13-4" : "YE_7_13_4.bam.1",
-        "YE_7-19-1" : "YE_7_19_1.bam.1",
-        "YE_7-19-2" : "YE_7_19_2.bam.1",
-        "YE_7-19-3" : "YE_7_19_3.bam.1",
-        "YE_7-19-4" : "YE_7_19_4.bam.1",
-        "YE_7-20-1" : "YE_7_20_1.bam.1",
-        "YE_7-20-2" : "YE_7_20_2.bam.1",
-        "YE_7-20-3" : "YE_7_20_3.bam.1",
-        "YE_7-20-4" : "YE_7_20_4.bam.1",
-        "YE_7-26-1" : "YE_7_26_1.bam.1",
-        "YE_7-26-2" : "YE_7_26_2.bam.1",
-        "YE_7-26-3" : "YE_7_26_3.bam.1",
-        "YE_7-26-4" : "YE_7_26_4.bam.1",
-        "YE_8-16-1" : "YE_8_16_1.bam.1",
-        "YE_8-16-2" : "YE_8_16_2.bam.1",
-        "YE_8-16-3" : "YE_8_16_3.bam.1",
-        "YE_8-16-4" : "YE_8_16_4.bam.1",
-        "YE_8-17-1" : "YE_8_17_1.bam.1",
-        "YE_8-17-2" : "YE_8_17_2.bam.1",
-        "YE_8-17-3" : "YE_8_17_3.bam.1",
-        "YE_8-17-4" : "YE_8_17_4.bam.1",
-        "YE_8-2-1" : "YE_8_2_1.bam.1",
-        "YE_8-2-2" : "YE_8_2_2.bam.1",
-        "YE_8-23-1" : "YE_8_23_1.bam.1",
-        "YE_8-23-2" : "YE_8_23_2.bam.1",
-        "YE_8-23-3" : "YE_8_23_3.bam.1",
-        "YE_8-23-4" : "YE_8_23_4.bam.1",
-        "YE_8-2-3" : "YE_8_2_3.bam.1",
-        "YE_8-2-4" : "YE_8_2_4.bam.1",
-        "YE_8-3-1" : "YE_8_3_1.bam.1",
-        "YE_8-3-2" : "YE_8_3_2.bam.1",
-        "YE_8-3-3" : "YE_8_3_3.bam.1",
-        "YE_8-3-4" : "YE_8_3_4.bam.1",
-        "YE_8-9-3" : "YE_8_9_3.bam.1",
-        "YE_8-9-4" : "YE_8_9_4.bam.1",
-    }
-    bam_map_ye_nf = {k: os.path.join(bam_path_ye, v) for k, v in ye_non_flare.items()}
-    vcf_map_ye_nf = {k: vcf_hrc for k in ye_non_flare.keys()}
-    bed_map_ye_nf = {k: bed_hrc for k in ye_non_flare.keys()}
-    out_path_base_ye_nf = "/agusevlab/awang/sc_le/processed"
-    # dispatch_star(bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 10000)
-
-    # Clean up Ye
-    # fail_ye_nf = get_failed_jobs(ye_non_flare.keys(), out_path_base_ye_nf)
-    # dispatch_star(
-    #     bam_map_ye_nf, vcf_map_ye_nf, bed_map_ye_nf, genome_path, boundaries_path, whitelist_path, out_path_base_ye_nf, 300000, selection=fail_ye_nf
-    # )
-
-     # : "flare1_1.bam.1",
-     # : "flare1_2.bam.1",
-     # : "flare2_1.bam.1",
-     # : "flare2_2.bam.1",
-     # : "flare3_1.bam.1",
-     # : "flare3_2.bam.1",
-     # : "flare3_3.bam.1",
-     # : "flare3_4.bam.1",
-     # : "flare4_1.bam.1",
-     # : "flare4_2.bam.1",
-     # : "flare4_3.bam.1",
-     # : "flare4_4.bam.1",
-
-
-    # Kellis 48
-    # kellis_path_base = "/agusevlab/awang/sc_kellis"
-    # bam_path_kellis = os.path.join(kellis_path_base, "121719_10xdata")
-    # kellis_48 = {i: "{0}/{0}.bam".format(i) for i in os.listdir(bam_path_kellis)}
-    # bam_map_kellis_48 = {k: os.path.join(bam_path_kellis, v) for k, v in kellis_48.items()}
-    # vcf_map_kellis_48 = {k: vcf_hrc for k in kellis_48.keys()}
-    # bed_map_kellis_48 = {k: bed_hrc for k in kellis_48.keys()}
-    # out_path_base_kellis_48 = os.path.join(kellis_path_base, "processed")
-    # dispatch_star(
-    #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 20000
-    # )
-
-    # # Clean up Kellis
-    # fail_kellis_48 = get_failed_jobs(kellis_48.keys(), out_path_base_kellis_48)
-    # dispatch_star(
-    #     bam_map_kellis_48, vcf_map_kellis_48, bed_map_kellis_48, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_48, 60000, selection=fail_kellis_48
-    # )
 
     # Kellis 429
     kellis_path_base = "/agusevlab/awang/sc_kellis"
@@ -220,16 +124,16 @@ if __name__ == '__main__':
             vcf_map_kellis_429[cols[1]] = vcf_hrc
             bed_map_kellis_429[cols[1]] = bed_hrc
 
-    out_path_base_kellis_429 = os.path.join(kellis_path_base, "processed_429")
+    out_path_base_kellis_429 = os.path.join(kellis_path_base, "partitioned_429")
     # print(bam_map_kellis_429) ####
 
-    # dispatch_star(
-    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 20000
-    # )
-
-    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
     dispatch_star(
-        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 260000, selection=fail_kellis_429
+        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, contigs, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 20000
     )
+
+    # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
+    # dispatch_star(
+    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 260000, selection=fail_kellis_429
+    # )
 
 
