@@ -8,14 +8,16 @@ def make_star_vcf(in_path, out_path, min_af):
                 continue
             cols = line.strip().split()
             if cols[0] == "#CHROM":
-                out_file.write(f"{'\t'.join(cols)}\tFORMAT\tVCF\n")
+                joined = '\t'.join(cols)
+                out_file.write(f"{joined}\tFORMAT\tVCF\n")
             else:
                 fields = cols[-1].split(";")
                 for f in fields:
                     if f.startswith("AF="):
                         af = float(f.split("=")[1])
                 if af >= min_af:
-                    out_file.write(f"{'\t'.join(cols)}\tGT\t0/1\n")
+                    joined = '\t'.join(cols)
+                    out_file.write(f"{joined}\tGT\t0/1\n")
 
 if __name__ == '__main__':
     genotypes_dir = "/agusevlab/awang/sc_le/genotypes/"
