@@ -15,7 +15,7 @@ def make_star_vcf(in_path, out_path, min_af):
                 for f in fields:
                     if f.startswith("AF="):
                         af = float(f.split("=")[1])
-                if af >= min_af:
+                if min_af <= af <= (1 - min_af):
                     joined = '\t'.join(cols)
                     out_file.write(f"{joined}\tGT\t0/1\n")
 
