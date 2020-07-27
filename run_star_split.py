@@ -12,7 +12,7 @@ def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, geno
         "STAR",
         "--runMode", "alignReads",
         "--readFilesType", "SAM {0}".format("PE" if paired else "SE"),
-        "--readFilesCommand", readcmd, str(contig), vcf_path,
+        "--readFilesCommand", readcmd, str(contig), bed_path,
         "--outFilterMultimapNmax", "1",
         "--outFilterMatchNmin", "35",
         "--limitBAMsortRAM", str(int((memory - 6000) * 1e6)),
