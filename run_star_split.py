@@ -91,12 +91,13 @@ def dispatch_star(bam_map, vcf_map, bed_map, contigs, readcmd, genome_path, boun
     #             else:
     #                 raise e
 
-def get_failed_jobs(names, out_path_base):
+def get_failed_jobs(names, contigs, out_path_base):
     fails = set()
     for i in names:
-        out_bam_path = os.path.join(out_path_base, i, i + "Aligned.sortedByCoord.out.bam")
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
-            fails.add(i)
+        for c in contigs:
+            out_bam_path = os.path.join(out_path_base, i, c, f"{i}_{c}Aligned.sortedByCoord.out.bam")
+            if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+                fails.add(i)
     return fails
 
 if __name__ == '__main__':
@@ -105,7 +106,8 @@ if __name__ == '__main__':
     whitelist_path = "/agusevlab/awang/sc_data/737K-august-2016.txt"
     vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
     bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
-    contigs = [str(i) for i in range(1, 23)]
+    # contigs = [str(i) for i in range(1, 23)]
+    contigs = ["9", "10", "11", "12", "13", "14", "15", "17"]
     curr_path = os.path.abspath(os.path.dirname(__file__))
     readcmd = os.path.join(curr_path, "bam_stream.py")
 
@@ -127,13 +129,13 @@ if __name__ == '__main__':
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "partitioned_429")
     # print(bam_map_kellis_429) ####
 
-    dispatch_star(
-        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, contigs, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000
-    )
-
-    # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
     # dispatch_star(
-    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 260000, selection=fail_kellis_429
+    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, contigs, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000
     # )
+
+    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), contigs, out_path_base_kellis_429)
+    dispatch_star(
+        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, contigs, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000, selection=fail_kellis_429
+    )
 
 
