@@ -6,8 +6,8 @@ import numpy as np
 
 def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
     # threads = str(min(64, 400 // (1400000 // memory)))
-    # threads = str(24) ####
-    threads = str(1)
+    threads = str(24) ####
+    # threads = str(1)
     star_cmd = [
         "STAR",
         "--runMode", "alignReads",
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 
     fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
     dispatch_star(
-        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 50000, selection=fail_kellis_429
+        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000, selection=fail_kellis_429
     )
 
 
