@@ -41,7 +41,7 @@ def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, geno
         job_name,
         "-o",
         err_name,
-        "-x", "node02,node04,node06,node07,node12,node13,node14,node21",
+        "-x", "node02,node04,node06,node07,node08,node12,node13,node14,node15,node16,node21",
         "--wrap='{0}'".format(" ".join(star_cmd)) 
     ]
 
