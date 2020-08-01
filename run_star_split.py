@@ -58,8 +58,8 @@ def dispatch_star(bam_map, vcf_map, bed_map, readcmd, genome_path, boundaries_pa
     jobs = []
     for t, v in bam_map.items():
         k, c = t
-        vcf_path = vcf_map[k]
-        bed_path = bed_map[k]
+        vcf_path = vcf_map[t]
+        bed_path = bed_map[t]
         out_path = os.path.join(out_path_base, k, c)
         if not os.path.exists(out_path):
             os.makedirs(out_path)
