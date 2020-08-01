@@ -136,7 +136,7 @@ if __name__ == '__main__':
     #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000
     # )
 
-    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), contigs, out_path_base_kellis_429)
+    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
     dispatch_star(
         bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000, selection=fail_kellis_429
     )
