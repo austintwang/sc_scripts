@@ -72,12 +72,15 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
     bulk_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_in.pickle")
-    finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
+    
     output_path = os.path.join(gene_dir, "bulk_qtl", f"{bulk_name}_out.pickle")
 
     try:
+        with open(params_path, "rb") as params_file:
+            params = pickle.load(params_file)
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
+        finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
         with open(bulk_path, "rb") as bulk_file:
@@ -90,8 +93,6 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
 
     all_complete = True
     try:
-        with open(params_path, "rb") as params_file:
-            params = pickle.load(params_file)
         with open(boundaries_map_path, "rb") as boundaries_map_file:
             boundaries_map = pickle.load(boundaries_map_file)
         if filter_path == "all":
