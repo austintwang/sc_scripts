@@ -311,7 +311,7 @@ if __name__ == '__main__':
 
     out_dir_base_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info_xval("combined", "rosmap", genes_dir_kellis, cluster_map_path_kellis, out_dir_base_kellis)
+    # get_info_xval("combined", "rosmap", genes_dir_kellis, cluster_map_path_kellis, out_dir_base_kellis)
 
     flags_lst = []
     for c1 in ["", "c"]:
