@@ -309,31 +309,31 @@ if __name__ == '__main__':
                 for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
-    names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
     with open(names_test_path, "rb") as names_test_file:
         names_test = pickle.load(names_test_file)
 
-    # for flags in flags_lst:
-    #     params_kellis_test = params_kellis.copy()
-    #     params_kellis_test.update({
-    #         "run_name": f"test_{flags}",
-    #         "pre_flags": flags,
-    #     })
-    #     params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
+    for flags in flags_lst:
+        params_kellis_test = params_kellis.copy()
+        params_kellis_test.update({
+            "run_name": f"test_{flags}",
+            "pre_flags": flags,
+        })
+        params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
 
-    #     dispatch(
-    #         script_path, 
-    #         names_test, 
-    #         genes_dir_kellis, 
-    #         params_kellis_test, 
-    #         params_path_kellis_test, 
-    #         "all", 
-    #         cluster_map_path_kellis, 
-    #         barcodes_map_path_kellis, 
-    #         overdispersion_path_kellis, 
-    #         2000, 
-    #         fails_only=False
-    #     )
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis_test, 
+            params_path_kellis_test, 
+            "all", 
+            cluster_map_path_kellis, 
+            barcodes_map_path_kellis, 
+            overdispersion_path_kellis, 
+            2000, 
+            fails_only=False
+        )
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
     with open(names_test_path, "rb") as names_test_file:
@@ -362,19 +362,19 @@ if __name__ == '__main__':
         #     fails_only=False
         # )
 
-        dispatch(
-            script_path, 
-            names_test, 
-            genes_dir_kellis, 
-            params_kellis_test, 
-            params_path_kellis_test, 
-            "all", 
-            cluster_map_path_kellis, 
-            barcodes_map_path_kellis, 
-            overdispersion_path_kellis, 
-            5000, 
-            fails_only=True
-        )
+        # dispatch(
+        #     script_path, 
+        #     names_test, 
+        #     genes_dir_kellis, 
+        #     params_kellis_test, 
+        #     params_path_kellis_test, 
+        #     "all", 
+        #     cluster_map_path_kellis, 
+        #     barcodes_map_path_kellis, 
+        #     overdispersion_path_kellis, 
+        #     5000, 
+        #     fails_only=True
+        # )
 
 
 
