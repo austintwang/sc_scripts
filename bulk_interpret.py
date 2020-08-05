@@ -85,7 +85,8 @@ def load_clusters(cluster_map_path):
 
 def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path, glist=None):
     clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)if glist is None:
+    genes = os.listdir(genes_dir)
+    if glist is None:
         genes = os.listdir(genes_dir)
     else:
         genes = glist
