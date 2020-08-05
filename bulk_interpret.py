@@ -83,9 +83,12 @@ def load_clusters(cluster_map_path):
         cluster_map = pickle.load(cluster_map_file)
     return cluster_map.keys()
 
-def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path):
+def make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path, glist=None):
     clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)
+    genes = os.listdir(genes_dir)if glist is None:
+        genes = os.listdir(genes_dir)
+    else:
+        genes = glist
     # genes = genes[:500] ####
     data_lst = []
     for g in genes:
@@ -284,9 +287,9 @@ def plot_sets(df, out_dir, hyp):
             os.path.join(out_dir, f"pp{h}s_{cluster}.svg"),
         )
 
-def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base):
+def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base, glist=None):
     out_dir = os.path.join(out_dir_base, bulk_name)
-    df = make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path)
+    df = make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path, glist=glist)
     plot_xcells(df, out_dir, "Phi")
     plot_xcells(df, out_dir, "Beta")
     plot_sets(df, out_dir, "0")
@@ -310,4 +313,23 @@ if __name__ == '__main__':
 
     get_info_xval("combined", "rosmap", genes_dir_kellis, cluster_map_path_kellis, out_dir_base_kellis)
 
+    flags_lst = []
+    for c1 in ["", "c"]:
+        for gn in ["", "r", "l"]:
+            for pc in ["", "f", "t"]:
+                for c2 in ["", "c", "n"]:
+                    flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
+
+    out_dir_test = os.path.join(out_dir_base_kellis, "test_preprocess")
+
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
+
+    for flags in flags_lst:
+        os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
+        get_info_xval(f"test_split_{flags}", "rosmap", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
