@@ -290,6 +290,7 @@ def plot_sets(df, out_dir, hyp):
 
 def get_info_xval(run_name, bulk_name, genes_dir, cluster_map_path, out_dir_base, glist=None):
     out_dir = os.path.join(out_dir_base, bulk_name)
+    os.makedirs(out_dir, exist_ok=True)
     df = make_df_bulk(run_name, bulk_name, genes_dir, cluster_map_path, glist=glist)
     plot_xcells(df, out_dir, "Phi")
     plot_xcells(df, out_dir, "Beta")
