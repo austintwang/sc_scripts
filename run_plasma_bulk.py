@@ -80,7 +80,8 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
             params = pickle.load(params_file)
         with open(gene_path, "rb") as gene_file:
             gene_data = pickle.load(gene_file)
-        finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
+        run_name = gene_data.get("run_name", "combined")
+        finemap_path = os.path.join(gene_dir, run_name, "plasma_i0.pickle")
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
         with open(bulk_path, "rb") as bulk_file:
