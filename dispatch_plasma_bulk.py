@@ -111,7 +111,8 @@ if __name__ == '__main__':
 
         dispatch(
             script_path, 
-            names_test, 
+            names_test,
+            "rosmap", 
             genes_dir_kellis, 
             params_kellis_test, 
             params_path_kellis_test, 
@@ -121,17 +122,18 @@ if __name__ == '__main__':
             fails_only=False
         )
 
-        dispatch(
-            script_path, 
-            names_test, 
-            genes_dir_kellis, 
-            params_kellis_test, 
-            params_path_kellis_test, 
-            "all", 
-            boundaries_map_path, 
-            5000, 
-            fails_only=True
-        )
+        # dispatch(
+        #     script_path, 
+        #     names_test, 
+        #     "rosmap",
+        #     genes_dir_kellis, 
+        #     params_kellis_test, 
+        #     params_path_kellis_test, 
+        #     "all", 
+        #     boundaries_map_path, 
+        #     5000, 
+        #     fails_only=True
+        # )
 
 
 
