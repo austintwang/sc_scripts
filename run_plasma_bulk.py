@@ -86,12 +86,13 @@ def colocalize(gene_name, bulk_name, data_dir, params_path, filter_path, boundar
             finemap_data = pickle.load(finemap_file)
         with open(bulk_path, "rb") as bulk_file:
             bulk_data = pickle.load(bulk_file)
-            print(bulk_data) ####
+            # print(bulk_data) ####
     except Exception as e:
         trace = traceback.format_exc()
         print(trace, file=sys.stderr)
         with open(status_path, "w") as status_file:
             status_file.write("Complete")
+        return
 
     all_complete = True
     try:
