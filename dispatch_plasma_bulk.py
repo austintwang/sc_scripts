@@ -105,7 +105,7 @@ if __name__ == '__main__':
     for flags in flags_lst:
         params_kellis_test = params_kellis.copy()
         params_kellis_test.update({
-            "run_name": f"test_split_{flags}",
+            "run_name": f"test_{flags}",
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"rosmap_fm_params_test_split_{flags}.pickle")
 
