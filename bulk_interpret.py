@@ -195,8 +195,8 @@ def plot_xcells(df, out_dir, stat_name):
         num_sig_test_rev = np.sum(df_merged_rev[f"TopSNPNLP{sn1}"] >= -np.log10(0.05))
         storey_pis_rev[0, ind_i] = num_sig_test_rev / num_sig_train_rev
 
-    print(storey_pis[0,0], end="\t")
-    print(storey_pis_rev[0,0], end="\t")
+    print(format(storey_pis[0,0], "0.5f"), end="\t")
+    print(format(storey_pis_rev[0,0], "0.5f"), end="\t")
     title = "scQTL to Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, ["Bulk"], title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
     title = "Bulk to scQTL Replication Storey Pi"
@@ -334,7 +334,7 @@ if __name__ == '__main__':
         names_test = pickle.load(names_test_file)
 
     for flags in flags_lst:
-        print(flags, end="\t")
+        print(format(flags, "<7"), end="\t")
         os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
         get_info_xval(f"test_{flags}", "rosmap", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
         print("")
