@@ -334,7 +334,7 @@ if __name__ == '__main__':
         names_test = pickle.load(names_test_file)
 
     for flags in flags_lst:
-        print(flags, end="\t")
+        print(flags)
         os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
         get_info_xval(f"test_{flags}", "rosmap", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
         print("")
