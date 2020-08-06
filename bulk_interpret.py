@@ -195,8 +195,8 @@ def plot_xcells(df, out_dir, stat_name):
         num_sig_test_rev = np.sum(df_merged_rev[f"TopSNPNLP{sn1}"] >= -np.log10(0.05))
         storey_pis_rev[0, ind_i] = num_sig_test_rev / num_sig_train_rev
 
-    print(format(storey_pis[0,0], "0.5f"), end="\t")
-    print(format(storey_pis_rev[0,0], "0.5f"), end="\t")
+    print(format(storey_pis[0,0], "0.6f"), end="\t")
+    print(format(storey_pis_rev[0,0], "0.6f"), end="\t")
     title = "scQTL to Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, ["Bulk"], title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
     title = "Bulk to scQTL Replication Storey Pi"
