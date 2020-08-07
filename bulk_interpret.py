@@ -188,12 +188,12 @@ def plot_xcells(df, out_dir, stat_name):
         num_sig_train = np.count_nonzero(~np.isnan(pd.to_numeric(df_merged["TopSNPNLPBulk"])))
         num_sig_test = np.sum(df_merged["TopSNPNLPBulk"] >= -np.log10(0.05))
         # print(num_sig_train, num_sig_test)
-        storey_pis[ind_i, 0] = num_sig_test / num_sig_train
+        storey_pis[ind_i, 0] = np.nan_to_num(num_sig_test / num_sig_train)
 
         df_merged_rev = df_ts_sig.loc[df_ts_sig["Cluster"] == i]
         num_sig_train_rev = np.count_nonzero(~np.isnan(pd.to_numeric(df_merged_rev[f"TopSNPNLP{sn1}"])))
         num_sig_test_rev = np.sum(df_merged_rev[f"TopSNPNLP{sn1}"] >= -np.log10(0.05))
-        storey_pis_rev[0, ind_i] = num_sig_test_rev / num_sig_train_rev
+        storey_pis_rev[0, ind_i] = np.nan_to_num(num_sig_test_rev / num_sig_train_rev)
 
     print(format(storey_pis[0,0], "0.6f"), end="\t")
     print(format(storey_pis_rev[0,0], "0.6f"), end="\t")
@@ -322,6 +322,7 @@ if __name__ == '__main__':
             for pc in ["", "f", "t"]:
                 for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
+    flags_lst = flags_lst[flags_lst.index("cmc"):] ####
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_22.pickle")
     with open(names_test_path, "rb") as names_test_file:
