@@ -142,7 +142,7 @@ if __name__ == '__main__':
         "cell_type_aliases": aliases_kellis,
         "splits": [1.],
         "min_carriers": 5,
-        "pre_flags": "crmtc",
+        "pre_flags": "clmt",
     }
     params_path_kellis_combined = os.path.join(data_path_kellis, "plasma_params_combined.pickle")
 
@@ -167,19 +167,19 @@ if __name__ == '__main__':
     })
     params_path_kellis_coloc = os.path.join(data_path_kellis, "plasma_params_combined_coloc.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis_coloc, 
-    #     params_path_kellis_coloc, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_coloc, 
+        params_path_kellis_coloc, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -202,19 +202,19 @@ if __name__ == '__main__':
     })
     params_path_kellis_xval = os.path.join(data_path_kellis, "plasma_params_split.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis_xval, 
-    #     params_path_kellis_xval, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis_xval, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -238,19 +238,19 @@ if __name__ == '__main__':
     })
     params_path_kellis_xval = os.path.join(data_path_kellis, "plasma_params_split_strict.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis_xval, 
-    #     params_path_kellis_xval, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis_xval, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -273,19 +273,19 @@ if __name__ == '__main__':
     })
     params_path_kellis_xval = os.path.join(data_path_kellis, "plasma_params_split.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     genes_dir_kellis, 
-    #     params_kellis_xval, 
-    #     params_path_kellis_xval, 
-    #     "all", 
-    #     cluster_map_path_kellis, 
-    #     barcodes_map_path_kellis, 
-    #     overdispersion_path_kellis, 
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        genes_dir_kellis, 
+        params_kellis_xval, 
+        params_path_kellis_xval, 
+        "all", 
+        cluster_map_path_kellis, 
+        barcodes_map_path_kellis, 
+        overdispersion_path_kellis, 
+        2000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -323,19 +323,19 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"plasma_params_test_{flags}.pickle")
 
-        dispatch(
-            script_path, 
-            names_test, 
-            genes_dir_kellis, 
-            params_kellis_test, 
-            params_path_kellis_test, 
-            "all", 
-            cluster_map_path_kellis, 
-            barcodes_map_path_kellis, 
-            overdispersion_path_kellis, 
-            2000, 
-            fails_only=False
-        )
+        # dispatch(
+        #     script_path, 
+        #     names_test, 
+        #     genes_dir_kellis, 
+        #     params_kellis_test, 
+        #     params_path_kellis_test, 
+        #     "all", 
+        #     cluster_map_path_kellis, 
+        #     barcodes_map_path_kellis, 
+        #     overdispersion_path_kellis, 
+        #     2000, 
+        #     fails_only=False
+        # )
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
     with open(names_test_path, "rb") as names_test_file:
