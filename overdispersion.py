@@ -39,7 +39,7 @@ def load_gene(clusters, gene, cell_map, barcodes_map, gene_dir, barcodes_idx, cl
     try:
         with open(data_path, "rb") as data_file:
             data = pickle.load(data_file)
-    except FileNotFoundError, EOFError:
+    except (FileNotFoundError, EOFError:)
         return
     # print(cell_map) ####
     # print(gene) ####
