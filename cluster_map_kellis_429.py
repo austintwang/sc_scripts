@@ -12,7 +12,7 @@ def get_cluster_map(clusters_path, well_map_path, out_path, metas):
     for k, v in metas.items():
         for c in v:
             meta_map.setdefault(c, []).append(k)
-    print(meta_map) ####
+    # print(meta_map) ####
 
     cluster_map = {}
     with gzip.open(clusters_path, "rt", encoding='utf-8') as clusters_file:
@@ -30,6 +30,7 @@ def get_cluster_map(clusters_path, well_map_path, out_path, metas):
                 for m in clust_metas:
                     cluster_map.setdefault(m, []).append(cell)
 
+    print(cluster_map.keys()) ####
     with open(out_path, "wb") as out_file:
         pickle.dump(cluster_map, out_file)
 
