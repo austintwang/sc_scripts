@@ -14,7 +14,7 @@ def get_cluster_map(clusters_path, well_map_path, out_path, metas):
             meta_map.setdefault(c, []).append(k)
     print(meta_map) ####
 
-    cluster_map = {"_all": [], "_neur": [], "glia": []}
+    cluster_map = {}
     with gzip.open(clusters_path, "rt", encoding='utf-8') as clusters_file:
         for line in clusters_file:
             cols = line.strip("\n").split(" ")

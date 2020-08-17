@@ -108,7 +108,7 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
 
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
-        print(cluster_map.keys()) ####
+        # print(cluster_map.keys()) ####
         counts, num_cells = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
         overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
