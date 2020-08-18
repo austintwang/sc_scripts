@@ -30,4 +30,4 @@ if __name__ == '__main__':
 
     # build_list(genes_dir_kellis, "22", data_path_kellis)
     build_list(genes_dir_kellis, "10", data_path_kellis)
-    build_list(genes_dir_kellis, "1", data_path_kellis)
+    # build_list(genes_dir_kellis, "1", data_path_kellis)
