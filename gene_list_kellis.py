@@ -15,7 +15,7 @@ def build_list(data_dir, out_dir):
             continue
 
     print(len(gene_list)) ####
-    with open(os.path.join(out_dir, f"list_429_all.pickle"), "wb") as out_file:
+    with open(os.path.join(out_dir, "list_429_all.pickle"), "wb") as out_file:
         pickle.dump(gene_list, out_file)
             
 if __name__ == '__main__':

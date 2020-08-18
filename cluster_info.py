@@ -304,6 +304,8 @@ def calc_nlq(df, sn):
 def plot_sets(df, out_dir):
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
@@ -509,6 +511,8 @@ def plot_xval(df, out_dir):
     os.makedirs(out_dir, exist_ok=True)
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
@@ -571,6 +575,8 @@ def plot_xcells(df_train, df_test, out_dir, stat_name_train, stat_name_test, cut
     # ]
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "In": "Inhibitory Neuron",
         "Oligo": "Oligodendrocyte",
@@ -635,6 +641,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     sn = stat_name
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "In": "Inhibitory Neuron",
         "Oligo": "Oligodendrocyte",
@@ -761,15 +769,15 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # out_dir_strict = os.path.join(out_dir_kellis, "strict")
+    out_dir_strict = os.path.join(out_dir_kellis, "strict")
 
-    # get_info_xval("split_strict", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_strict)
+    get_info_xval("split_strict", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_strict)
 
     flags_lst = []
     for c1 in ["", "c"]:
@@ -777,7 +785,7 @@ if __name__ == '__main__':
             for pc in ["", "f", "t"]:
                 for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
-                    
+
     flags_lst = flags_lst[flags_lst.index("crmtc"):] ####
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
@@ -788,7 +796,7 @@ if __name__ == '__main__':
     for flags in flags_lst:
         print(flags) ####
         os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
-        get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
+        # get_info(f"test_{flags}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
 
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
