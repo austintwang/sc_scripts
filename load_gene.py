@@ -128,6 +128,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         # print(samples_nc) ####
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
+        print(genotypes_nc.size())
+        print(samples_nc.size())
 
         clinical_masks = {}
         for k, v in clinical_sets.items():
