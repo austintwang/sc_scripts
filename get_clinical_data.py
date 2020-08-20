@@ -48,8 +48,7 @@ if __name__ == '__main__':
     categories = [
         ("Female", (("msex", 0, "eq"),)),
         ("Male", (("msex", 1, "eq"),)),
-        ("AgeUnder70", (("age_death", 70, "lt"),)),
-        ("Age70To80", (("age_death", 70, "ge"), ("age_death", 80, "lt"),)),
+        ("AgeUnder80", (("age_death", 80, "lt"),)),
         ("Age80To90", (("age_death", 80, "ge"), ("age_death", 90, "lt"),)),
         ("AgeOver90", (("age_death", 90, "ge"),)),
     ]
