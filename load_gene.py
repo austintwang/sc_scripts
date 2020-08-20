@@ -79,7 +79,7 @@ def process_samplename_kellis(sample_names):
 def process_countsname_kellis(counts_names):
     return counts_names
 
-def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ignore_total, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, status_path):
+def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ignore_total, data_dir, vcf_path, barcodes_map_path, boundaries_map_path, tss_map_path, total_counts_norm_path, clinical_sets_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
