@@ -1,6 +1,7 @@
 import os
 import pickle
 import operator
+import numpy as np
 import pandas as pd
 
 OP_MAP = {
@@ -18,6 +19,7 @@ def build_sets(data, categories):
         evals = [OP_MAP[op](data[trait], val) for trait, val, op in criteria]
         idx = np.all(evals, axis=0)
         ids = set(data.loc[idx, "projid"].astype(str))
+        print(ids) ####
         # print(data.loc[data[trait] == val]["projid"].astype(str)) ####
         # print(type(ids.pop())) ####
         clinical_sets[name] = ids
