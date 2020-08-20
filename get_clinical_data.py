@@ -21,7 +21,7 @@ if __name__ == '__main__':
     data_path = "/agusevlab/awang/sc_kellis/rosmap_clinical/ROSMAP_clinical.csv"
     categories = [
         ("Female", "msex", 0),
-        ("Male", "msex", 0)
+        ("Male", "msex", 1)
     ]
     out_path = "/agusevlab/awang/sc_kellis/rosmap_clinical/clinical_sets.pickle"
     get_clinical_data(data_path, categories, out_path)
