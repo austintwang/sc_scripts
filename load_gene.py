@@ -129,15 +129,15 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
         # print(genotypes) ####
-        print(genotypes_nc.shape) ####
-        print(len(samples_nc)) ####
+        # print(genotypes_nc.shape) ####
+        # print(len(samples_nc)) ####
 
         clinical_masks = {}
         for k, v in clinical_sets.items():
             # print(v) ####
             mask = np.fromiter((i in v for i in samples_nc), bool)
-            print(mask) ####
-            print(np.sum(mask.astype(int))) ####
+            # print(mask) ####
+            # print(np.sum(mask.astype(int))) ####
             clinical_masks[k] = mask
 
         total_counts_dir = os.path.join(gene_dir, "processed_counts")
