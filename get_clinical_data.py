@@ -19,7 +19,7 @@ def build_sets(data, categories):
         evals = [OP_MAP[op](data[trait], val) for trait, val, op in criteria]
         idx = np.all(evals, axis=0)
         ids = set(data.loc[idx, "projid"].astype(str))
-        print(ids) ####
+        # print(ids) ####
         # print(data.loc[data[trait] == val]["projid"].astype(str)) ####
         # print(type(ids.pop())) ####
         clinical_sets[name] = ids
@@ -36,6 +36,10 @@ if __name__ == '__main__':
     categories = [
         ("Female", (("msex", 0, "eq"),)),
         ("Male", (("msex", 1, "eq"),)),
+        ("AgeUnder70", (("age_death", 70, "lt"),)),
+        ("Age70To80", (("age_death", 70, "ge"), ("age_death", 80, "lt"))),
+        ("Age80To90", (("age_death", 80, "ge"), ("age_death", 90, "lt"))),
+        ("AgeOver90", (("age_death", "90+", "eq"),)),
     ]
     out_path = "/agusevlab/awang/sc_kellis/rosmap_clinical/clinical_sets.pickle"
     get_clinical_data(data_path, categories, out_path)
