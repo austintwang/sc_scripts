@@ -25,8 +25,17 @@ def build_sets(data, categories):
         clinical_sets[name] = ids
     return clinical_sets
 
+def cast_num_no_plus(val):
+    try: 
+        return float(val.rstrip("+"))
+    except ValueError:
+        return np.nan
+
 def get_clinical_data(data_path, categories, out_path):
-    data = pd.read_csv(data_path)
+    converters = {
+        "age_death": 
+    }
+    data = pd.read_csv(data_path, converters=converters)
     sets = build_sets(data, categories)
     with open(out_path, "wb") as out_file:
         pickle.dump(sets, out_file)
@@ -37,9 +46,9 @@ if __name__ == '__main__':
         ("Female", (("msex", 0, "eq"),)),
         ("Male", (("msex", 1, "eq"),)),
         ("AgeUnder70", (("age_death", 70, "lt"),)),
-        ("Age70To80", (("age_death", 70, "ge"), ("age_death", 80, "lt"))),
-        ("Age80To90", (("age_death", 80, "ge"), ("age_death", 90, "lt"))),
-        ("AgeOver90", (("age_death", "90+", "eq"),)),
+        ("Age70To80", (("age_death", 70, "ge"), ("age_death", 80, "lt"),)),
+        ("Age80To90", (("age_death", 80, "ge"), ("age_death", 90, "lt"),)),
+        ("AgeOver90", (("age_death", 90, "ge"),)),
     ]
     out_path = "/agusevlab/awang/sc_kellis/rosmap_clinical/clinical_sets.pickle"
     get_clinical_data(data_path, categories, out_path)
