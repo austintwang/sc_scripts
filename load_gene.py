@@ -94,6 +94,8 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         boundaries_map = pickle.load(boundaries_map_file)
     with open(tss_map_path, "rb") as tss_map_file:
         tss_map = pickle.load(tss_map_file)
+    with open(clinical_sets_path, "rb") as clinical_sets_file:
+        clinical_sets = pickle.load(clinical_sets_file)
     ignore_total = ignore_total == "True" 
     # if ignore_total:
     #     total_counts_norm = None
@@ -125,6 +127,12 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
         samples_nc = sample_process_fn(samples_nc)
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
+
+        clinical_masks = {}
+        for k, v in clinical_sets.items():
+            mask = np.fromiter(i in v for i in samples_nc, bool)
+            print(mask)
+            clinical_masks[k] = mask
 
         total_counts_dir = os.path.join(gene_dir, "processed_counts")
         # print(ignore_total) ####
@@ -170,6 +178,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "total_counts": total_counts,
             # "counts_norm": total_counts_norm,
             "tss": tss,
+            "sample_masks": clinical_masks,
         }
         out_path = os.path.join(gene_dir, "gene_data.pickle")
         with open(out_path, "wb") as out_file:
