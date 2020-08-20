@@ -111,7 +111,7 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"rosmap_fm_params_test_split_{flags}.pickle")
 
-        dispatch(
+        # dispatch(
         #     script_path, 
         #     names_test,
         #     "rosmap", 
