@@ -22,6 +22,7 @@ def build_sets(data, categories):
         # print(ids) ####
         # print(data.loc[data[trait] == val]["projid"].astype(str)) ####
         # print(type(ids.pop())) ####
+        print(name, len(ids)) ####
         clinical_sets[name] = ids
     return clinical_sets
 
