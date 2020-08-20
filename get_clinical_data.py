@@ -33,7 +33,9 @@ def cast_num_no_plus(val):
 
 def get_clinical_data(data_path, categories, out_path):
     converters = {
-        "age_death": 
+        "age_first_ad_dx": cast_num_no_plus,
+        "age_death": cast_num_no_plus,
+        "age_at_visit_max": cast_num_no_plus,
     }
     data = pd.read_csv(data_path, converters=converters)
     sets = build_sets(data, categories)
