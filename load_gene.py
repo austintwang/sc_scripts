@@ -125,6 +125,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             vcf_path, contig, max(0, tss_pos - radius), tss_pos + radius + 1, min_maf=min_maf, min_info=min_info
         )
         samples_nc = sample_process_fn(samples_nc)
+        print(samples_nc) ####
         # sample_gen_map_nc = dict([(val, ind) for ind, val in enumerate(samples_nc)])
         # marker_gen_map_nc = dict([(val, ind) for ind, val in enumerate(markers_nc)])
 
