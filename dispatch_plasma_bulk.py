@@ -78,18 +78,18 @@ if __name__ == '__main__':
     params_kellis_test = params_kellis.copy()
     params_path_kellis_test = os.path.join(data_path_kellis, "rosmap_fm_params.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     names_kellis, 
-    #     "rosmap",
-    #     genes_dir_kellis, 
-    #     params_kellis_test, 
-    #     params_path_kellis_test, 
-    #     "all", 
-    #     boundaries_map_path,
-    #     2000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        names_kellis, 
+        "rosmap",
+        genes_dir_kellis, 
+        params_kellis_test, 
+        params_path_kellis_test, 
+        "all", 
+        boundaries_map_path,
+        2000, 
+        fails_only=False
+    )
 
     flags_lst = []
     for c1 in ["", "c"]:
@@ -98,7 +98,7 @@ if __name__ == '__main__':
                 for c2 in ["", "c", "n"]:
                     flags_lst.append(f"{c1}{gn}m{pc}{c2}")
 
-    flags_lst = flags_lst[flags_lst.index("crmtc"):] ####
+    # flags_lst = flags_lst[flags_lst.index("crmtc"):] ####
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
     with open(names_test_path, "rb") as names_test_file:
@@ -112,17 +112,17 @@ if __name__ == '__main__':
         params_path_kellis_test = os.path.join(data_path_kellis, "test_429_params", f"rosmap_fm_params_test_split_{flags}.pickle")
 
         dispatch(
-            script_path, 
-            names_test,
-            "rosmap", 
-            genes_dir_kellis, 
-            params_kellis_test, 
-            params_path_kellis_test, 
-            "all", 
-            boundaries_map_path, 
-            2000, 
-            fails_only=False
-        )
+        #     script_path, 
+        #     names_test,
+        #     "rosmap", 
+        #     genes_dir_kellis, 
+        #     params_kellis_test, 
+        #     params_path_kellis_test, 
+        #     "all", 
+        #     boundaries_map_path, 
+        #     2000, 
+        #     fails_only=False
+        # )
 
         # dispatch(
         #     script_path, 
