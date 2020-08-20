@@ -131,9 +131,9 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
         clinical_masks = {}
         for k, v in clinical_sets.items():
-            print(v) ####
+            # print(v) ####
             mask = np.fromiter((i in v for i in samples_nc), bool)
-            print(mask)
+            print(mask) ####
             clinical_masks[k] = mask
 
         total_counts_dir = os.path.join(gene_dir, "processed_counts")

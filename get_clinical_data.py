@@ -5,7 +5,7 @@ import pandas as pd
 def build_sets(data, categories):
     clinical_sets = {}
     for name, trait, val in categories:
-        ids = set(data.loc[data[trait] == val]["projid"])
+        ids = set(data.loc[data[trait] == val]["projid"].astype(str))
         clinical_sets[name] = ids
     return clinical_sets
 
