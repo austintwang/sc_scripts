@@ -130,7 +130,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
         clinical_masks = {}
         for k, v in clinical_sets.items():
-            mask = np.fromiter(i in v for i in samples_nc, bool)
+            mask = np.fromiter((i in v for i in samples_nc), bool)
             print(mask)
             clinical_masks[k] = mask
 
