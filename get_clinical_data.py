@@ -51,6 +51,11 @@ if __name__ == '__main__':
         ("AgeUnder80", (("age_death", 80, "lt"),)),
         ("Age80To90", (("age_death", 80, "ge"), ("age_death", 90, "lt"),)),
         ("AgeOver90", (("age_death", 90, "ge"),)),
+        ("ReaganNeg", (("ad_reagan", 0, "eq"),)),
+        ("ReaganPos", (("ad_reagan", 1, "eq"),)),
+        ("CeradNCI", (("ceradsc", 1, "eq"),)),
+        ("CeradMCI", (("ceradsc", 2, "ge"), ("ceradsc", 3, "le"),)),
+        ("CeradAD", (("ceradsc", 4, "ge"), ("ceradsc", 5, "le"),)),
     ]
     out_path = "/agusevlab/awang/sc_kellis/rosmap_clinical/clinical_sets.pickle"
     get_clinical_data(data_path, categories, out_path)
