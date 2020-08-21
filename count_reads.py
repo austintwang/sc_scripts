@@ -100,6 +100,7 @@ class MarkerBuffer(object):
         # except FileExistsError:
         #     pass
         os.makedirs(out_dir, exist_ok=True)
+        print(out_path) ####
         with open(out_path, "wb") as out_file:
             pickle.dump(data, out_file)
         # print([(k, np.sum(np.stack(v.values()), axis=0)) for k, v in data.items()]) ####
