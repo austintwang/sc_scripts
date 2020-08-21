@@ -148,9 +148,9 @@ class GeneFinder(object):
             self.window = self.window_checkpoint
 
         while True:
-            if self.contig_map[query_pos[0]] != self.curr_contig and self.contig_map[query_pos[0]] < 11: ####
-                print(self.intervals[self.idx], self.intervals[self.idx + 1])
-                print(query_pos) ####
+            # if self.contig_map[query_pos[0]] != self.curr_contig and self.contig_map[query_pos[0]] < 11: ####
+            #     print(self.intervals[self.idx], self.intervals[self.idx + 1])
+            #     print(query_pos) ####
             if (self.idx + 1) == len(self.intervals):
                 break
             next_interval = self.intervals[self.idx + 1]
