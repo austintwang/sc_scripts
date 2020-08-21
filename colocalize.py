@@ -132,7 +132,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
 
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
-    finemap_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
+    finemap_path = os.path.join(gene_dir, "combined_coloc", "plasma_i0.pickle")
     os.makedirs(os.path.join(gene_dir, "coloc"), exist_ok=True)
     
     all_complete = True
@@ -245,25 +245,36 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                 for fg in model_flavors_gwas:
                     for fq in model_flavors_qtl:
                         try:
-                            # snps_used = result["ppas_{0}".format(fg)] != np.nan
-                            snps_used = np.logical_not(np.isnan(result["ppas_{0}".format(fg)]))
-                            scale = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
-                            # scale = 1.
-                            # print(scale) ####
-                            # print(snps_used) ####
-                            # print(result["ppas_{0}".format(fg)]) ####
-                            fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale
-                            clpps = fm_res_scaled * result["ppas_{0}".format(fg)]
-                            # print(fm_res["ppas_{0}".format(fq)]) ####
-                            h4 = np.nansum(clpps)
-                            h4_scaled = h4 * coloc_ratio / (h4 * coloc_ratio + (1 - h4)) 
-                            clpps_scaled = clpps * coloc_ratio / (h4 * coloc_ratio + (1 - h4)) 
+                            snps_used = np.logical_and(
+                                np.logical_not(np.isnan(result["ppas_{0}".format(fg)])),
+                                np.logical_not(np.isnan(fm_res["ppas_{0}".format(fq)]))
+                            )
+                            scale_fm = np.nansum(fm_res["ppas_{0}".format(fq)][snps_used])
+                            # scale_fm = 1.
+                            fm_res_scaled = fm_res["ppas_{0}".format(fq)] / scale_fm
+                            scale_gwas = np.nansum(result["ppas_{0}".format(fg)][snps_used])
+                            gwas_res_scaled = result["ppas_{0}".format(fg)] / scale_gwas
+                            clpps = fm_res_scaled * gwas_res_scaled
+                            # h4 = np.nansum(clpps)
+                            h4 = np.nansum(fm_res_scaled * gwas_res_scaled)
+                            h3 = np.nansum(fm_res_scaled[snps_used]) * np.nansum(gwas_res_scaled[snps_used]) - h4
+                            h0 = (1 - np.nansum(fm_res_scaled[snps_used])) * (1 - np.nansum(gwas_res_scaled[snps_used]))
+                            h1 = np.nansum(fm_res_scaled[snps_used]) * (1 - np.nansum(gwas_res_scaled[snps_used]))
+                            h2 = (1 - np.nansum(fm_res_scaled[snps_used])) * np.nansum(gwas_res_scaled[snps_used])
 
+                            clpps_scaled = clpps * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            h0_scaled = h0 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            h1_scaled = h1 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            h2_scaled = h2 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            h3_scaled = h3 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            h4_scaled = h4 * coloc_ratio / (h4 * coloc_ratio + (1 - h4))
+                            # print(cluster, fg, fq) ####
+                            # print(sorted(list(zip(clpps, fm_res_scaled, result["ppas_{0}".format(fg)])), key=lambda x: np.nan_to_num(-x[2]))) ####
                             cluster_results[cluster]["clpp_{0}_{1}".format(fq, fg)] = clpps_scaled
-                            # if study == "BDSCZ_Ruderfer2018.pickle" and cluster == "Ex":
-                                # print(cluster, fg, fq) ####
-                                # print(fm_res_scaled) ####
-                                # print(list(zip(gene_data["marker_ids"], fm_res_scaled, inputs["z_beta"], clpps))) ####
+                            cluster_results[cluster]["h0_{0}_{1}".format(fq, fg)] = h0_scaled
+                            cluster_results[cluster]["h1_{0}_{1}".format(fq, fg)] = h1_scaled
+                            cluster_results[cluster]["h2_{0}_{1}".format(fq, fg)] = h2_scaled
+                            cluster_results[cluster]["h3_{0}_{1}".format(fq, fg)] = h3_scaled
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4_scaled
                         except KeyError as e:
                             # print(e) ####
