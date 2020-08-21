@@ -170,6 +170,8 @@ def plot_xcells(df, out_dir, stat_name):
 
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "In": "Inhibitory Neuron",
         "Oligo": "Oligodendrocyte",
@@ -240,6 +242,8 @@ def plot_sets(df, out_dir, hyp):
     h = hyp
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
