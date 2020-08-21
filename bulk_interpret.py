@@ -314,7 +314,7 @@ if __name__ == '__main__':
 
     out_dir_base_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info_xval("combined", "rosmap", genes_dir_kellis, cluster_map_path_kellis, out_dir_base_kellis)
+    get_info_xval("combined", "rosmap", genes_dir_kellis, cluster_map_path_kellis, out_dir_base_kellis)
 
     flags_lst = []
     for c1 in ["", "c"]:
@@ -335,8 +335,8 @@ if __name__ == '__main__':
     with open(names_test_path, "rb") as names_test_file:
         names_test = pickle.load(names_test_file)
 
-    for flags in flags_lst:
-        print(format(flags, "<8"), end="\t")
-        os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
-        get_info_xval(f"test_{flags}", "rosmap", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
-        print("")
+    # for flags in flags_lst:
+    #     print(format(flags, "<8"), end="\t")
+    #     os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
+    #     get_info_xval(f"test_{flags}", "rosmap", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
+    #     print("")
