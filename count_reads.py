@@ -284,7 +284,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
 
                 contig_counts.setdefault(chromosome, 0) ####
                 contig_counts[chromosome] += 1 ####
-                if start % 10000 == 0:
+                if start % 100 == 0:
                     print(contig_counts) ####
 
                 # print(line.get_tag("vA")) ####
