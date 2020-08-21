@@ -106,7 +106,7 @@ if __name__ == '__main__':
     genome_path = "/cluster/agusevlab/awang/STAR_hg19/"
     boundaries_path = "/agusevlab/DATA/ANNOTATIONS/gencode.v26lift37.annotation.patched_contigs.gtf"
     whitelist_path = "/agusevlab/awang/sc_data/737K-august-2016.txt"
-    vcf_hrc = "/agusevlab/DATA/ANNOTATIONS/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
+    vcf_hrc = "/agusevlab/awang/sc_data/HRC.r1-1.GRCh37.wgs.mac5.maf05.sites.vcf"
     bed_hrc = "/agusevlab/awang/sc_le/genotypes/hrc_sites.bed"
     # contigs = [str(i) for i in range(1, 23)]
     contigs = ["9", "10", "11", "12", "13", "14", "15", "17"]

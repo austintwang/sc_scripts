@@ -279,7 +279,7 @@ def count_bam(bam_path, exons, readdata_fn, out_pattern, parse_manual):
                     print(contig_counts) ####
 
                 wasp_pass = tag_data.get("vW")
-                print(wasp_pass) ####
+                # print(wasp_pass) ####
                 if (wasp_pass is None) or int(wasp_pass[-1]) != 1:
                     continue
 
