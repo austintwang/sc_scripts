@@ -4,12 +4,14 @@ import pickle
 import subprocess
 import numpy as np
 
+STAR_PATH = "/agusevlab/awang/STAR/STAR-2.7.1a/bin/Linux_x86_64_static/STAR"
+
 def format_command(job_name, contig, readcmd, bam_path, bed_path, vcf_path, genome_path, boundaries_path, whitelist_path, out_prefix, paired, memory):
     # threads = str(min(64, 400 // (1400000 // memory)))
     threads = str(24) ####
     # threads = str(1)
     star_cmd = [
-        "STAR",
+        STAR_PATH,
         "--runMode", "alignReads",
         "--readFilesType", "SAM {0}".format("PE" if paired else "SE"),
         "--readFilesCommand", readcmd, str(contig), bed_path,
