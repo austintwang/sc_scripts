@@ -206,6 +206,8 @@ def plot_comparison(comp_df, gene_name, gene_id, out_dir):
 def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
@@ -319,6 +321,8 @@ def make_violin(
 def plot_sets(df, out_dir):
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "Oligo": "Oligodendrocyte",
         "Astro": "Astroglia",
@@ -372,6 +376,8 @@ def calc_sumstats(df, out_dir, thresh):
     ]
     clusters = {
         "_all": "All Cells",
+        "_neur": "All Neurons",
+        "_glia": "All Glia",
         "Ex": "Excitatory Neuron",
         "In": "Inhibitory Neuron",
         "Oligo": "Oligodendrocyte",
