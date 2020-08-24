@@ -62,18 +62,6 @@ if __name__ == '__main__':
     gwas_names = [i.split(".")[0] for i in os.listdir(gwas_dir)]
     status_dir_kellis = os.path.join(data_path_kellis, "statuses/coloc_interpret")
 
-    dispatch(
-        script_path, 
-        genes_dir_kellis, 
-        status_dir_kellis,
-        gwas_names,
-        gene_map_path,
-        cluster_map_path_kellis, 
-        out_path_kellis, 
-        7000, 
-        fails_only=False
-    )
-
     # dispatch(
     #     script_path, 
     #     genes_dir_kellis, 
@@ -82,8 +70,20 @@ if __name__ == '__main__':
     #     gene_map_path,
     #     cluster_map_path_kellis, 
     #     out_path_kellis, 
-    #     10000, 
-    #     fails_only=True
+    #     7000, 
+    #     fails_only=False
     # )
+
+    dispatch(
+        script_path, 
+        genes_dir_kellis, 
+        status_dir_kellis,
+        gwas_names,
+        gene_map_path,
+        cluster_map_path_kellis, 
+        out_path_kellis, 
+        10000, 
+        fails_only=True
+    )
 
 
