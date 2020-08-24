@@ -56,7 +56,7 @@ def load_clusters(cluster_map_path):
     return cluster_map.keys()
 
 def plot_heatmap(df, title, result_path):
-    df_plot = df.pivot(index="GeneName", columns="Cluster", values="PP4Joint")
+    df_plot = df.pivot(index="GeneName", columns="Cluster", values="PP4AS")
     df_plot = df_plot.loc[np.nanmax(df_plot, axis=1) >= 0, :]
     mask = np.isnan(df_plot)
     df_filled = np.abs(df_plot.fillna(df_plot.mean()))
@@ -233,7 +233,7 @@ def analyze_locus(gene_id, plasma_data, coloc_data, gene_map, out_dir):
         # print(plasma_clust.keys()) ####
         try:
             # print(plasma_data["_gen"]) ####
-            for spos, z_beta, z_phi, z_coloc, clpp in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"], coloc_clust["clpp_indep_eqtl"]):
+            for spos, z_beta, z_phi, z_coloc, clpp in zip(plasma_data["_gen"]["snp_pos"], plasma_clust["z_beta"], plasma_clust["z_phi"], coloc_data["z_beta"], coloc_clust["clpp_ase_eqtl"]):
                 pos = int(spos[1]) + 1
                 nlp_beta = -scipy.stats.norm.logsf(np.abs(z_beta)) / np.log(10) - np.log10(2)
                 nlp_phi = -scipy.stats.norm.logsf(np.abs(z_phi)) / np.log(10) - np.log10(2)
