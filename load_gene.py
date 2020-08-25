@@ -43,7 +43,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
         genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids, marker_alleles
 
-def add_data(agg_counts, burst_moments, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
+def add_data(agg_counts, burst_data, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
     # print(var_data) ####
     for var, cells in var_data.items():
         for cell, counts in cells.items():
@@ -58,7 +58,7 @@ def add_data(agg_counts, burst_moments, var_data, cell_map, genotypes, sample_ge
                 continue
             counts_all = np.sum(counts)
             cell_agg = agg_counts.setdefault(cell_full, np.array([0,0,0]))
-            moment_agg = agg_counts.setdefault(cell_full, np.zeros((4,2),))
+            moment_agg = burst_data.setdefault(cell_full, np.zeros((4,2),))
             cell_agg[2] += counts_all
             # print(var, var in marker_gen_map) ####
             if not (var in marker_gen_map):
@@ -171,11 +171,12 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
 
 
         agg_counts = {}
+        burst_data = {}
         var_data_paths = os.listdir(os.path.join(gene_dir, "bamdata")) 
         for path in var_data_paths:
             with open(os.path.join(gene_dir, "bamdata", path), "rb") as var_file:
                 var_data = pickle.load(var_file)
-                add_data(agg_counts, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, well_only)
+                add_data(agg_counts, burst_data, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, well_only)
 
         # print(agg_counts) ####
         # print(genotypes_nc) ####
@@ -187,6 +188,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
             "marker_ids": marker_ids_nc,
             "marker_alleles": marker_alleles_nc,
             "cell_counts": agg_counts,
+            "burst_data": burst_data,
             "total_counts": total_counts,
             # "counts_norm": total_counts_norm,
             "tss": tss,

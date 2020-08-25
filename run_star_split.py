@@ -99,7 +99,7 @@ def get_failed_jobs(names, out_path_base):
     for t in names:
         i, c = t
         out_bam_path = os.path.join(out_path_base, i, c, f"{i}_{c}Aligned.sortedByCoord.out.bam")
-        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5:
+        if not os.path.isfile(out_bam_path) or os.path.getsize(out_bam_path) < 1e5 or os.path.getmtime(out_bam_path) < 1598187000:
             fails.add((i, c),)
             print(out_bam_path) ####
     return fails
@@ -134,13 +134,13 @@ if __name__ == '__main__':
     out_path_base_kellis_429 = os.path.join(kellis_path_base, "partitioned_429")
     # print(bam_map_kellis_429) ####
 
-    dispatch_star(
-        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000
-    )
-
-    # fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
     # dispatch_star(
-    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 200000, selection=fail_kellis_429
+    #     bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000
     # )
+
+    fail_kellis_429 = get_failed_jobs(bam_map_kellis_429.keys(), out_path_base_kellis_429)
+    dispatch_star(
+        bam_map_kellis_429, vcf_map_kellis_429, bed_map_kellis_429, readcmd, genome_path, boundaries_path, whitelist_path, out_path_base_kellis_429, 100000, selection=fail_kellis_429
+    )
 
 
