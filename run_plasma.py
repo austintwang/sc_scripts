@@ -167,7 +167,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
             "total_counts": gene_data.get("total_counts", False),
             "agg_counts": gene_data.get("counts_norm", False),
             "tss": gene_data.get("tss"),
-            # "sample_masks": gene_data.get("sample_masks", {})
+            "sample_masks": gene_data.get("sample_masks", {})
         }
         inputs_all.update(params)
 
@@ -266,11 +266,12 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     #     inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
                     inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
+                        inputs.get("clinical_group", True),
                         inputs["counts1"] >= 1, 
                         inputs["counts2"] >= 1, 
                         np.logical_not(np.isnan(inputs["overdispersion"]))
                     ], axis=0)
-                    inputs["mask_total_exp"] = mask_total_exp = np.logical_not(np.isnan(inputs["counts_total"]))
+                    inputs["mask_total_exp"] = mask_total_exp = inputs.get("clinical_group", True) & np.logical_not(np.isnan(inputs["counts_total"]))
                     # print(inputs["counts_total"][mask_total_exp]) ####
 
                     result["avg_counts_total"] = np.nanmean(inputs["counts_total"])

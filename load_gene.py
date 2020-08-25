@@ -43,7 +43,7 @@ def read_vcf(vcf_path, contig, start, end, min_maf=0., min_info=0.):
         genotypes = np.stack(genotypes_list, axis=1)
     return genotypes, samples, markers, marker_ids, marker_alleles
 
-def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
+def add_data(agg_counts, burst_moments, var_data, cell_map, genotypes, sample_gen_map, marker_gen_map, well_only):
     # print(var_data) ####
     for var, cells in var_data.items():
         for cell, counts in cells.items():
@@ -58,6 +58,7 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
                 continue
             counts_all = np.sum(counts)
             cell_agg = agg_counts.setdefault(cell_full, np.array([0,0,0]))
+            moment_agg = agg_counts.setdefault(cell_full, np.zeros((4,2),))
             cell_agg[2] += counts_all
             # print(var, var in marker_gen_map) ####
             if not (var in marker_gen_map):
@@ -67,8 +68,13 @@ def add_data(agg_counts, var_data, cell_map, genotypes, sample_gen_map, marker_g
             marker_idx = marker_gen_map[var]
             gen = genotypes[sample_idx, marker_idx, :]
             # print(gen) ####
+            counts_phased = counts[gen]
             if np.sum(gen) == 1:
-                cell_agg[:2] += counts[gen]
+                cell_agg[:2] += counts_phased
+                moment_agg[0,:] += 1
+                moment_agg[1,:] += counts_phased
+                moment_agg[2,:] += counts_phased * (counts_phased - 1)
+                moment_agg[3,:] += counts_phased * (counts_phased - 1) * (counts_phased - 2)
 
 def process_samplename_kellis(sample_names):
     return [i[-8:] for i in sample_names]
