@@ -179,7 +179,7 @@ def load_gene(gene_name, dataset_name, radius, min_maf, min_info, well_only, ign
                 add_data(agg_counts, burst_data, var_data, barcodes_map, genotypes, sample_gen_map, marker_gen_map, well_only)
 
         # print(agg_counts) ####
-        print(burst_data) ####
+        # print(burst_data) ####
         # print(genotypes_nc) ####
         out_data = {
             "name": gene_name, 
