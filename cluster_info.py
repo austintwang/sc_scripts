@@ -806,3 +806,23 @@ if __name__ == '__main__':
     # for flags in flags_lst:
     #     os.makedirs(os.path.join(out_dir_test, f"test_{flags}"), exist_ok=True)
         # get_info_xval(f"test_split_{flags}", 2, genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_test, f"test_{flags}"), glist=names_test)
+
+    groups = [
+        "Female",
+        "Male",
+        "AgeUnder80",
+        "Age80To90",
+        "AgeOver90",
+        "ReaganNeg",
+        "ReaganPos",
+        "CeradNCI",
+        "CeradMCI",
+        "CeradAD"
+    ]
+
+    out_dir_clinical = os.path.join(out_dir_kellis, "clinical")
+
+    for group in groups:
+        os.makedirs(os.path.join(out_dir_clinical, f"clinical_{group}"), exist_ok=True)
+        get_info(f"clinical_{group}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_clinical, f"clinical_{group}"), glist=names_test)
+

@@ -159,31 +159,54 @@ if __name__ == '__main__':
     #         fails_only=(gwas_name == "Intelligence")
     #     )
 
-    params_kellis_test = params_kellis.copy()
-    # params_kellis_test["num_ppl"] = 388324
-    # params_path_kellis_test = os.path.join(data_path_kellis, "plasma_c_params.pickle")
+    params_kellis_all = params_kellis.copy()
+    params_kellis_all["run_name"] = "coloc"
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_test, 
-        params_path_kellis, 
-        "all", 
-        gwas_dir,
-        gwas_gen_path,
-        boundaries_map_path,
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_all, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     gwas_dir,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=False
+    # )
 
+    groups = [
+        "Female",
+        "Male",
+        "AgeUnder80",
+        "Age80To90",
+        "AgeOver90",
+        "ReaganNeg",
+        "ReaganPos",
+        "CeradNCI",
+        "CeradMCI",
+        "CeradAD"
+    ]
+    for group in groups:
+        params_path_kellis_group = os.path.join(data_path_kellis, f"coloc_clinical_{group}_params.pickle")
+        params_kellis_group = params_kellis.copy()
+        params_kellis_group["run_name"] = f"clinical_coloc_{group}"
 
+        dispatch(
+            script_path, 
+            names_kellis, 
+            genes_dir_kellis, 
+            params_kellis_group, 
+            params_path_kellis_group, 
+            "all", 
+            gwas_dir,
+            gwas_gen_path,
+            boundaries_map_path,
+            2000, 
+            fails_only=False
+        )
 
-    # gwas_gen_path_ros = "/agusevlab/awang/sc_kellis/gen/impute/rosmap1709-chr"
-    # alz_path = "/agusevlab/awang/gwas_data/alz.pickle"
-    # params_kellis_alz = params_kellis.copy()
-    # params_kellis_alz["num_ppl"] = 388324
-    # params_path_kellis_ros = os.path.join(data_path_kellis, "plasma_c_ros_params.pickle")
 
 
 
