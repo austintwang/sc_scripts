@@ -265,14 +265,15 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     # if processed_counts:
                     #     inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
+                    print(inputs.get("clinical_group", True)) ####
                     inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
                         inputs.get("clinical_group", True),
                         inputs["counts1"] >= 1, 
                         inputs["counts2"] >= 1, 
                         np.logical_not(np.isnan(inputs["overdispersion"]))
                     ], axis=0)
-                    print(inputs.get("clinical_group", True)) ####
-                    print(np.logical_not(np.isnan(inputs["counts_total"]))) ####
+                    # print(inputs.get("clinical_group", True)) ####
+                    # print(np.logical_not(np.isnan(inputs["counts_total"]))) ####
                     inputs["mask_total_exp"] = mask_total_exp = inputs.get("clinical_group", True) & np.logical_not(np.isnan(inputs["counts_total"]))
                     # print(inputs["counts_total"][mask_total_exp]) ####
 
