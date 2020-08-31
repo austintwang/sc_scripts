@@ -193,7 +193,7 @@ if __name__ == '__main__':
         params_path_kellis_group = os.path.join(data_path_kellis, f"coloc_clinical_{group}_params.pickle")
         params_kellis_group = params_kellis.copy()
         params_kellis_group["run_name_plasma"] = f"clinical_coloc_{group}"
-        params_kellis_group["run_name_coloc"] = f"clinical_coloc_{group}"
+        params_kellis_group["run_name_coloc"] = f"clinical_coloc_res_{group}"
 
         dispatch(
             script_path, 
