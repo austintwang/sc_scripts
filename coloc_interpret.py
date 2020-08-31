@@ -423,7 +423,7 @@ def interpret_genes(genes_dir, genes_list_path, genes_map_dir, gwas_name, plasma
 
     clusters = load_clusters(cluster_map_path)
 
-    if genes_list_path = "_all":
+    if genes_list_path == "_all":
         genes = os.listdir(genes_dir)
     else:
         with open(genes_list_path, "rb") as genes_list_file:
