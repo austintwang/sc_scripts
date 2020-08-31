@@ -412,7 +412,7 @@ def calc_sumstats(df, out_dir, thresh):
     with open(os.path.join(out_dir, "sumstats.txt"), "w") as out_file:
         out_file.writelines(outs)
 
-def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_dir, status_path):
+def interpret_genes(genes_dir, genes_map_dir, gwas_name, plasma_run_name, coloc_run_name, cluster_map_path, out_dir, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -431,8 +431,8 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
     for g in genes:
         gene_name = genes_map.get(g.split(".")[0], g)
         gene_dir = os.path.join(genes_dir, g)
-        plasma_path = os.path.join(gene_dir, "combined", "plasma_i0.pickle")
-        coloc_path = os.path.join(gene_dir, "coloc", f"{gwas_name}.pickle")
+        plasma_path = os.path.join(gene_dir, plasma_run_name, "plasma_i0.pickle")
+        coloc_path = os.path.join(gene_dir, coloc_run_name, f"{gwas_name}.pickle")
         try:
             with open(plasma_path, "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
@@ -490,38 +490,3 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, cluster_map_path, out_d
 
 if __name__ == '__main__':
     interpret_genes(*sys.argv[1:])
-
-    # data_path_kellis = "/agusevlab/awang/sc_kellis"
-    # # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map.pickle")
-    # # genes_dir_kellis = os.path.join(data_path_kellis, "genes")
-
-    # # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis/alz.txt"
-
-    # # interpret_genes(genes_dir_kellis, "alz", cluster_map_path_kellis, out_path_kellis)
-
-    # cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
-    # genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
-    # out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
-    # gwass = [
-    #     "AlzheimersMaternal",
-    #     "AlzheimersPaternal",
-    #     "AlzheimersProxyMetaIGAP",
-    #     "BD",
-    #     "BDSCZ",
-    #     "CD",
-    #     "DepressedAffect",
-    #     "Depression",
-    #     "IBD",
-    #     "Intelligence",
-    #     "MDD",
-    #     "Neuroticism",
-    #     "ReactionTime",
-    #     "SCZ",
-    #     "SCZvsBD",
-    #     "UC",
-    #     "VerbalNumericReasoning",
-    #     "Worry"
-    # ]
-    # for g in gwass:
-    #     print(g) ####
-    #     interpret_genes(genes_dir_kellis, g, cluster_map_path_kellis, out_path_kellis)

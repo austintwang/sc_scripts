@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, data_dir, status_dir, gwas_names, gene_map_path, cluster_map_path, out_path, memory, fails_only=False):
+def dispatch(script_path, data_dir, status_dir, gwas_names, plasma_run_name, coloc_run_name, gene_map_path, cluster_map_path, out_path, memory, fails_only=False):
     jobs = []
     for name in gwas_names:
         os.makedirs(os.path.join(status_dir, name), exist_ok=True)
@@ -21,7 +21,7 @@ def dispatch(script_path, data_dir, status_dir, gwas_names, gene_map_path, clust
         err_name = os.path.join(status_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, data_dir, gene_map_path, name, cluster_map_path, out_path, status_path
+            script_path, data_dir, gene_map_path, name, plasma_run_name, coloc_run_name, cluster_map_path, out_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -74,16 +74,31 @@ if __name__ == '__main__':
     #     fails_only=False
     # )
 
-    dispatch(
-        script_path, 
-        genes_dir_kellis, 
-        status_dir_kellis,
-        gwas_names,
-        gene_map_path,
-        cluster_map_path_kellis, 
-        out_path_kellis, 
-        10000, 
-        fails_only=True
-    )
+    # dispatch(
+    #     script_path, 
+    #     genes_dir_kellis, 
+    #     status_dir_kellis,
+    #     gwas_names,
+    #     "combined",
+    #     "coloc",
+    #     gene_map_path,
+    #     cluster_map_path_kellis, 
+    #     out_path_kellis, 
+    #     10000, 
+    #     fails_only=True
+    # )
+
+    groups = [
+        "Female",
+        "Male",
+        "AgeUnder80",
+        "Age80To90",
+        "AgeOver90",
+        "ReaganNeg",
+        "ReaganPos",
+        "CeradNCI",
+        "CeradMCI",
+        "CeradAD"
+    ]
 
 
