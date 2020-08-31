@@ -189,6 +189,12 @@ if __name__ == '__main__':
         "CeradMCI",
         "CeradAD"
     ]
+    groups = groups[3:] ####
+    
+    names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
+
     for group in groups:
         params_path_kellis_group = os.path.join(data_path_kellis, f"coloc_clinical_{group}_params.pickle")
         params_kellis_group = params_kellis.copy()
@@ -197,7 +203,7 @@ if __name__ == '__main__':
 
         dispatch(
             script_path, 
-            names_kellis, 
+            names_test, 
             genes_dir_kellis, 
             params_kellis_group, 
             params_path_kellis_group, 
