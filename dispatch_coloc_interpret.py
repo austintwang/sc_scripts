@@ -109,7 +109,7 @@ if __name__ == '__main__':
         out_path_group = os.path.join("/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization_clinical", group)
         dispatch(
             script_path, 
-            genes_dir_kellis, 
+            genes_list_path, 
             status_dir_kellis,
             gwas_names,
             f"clinical_coloc_{group}",
