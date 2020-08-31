@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, data_dir, status_dir, gwas_names, plasma_run_name, coloc_run_name, gene_map_path, cluster_map_path, out_path, memory, fails_only=False):
+def dispatch(script_path, genes_list_path, status_dir, gwas_names, plasma_run_name, coloc_run_name, gene_map_path, cluster_map_path, out_path, memory, fails_only=False):
     jobs = []
     for name in gwas_names:
         os.makedirs(os.path.join(status_dir, name), exist_ok=True)
@@ -21,7 +21,7 @@ def dispatch(script_path, data_dir, status_dir, gwas_names, plasma_run_name, col
         err_name = os.path.join(status_dir, name, "coloc_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, data_dir, gene_map_path, name, plasma_run_name, coloc_run_name, cluster_map_path, out_path, status_path
+            script_path, genes_list_path, gene_map_path, name, plasma_run_name, coloc_run_name, cluster_map_path, out_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -67,6 +67,8 @@ if __name__ == '__main__':
     #     genes_dir_kellis, 
     #     status_dir_kellis,
     #     gwas_names,
+    #     "combined",
+    #     "coloc",
     #     gene_map_path,
     #     cluster_map_path_kellis, 
     #     out_path_kellis, 
@@ -100,5 +102,24 @@ if __name__ == '__main__':
         "CeradMCI",
         "CeradAD"
     ]
+
+    genes_list_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
+
+    for group in groups:
+        out_path_group = os.path.join("/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization_clinical", group)
+        dispatch(
+            script_path, 
+            genes_dir_kellis, 
+            status_dir_kellis,
+            gwas_names,
+            f"clinical_coloc_{group}",
+            f"clinical_coloc_res_{group}",
+            gene_map_path,
+            cluster_map_path_kellis, 
+            out_path_group, 
+            7000, 
+            fails_only=False
+        )
+
 
 

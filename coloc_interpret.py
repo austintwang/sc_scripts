@@ -412,7 +412,7 @@ def calc_sumstats(df, out_dir, thresh):
     with open(os.path.join(out_dir, "sumstats.txt"), "w") as out_file:
         out_file.writelines(outs)
 
-def interpret_genes(genes_dir, genes_map_dir, gwas_name, plasma_run_name, coloc_run_name, cluster_map_path, out_dir, status_path):
+def interpret_genes(genes_list_path, genes_map_dir, gwas_name, plasma_run_name, coloc_run_name, cluster_map_path, out_dir, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -422,7 +422,10 @@ def interpret_genes(genes_dir, genes_map_dir, gwas_name, plasma_run_name, coloc_
     # print(sorted(genes_map.values())) ####
 
     clusters = load_clusters(cluster_map_path)
-    genes = os.listdir(genes_dir)
+    with open(genes_list_path, "rb") as genes_list_file:
+        genes = pickle.load(genes_list_file)
+
+    # genes = os.listdir(genes_dir)
     # genes = genes[:500] ####
     data_lst = []
     data_sig_lst = []
