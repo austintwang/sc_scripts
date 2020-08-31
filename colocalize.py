@@ -132,13 +132,13 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
 
     gene_dir = os.path.join(data_dir, gene_name)
     gene_path = os.path.join(gene_dir, "gene_data.pickle")
-    finemap_path = os.path.join(gene_dir, params["run_name_plasma"], "plasma_i0.pickle")
 
     all_complete = True
 
     with open(params_path, "rb") as params_file:
         params = pickle.load(params_file)
 
+    finemap_path = os.path.join(gene_dir, params["run_name_plasma"], "plasma_i0.pickle")
     os.makedirs(os.path.join(gene_dir, params["run_name_coloc"]), exist_ok=True)
     
     try:
