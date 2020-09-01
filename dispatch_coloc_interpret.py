@@ -102,7 +102,8 @@ if __name__ == '__main__':
         "CeradMCI",
         "CeradAD"
     ]
-    groups = groups[:4]
+    # groups = groups[:4] ####
+    groups = groups[4:] ####
 
     genes_list_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
 
