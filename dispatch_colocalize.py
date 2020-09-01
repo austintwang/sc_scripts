@@ -189,8 +189,8 @@ if __name__ == '__main__':
         "CeradMCI",
         "CeradAD"
     ]
-    groups = groups[3:] ####
-    
+    groups = groups[4:] ####
+
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
     with open(names_test_path, "rb") as names_test_file:
         names_test = pickle.load(names_test_file)
