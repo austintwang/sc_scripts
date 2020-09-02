@@ -277,6 +277,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     # print(inputs.get("clinical_group", True)) ####
                     # print(np.logical_not(np.isnan(inputs["counts_total"]))) ####
                     inputs["mask_total_exp"] = mask_total_exp = clinical_mask & ~np.isnan(inputs["counts_total"])
+                    print(np.sum(mask_total_exp)) ####
                     # print(inputs["counts_total"][mask_total_exp]) ####
 
                     result["avg_counts_total"] = np.nanmean(inputs["counts_total"])
