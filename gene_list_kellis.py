@@ -9,10 +9,10 @@ def build_list(data_dir, out_dir):
         try:
             with open(gene_path, "rb") as gene_file:
                 gene_data = pickle.load(gene_file)
-                print(gene_name) ####
+                # print(gene_name) ####
                 gene_list.append(gene_name)
         except Exception as e:
-            print(e)
+            print(e) ####
             continue
 
     print(len(gene_list)) ####
