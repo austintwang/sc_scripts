@@ -485,6 +485,9 @@ def interpret_genes(genes_dir, genes_list_path, genes_map_dir, gwas_name, plasma
     data_sig_df.to_csv(os.path.join(out_dir_sig_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_sig_gwas, "data.txt"), "w") as txt_file:
         data_sig_df.to_string(txt_file)
+    sig_genes = set(data_sig_df["Gene"])
+    with open(os.path.join(out_dir_sig_gwas, "genes.txt"), "w") as list_file:
+        list_file.writelines((f"{i}\n" for i in sig_genes),)
     calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
     plot_sets(data_sig_df, out_dir_sig_gwas)
     plot_heatmap(data_sig_df, gwas_name, out_dir_sig_gwas)
