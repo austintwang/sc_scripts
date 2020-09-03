@@ -12,7 +12,7 @@ def build_list(data_dir, out_dir):
                 # print(gene_name) ####
                 gene_list.append(gene_name)
         except Exception as e:
-            print(e) ####
+            # print(e) ####
             continue
 
     print(len(gene_list)) ####
