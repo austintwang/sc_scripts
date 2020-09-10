@@ -64,20 +64,20 @@ if __name__ == '__main__':
 
     genes_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
 
-    dispatch(
-        script_path, 
-        genes_dir_kellis, 
-        genes_list_path,
-        status_dir_kellis,
-        gwas_names,
-        "combined",
-        "coloc",
-        gene_map_path,
-        cluster_map_path_kellis, 
-        out_path_kellis, 
-        10000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     genes_dir_kellis, 
+    #     genes_list_path,
+    #     status_dir_kellis,
+    #     gwas_names,
+    #     "combined",
+    #     "coloc",
+    #     gene_map_path,
+    #     cluster_map_path_kellis, 
+    #     out_path_kellis, 
+    #     10000, 
+    #     fails_only=False
+    # )
 
     # dispatch(
     #     script_path, 
@@ -107,26 +107,26 @@ if __name__ == '__main__':
         "CeradAD"
     ]
     # groups = groups[:4] ####
-    groups = groups[4:] ####
+    # groups = groups[4:] ####
 
     genes_list_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
 
     for group in groups:
         out_path_group = os.path.join("/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization_clinical", group)
-        # dispatch(
-        #     script_path, 
-        #     genes_dir_kellis,
-        #     genes_list_path, 
-        #     status_dir_kellis,
-        #     gwas_names,
-        #     f"clinical_coloc_{group}",
-        #     f"clinical_coloc_res_{group}",
-        #     gene_map_path,
-        #     cluster_map_path_kellis, 
-        #     out_path_group, 
-        #     7000, 
-        #     fails_only=False
-        # )
+        dispatch(
+            script_path, 
+            genes_dir_kellis,
+            genes_list_path, 
+            status_dir_kellis,
+            gwas_names,
+            f"clinical_coloc_{group}",
+            f"clinical_coloc_res_{group}",
+            gene_map_path,
+            cluster_map_path_kellis, 
+            out_path_group, 
+            7000, 
+            fails_only=False
+        )
 
 
 
