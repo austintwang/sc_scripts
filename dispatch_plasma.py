@@ -391,9 +391,9 @@ if __name__ == '__main__':
         "CeradAD"
     ]
 
-    # names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
-    # with open(names_test_path, "rb") as names_test_file:
-    #     names_test = pickle.load(names_test_file)
+    names_test_path = os.path.join(data_path_kellis, "list_429_sig.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names_test = pickle.load(names_test_file)
 
     for group in groups:
         params_kellis_test = params_kellis.copy()
@@ -403,19 +403,19 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "clinical_429_params", f"plasma_params_clinical_{group}.pickle")
 
-        # dispatch(
-        #     script_path, 
-        #     names_test, 
-        #     genes_dir_kellis, 
-        #     params_kellis_test, 
-        #     params_path_kellis_test, 
-        #     "all", 
-        #     cluster_map_path_kellis, 
-        #     barcodes_map_path_kellis, 
-        #     overdispersion_path_kellis, 
-        #     2000, 
-        #     fails_only=False
-        # )
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis_test, 
+            params_path_kellis_test, 
+            "all", 
+            cluster_map_path_kellis, 
+            barcodes_map_path_kellis, 
+            overdispersion_path_kellis, 
+            2000, 
+            fails_only=False
+        )
 
     for group in groups:
         params_kellis_test = params_kellis.copy()
@@ -426,19 +426,19 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "clinical_429_params", f"plasma_params_clinical_coloc_{group}.pickle")
 
-        # dispatch(
-        #     script_path, 
-        #     names_test, 
-        #     genes_dir_kellis, 
-        #     params_kellis_test, 
-        #     params_path_kellis_test, 
-        #     "all", 
-        #     cluster_map_path_kellis, 
-        #     barcodes_map_path_kellis, 
-        #     overdispersion_path_kellis, 
-        #     2000, 
-        #     fails_only=False
-        # )
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis_test, 
+            params_path_kellis_test, 
+            "all", 
+            cluster_map_path_kellis, 
+            barcodes_map_path_kellis, 
+            overdispersion_path_kellis, 
+            2000, 
+            fails_only=False
+        )
 
 
 
