@@ -26,7 +26,7 @@ def build_list(gwas_dir, res_dir, out_dir):
 if __name__ == '__main__':
     # Kellis 429
     data_path_kellis = "/agusevlab/awang/sc_kellis"
-    genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
+    res_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
     gwas_dir = "/agusevlab/awang/gwas_data"
 
-    build_list(gwas_dir, genes_dir_kellis, data_path_kellis)
+    build_list(gwas_dir, res_dir, data_path_kellis)
