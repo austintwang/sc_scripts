@@ -412,7 +412,7 @@ def calc_sumstats(df, out_dir, thresh):
     with open(os.path.join(out_dir, "sumstats.txt"), "w") as out_file:
         out_file.writelines(outs)
 
-def interpret_genes(genes_dir, genes_list_path, genes_map_dir, gwas_name, plasma_run_name, coloc_run_name, cluster_map_path, out_dir, status_path):
+def interpret_genes(genes_dir, genes_list_path, all_sig, genes_map_dir, gwas_name, plasma_run_name, coloc_run_name, cluster_map_path, out_dir, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
@@ -428,6 +428,8 @@ def interpret_genes(genes_dir, genes_list_path, genes_map_dir, gwas_name, plasma
     else:
         with open(genes_list_path, "rb") as genes_list_file:
             genes = pickle.load(genes_list_file)
+
+    all_sig = (all_sig == "True")
 
     # genes = os.listdir(genes_dir)
     # genes = genes[:500] ####
@@ -451,7 +453,7 @@ def interpret_genes(genes_dir, genes_list_path, genes_map_dir, gwas_name, plasma
         data, data_sig, locus_sig = read_data(plasma_data, coloc_data, clusters, g, gene_name)
         data_lst.extend(data)
         data_sig_lst.extend(data_sig)
-        if locus_sig:
+        if locus_sig or all_sig:
             sig_genes[g] = [plasma_data, coloc_data]
 
     cols = [
