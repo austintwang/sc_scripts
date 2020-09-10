@@ -12,7 +12,7 @@ def add_genes(list_path, gene_set):
 def build_list(gwas_dir, res_dir, out_dir):
     gene_set = set()
     studies = os.listdir(gwas_dir)
-    for study in studies
+    for study in studies:
         gwas_path = os.path.join(gwas_dir, study)
         gwas_name = study.split(".")[0]
         list_path = os.path.join(res_dir, f"{gwas_name}_sig", "genes.txt")
