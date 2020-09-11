@@ -269,9 +269,9 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     clinical_mask = inputs.get("sample_masks", {}).get(inputs.get("clinical_group"), True)
                     # print(clinical_mask) ####
                     print(clinical_mask
-                        & inputs["counts1"] >= 1
-                        & inputs["counts2"] >= 1
-                        & np.logical_not(np.isnan(inputs["overdispersion"]))
+                        & (inputs["counts1"] >= 1)
+                        # & inputs["counts2"] >= 1
+                        # & np.logical_not(np.isnan(inputs["overdispersion"]))
                     ) ####
                     # print(inputs["counts1"].shape) ####
                     # print(inputs["counts2"].shape) ####
