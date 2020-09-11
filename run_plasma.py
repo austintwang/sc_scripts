@@ -268,6 +268,11 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     # print(inputs.get("clinical_group", True)) ####
                     clinical_mask = inputs.get("sample_masks", {}).get(inputs.get("clinical_group"), True)
                     # print(clinical_mask) ####
+                    print(np.logical_and.reduce([
+                        clinical_mask,
+                        inputs["counts1"] >= 1, 
+                    ], axis=0)) ####
+
                     inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
                         clinical_mask,
                         inputs["counts1"] >= 1, 
