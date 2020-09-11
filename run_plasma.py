@@ -271,7 +271,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     print(np.logical_and.reduce([
                         clinical_mask,
                         inputs["counts1"] >= 1,
-                        inputs["counts2"] >= 1,
+                        # inputs["counts2"] >= 1,
                     ], axis=0)) ####
                     # print(inputs["counts1"].shape) ####
                     # print(inputs["counts2"].shape) ####
