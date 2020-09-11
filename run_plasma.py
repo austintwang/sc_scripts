@@ -268,23 +268,19 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     # print(inputs.get("clinical_group", True)) ####
                     clinical_mask = inputs.get("sample_masks", {}).get(inputs.get("clinical_group"), True)
                     # print(clinical_mask) ####
-                    print(clinical_mask
+                    # inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
+                    #     clinical_mask,
+                    #     inputs["counts1"] >= 1, 
+                    #     inputs["counts2"] >= 1, 
+                    #     np.logical_not(np.isnan(inputs["overdispersion"]))
+                    # ], axis=0)
+
+                    inputs["mask_imbalance"] = mask_imbalance = (
+                        clinical_mask
                         & (inputs["counts1"] >= 1)
                         & (inputs["counts2"] >= 1)
                         & ~np.isnan(inputs["overdispersion"])
-                    ) ####
-                    # print(inputs["counts1"].shape) ####
-                    # print(inputs["counts2"].shape) ####
-                    # print(inputs["counts1"] >= 1 & inputs["counts2"] >= 1) ####
-                    # print(np.logical_and(inputs["counts1"] >= 1, inputs["counts2"] >= 1)) ####
-
-
-                    inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
-                        clinical_mask,
-                        inputs["counts1"] >= 1, 
-                        inputs["counts2"] >= 1, 
-                        np.logical_not(np.isnan(inputs["overdispersion"]))
-                    ], axis=0)
+                    )
                     # print(inputs.get("clinical_group", True)) ####
                     # print(np.logical_not(np.isnan(inputs["counts_total"]))) ####
                     inputs["mask_total_exp"] = mask_total_exp = clinical_mask & ~np.isnan(inputs["counts_total"])
