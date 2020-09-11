@@ -276,7 +276,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     print(inputs["counts1"].shape) ####
                     # print(inputs["counts2"].shape) ####
                     # print(inputs["counts1"] >= 1 & inputs["counts2"] >= 1) ####
-                    np.logical_and(inputs["counts1"] >= 1, inputs["counts2"] >= 1)
+                    print(np.logical_and(inputs["counts1"] >= 1, inputs["counts2"] >= 1))
 
 
                     inputs["mask_imbalance"] = mask_imbalance = np.logical_and.reduce([
