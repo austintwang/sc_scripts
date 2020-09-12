@@ -119,7 +119,7 @@ if __name__ == '__main__':
             script_path, 
             genes_dir_kellis,
             genes_list_path, 
-            "True",
+            "False",
             status_dir_kellis,
             gwas_names,
             f"clinical_coloc_{group}",
