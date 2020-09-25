@@ -127,7 +127,7 @@ if __name__ == '__main__':
             gene_map_path,
             cluster_map_path_kellis, 
             out_path_group, 
-            7000, 
+            10000, 
             fails_only=False
         )
 

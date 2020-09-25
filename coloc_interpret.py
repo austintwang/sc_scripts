@@ -58,7 +58,7 @@ def load_clusters(cluster_map_path):
 def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="GeneName", columns="Cluster", values="PP4AS")
     df_plot = df_plot.loc[np.nanmax(df_plot, axis=1) >= 0, :]
-    df_plot.to_csv(os.path.join(result_path, "heatmap_data.csv"), index=False)
+    df_plot.to_csv(os.path.join(result_path, "heatmap_data.csv"))
 
     mask = np.isnan(df_plot)
     df_filled = np.abs(df_plot.fillna(df_plot.mean()))
