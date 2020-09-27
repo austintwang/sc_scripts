@@ -443,13 +443,13 @@ def plot_sets(df, out_dir):
             on=["Gene"], 
             suffixes=["_clust", "_all"]
         )
-        df_merged["TopSNPZ2CombDiff"] = df_merged["TopSNPZComb_clust"]**2 - df_merged["TopSNPZComb_all"]**2
+        df_merged["TopSNPZ2PhiDiff"] = df_merged["TopSNPZPhi_clust"]**2 - df_merged["TopSNPZPhi_all"]**2
         # threshs = [0.1, 0.2, 0.5]
         # print(df_merged.columns) ####
-        df_specific = df_merged.loc[:,("Gene", "TopSNPZ2CombDiff", "TopSNPZComb_clust", "TopSNPZComb_all")].sort_values(by="TopSNPZ2CombDiff", ascending=False)
+        df_specific = df_merged.loc[:,("Gene", "TopSNPZ2PhiDiff", "TopSNPZPhi_clust", "TopSNPZPhi_all")].sort_values(by="TopSNPZ2PhiDiff", ascending=False)
         # for ind, thresh in enumerate(threshs):
         #     cutoff = int(len(df_merged) * thresh)
-        # df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
+        df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
 
         data_spec = [
             np.count_nonzero(np.logical_and(
@@ -769,7 +769,7 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
@@ -824,5 +824,5 @@ if __name__ == '__main__':
 
     for group in groups:
         os.makedirs(os.path.join(out_dir_clinical, f"clinical_{group}"), exist_ok=True)
-        get_info(f"clinical_{group}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_clinical, f"clinical_{group}"), glist=names_test)
+        # get_info(f"clinical_{group}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_clinical, f"clinical_{group}"), glist=names_test)
 
