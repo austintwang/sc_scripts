@@ -65,7 +65,16 @@ def plot_heatmap(df, title, result_path):
     df_filled.fillna(0, inplace=True)
 
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_filled, mask=mask, vmin=0, vmax=1)
+    g = sns.clustermap(
+        df_filled, 
+        mask=mask, 
+        vmin=0, 
+        vmax=1,
+        col_cluster=False,
+        cmap='magma_r'
+    )
+    g.ax_row_dendrogram.set_visible(False)
+    g.ax_row_dendrogram.set_xlim([0,0])
     g.fig.suptitle(title)
     g.savefig(os.path.join(result_path, "heatmap.svg"), bbox_inches='tight')
     plt.clf()
