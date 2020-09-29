@@ -14,7 +14,7 @@ import pandas as pd
 
 def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
-    print(df_plot) ####
+    # print(df_plot) ####
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_plot, center=0, col_cluster=False, annot=True, annot_kws={"size": 10, "weight": "medium"})
     g.fig.suptitle(title)
@@ -25,6 +25,8 @@ def plot_heatmap(df, title, result_path):
 def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
+    print(in_path) ####
+    print(df) ####
     for thresh, window in params:
         df_sub = df.loc[np.logical_and(df["Threshold"] == thresh, df["Window"] == window)]
         title = f"Top {thresh}, {window} kb window"
