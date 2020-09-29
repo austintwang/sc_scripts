@@ -17,6 +17,7 @@ def add_data(res_path, res_name, data_lst):
         # print(cols) ####
         study, paramstr = res_name.split(".")[:2]
         paramstr, windowstr = paramstr.rsplit("_", 1)
+        print(paramstr, windowstr) ####
         window = int(windowstr[2:-3])
         rems = paramstr.rsplit("_", 1)
         if len(rems) == 1 or rems[0] == "":
