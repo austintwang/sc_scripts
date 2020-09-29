@@ -14,7 +14,7 @@ import pandas as pd
 
 def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
-
+    print(df_plot) ####
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(df_plot, center=0, col_cluster=False, annot=True, annot_kws={"size": 10, "weight": "medium"})
     g.fig.suptitle(title)
