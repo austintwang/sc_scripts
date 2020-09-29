@@ -16,7 +16,7 @@ def add_data(res_path, res_name, data_lst):
         # cols = {val: ind for ind, val in enumerate(header.strip().split())}
         # print(cols) ####
         study, paramstr = res_name.split(".", 1)
-        paramstr = paramstr.rsplit(".", 1)
+        paramstr = paramstr.rsplit(".", 1)[0]
         paramstr, windowstr = paramstr.rsplit("_", 1)
         print(paramstr, windowstr) ####
         window = int(windowstr[2:-3])
