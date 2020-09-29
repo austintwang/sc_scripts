@@ -688,6 +688,8 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     norms = np.sum(weights, axis=0)
     slopes_meta = np.sum(slopes_stacked * weights, axis=0) / norms
     slopes_ses_meta = np.sqrt(1 / norms)
+    scale = np.sqrt(np.outer(slopes_meta.diag(), slopes_meta.diag()))
+    slopes_scaled_meta = slopes_meta / scale
     z_0s = slopes_meta / slopes_ses_meta
     z_1s = (1 - slopes_meta) / slopes_ses_meta
     nlp_0s = -scipy.stats.norm.logsf(z_0s) / np.log(10)
@@ -695,6 +697,9 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
 
     title = "Cross-Cell Cross-Validation Slopes"
     make_heatmap(slopes_meta, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes.svg"))
+
+    title = "Cross-Cell Cross-Validation Slopes (Normalized)"
+    make_heatmap(slopes_scaled_meta, cluster_order, title, os.path.join(out_dir, "xcell_stats_slopes_norm.svg"))
 
     title = "Cross-Cell Cross-Validation Slope Standard Errors"
     make_heatmap(slopes_ses_meta, cluster_order, title, os.path.join(out_dir, "xcell_stats_se.svg"))
@@ -769,11 +774,11 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     out_dir_strict = os.path.join(out_dir_kellis, "strict")
 
