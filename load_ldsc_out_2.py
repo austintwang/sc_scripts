@@ -32,7 +32,7 @@ def add_data(res_path, res_name, data_lst):
             idx = field_map.get(field)
             if idx is None:
                 continue
-            field_vals[idx] = val
+            field_vals[idx] = float(val)
 
         print(name_info, field_vals) ####
         data_lst.append(name_info + field_vals)
