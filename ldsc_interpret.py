@@ -33,7 +33,9 @@ def ldsc_interpret(in_dir, name, params, out_dir):
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/ldsc_res/agg/"
-    name = "results_chisq"
+    # name = "results_chisq"
+    name = "scqtl_2020_09_28_ldsc_enrichment"
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/ldsc"
-    params = [(i, j) for i in [0.1, 0.2, 0.5] for j in [0, 10, 50]]
+    # params = [(i, j) for i in [0.1, 0.2, 0.5] for j in [0, 10, 50]]
+    params = [(i, j) for i in [0.1, 0.2, 0.5] for j in [10, 50]]
     ldsc_interpret(in_dir, name, params, out_dir)
