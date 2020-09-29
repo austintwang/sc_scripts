@@ -18,7 +18,7 @@ def add_data(res_path, res_name, data_lst):
         study, paramstr = res_name.split(".", 1)
         paramstr = paramstr.rsplit(".", 1)[0]
         paramstr, windowstr = paramstr.rsplit("_", 1)
-        print(paramstr, windowstr) ####
+        # print(paramstr, windowstr) ####
         window = int(windowstr[2:-3])
         rems = paramstr.rsplit("_", 1)
         if len(rems) == 1 or rems[0] == "":
@@ -28,7 +28,7 @@ def add_data(res_path, res_name, data_lst):
         name_info = [study, threshold, window, cluster]
 
         for line in res_file:
-            field, val = line.strip.split()
+            field, val = line.strip().split()
             idx = field_map.get(field)
             if idx is None:
                 continue
