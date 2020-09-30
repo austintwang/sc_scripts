@@ -71,7 +71,7 @@ def plot_heatmap(df, title, result_path):
         vmin=0, 
         vmax=1,
         col_cluster=False,
-        cmap='rocket'
+        cmap='rocket_r'
     )
     g.ax_row_dendrogram.set_visible(False)
     g.ax_row_dendrogram.set_xlim([0,0])
