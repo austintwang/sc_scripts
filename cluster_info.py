@@ -108,7 +108,7 @@ def make_df(run_name, split, genes_dir, cluster_map_path, top_snps_dict, glist=N
             # print(os.path.getsize(plasma_path.format(split))) ####
             with open(plasma_path.format(split), "rb") as plasma_file:
                 plasma_data = pickle.load(plasma_file)
-        except (FileNotFoundError, pickle.UnpicklingError):
+        except (FileNotFoundError, EOFError, pickle.UnpicklingError):
             continue
 
         data = read_data(plasma_data, clusters, g, top_snps=(top_snps_dict[g] if top_snps_dict is not None else None))
