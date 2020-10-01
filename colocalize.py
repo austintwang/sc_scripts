@@ -242,7 +242,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
             cluster_results = result.setdefault("clusters", {})
             for cluster, fm_res in finemap_data.items():
                 cluster_results.setdefault(cluster, {})
-                # print(fm_res.keys()) ####
+                print(fm_res.keys()) ####
                 for fg in model_flavors_gwas:
                     for fq in model_flavors_qtl:
                         try:
