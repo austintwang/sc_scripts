@@ -70,6 +70,7 @@ def plot_heatmap(df, title, result_path):
         mask=mask, 
         vmin=0, 
         vmax=1,
+        yticklabels=True,
         col_cluster=False,
         cmap='rocket_r'
     )

@@ -4,7 +4,7 @@ import sys
 import numpy as np
 import scipy.stats
 import os
-: import pickle
+import pickle
 import matplotlib
 matplotlib.use('Agg')
 matplotlib.rcParams['agg.path.chunksize'] = 10000
