@@ -688,7 +688,7 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
     norms = np.sum(weights, axis=0)
     slopes_meta = np.sum(slopes_stacked * weights, axis=0) / norms
     slopes_ses_meta = np.sqrt(1 / norms)
-    scale = np.sqrt(np.outer(slopes_meta.diag(), slopes_meta.diag()))
+    scale = np.sqrt(np.outer(np.diag(slopes_meta), np.diag(slopes_meta)))
     slopes_scaled_meta = slopes_meta / scale
     z_0s = slopes_meta / slopes_ses_meta
     z_1s = (1 - slopes_meta) / slopes_ses_meta
