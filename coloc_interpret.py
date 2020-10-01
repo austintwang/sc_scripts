@@ -27,8 +27,8 @@ def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
         coloc_clust = coloc_data["clusters"].get(c, None)
         if plasma_clust is None or coloc_clust is None:
             continue
-        # print(plasma_clust.keys()) ####
-        # print(coloc_clust.keys()) ####
+        print(plasma_clust.keys()) ####
+        print(coloc_clust.keys()) ####
         data_clust = [
             gene_id,
             gene_name, 
