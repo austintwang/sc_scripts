@@ -4,19 +4,69 @@ import sys
 import numpy as np
 import scipy.stats
 import os
-import pickle
+: import pickle
 import matplotlib
 matplotlib.use('Agg')
 matplotlib.rcParams['agg.path.chunksize'] = 10000
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pltUlcerative colitis
 import seaborn as sns
 import pandas as pd
 
+STUDY_NAMES = {
+    "AlzheimersMaternal_Marioni2018": "Alzheimers Maternal",
+    "AlzheimersPaternal_Marioni2018": "Alzheimers Paternal",
+    "AlzheimersProxyMetaIGAP_Marioni2018": "Alzheimers Proxy",
+    "BD_Ruderfer2018": "Bipolar (Ruderfer)",
+    "BDSCZ_Ruderfer2018": "Bipolar + Schizophrenia",
+    "CD_deLange2017": "Crohn's",
+    "DepressedAffect_Nagel2018": "Depressed Affect",
+    "Depression_Nagel2018": "Depression (Nagel)",
+    "IBD_deLange2017": "Inflammatory Bowel",
+    "Intelligence_SavageJansen2018": "Intelligence",
+    "MDD_Wray2018": "Depression (Wray)",
+    "Neuroticism_Nagel2018": "Neuroticism",
+    "PASS_Alzheimers_Jansen2019": "Alzheimers",
+    "PASS_BIP_Stahl2019": "Bipolar (Stahl)",
+    "PASS_Schizophrenia_Pardinas2018": "Schizophrenia (Pardinas)",
+    "ReactionTime_Davies2018": "Reaction Time",
+    "SCZ_Ruderfer2018": "Schizophrenia (Ruderfer)",
+    "SCZvsBD_Ruderfer2018": "Bipolar vs. Schizophrenia",
+    "UC_deLange2017": "Ulcerative Colitis",
+    "VerbalNumericReasoning_Davies2018": "Verbal & Numeric Reasoning",
+    "Worry_Nagel2018": "Worry",
+}
+
+STUDY_ORDER = [
+    "PASS_Alzheimers_Jansen2019",
+    "AlzheimersProxyMetaIGAP_Marioni2018",
+    "AlzheimersMaternal_Marioni2018",
+    "AlzheimersPaternal_Marioni2018",
+    "BD_Ruderfer2018",
+    "PASS_BIP_Stahl2019",
+    "BDSCZ_Ruderfer2018",
+    "SCZvsBD_Ruderfer2018",
+    "PASS_Schizophrenia_Pardinas2018",
+    "SCZ_Ruderfer2018",
+    "MDD_Wray2018",
+    "Depression_Nagel2018",
+    "DepressedAffect_Nagel2018",
+    "Neuroticism_Nagel2018",
+    "Worry_Nagel2018",
+    "Intelligence_SavageJansen2018",
+    "VerbalNumericReasoning_Davies2018",
+    "ReactionTime_Davies2018",
+    "IBD_deLange2017",
+    "UC_deLange2017",
+    "CD_deLange2017",
+]
+
 def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
-    print(df_plot) ####
+    # print(df_plot) ####
+    df_plot.reindex(STUDY_ORDER)
+    df_plot.rename(index=STUDY_NAMES)
     sns.set(style="whitegrid", font="Roboto")
-    g = sns.clustermap(df_plot, center=0, col_cluster=False, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
     g.fig.suptitle(title)
     g.savefig(result_path, bbox_inches='tight')
     plt.clf()
