@@ -323,6 +323,7 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
 
                     if np.size(inputs["counts1"][mask_imbalance]) <= 1:
                         result["data_error"] = "Insufficient Read Counts"
+                        print("data_error") ####
                         continue
 
                     mc = inputs["min_carriers"]
