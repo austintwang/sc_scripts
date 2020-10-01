@@ -63,8 +63,8 @@ STUDY_ORDER = [
 def plot_heatmap(df, title, result_path):
     df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
     # print(df_plot) ####
-    df_plot.reindex(STUDY_ORDER)
-    df_plot.rename(index=STUDY_NAMES)
+    df_plot = df_plot.reindex(STUDY_ORDER)
+    df_plot.rename(index=STUDY_NAMES, inplace=True)
     sns.set(style="whitegrid", font="Roboto")
     g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
     # g.fig.suptitle(title)
