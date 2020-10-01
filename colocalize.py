@@ -278,7 +278,7 @@ def colocalize(gene_name, data_dir, params_path, filter_path, gwas_dir, gwas_gen
                             cluster_results[cluster]["h3_{0}_{1}".format(fq, fg)] = h3_scaled
                             cluster_results[cluster]["h4_{0}_{1}".format(fq, fg)] = h4_scaled
                         except KeyError as e:
-                            # print(e) ####
+                            print(e) ####
                             continue
 
             write_output(output_path, result)
