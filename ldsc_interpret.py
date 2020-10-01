@@ -8,7 +8,7 @@ import pickle
 import matplotlib
 matplotlib.use('Agg')
 matplotlib.rcParams['agg.path.chunksize'] = 10000
-import matplotlib.pyplot as pltUlcerative colitis
+import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
