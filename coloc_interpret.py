@@ -13,7 +13,7 @@ import seaborn as sns
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
-    print(coloc_data.keys()) ####
+    print(coloc_data["clusters"].keys()) ####
     data = []
     data_sig = []
     locus_sig = False
