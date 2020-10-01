@@ -67,8 +67,10 @@ def plot_heatmap(df, title, result_path):
     df_plot.rename(index=STUDY_NAMES)
     sns.set(style="whitegrid", font="Roboto")
     g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
-    g.fig.suptitle(title)
-    g.savefig(result_path, bbox_inches='tight')
+    # g.fig.suptitle(title)
+    plt.title(title)
+    # g.savefig(result_path, bbox_inches='tight')
+    plt.savefig(result_path, bbox_inches='tight')
     plt.clf()
     plt.close()
 
