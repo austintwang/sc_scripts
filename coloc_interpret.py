@@ -444,7 +444,7 @@ def interpret_genes(genes_dir, genes_list_path, all_sig, genes_map_dir, gwas_nam
     all_sig = (all_sig == "True")
 
     # genes = os.listdir(genes_dir)
-    # genes = genes[:500] ####
+    genes = genes[:500] ####
     data_lst = []
     data_sig_lst = []
     sig_genes = {}
