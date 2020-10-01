@@ -483,6 +483,7 @@ def interpret_genes(genes_dir, genes_list_path, all_sig, genes_map_dir, gwas_nam
     ]
     data_df = pd.DataFrame(data_lst, columns=cols)
     data_df.sort_values(by=["PP4Joint"], ascending=False, inplace=True)
+    print(data_df) ####
     out_dir_gwas = os.path.join(out_dir, gwas_name)
     os.makedirs(out_dir_gwas, exist_ok=True)
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
