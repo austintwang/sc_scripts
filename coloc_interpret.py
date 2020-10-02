@@ -13,7 +13,7 @@ import seaborn as sns
 import pandas as pd
 
 def read_data(plasma_data, coloc_data, clusters, gene_id, gene_name):
-    print(coloc_data["clusters"].keys()) ####
+    # print(coloc_data["clusters"].keys()) ####
     data = []
     data_sig = []
     locus_sig = False
@@ -489,8 +489,8 @@ def interpret_genes(genes_dir, genes_list_path, all_sig, genes_map_dir, gwas_nam
     data_df.to_csv(os.path.join(out_dir_gwas, "data.csv"), index=False)
     with open(os.path.join(out_dir_gwas, "data.txt"), "w") as txt_file:
         data_df.to_string(txt_file)
-    calc_sumstats(data_df, out_dir_gwas, 0.1)
-    plot_sets(data_df, out_dir_gwas)
+    # calc_sumstats(data_df, out_dir_gwas, 0.1)
+    # plot_sets(data_df, out_dir_gwas)
 
     # data_sig_df = data_df.loc[data_df["GWASSig"] >= -np.log10(5e-8)]
     data_sig_df = pd.DataFrame(data_sig_lst, columns=cols)
@@ -504,8 +504,8 @@ def interpret_genes(genes_dir, genes_list_path, all_sig, genes_map_dir, gwas_nam
     sig_gene_names = set(data_sig_df["Gene"])
     with open(os.path.join(out_dir_sig_gwas, "genes.txt"), "w") as list_file:
         list_file.writelines((f"{i}\n" for i in sig_gene_names),)
-    calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
-    plot_sets(data_sig_df, out_dir_sig_gwas)
+    # calc_sumstats(data_sig_df, out_dir_sig_gwas, 0.1)
+    # plot_sets(data_sig_df, out_dir_sig_gwas)
     plot_heatmap(data_sig_df, gwas_name, out_dir_sig_gwas)
 
     for g, data in sig_genes.items():
