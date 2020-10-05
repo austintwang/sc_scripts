@@ -202,7 +202,7 @@ def plot_xcells(df, out_dir, stat_name):
     title = "scQTL to Bulk Replication Storey Pi"
     make_heatmap(storey_pis, cluster_order, ["Bulk"], title, os.path.join(out_dir, f"storey_pi_{sn1}.svg"))
     title = "Bulk to scQTL Replication Storey Pi"
-    make_heatmap(storey_pis_rev.T, ["Bulk"], cluster_order, title, os.path.join(out_dir, f"storey_pi_{sn1}_rev.svg"))
+    make_heatmap(storey_pis_rev.T, cluster_order, ["Bulk"], title, os.path.join(out_dir, f"storey_pi_{sn1}_rev.svg"))
 
 def make_violin(
         df,
