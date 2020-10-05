@@ -76,6 +76,7 @@ def plot_heatmap(df, title, result_path):
     )
     g.ax_row_dendrogram.set_visible(False)
     g.ax_row_dendrogram.set_xlim([0,0])
+    g.ax_heatmap.set_xticklabels(g.ax_heatmap.get_xmajorticklabels(), fontsize=10)
     g.fig.suptitle(title)
     g.savefig(os.path.join(result_path, "heatmap.svg"), bbox_inches='tight')
     plt.clf()
