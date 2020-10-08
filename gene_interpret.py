@@ -70,7 +70,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
 
 def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
     with open(genes_map_path, "rb") as genes_map_file:
-        genes_map = pickle.load(genes_map_path)
+        genes_map = pickle.load(genes_map_file)
 
     for gene in genes:
         gene_dir = os.path.join(data_dir, gene)
