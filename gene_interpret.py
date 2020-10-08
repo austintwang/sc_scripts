@@ -65,10 +65,10 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         prop_hets = prop_alt[hets]
         z_scr = fm_res["z_phi"][snp_idx]
         # print(snp_idx) ####
-        direction = np.sign(z_scr)
+        direction = int(np.sign(z_scr))
         prop_eff = (prop_hets * direction) % 1
         prop_eff[::-1].sort()
-        print(direction) ####
+        # print(direction) ####
         allele_eff = alleles[(1-direction)//2]
 
         cluster_name = CLUSTERS[cluster]
