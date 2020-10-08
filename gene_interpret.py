@@ -56,7 +56,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         counts_A = fm_res["counts_A"]
         counts_B = fm_res["counts_B"]
         prop_A = counts_A / (counts_A + counts_B)
-        prop_alt = (prop_A * phase) % 1
+        prop_alt = (prop_A * phases) % 1
         prop_hets = prop_alt[hets]
         z_scr = fm_res["z_phi"][snp_idx]
         direction = np.sign(z_scr)
