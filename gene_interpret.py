@@ -33,6 +33,7 @@ def plot_fractions(props, rsid, allele, gene_name, cluster_name, out_path):
     x = np.arange(props.size)
     sns.scatterplot(x=x, y=props, hue=props, legend=False, palette="vlag", hue_norm=(0.,1.))
 
+    plt.ylim(0, 1)
     plt.ylabel(f"Allelic Fraction For {allele}")
     plt.title(title)
     plt.savefig(out_path, bbox_inches='tight')
