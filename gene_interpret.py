@@ -33,6 +33,8 @@ def plot_fractions(props, rsid, allele, gene_name, cluster_name, out_path):
     x = np.arange(props.size)
     sns.scatterplot(x=x, y=props, hue=props, legend=False, palette="vlag", hue_norm=(0.,1.))
 
+    plt.axvline((props.size - 1) / 2)
+    plt.axhline(0.5)
     plt.ylim(0, 1)
     plt.ylabel(f"Allelic Fraction For {allele}")
     plt.title(title)
@@ -116,6 +118,12 @@ if __name__ == '__main__':
         "ENSG00000167384.10_2",
         "ENSG00000168077.13_2",
         "ENSG00000104859.14_3",
+        "ENSG00000168958.19_3",
+        "ENSG00000047315.15_2",
+        "ENSG00000090581.9_3",
+        "ENSG00000171858.17_2",
+        "ENSG00000100302.6_2"
+
     ]
     data_dir = "/agusevlab/awang/sc_kellis/genes_429"
     gene_map_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
