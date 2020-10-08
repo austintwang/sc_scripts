@@ -55,6 +55,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     # print(hap_B.shape) ####
 
     for cluster, fm_res in finemap_data.items():
+        print(cluster)
         if cluster == "_gen":
             continue
         counts_A = fm_res["counts_A"]
