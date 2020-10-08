@@ -58,13 +58,19 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         print(cluster)
         if cluster == "_gen":
             continue
-        counts_A = fm_res["counts_A"]
-        counts_B = fm_res["counts_B"]
+        try:
+            counts_A = fm_res["counts_A"]
+            counts_B = fm_res["counts_B"]
+            z_scr = fm_res["z_phi"][snp_idx]
+        except KeyError as e:
+            print(e)
+            continue
+            
         prop_A = counts_A / (counts_A + counts_B)
         # print(np.nansum(prop_A)) ####
         prop_alt = (prop_A * phases) % 1
         prop_hets = prop_alt[hets]
-        z_scr = fm_res["z_phi"][snp_idx]
+        
         if np.isnan(z_scr):
             continue
         # print(fm_res["z_phi"]) ####
