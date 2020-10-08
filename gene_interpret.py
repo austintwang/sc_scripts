@@ -45,7 +45,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     snp_alleles = finemap_data["_gen"]["snp_alleles"]
     hap_A = finemap_data["_gen"]["hap_A"]
     hap_B = finemap_data["_gen"]["hap_B"]
-    snp_idx = np.where(snp_ids == rsid)[0]
+    snp_idx = np.nonzero(snp_ids == rsid)[0]
     print(np.where(snp_ids == rsid)) ####
     alleles = snp_alleles[snp_idx]
     phases = np.squeeze(hap_A[:,snp_idx] - hap_B[:,snp_idx])
