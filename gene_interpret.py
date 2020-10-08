@@ -64,7 +64,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         prop_alt = (prop_A * phases) % 1
         prop_hets = prop_alt[hets]
         z_scr = fm_res["z_phi"][snp_idx]
-        print(fm_res["z_phi"]) ####
+        # print(fm_res["z_phi"]) ####
         # print(snp_idx) ####
         direction = int(np.sign(z_scr))
         prop_eff = (prop_hets * direction) % 1
