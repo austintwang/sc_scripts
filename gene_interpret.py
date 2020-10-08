@@ -51,7 +51,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     hets = (phases != 0)
     # print(phases) ####
     # print(hets) ####
-    print(hap_B.shape)
+    # print(hap_B.shape) ####
 
     for cluster, fm_res in finemap_data.items():
         if cluster == "_gen":
@@ -65,6 +65,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         direction = np.sign(z_scr)
         prop_eff = (prop_hets * direction) % 1
         prop_eff[::-1].sort()
+        print((1-direction)//2) ####
         allele_eff = alleles[(1-direction)//2]
 
         cluster_name = CLUSTERS[cluster]
