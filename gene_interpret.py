@@ -99,7 +99,7 @@ def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
 
-        top_hits = np.argpartition(finemap_data["_all"]["z_phi"]**2[::-1], 5)
+        top_hits = np.argpartition((finemap_data["_all"]["z_phi"]**2)[::-1], 5)
         out_dir_frac = os.path.join(out_dir, "fractions")
         os.makedirs(out_dir_frac, exist_ok=True)
         for hit in top_hits[:5]:
