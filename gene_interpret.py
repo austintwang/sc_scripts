@@ -90,7 +90,7 @@ def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
 
 if __name__ == '__main__':
     genes = [
-        "ENSG00000120885",
+        "ENSG00000120885.21_3",
     ]
     data_dir = "/agusevlab/awang/sc_kellis/genes_429"
     gene_map_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
