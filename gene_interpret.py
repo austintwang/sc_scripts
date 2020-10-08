@@ -66,10 +66,10 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
             print(e)
             continue
 
-        prop_A = counts_A / (counts_A + counts_B) * 0.999
+        prop_A = (counts_A + 0.001) / (counts_A + counts_B + 0.001)
         # print(np.nansum(prop_A)) ####
         prop_alt = (prop_A * phases) % 1
-        prop_hets = prop_alt[hets & ~np.isnan(prop_alt)]
+        prop_hets = prop_alt[hets & ~np.isnan(prop_alt) & (counts_A >= 1) & (counts_B >= 1)]
         
         if np.isnan(z_scr):
             print("z nan")
