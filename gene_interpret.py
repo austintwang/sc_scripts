@@ -49,6 +49,8 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     alleles = snp_alleles[snp_idx]
     phases = hap_A[:,snp_idx] - hap_B[:,snp_idx]
     hets = (phases != 0)
+    print(phases) ####
+    print(hets) ####
 
     for cluster, fm_res in finemap_data.items():
         if cluster == "_gen":
