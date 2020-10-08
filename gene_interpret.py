@@ -99,11 +99,12 @@ def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
         with open(finemap_path, "rb") as finemap_file:
             finemap_data = pickle.load(finemap_file)
 
-        top_hit = np.nanargmax(finemap_data["_all"]["z_phi"]**2)
-        top_rsid = finemap_data["_gen"]["snp_ids"][top_hit]
+        top_hits = np.argpartition(finemap_data["_all"]["z_phi"]**2[::-1], 5)
         out_dir_frac = os.path.join(out_dir, "fractions")
         os.makedirs(out_dir_frac, exist_ok=True)
-        calc_fractions(gene, top_rsid, gene_data, finemap_data, genes_map, out_dir_frac)
+        for hit in top_hits[:5]:
+            top_rsid = finemap_data["_gen"]["snp_ids"][hit]
+            calc_fractions(gene, top_rsid, gene_data, finemap_data, genes_map, out_dir_frac)
 
 
 if __name__ == '__main__':
