@@ -88,7 +88,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
 
         cluster_name = CLUSTERS[cluster]
         out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_{cluster}.svg")
-        plot_fractions(prop_eff, rsid, tcounts, allele_eff, gene_name, cluster_name, out_path)
+        plot_fractions(prop_eff, tcounts, rsid, tcounts, allele_eff, gene_name, cluster_name, out_path)
 
 def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
     with open(genes_map_path, "rb") as genes_map_file:
