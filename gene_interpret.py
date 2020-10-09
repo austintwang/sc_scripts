@@ -73,7 +73,9 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         prop_A = (counts_A + 0.001) / (counts_A + counts_B + 0.001)
         # print(np.nansum(prop_A)) ####
         prop_alt = (prop_A * phases) % 1
-        prop_hets = prop_alt[hets & ~np.isnan(prop_alt) & (counts_A >= 1) & (counts_B >= 1)]
+        select = (hets & ~np.isnan(prop_alt) & (counts_A >= 1) & (counts_B >= 1))
+        prop_hets = prop_alt[select]
+        tcounts_hets = tcouts[select]
         
         if np.isnan(z_scr):
             print("z nan")
@@ -123,8 +125,9 @@ if __name__ == '__main__':
         "ENSG00000047315.15_2",
         "ENSG00000090581.9_3",
         "ENSG00000171858.17_2",
-        "ENSG00000100302.6_2"
-
+        "ENSG00000100302.6_2",
+        "ENSG00000005486.16_2",
+        "ENSG00000144834.13_3",
     ]
     data_dir = "/agusevlab/awang/sc_kellis/genes_429"
     gene_map_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
