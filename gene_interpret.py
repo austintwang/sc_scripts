@@ -26,12 +26,12 @@ CLUSTERS =  {
     "Per": "Per"
 }
 
-def plot_fractions(props, rsid, allele, gene_name, cluster_name, out_path):
+def plot_fractions(props, tcounts, rsid, allele, gene_name, cluster_name, out_path):
     title = f"{gene_name}, {rsid}, {cluster_name}"
     sns.set(style="whitegrid", font="Roboto")
 
     x = np.arange(props.size)
-    sns.scatterplot(x=x, y=props, hue=props, legend=False, palette="vlag", hue_norm=(0.,1.))
+    sns.scatterplot(x=x, y=props, hue=props, size=tcounts, legend=False, palette="vlag", hue_norm=(0.,1.))
 
     plt.axvline((props.size - 1) / 2)
     plt.axhline(0.5)
@@ -69,6 +69,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
             print(e)
             continue
 
+        tcounts = counts_A + counts_B
         prop_A = (counts_A + 0.001) / (counts_A + counts_B + 0.001)
         # print(np.nansum(prop_A)) ####
         prop_alt = (prop_A * phases) % 1
@@ -87,7 +88,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
 
         cluster_name = CLUSTERS[cluster]
         out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_{cluster}.svg")
-        plot_fractions(prop_eff, rsid, allele_eff, gene_name, cluster_name, out_path)
+        plot_fractions(prop_eff, rsid, tcounts, allele_eff, gene_name, cluster_name, out_path)
 
 def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
     with open(genes_map_path, "rb") as genes_map_file:
