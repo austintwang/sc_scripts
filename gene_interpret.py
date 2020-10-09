@@ -84,9 +84,9 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         # print(snp_idx) ####
         direction = int(np.sign(z_scr))
         prop_eff = (prop_hets * direction) % 1
-        ranks = np.argsort(prop_eff[::-1])
+        ranks = np.argsort(prop_eff)[::-1]
         prop_sorted = prop_eff[ranks]
-        print(prop_sorted) ####
+        # print(prop_sorted) ####
         tcounts_sorted = tcounts_hets[ranks]
         # print(direction) ####
         allele_eff = alleles[(1-direction)//2]
