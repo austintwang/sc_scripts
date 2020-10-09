@@ -75,7 +75,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         prop_alt = (prop_A * phases) % 1
         select = (hets & ~np.isnan(prop_alt) & (counts_A >= 1) & (counts_B >= 1))
         prop_hets = prop_alt[select]
-        tcounts_hets = tcouts[select]
+        tcounts_hets = tcounts[select]
         
         if np.isnan(z_scr):
             print("z nan")
@@ -84,13 +84,15 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         # print(snp_idx) ####
         direction = int(np.sign(z_scr))
         prop_eff = (prop_hets * direction) % 1
-        prop_eff[::-1].sort()
+        ranks = np.argsort(prop_eff[::-1])
+        prop_sorted = prop_eff[ranks]
+        tcounts_sorted = tcounts_hets[ranks]
         # print(direction) ####
         allele_eff = alleles[(1-direction)//2]
 
         cluster_name = CLUSTERS[cluster]
         out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_{cluster}.svg")
-        plot_fractions(prop_eff, tcounts, rsid, allele_eff, gene_name, cluster_name, out_path)
+        plot_fractions(prop_sorted, tcounts_sorted, rsid, allele_eff, gene_name, cluster_name, out_path)
 
 def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
     with open(genes_map_path, "rb") as genes_map_file:
