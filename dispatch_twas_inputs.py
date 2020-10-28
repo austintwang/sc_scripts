@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, data_dir, out_dir, memory, barcodes_map_path, fails_only=False):
+def dispatch(script_path, names, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "twas_in_status.txt")
