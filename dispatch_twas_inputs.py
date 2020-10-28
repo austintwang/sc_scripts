@@ -51,11 +51,13 @@ if __name__ == '__main__':
     script_path = os.path.join(curr_path, "get_twas_inputs.py")
 
     data_path_kellis = "/agusevlab/awang/sc_kellis"
+    cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
+    barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     out_dir_kellis = os.path.join(data_path_kellis, "export_429")
     names = os.listdir(genes_dir_kellis)
 
-    dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, 2000, fails_only=False)
+    dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
     # dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, 2000, fails_only=True)
 
