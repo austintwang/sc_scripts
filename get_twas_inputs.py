@@ -9,7 +9,7 @@ def load_cell_counts(cell_counts, barcodes_map):
     count_data = []
     for k, v in cell_counts.items():
         barcode, study = k
-        sample = barcodes_map[k]
+        sample = barcodes_map[study]
         counts_A, counts_B, counts_all = v
         data = (barcode, study, sample, counts_A, counts_B, counts_all)
         count_data.append(data)
