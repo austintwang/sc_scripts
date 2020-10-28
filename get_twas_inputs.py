@@ -23,7 +23,7 @@ def load_cell_counts(cell_counts, barcodes_map):
         data = (k, counts_A, counts_B, counts_all, sample)
         count_data.append(data)
 
-    return np.stack([np.array(i, dtype="object") for i in data])
+    return np.stack([np.array(i, dtype="object") for i in count_data])
 
 
 def write_gene(gene_name, gene_path_base, barcodes_map_path, out_path_base):
