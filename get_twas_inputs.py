@@ -6,21 +6,12 @@ import sys
 import numpy as np
 
 def load_cell_counts(cell_counts, barcodes_map):
-    if isinstance(next(iter(barcodes_map.keys())), str):
-        well_only = True
-    else:
-        well_only = False
-
     count_data = []
     for k, v in cell_counts.items():
-        if well_only:
-            bar_key = k[1]
-        else:
-            bar_key = k
-
-        sample = barcodes_map[bar_key]
+        barcode, study = k
+        sample = barcodes_map[k]
         counts_A, counts_B, counts_all = v
-        data = (k, counts_A, counts_B, counts_all, sample)
+        data = (barcode, study, sample, counts_A, counts_B, counts_all)
         count_data.append(data)
 
     return np.stack([np.array(i, dtype="object") for i in count_data])
