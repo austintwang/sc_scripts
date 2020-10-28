@@ -85,7 +85,7 @@ def get_twas_inputs(gene, gene_path_base, out_path_base, barcodes_map_path, stat
     try:
         write_gene(gene, gene_path_base, barcodes_map_path, out_path_base)
     except FileNotFoundError as e:
-        print(e) ####
+        # print(e) ####
         pass
 
     with open(status_path, "w") as status_file:
