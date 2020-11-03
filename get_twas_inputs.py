@@ -37,6 +37,10 @@ def write_gene(gene_name, gene_path_base, barcodes_map_path, out_path_base):
 
     np.savetxt(os.path.join(out_gene_dir, "hapA.txt"), plasma_data["_gen"]["hap_A"], fmt='%i')
     np.savetxt(os.path.join(out_gene_dir, "hapB.txt"), plasma_data["_gen"]["hap_B"], fmt='%i')
+
+    sample_names = np.array(gene_data["samples"])
+    np.savetxt(os.path.join(out_gene_dir, "sample_names.txt"), sample_names, fmt="%s")
+
     pos = plasma_data["_gen"]["snp_pos"]
     # print(pos) ####
     sid = plasma_data["_gen"]["snp_ids"]
