@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
+def dispatch(script_path, names, run_name, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "twas_in_status.txt")
@@ -20,7 +20,7 @@ def dispatch(script_path, names, data_dir, out_dir, barcodes_map_path, memory, f
         err_name = os.path.join(data_dir, name, "twas_in_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, name, data_dir, out_dir, barcodes_map_path, status_path
+            script_path, name, run_name, data_dir, out_dir, barcodes_map_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -57,7 +57,8 @@ if __name__ == '__main__':
     out_dir_kellis = os.path.join(data_path_kellis, "export_429")
     names = os.listdir(genes_dir_kellis)
 
-    dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
+    run_name = "combined"
+    dispatch(script_path, names, run_name, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
     # dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, 2000, fails_only=True)
 
