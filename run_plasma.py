@@ -69,6 +69,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
 
 def calc_reads(cell_counts, cell_moments, barcodes, barcodes_map, sample_names):
     sample_counts = {}
+    sample_num_cells = {}
     sample_counts_norm = {}
     sample_moments = {}
     if isinstance(next(iter(barcodes_map.keys())), str):
