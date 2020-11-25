@@ -82,6 +82,15 @@ def write_gene(gene_name, gene_path_base, barcodes_map_path, out_path_base):
         np.savetxt(os.path.join(cluster_dir, "zPhi.txt"), z_phi)
         np.savetxt(os.path.join(cluster_dir, "phi.txt"), phi)
 
+        try:
+            cset = result["causal_set_ase"]
+            ppas = result["ppas_ase"]
+        except KeyError:
+            continue
+
+        np.savetxt(os.path.join(cluster_dir, "cred95.txt"), cset)
+        np.savetxt(os.path.join(cluster_dir, "ppa.txt"), ppas)
+
 def get_twas_inputs(gene, gene_path_base, out_path_base, barcodes_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
