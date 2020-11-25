@@ -17,7 +17,7 @@ def load_cell_counts(cell_counts, barcodes_map):
     return np.stack([np.array(i, dtype="object") for i in count_data])
 
 
-def write_gene(gene_name, run_name, gene_path_base, barcodes_map_path, out_path_base):
+def write_gene(gene_name, run_name, run_name_coloc, gwas_path, gene_path_base, barcodes_map_path, out_path_base):
     with open(barcodes_map_path, "rb") as barcodes_map_file:
         barcodes_map = pickle.load(barcodes_map_file)
     gene_path = os.path.join(gene_path_base, gene_name)
@@ -91,12 +91,12 @@ def write_gene(gene_name, run_name, gene_path_base, barcodes_map_path, out_path_
         np.savetxt(os.path.join(cluster_dir, "cred95.txt"), cset)
         np.savetxt(os.path.join(cluster_dir, "ppa.txt"), ppas)
 
-def get_twas_inputs(gene, run_name, gene_path_base, out_path_base, barcodes_map_path, status_path):
+def get_twas_inputs(gene, run_name, run_name_coloc, gwas_path, gene_path_base, out_path_base, barcodes_map_path, status_path):
     with open(status_path, "w") as status_file:
         status_file.write("")
 
     try:
-        write_gene(gene, run_name, gene_path_base, barcodes_map_path, out_path_base)
+        write_gene(gene, run_name, run_name_coloc, gwas_path, gene_path_base, barcodes_map_path, out_path_base)
     except FileNotFoundError as e:
         # print(e) ####
         pass

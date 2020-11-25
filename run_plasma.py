@@ -45,7 +45,7 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
     shape_orig = np.shape(inputs["snp_ids"])
 
     causal_set_inf = model.get_causal_set(inputs["confidence"])
-    print(shape_orig, len(causal_set_inf), informative_snps.shape) ####
+    # print(shape_orig, len(causal_set_inf), informative_snps.shape) ####
     causal_set = restore_informative(shape_orig, causal_set_inf, informative_snps, 1)
     ppas_inf = model.get_ppas()
     ppas = restore_informative(shape_orig, ppas_inf, informative_snps, np.nan)
@@ -67,10 +67,10 @@ def run_model(model_cls, inputs, input_updates, informative_snps, return_stats=F
     else:
         return causal_set, ppas, size_probs
 
-def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
+def calc_reads(cell_counts, cell_moments, barcodes, barcodes_map, sample_names):
     sample_counts = {}
     sample_counts_norm = {}
-    sample_num_cells = {}
+    sample_moments = {}
     if isinstance(next(iter(barcodes_map.keys())), str):
         well_only = True
     else:
@@ -82,15 +82,30 @@ def calc_reads(cell_counts, barcodes, barcodes_map, sample_names):
             bar_key = i
         if (i in cell_counts) and (bar_key in barcodes_map):
             counts = cell_counts[i]
+            moments = cell_moments.get(i, np.zeros((4,2),))
             sample = barcodes_map[bar_key]
             sc = sample_counts.setdefault(sample, np.array([0,0,0])) 
+            sm = sample_moments.setdefault(sample, np.zeros((4,2),))
             sc += counts
+            sm += moments
             sample_num_cells.setdefault(sample, 0)
             sample_num_cells[sample] += 1
 
     counts_all = np.stack([sample_counts.get(i, np.array([0,0,0])) for i in sample_names], axis=0)
+    moments_all = np.stack([sample_moments.get(i, np.zeros((4,2),)) for i in sample_names], axis=0)
     num_cells_all = np.array([sample_num_cells.get(i, 0) for i in sample_names])
-    return counts_all, num_cells_all
+
+    r1 = moments_all[:,1,:] / moments_all[:,0,:]
+    r2 = moments_all[:,2,:] / moments_all[:,1,:]
+    r3 = moments_all[:,3,:] / moments_all[:,2,:]
+    r1r3 = r1 * r3
+    r2r3 = r2 * r3
+    r1r2 = r1 * r2
+    k_on = 2*r1*(r3-r2)/(r1r2-2*r1r3+r2r3)
+    k_off = 2*(r2-r1)*(r1-r3)*(r3-r2)/((r1r2-2*r1r3+r2r3)*(r1-2*r2+r3))
+    k_syn = (-r1r2+2*r1r3-r2r3)/(r1-2*r2+r3)
+
+    return counts_all, num_cells_all, moments_all, k_on, k_off, k_syn
 
 def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion_path):
     # with open(gene_path, "rb") as gene_file:
@@ -109,14 +124,22 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
         # print(cluster_map.keys()) ####
-        counts, num_cells = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
+        counts, num_cells, moments, k_on, k_off, k_syn = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
         overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
             "counts2": counts[:,1],
             "counts_total": counts[:,2],
             "overdispersion": overdispersion_clust,
-            "num_cells": num_cells
+            "num_cells": num_cells,
+            "moments1": moments[:,:,0],
+            "moments2": moments[:,:,1],
+            "kon1": k_on[:,0],
+            "kon2": k_on[:,1],
+            "koff1": k_off[:,0],
+            "koff2": k_off[:,1],
+            "ksyn1": k_syn[:,0],
+            "ksyn2": k_syn[:,1],
         }
 
     return cluster_inputs
@@ -262,6 +285,15 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["overdispersion"] = inputs["overdispersion"][select_counts]
                     inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
                     inputs["num_cells"] = inputs["num_cells"][select_counts]
+
+                    result["moments1"] = inputs["moments1"][select_counts]
+                    result["moments2"] = inputs["moments2"][select_counts]
+                    result["kon1"] = inputs["kon1"][select_counts]
+                    result["kon2"] = inputs["kon2"][select_counts]
+                    result["koff1"] = inputs["koff1"][select_counts]
+                    result["koff2"] = inputs["koff2"][select_counts]
+                    result["ksyn1"] = inputs["ksyn1"][select_counts]
+                    result["ksyn2"] = inputs["ksyn2"][select_counts]
                     # if processed_counts:
                     #     inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 
