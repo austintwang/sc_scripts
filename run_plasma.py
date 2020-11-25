@@ -118,13 +118,14 @@ def load_clusters(gene_data, cluster_map_path, barcodes_map_path, overdispersion
         overdispersion = pickle.load(overdispersion_file)
 
     cell_counts = gene_data["cell_counts"]
+    cell_moments = gene_data["burst_data"]
     sample_names = gene_data["samples"]
     # sample_map = {val: ind for ind, val in enumerate(sample_names)}
 
     cluster_inputs = {}
     for cluster, barcodes in cluster_map.items():
         # print(cluster_map.keys()) ####
-        counts, num_cells, moments, k_on, k_off, k_syn = calc_reads(cell_counts, barcodes, barcodes_map, sample_names)
+        counts, num_cells, moments, k_on, k_off, k_syn = calc_reads(cell_counts, cell_moments, barcodes, barcodes_map, sample_names)
         overdispersion_clust = np.array([overdispersion[cluster].get(i, np.nan) for i in sample_names])
         cluster_inputs[cluster] = {
             "counts1": counts[:,0],
