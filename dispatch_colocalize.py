@@ -163,31 +163,32 @@ if __name__ == '__main__':
     params_kellis_all["run_name_plasma"] = "combined_coloc"
     params_kellis_all["run_name_coloc"] = "coloc"
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_all, 
-        params_path_kellis, 
-        "all", 
-        gwas_dir,
-        gwas_gen_path,
-        boundaries_map_path,
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_all, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     gwas_dir,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=False
+    # )
 
     groups = [
-        "Female",
-        "Male",
-        "AgeUnder80",
-        "Age80To90",
-        "AgeOver90",
-        "ReaganNeg",
-        "ReaganPos",
-        "CeradNCI",
-        "CeradMCI",
-        "CeradAD"
+        # "Female",
+        # "Male",
+        # "AgeUnder80",
+        # "Age80To90",
+        # "AgeOver90",
+        # "ReaganNeg",
+        # "ReaganPos",
+        "Cerad1",
+        "Cerad2",
+        "Cerad3",
+        "Cerad4",
     ]
     # groups = groups[4:] ####
 
@@ -201,19 +202,19 @@ if __name__ == '__main__':
         params_kellis_group["run_name_plasma"] = f"clinical_coloc_{group}"
         params_kellis_group["run_name_coloc"] = f"clinical_coloc_res_{group}"
 
-        # dispatch(
-        #     script_path, 
-        #     names_test, 
-        #     genes_dir_kellis, 
-        #     params_kellis_group, 
-        #     params_path_kellis_group, 
-        #     "all", 
-        #     gwas_dir,
-        #     gwas_gen_path,
-        #     boundaries_map_path,
-        #     2000, 
-        #     fails_only=False
-        # )
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis_group, 
+            params_path_kellis_group, 
+            "all", 
+            gwas_dir,
+            gwas_gen_path,
+            boundaries_map_path,
+            2000, 
+            fails_only=False
+        )
 
 
 

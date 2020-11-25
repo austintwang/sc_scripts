@@ -54,15 +54,30 @@ if __name__ == '__main__':
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
     barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
-    out_dir_kellis = os.path.join(data_path_kellis, "export_429")
     names = os.listdir(genes_dir_kellis)
 
     run_name = "combined"
+    out_dir_kellis = os.path.join(data_path_kellis, "export_429")
     dispatch(script_path, names, run_name, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
-    # dispatch(script_path, names, genes_dir_kellis, out_dir_kellis, 2000, fails_only=True)
+    groups = [
+        "Female",
+        "Male",
+        "AgeUnder80",
+        "Age80To90",
+        "AgeOver90",
+        "ReaganNeg",
+        "ReaganPos",
+        "Cerad1",
+        "Cerad2",
+        "Cerad3",
+        "Cerad4",
+    ]
 
-
+    for group in groups:
+        run_name = f"clinical_{group}"
+        out_dir_kellis = os.path.join(data_path_kellis, "export_429_clinical", run_name)
+        dispatch(script_path, names, run_name, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
 
 
