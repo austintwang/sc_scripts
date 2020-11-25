@@ -386,9 +386,10 @@ if __name__ == '__main__':
         "AgeOver90",
         "ReaganNeg",
         "ReaganPos",
-        "CeradNCI",
-        "CeradMCI",
-        "CeradAD"
+        "Cerad1",
+        "Cerad2",
+        "Cerad3",
+        "Cerad4",
     ]
 
     names_test_path = os.path.join(data_path_kellis, "list_429_test_1.pickle")
