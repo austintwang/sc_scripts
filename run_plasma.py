@@ -288,14 +288,14 @@ def run_plasma(name, data_dir, params_path, filter_path, cluster_map_path, barco
                     inputs["sample_names"] = np.array(inputs["sample_names"])[select_counts]
                     inputs["num_cells"] = inputs["num_cells"][select_counts]
 
-                    result["moments1"] = inputs["moments1"][select_counts]
-                    result["moments2"] = inputs["moments2"][select_counts]
-                    result["kon1"] = inputs["kon1"][select_counts]
-                    result["kon2"] = inputs["kon2"][select_counts]
-                    result["koff1"] = inputs["koff1"][select_counts]
-                    result["koff2"] = inputs["koff2"][select_counts]
-                    result["ksyn1"] = inputs["ksyn1"][select_counts]
-                    result["ksyn2"] = inputs["ksyn2"][select_counts]
+                    result["moments_A"] =result["moments1"] = inputs["moments1"][select_counts]
+                    result["moments_B"] = result["moments2"] = inputs["moments2"][select_counts]
+                    result["kon_A"] = result["kon1"] = inputs["kon1"][select_counts]
+                    result["kon_B"] = result["kon2"] = inputs["kon2"][select_counts]
+                    result["koff_A"] = result["koff1"] = inputs["koff1"][select_counts]
+                    result["koff_B"] = result["koff2"] = inputs["koff2"][select_counts]
+                    result["ksyn_A"] = result["ksyn1"] = inputs["ksyn1"][select_counts]
+                    result["ksyn_B"] = result["ksyn2"] = inputs["ksyn2"][select_counts]
                     # if processed_counts:
                     #     inputs["counts_norm"] = inputs["counts_norm"][select_counts]
 

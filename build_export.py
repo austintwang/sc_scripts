@@ -62,34 +62,95 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_path, gene_path_base, b
             counts_B = result["counts_B"]
             total_exp = result["total_exp"]
             errs = np.sqrt(result["imbalance_errors"])
+
+            os.makedirs(cluster_dir, exist_ok=True)
+            # for i in os.listdir(cluster_dir):
+            #     os.remove(os.path.join(cluster_dir, i))
+            np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  counts_A)
+            np.savetxt(os.path.join(cluster_dir, "countsB.txt"), counts_B)
+            np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), total_exp)
+            np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), errs)
         except KeyError:
             continue
-
-        os.makedirs(cluster_dir, exist_ok=True)
-        # for i in os.listdir(cluster_dir):
-        #     os.remove(os.path.join(cluster_dir, i))
-        np.savetxt(os.path.join(cluster_dir, "countsA.txt"),  counts_A)
-        np.savetxt(os.path.join(cluster_dir, "countsB.txt"), counts_B)
-        np.savetxt(os.path.join(cluster_dir, "countsTotal.txt"), total_exp)
-        np.savetxt(os.path.join(cluster_dir, "sampleErr.txt"), errs)
 
         try:
             z_phi = result["z_phi"]
             phi = result["phi"]
+
+            os.makedirs(cluster_dir, exist_ok=True)
+            np.savetxt(os.path.join(cluster_dir, "zPhi.txt"), z_phi)
+            np.savetxt(os.path.join(cluster_dir, "phi.txt"), phi)
         except KeyError:
             continue
-
-        np.savetxt(os.path.join(cluster_dir, "zPhi.txt"), z_phi)
-        np.savetxt(os.path.join(cluster_dir, "phi.txt"), phi)
 
         try:
             cset = result["causal_set_ase"]
             ppas = result["ppas_ase"]
+
+            os.makedirs(cluster_dir, exist_ok=True)
+            np.savetxt(os.path.join(cluster_dir, "cred95.txt"), cset)
+            np.savetxt(os.path.join(cluster_dir, "ppa.txt"), ppas)
         except KeyError:
             continue
 
-        np.savetxt(os.path.join(cluster_dir, "cred95.txt"), cset)
-        np.savetxt(os.path.join(cluster_dir, "ppa.txt"), ppas)
+        try:
+            kon_A = result["kon1"] 
+            kon_B = result["kon2"]
+            koff_A = result["koff1"]
+            koff_B = result["koff2"]
+            ksyn_A = result["ksyn1"]
+            ksyn_B = result["ksyn2"]
+
+            os.makedirs(cluster_dir, exist_ok=True)
+
+            rates_A = np.stack((kon_A, koff_A, ksyn_A), axis=1)
+            rates_B = np.stack((kon_B, koff_B, ksyn_B), axis=1)
+
+            np.savetxt(os.path.join(cluster_dir, "burstA.txt"), rates_A)
+            np.savetxt(os.path.join(cluster_dir, "burstB.txt"), rates_B)
+        except KeyError:
+            continue
+
+    studies = os.listdir(gwas_dir)
+    for study in studies:
+        if study == "gen":
+            continue
+        gwas_name = study.split(".")[0]
+        coloc_path = os.path.join(out_gene_dir, run_name_coloc, f"{gwas_name}.pickle")
+        try:
+            with open(coloc_path, "rb") as coloc_file:
+                coloc_data = pickle.load(coloc_file)
+        except (FileNotFoundError, pickle.UnpicklingError) as e:
+            continue
+
+        try:
+            z_gwas = coloc_data["z_beta"]
+            os.makedirs(os.path.join(out_gene_dir, "gwasStats", gwas_name), exist_ok=True)
+            np.savetxt(os.path.join(out_gene_dir, "gwasStats", gwas_name, "zGwas.txt"), z_gwas)
+
+        except KeyError:
+            continue
+
+        if not "clusters" in coloc_data:
+            continue
+        for cluster, result in coloc_data["clusters"].items():
+            try:
+                clpp = result["clpp_ase_eqtl"]
+                h0 = result["h0_ase_eqtl"]
+                h1 = result["h1_ase_eqtl"]
+                h2 = result["h2_ase_eqtl"]
+                h3 = result["h3_ase_eqtl"]
+                n4 = result["h4_ase_eqtl"]
+
+                cluster_dir = os.path.join(out_gene_dir, cluster)
+                os.makedirs(os.path.join(cluster_dir, gwas_name), exist_ok=True)
+                np.savetxt(os.path.join(cluster_dir, gwas_name, "clpp.txt"), z_phi)
+                with open(os.path.join(cluster_dir, gwas_name, "hyps.txt"), "w") as hyps_file:
+                    hyps_file.write(f"{h0} {h1} {h2} {h3} {h4}\n")
+
+            except KeyError:
+                continue
+
 
 def get_twas_inputs(gene, run_name, run_name_coloc, gwas_path, gene_path_base, out_path_base, barcodes_map_path, status_path):
     with open(status_path, "w") as status_file:
