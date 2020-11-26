@@ -58,6 +58,7 @@ if __name__ == '__main__':
 
     run_name = "combined"
     out_dir_kellis = os.path.join(data_path_kellis, "export_429", "_everyone")
+    os.makedirs(out_dir_kellis, exist_ok=True)
     dispatch(script_path, names, run_name, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
     groups = [
@@ -77,6 +78,7 @@ if __name__ == '__main__':
     for group in groups:
         run_name = f"clinical_{group}"
         out_dir_kellis = os.path.join(data_path_kellis, "export_429", group)
+        os.makedirs(out_dir_kellis, exist_ok=True)
         dispatch(script_path, names, run_name, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
 
