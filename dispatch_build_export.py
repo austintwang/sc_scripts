@@ -48,7 +48,7 @@ def dispatch(script_path, names, run_name, data_dir, out_dir, barcodes_map_path,
 
 if __name__ == '__main__':
     curr_path = os.path.abspath(os.path.dirname(__file__))
-    script_path = os.path.join(curr_path, "get_twas_inputs.py")
+    script_path = os.path.join(curr_path, "build_export.py")
 
     data_path_kellis = "/agusevlab/awang/sc_kellis"
     cluster_map_path_kellis = os.path.join(data_path_kellis, "cluster_map_429.pickle")
