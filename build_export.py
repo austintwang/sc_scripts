@@ -122,13 +122,13 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_dir, gene_path_base, ba
             with open(coloc_path, "rb") as coloc_file:
                 coloc_data = pickle.load(coloc_file)
         except (FileNotFoundError, pickle.UnpicklingError) as e:
-            print(e) ####
+            # print(e) ####
             continue
 
         try:
             z_gwas = coloc_data["z_beta"]
-            os.makedirs(os.path.join(out_gene_dir, "gwasStats", gwas_name), exist_ok=True)
-            np.savetxt(os.path.join(out_gene_dir, "gwasStats", gwas_name, "zGwas.txt"), z_gwas)
+            os.makedirs(os.path.join(out_gene_dir, "gwas_stats", gwas_name), exist_ok=True)
+            np.savetxt(os.path.join(out_gene_dir, "gwas_stats", gwas_name, "z_gwas.txt"), z_gwas)
 
         except KeyError:
             continue
