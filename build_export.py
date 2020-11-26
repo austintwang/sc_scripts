@@ -142,7 +142,7 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_dir, gene_path_base, ba
                 h1 = result["h1_ase_eqtl"]
                 h2 = result["h2_ase_eqtl"]
                 h3 = result["h3_ase_eqtl"]
-                n4 = result["h4_ase_eqtl"]
+                h4 = result["h4_ase_eqtl"]
 
                 cluster_dir = os.path.join(out_gene_dir, cluster)
                 os.makedirs(os.path.join(cluster_dir, gwas_name), exist_ok=True)
