@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, run_name, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
+def dispatch(script_path, names, run_name, run_name_coloc, gwas_path, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "twas_in_status.txt")
@@ -20,7 +20,7 @@ def dispatch(script_path, names, run_name, data_dir, out_dir, barcodes_map_path,
         err_name = os.path.join(data_dir, name, "twas_in_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, name, run_name, data_dir, out_dir, barcodes_map_path, status_path
+            script_path, name, run_name, run_name_coloc, gwas_path, data_dir, out_dir, barcodes_map_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
