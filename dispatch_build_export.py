@@ -5,7 +5,7 @@ import subprocess
 import time
 import numpy as np
 
-def dispatch(script_path, names, run_name, run_name_coloc, gwas_path, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
+def dispatch(script_path, names, run_name, run_name_coloc, gwas_dir, data_dir, out_dir, barcodes_map_path, memory, fails_only=False):
     jobs = []
     for name in names:
         status_path = os.path.join(data_dir, name, "twas_in_status.txt")
@@ -20,7 +20,7 @@ def dispatch(script_path, names, run_name, run_name_coloc, gwas_path, data_dir, 
         err_name = os.path.join(data_dir, name, "twas_in_%j.out")
         cmd = [
             "sbatch", "--mem={0}".format(memory), "-J", name, "-o", err_name, "-x", "node12,node13",
-            script_path, name, run_name, run_name_coloc, gwas_path, data_dir, out_dir, barcodes_map_path, status_path
+            script_path, name, run_name, run_name_coloc, gwas_dir, data_dir, out_dir, barcodes_map_path, status_path
         ]
         print(" ".join(cmd))
         jobs.append(cmd)
@@ -55,13 +55,13 @@ if __name__ == '__main__':
     barcodes_map_path_kellis = os.path.join(data_path_kellis, "metadata_429.pickle")
     genes_dir_kellis = os.path.join(data_path_kellis, "genes_429")
     names = os.listdir(genes_dir_kellis)
-    gwas_path = "/agusevlab/awang/gwas_data"
+    gwas_dir = "/agusevlab/awang/gwas_data"
 
     run_name = "combined"
     run_name_coloc = "coloc"
     out_dir_kellis = os.path.join(data_path_kellis, "export_429", "_everyone")
     os.makedirs(out_dir_kellis, exist_ok=True)
-    dispatch(script_path, names, run_name, run_name_coloc, gwas_path, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
+    dispatch(script_path, names, run_name, run_name_coloc, gwas_dir, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
     groups = [
         "Female",
@@ -82,7 +82,7 @@ if __name__ == '__main__':
         run_name_coloc = f"clinical_coloc_res_{group}"
         out_dir_kellis = os.path.join(data_path_kellis, "export_429", group)
         os.makedirs(out_dir_kellis, exist_ok=True)
-        dispatch(script_path, names, run_name, run_name_coloc, gwas_path, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
+        dispatch(script_path, names, run_name, run_name_coloc, gwas_dir, genes_dir_kellis, out_dir_kellis, barcodes_map_path_kellis, 2000, fails_only=False)
 
 
 
