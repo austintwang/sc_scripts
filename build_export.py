@@ -108,7 +108,8 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_dir, gene_path_base, ba
 
             np.savetxt(os.path.join(cluster_dir, "burstA.txt"), rates_A)
             np.savetxt(os.path.join(cluster_dir, "burstB.txt"), rates_B)
-        except KeyError:
+        except KeyError as e:
+            print(e) ####
             continue
 
     studies = os.listdir(gwas_dir)
@@ -121,6 +122,7 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_dir, gene_path_base, ba
             with open(coloc_path, "rb") as coloc_file:
                 coloc_data = pickle.load(coloc_file)
         except (FileNotFoundError, pickle.UnpicklingError) as e:
+            print(e) ####
             continue
 
         try:
