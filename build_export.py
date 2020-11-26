@@ -117,7 +117,7 @@ def write_gene(gene_name, run_name, run_name_coloc, gwas_dir, gene_path_base, ba
         if study == "gen":
             continue
         gwas_name = study.split(".")[0]
-        coloc_path = os.path.join(out_gene_dir, run_name_coloc, f"{gwas_name}.pickle")
+        coloc_path = os.path.join(gene_path, run_name_coloc, f"{gwas_name}.pickle")
         try:
             with open(coloc_path, "rb") as coloc_file:
                 coloc_data = pickle.load(coloc_file)
