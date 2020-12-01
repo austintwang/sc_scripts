@@ -77,6 +77,10 @@ if __name__ == '__main__':
         "Cerad4",
     ]
 
+    names_test_path = os.path.join(data_path_kellis, "list_429_sig.pickle")
+    with open(names_test_path, "rb") as names_test_file:
+        names = pickle.load(names_test_file)
+
     for group in groups:
         run_name = f"clinical_{group}"
         run_name_coloc = f"clinical_coloc_res_{group}"
