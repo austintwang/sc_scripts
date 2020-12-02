@@ -473,6 +473,8 @@ def plot_sets(df, out_dir):
     with open(os.path.join(out_dir, "sumstats.txt"), "w") as txt_file:
         summ_df.to_string(txt_file)
 
+    return df_all
+
 def make_scatter(
         df,
         var_x,
@@ -712,13 +714,13 @@ def plot_xcells_nfold(dfs_train, dfs_test, out_dir, stat_name, cutoff):
 
 def get_info(run_name, genes_dir, cluster_map_path, out_dir, glist=None):
     data_df = make_df(run_name, "i0", genes_dir, cluster_map_path, None, glist=glist)
+    data_df = plot_sets(data_df, out_dir)
     data_df.sort_values(by=["TopSNPPosterior"], ascending=False, inplace=True)
     csv_path = os.path.join(out_dir, "cluster_info.csv")
     data_df.to_csv(csv_path, sep="\t", index=False, na_rep="None")
     txt_path = os.path.join(out_dir, "cluster_info.txt")
     with open(txt_path, "w") as txt_file:
         data_df.to_string(txt_file)
-    plot_sets(data_df, out_dir)
 
 def get_info_xval(run_name, num_splits, genes_dir, cluster_map_path, out_dir, glist=None):
     df_train = make_df(run_name, "x0", genes_dir, cluster_map_path, None, glist=glist)
@@ -774,11 +776,11 @@ if __name__ == '__main__':
 
     out_dir_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429"
 
-    # get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    get_info("combined", genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     # get_info_xval("split", 2, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
-    get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
+    # get_info_xval_nfold("split5", 5, genes_dir_kellis, cluster_map_path_kellis, out_dir_kellis)
 
     out_dir_strict = os.path.join(out_dir_kellis, "strict")
 
