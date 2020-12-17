@@ -104,9 +104,10 @@ if __name__ == '__main__':
         "AgeOver90",
         "ReaganNeg",
         "ReaganPos",
-        "CeradNCI",
-        "CeradMCI",
-        "CeradAD"
+        "Cerad1",
+        "Cerad2",
+        "Cerad3",
+        "Cerad4",
     ]
     # groups = groups[:4] ####
     # groups = groups[4:] ####
