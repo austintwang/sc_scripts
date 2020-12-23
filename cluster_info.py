@@ -822,14 +822,15 @@ if __name__ == '__main__':
         "AgeOver90",
         "ReaganNeg",
         "ReaganPos",
-        "CeradNCI",
-        "CeradMCI",
-        "CeradAD"
+        "Cerad1",
+        "Cerad2",
+        "Cerad3",
+        "Cerad4",
     ]
 
     out_dir_clinical = os.path.join(out_dir_kellis, "clinical")
 
     for group in groups:
         os.makedirs(os.path.join(out_dir_clinical, f"clinical_{group}"), exist_ok=True)
-        # get_info(f"clinical_{group}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_clinical, f"clinical_{group}"), glist=names_test)
+        get_info(f"clinical_{group}", genes_dir_kellis, cluster_map_path_kellis, os.path.join(out_dir_clinical, f"clinical_{group}"), glist=names_test)
 

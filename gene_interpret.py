@@ -26,6 +26,14 @@ CLUSTERS =  {
     "Per": "Per"
 }
 
+def plot_clusters(clusters_df, rsid, gene_name, out_path):
+    title = f"{gene_name}, {rsid}"
+    sns.set(style="whitegrid", font="Roboto")
+    sns.violinplot(x="Cluster", y="Allelic Fraction", data=clusters_df)
+    plt.title(title)
+    plt.savefig(out_path, bbox_inches='tight')
+    plt.clf()
+
 def plot_fractions(props, tcounts, rsid, allele, gene_name, cluster_name, out_path):
     title = f"{gene_name}, {rsid}, {cluster_name}"
     sns.set(style="whitegrid", font="Roboto")
@@ -56,6 +64,8 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     # print(phases) ####
     # print(hets) ####
     # print(hap_B.shape) ####
+
+    cluster_data = {}
 
     for cluster, fm_res in finemap_data.items():
         print(cluster)
@@ -94,6 +104,14 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         cluster_name = CLUSTERS[cluster]
         out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_{cluster}.svg")
         plot_fractions(prop_sorted, tcounts_sorted, rsid, allele_eff, gene_name, cluster_name, out_path)
+        for i in prop_sorted:
+            cluster_data.append([cluster, prop_sorted])
+
+    clusters_df = pd.DataFrame.from_records(cluster_data, columns=["Cluster", "Allelic Fraction"])
+    out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_violins.svg")
+    plot_clusters(clusters_df, rsid, gene_name, out_path)
+
+
 
 def gene_interpret(genes, data_dir, genes_map_path, run_name_plasma, out_dir):
     with open(genes_map_path, "rb") as genes_map_file:
