@@ -27,7 +27,7 @@ CLUSTERS =  {
 }
 
 def plot_clusters(clusters_df, rsid, gene_name, out_path):
-    print(clusters_df) ####
+    # print(clusters_df) ####
     title = f"{gene_name}, {rsid}"
     sns.set(style="whitegrid", font="Roboto")
     sns.violinplot(x="Cluster", y="Allelic Fraction", data=clusters_df)
@@ -106,7 +106,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
         out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_{cluster}.svg")
         plot_fractions(prop_sorted, tcounts_sorted, rsid, allele_eff, gene_name, cluster_name, out_path)
         for i in prop_sorted:
-            cluster_data.append([cluster, prop_sorted])
+            cluster_data.append([cluster, i])
 
     clusters_df = pd.DataFrame.from_records(cluster_data, columns=["Cluster", "Allelic Fraction"])
     out_path = os.path.join(out_dir, f"{gene_id}_{rsid}_violins.svg")
