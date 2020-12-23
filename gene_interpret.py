@@ -65,7 +65,7 @@ def calc_fractions(gene_id, rsid, gene_data, finemap_data, gene_map, out_dir):
     # print(hets) ####
     # print(hap_B.shape) ####
 
-    cluster_data = {}
+    cluster_data = []
 
     for cluster, fm_res in finemap_data.items():
         print(cluster)
