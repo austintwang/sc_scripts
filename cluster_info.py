@@ -302,6 +302,7 @@ def calc_nlq(df, sn):
     df[f"TopSNPNLQ{sn}"] = nlq
 
 def plot_sets(df, out_dir):
+    os.makedirs(out_dir, exist_ok=True)
     clusters = {
         "_all": "All Cells",
         "_neur": "All Neurons",
