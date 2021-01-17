@@ -450,6 +450,7 @@ def plot_sets(df, out_dir):
         df_specific = df_merged.loc[:,("Gene", "TopSNPZ2PhiDiff", "TopSNPZPhi_clust", "TopSNPZPhi_all")].sort_values(by="TopSNPZ2PhiDiff", ascending=False)
         # for ind, thresh in enumerate(threshs):
         #     cutoff = int(len(df_merged) * thresh)
+        os.makedirs(os.path.join(out_dir, "cell_type_spec"), exist_ok=True)
         df_specific.to_csv(os.path.join(out_dir, "cell_type_spec", f"{cluster}.csv"), sep="\t", index=False, na_rep="None")   
 
         data_spec = [
