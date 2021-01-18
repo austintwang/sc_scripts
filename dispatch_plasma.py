@@ -146,19 +146,19 @@ if __name__ == '__main__':
     }
     params_path_kellis_combined = os.path.join(data_path_kellis, "plasma_params_combined.pickle")
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis, 
-        params_path_kellis_combined, 
-        "all", 
-        cluster_map_path_kellis, 
-        barcodes_map_path_kellis, 
-        overdispersion_path_kellis, 
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis, 
+    #     params_path_kellis_combined, 
+    #     "all", 
+    #     cluster_map_path_kellis, 
+    #     barcodes_map_path_kellis, 
+    #     overdispersion_path_kellis, 
+    #     2000, 
+    #     fails_only=False
+    # )
 
     params_kellis_coloc = params_kellis.copy()
     params_kellis_coloc.update({
@@ -379,13 +379,13 @@ if __name__ == '__main__':
         # )
 
     groups = [
-        "Female",
-        "Male",
-        "AgeUnder80",
-        "Age80To90",
-        "AgeOver90",
-        "ReaganNeg",
-        "ReaganPos",
+        # "Female",
+        # "Male",
+        # "AgeUnder80",
+        # "Age80To90",
+        # "AgeOver90",
+        # "ReaganNeg",
+        # "ReaganPos",
         "Cerad1",
         "Cerad2",
         "Cerad3",
@@ -405,32 +405,32 @@ if __name__ == '__main__':
         })
         params_path_kellis_test = os.path.join(data_path_kellis, "clinical_429_params", f"plasma_params_clinical_{group}.pickle")
 
-        # dispatch(
-        #     script_path, 
-        #     names_test, 
-        #     genes_dir_kellis, 
-        #     params_kellis_test, 
-        #     params_path_kellis_test, 
-        #     "all", 
-        #     cluster_map_path_kellis, 
-        #     barcodes_map_path_kellis, 
-        #     overdispersion_path_kellis, 
-        #     2000, 
-        #     fails_only=False
-        # )
+        dispatch(
+            script_path, 
+            names_test, 
+            genes_dir_kellis, 
+            params_kellis_test, 
+            params_path_kellis_test, 
+            "all", 
+            cluster_map_path_kellis, 
+            barcodes_map_path_kellis, 
+            overdispersion_path_kellis, 
+            2000, 
+            fails_only=False
+        )
 
     names_test_path = os.path.join(data_path_kellis, "list_429_sig.pickle")
     with open(names_test_path, "rb") as names_test_file:
         names_test = pickle.load(names_test_file)
 
     groups = [
-        "Female",
-        "Male",
-        "AgeUnder80",
-        "Age80To90",
-        "AgeOver90",
-        "ReaganNeg",
-        "ReaganPos",
+        # "Female",
+        # "Male",
+        # "AgeUnder80",
+        # "Age80To90",
+        # "AgeOver90",
+        # "ReaganNeg",
+        # "ReaganPos",
         "Cerad1",
         "Cerad2",
         "Cerad3",

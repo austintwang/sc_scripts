@@ -178,13 +178,13 @@ if __name__ == '__main__':
     )
 
     groups = [
-        "Female",
-        "Male",
-        "AgeUnder80",
-        "Age80To90",
-        "AgeOver90",
-        "ReaganNeg",
-        "ReaganPos",
+        # "Female",
+        # "Male",
+        # "AgeUnder80",
+        # "Age80To90",
+        # "AgeOver90",
+        # "ReaganNeg",
+        # "ReaganPos",
         "Cerad1",
         "Cerad2",
         "Cerad3",
