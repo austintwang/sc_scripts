@@ -163,19 +163,19 @@ if __name__ == '__main__':
     params_kellis_all["run_name_plasma"] = "combined_coloc"
     params_kellis_all["run_name_coloc"] = "coloc"
 
-    dispatch(
-        script_path, 
-        names_kellis, 
-        genes_dir_kellis, 
-        params_kellis_all, 
-        params_path_kellis, 
-        "all", 
-        gwas_dir,
-        gwas_gen_path,
-        boundaries_map_path,
-        2000, 
-        fails_only=False
-    )
+    # dispatch(
+    #     script_path, 
+    #     names_kellis, 
+    #     genes_dir_kellis, 
+    #     params_kellis_all, 
+    #     params_path_kellis, 
+    #     "all", 
+    #     gwas_dir,
+    #     gwas_gen_path,
+    #     boundaries_map_path,
+    #     2000, 
+    #     fails_only=False
+    # )
 
     groups = [
         # "Female",
