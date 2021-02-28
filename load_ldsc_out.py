@@ -57,4 +57,6 @@ if __name__ == '__main__':
     res_dir_base = "/agusevlab/awang/sc_kellis/ldsc_res/"
     out_dir = os.path.join(res_dir_base, "agg")
 
-    load_ldsc_out("results_chisq", res_dir_base, out_dir)
+    # load_ldsc_out("results_chisq", res_dir_base, out_dir)
+    load_ldsc_out("results_total_expression", res_dir_base, out_dir)
+    

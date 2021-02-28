@@ -60,8 +60,8 @@ STUDY_ORDER = [
     "CD_deLange2017",
 ]
 
-def plot_heatmap(df, title, result_path):
-    df_plot = df.pivot(index="Study", columns="Cluster", values="Enrichment").sort_index()
+def plot_heatmap(df, title, result_path, var):
+    df_plot = df.pivot(index="Study", columns="Cluster", values=var).sort_index()
     # print(df_plot) ####
     df_plot = df_plot.reindex(STUDY_ORDER)
     df_plot.rename(index=STUDY_NAMES, inplace=True)
@@ -83,7 +83,9 @@ def ldsc_interpret(in_dir, name, params, out_dir):
         df_sub = df.loc[np.logical_and(df["Threshold"] == thresh, df["Window"] == window)]
         title = f"Top {thresh}, {window} kb window"
         result_path = os.path.join(out_dir, name, f"heatmap_t_{thresh}_w_{window}.svg")
-        plot_heatmap(df_sub, title, result_path)
+        plot_heatmap(df_sub, title, result_path, "Enrichment")
+        result_path = os.path.join(out_dir, name, f"heatmap_p_t_{thresh}_w_{window}.svg")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentP")
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/ldsc_res/agg/"
