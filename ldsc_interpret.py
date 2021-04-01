@@ -66,6 +66,7 @@ def plot_heatmap(df, title, result_path, var):
     df_plot = df_plot.reindex(STUDY_ORDER)
     df_plot.rename(index=STUDY_NAMES, inplace=True)
     sns.set(style="whitegrid", font="Roboto")
+    print(df_plot) ####
     g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
     # g.fig.suptitle(title)
     plt.title(title)
@@ -78,7 +79,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     # print(in_path) ####
-    print(df) ####
+    # print(df) ####
     for thresh, window in params:
         df_sub = df.loc[np.logical_and(df["Threshold"] == thresh, df["Window"] == window)]
         title = f"Top {thresh}, {window} kb window"
