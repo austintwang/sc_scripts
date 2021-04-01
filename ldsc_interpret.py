@@ -79,7 +79,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     # print(in_path) ####
-    print(df) ####
+    print(df.to_string()) ####
     for thresh, window in params:
         # print(thresh, window) ####
         if thresh is not None:
@@ -89,13 +89,13 @@ def ldsc_interpret(in_dir, name, params, out_dir):
             plot_heatmap(df_sub, title, result_path, "Enrichment")
             result_path = os.path.join(out_dir, name, f"heatmap_p_t_{thresh}_w_{window}.svg")
             plot_heatmap(df_sub, title, result_path, "EnrichmentP")
-        else:
-            df_sub = df
-            title = "Expression-Based Annotations"
-            result_path = os.path.join(out_dir, name, f"heatmap_t.svg")
-            plot_heatmap(df_sub, title, result_path, "Enrichment")
-            result_path = os.path.join(out_dir, name, f"heatmap_p.svg")
-            plot_heatmap(df_sub, title, result_path, "EnrichmentP")
+        # else:
+        #     df_sub = df
+        #     title = "Expression-Based Annotations"
+        #     result_path = os.path.join(out_dir, name, f"heatmap_t.svg")
+        #     plot_heatmap(df_sub, title, result_path, "Enrichment")
+        #     result_path = os.path.join(out_dir, name, f"heatmap_p.svg")
+        #     plot_heatmap(df_sub, title, result_path, "EnrichmentP")
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/ldsc_res/agg/"
