@@ -79,8 +79,9 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     # print(in_path) ####
-    # print(df) ####
+    print(df) ####
     for thresh, window in params:
+        print(thresh, window) ####
         df_sub = df.loc[np.logical_and(df["Threshold"] == thresh, df["Window"] == window)]
         title = f"Top {thresh}, {window} kb window"
         result_path = os.path.join(out_dir, name, f"heatmap_t_{thresh}_w_{window}.svg")
