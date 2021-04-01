@@ -21,7 +21,7 @@ def add_data(res_path, data_lst):
             if cutoff_match is None:
                 cutoff = None
             else:
-                cutoff = float(cutoff_match.group(1))
+                cutoff = int(cutoff_match.group(1))
             window_match = re.search(r"pm(.*?)kb", paramstr)
             if window_match is None:
                 window = 0
