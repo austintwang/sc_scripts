@@ -79,7 +79,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     # print(in_path) ####
-    print(df.to_string()) ####
+    # print(df.to_string()) ####
     for thresh, window in params:
         # print(thresh, window) ####
         if thresh is not None:
@@ -107,6 +107,6 @@ if __name__ == '__main__':
     ldsc_interpret(in_dir, name, params, out_dir)
 
     name = "results_total_expression"
-    params = [(None, None)]
+    params = [(0.1, 100)]
     ldsc_interpret(in_dir, name, params, out_dir)
 
