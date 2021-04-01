@@ -95,3 +95,6 @@ if __name__ == '__main__':
     # params = [(i, j) for i in [0.1, 0.2, 0.5] for j in [0, 10, 50]]
     params = [(i, j) for i in [0.1, 0.2, 0.5] for j in [10, 50]]
     ldsc_interpret(in_dir, name, params, out_dir)
+    name = "results_total_expression"
+    ldsc_interpret(in_dir, name, params, out_dir)
+
