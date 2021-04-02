@@ -83,7 +83,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     for cutoff, window in params:
         # print(thresh, window) ####
         df_sub = df.loc[np.logical_and(df["Cutoff"] == cutoff, df["Window"] == window)]
-        title = f"Top {thresh}, {window} kb window"
+        title = f"Top {cutoff}, {window} kb window"
         result_path = os.path.join(out_dir, name, f"heatmap_c_{cutoff}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "Enrichment")
         result_path = os.path.join(out_dir, name, f"heatmap_p_c_{cutoff}_w_{window}.svg")
