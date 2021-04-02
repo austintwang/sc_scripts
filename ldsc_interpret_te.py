@@ -79,7 +79,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     # print(in_path) ####
-    # print(df.to_string()) ####
+    print(df.to_string()) ####
     for cutoff, window in params:
         # print(thresh, window) ####
         df_sub = df.loc[np.logical_and(df["Cutoff"] == cutoff, df["Window"] == window)]
