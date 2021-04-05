@@ -12,7 +12,7 @@ def add_data(res_path, res_name, data_lst):
     with open(res_path) as res_file:
         for line in res_file:
             cols = line.strip().split("\t")
-            line_id = cols[0] 
+            line_id = cols[1] 
             cluster = line_id.split(".")[-3]
             gene = cols[3]
             model = cols[14]
