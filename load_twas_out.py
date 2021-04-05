@@ -8,6 +8,8 @@ import pandas as pd
 # import scipy.stats
 
 def add_data(res_path, res_name, data_lst):
+    print(res_path) ####
+    print(res_name) ####
     study = res_name.split(".")[0]
     with open(res_path) as res_file:
         for line in res_file:
