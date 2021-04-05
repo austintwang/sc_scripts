@@ -19,7 +19,7 @@ def add_data(res_path, res_name, data_lst):
             z = float(cols[17])
             p = float(cols[18])
 
-            data_lst.append(study, model, cluster, gene, z, p)
+            data_lst.append([study, model, cluster, gene, z, p])
 
 def load_ldsc_out(name, res_dir_base, out_dir):
     res_dir = os.path.join(res_dir_base, name)
