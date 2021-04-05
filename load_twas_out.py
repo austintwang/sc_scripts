@@ -27,7 +27,7 @@ def load_ldsc_out(name, res_dir_base, out_dir):
     res_dir = os.path.join(res_dir_base, name)
     data_lst = []
     for i in glob.glob(os.path.join(res_dir, "*.ase.bonf_top")):
-        name = os.path.basename(your_path)
+        name = os.path.basename(i)
         add_data(i, name, data_lst)
     cols = [
         "Study", 
