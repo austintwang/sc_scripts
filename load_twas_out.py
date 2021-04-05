@@ -16,8 +16,8 @@ def add_data(res_path, res_name, data_lst):
             cluster = line_id.split(".")[-3]
             gene = cols[3]
             model = cols[14]
-            z = int(cols[17])
-            p = int(cols[18])
+            z = float(cols[17])
+            p = float(cols[18])
 
             data_lst.append(study, model, cluster, gene, z, p)
 
