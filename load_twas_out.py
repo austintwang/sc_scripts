@@ -9,7 +9,6 @@ import pandas as pd
 
 def add_data(res_path, res_name, data_lst):
     study = res_name.split(".")[0]
-
     with open(res_path) as res_file:
         for line in res_file:
             cols = line.strip().split("\t")
@@ -27,7 +26,7 @@ def load_ldsc_out(name, res_dir_base, out_dir):
     data_lst = []
     for i in glob.glob(os.path.join(res_dir, "*.ase.bonf_top")):
         res_path = os.path.join(res_dir, i)
-        add_data(res_path, data_lst)
+        add_data(res_path, i, data_lst)
     cols = [
         "Study", 
         "Regression", 
