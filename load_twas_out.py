@@ -16,8 +16,8 @@ def add_data(res_path, res_name, data_lst):
             cols = line.strip().split("\t")
             line_id = cols[1] 
             cluster = line_id.split(".")[-3]
-            gene = cols[3]
-            model = cols[14]
+            gene = cols[2]
+            model = cols[15]
             z = float(cols[17])
             p = float(cols[18])
 
@@ -27,8 +27,8 @@ def load_ldsc_out(name, res_dir_base, out_dir):
     res_dir = os.path.join(res_dir_base, name)
     data_lst = []
     for i in glob.glob(os.path.join(res_dir, "*.ase.bonf_top")):
-        name = os.path.basename(i)
-        add_data(i, name, data_lst)
+        basename = os.path.basename(i)
+        add_data(i, basename, data_lst)
     cols = [
         "Study", 
         "Regression", 
