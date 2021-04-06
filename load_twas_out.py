@@ -8,8 +8,8 @@ import pandas as pd
 # import scipy.stats
 
 def add_data(res_path, res_name, data_lst):
-    print(res_path) ####
-    print(res_name) ####
+    # print(res_path) ####
+    # print(res_name) ####
     study = res_name.split(".")[0]
     with open(res_path) as res_file:
         for line in res_file:
@@ -38,6 +38,7 @@ def load_ldsc_out(name, res_dir_base, out_dir):
         "p-Value", 
     ]
     df = pd.DataFrame(data_lst, columns=cols)
+    print(df) ####
 
     csv_path = os.path.join(out_dir, f"{name}.csv")
     df.to_csv(csv_path, index=False, na_rep="None")
