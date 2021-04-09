@@ -63,8 +63,8 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
     df["Gene Name"] = df["Gene"].map(lambda x: get_genename(x, namemap))
     # print(in_path) ####
     # print(df.to_string()) ####
-    for name, group in df.groupby(["Study", "Regression"]):
-        study, model = name
+    for gname, group in df.groupby(["Study", "Regression"]):
+        study, model = gname
         study_name = STUDY_NAMES[study]
         title = f"{study_name}, {model} TWAS"
 
