@@ -68,6 +68,7 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
         study_name = STUDY_NAMES[study]
         title = f"{study_name}, {model} TWAS"
 
+        os.makedirs(os.path.join(out_dir, name), exist_ok=True)
         result_path = os.path.join(out_dir, name, f"heatmap_{study}_m_{model}.svg")
         plot_heatmap(group, title, result_path, "Z-Score")
         result_path = os.path.join(out_dir, name, f"heatmap_p_{study}_m_{model}.svg")
