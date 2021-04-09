@@ -75,7 +75,7 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
 
 
 if __name__ == '__main__':
-    in_dir = "/agusevlab/awang/sc_kellis/twas_res_2/"
+    in_dir = "/agusevlab/awang/sc_kellis/twas_res_2/agg/"
     # name = "results_chisq"
     name = "SCTWAS_RESULTS"
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/twas/heatmaps"
