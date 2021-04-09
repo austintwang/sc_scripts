@@ -69,9 +69,9 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
         title = f"{study_name}, {model} TWAS"
 
         result_path = os.path.join(out_dir, name, f"heatmap_{study}_m_{model}.svg")
-        plot_heatmap(df_sub, title, result_path, "Z-Score")
+        plot_heatmap(group, title, result_path, "Z-Score")
         result_path = os.path.join(out_dir, name, f"heatmap_p_{study}_m_{model}.svg")
-        plot_heatmap(df_sub, title, result_path, "p-Value")
+        plot_heatmap(group, title, result_path, "p-Value")
 
 
 if __name__ == '__main__':
