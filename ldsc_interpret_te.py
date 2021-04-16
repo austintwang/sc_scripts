@@ -60,14 +60,15 @@ STUDY_ORDER = [
     "CD_deLange2017",
 ]
 
-def plot_heatmap(df, title, result_path, var):
+def plot_heatmap(df, title, result_path, var, fmt=None):
     df_plot = df.pivot(index="Study", columns="Cluster", values=var).sort_index()
     # print(df_plot) ####
     df_plot = df_plot.reindex(STUDY_ORDER)
     df_plot.rename(index=STUDY_NAMES, inplace=True)
     sns.set(style="whitegrid", font="Roboto")
     # print(df_plot) ####
-    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    kws_extras = {} if fmt is None else {"fmt": fmt}
+    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"}, **kws_extras)
     # g.fig.suptitle(title)
     plt.title(title)
     # g.savefig(result_path, bbox_inches='tight')
@@ -89,9 +90,11 @@ def ldsc_interpret(in_dir, name, params, out_dir):
         result_path = os.path.join(out_dir, name, f"heatmap_c_{cutoff}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "Enrichment")
         result_path = os.path.join(out_dir, name, f"heatmap_p_c_{cutoff}_w_{window}.svg")
-        plot_heatmap(df_sub, title, result_path, "EnrichmentP")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentP", fmt=".2g")
         result_path = os.path.join(out_dir, name, f"heatmap_z_c_{cutoff}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "EnrichmentZ")
+        result_path = os.path.join(out_dir, name, f"heatmap_se_c_{cutoff}_w_{window}.svg")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentStdError")
 
 
 if __name__ == '__main__':
