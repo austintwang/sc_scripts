@@ -89,7 +89,7 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
         result_path = os.path.join(out_dir, name, f"heatmap_p_{study}_m_{model}.svg")
         plot_heatmap(group, title, result_path, "p-Value")
 
-    for study, group in df.groupby(["Study"])
+    for study, group in df.groupby(["Study"]):
         title = f"{model} TWAS Hits"
         result_path = os.path.join(out_dir, name, f"hits_m_{model}.svg")
         plot_heatmap_hits(group, title, result_path)
