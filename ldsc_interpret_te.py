@@ -90,7 +90,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
         result_path = os.path.join(out_dir, name, f"heatmap_c_{cutoff}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "Enrichment")
         result_path = os.path.join(out_dir, name, f"heatmap_p_c_{cutoff}_w_{window}.svg")
-        plot_heatmap(df_sub, title, result_path, "EnrichmentP", fmt=".2g")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentP", fmt=".2e")
         result_path = os.path.join(out_dir, name, f"heatmap_z_c_{cutoff}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "EnrichmentZ")
         result_path = os.path.join(out_dir, name, f"heatmap_se_c_{cutoff}_w_{window}.svg")
