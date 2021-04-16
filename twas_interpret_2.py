@@ -36,6 +36,30 @@ STUDY_NAMES = {
     "Worry_Nagel2018": "Worry",
 }
 
+STUDY_ORDER = [
+    "PASS_Alzheimers_Jansen2019",
+    "AlzheimersProxyMetaIGAP_Marioni2018",
+    "AlzheimersMaternal_Marioni2018",
+    "AlzheimersPaternal_Marioni2018",
+    "BD_Ruderfer2018",
+    "PASS_BIP_Stahl2019",
+    "BDSCZ_Ruderfer2018",
+    "SCZvsBD_Ruderfer2018",
+    "PASS_Schizophrenia_Pardinas2018",
+    "SCZ_Ruderfer2018",
+    "MDD_Wray2018",
+    "Depression_Nagel2018",
+    "DepressedAffect_Nagel2018",
+    "Neuroticism_Nagel2018",
+    "Worry_Nagel2018",
+    "Intelligence_SavageJansen2018",
+    "VerbalNumericReasoning_Davies2018",
+    "ReactionTime_Davies2018",
+    "IBD_deLange2017",
+    "UC_deLange2017",
+    "CD_deLange2017",
+]
+
 def get_genename(eid, namemap):
     return namemap.get(eid.split('.')[0], eid)
 
