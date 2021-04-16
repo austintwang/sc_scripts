@@ -54,6 +54,21 @@ def plot_heatmap(df, title, result_path, var):
     plt.clf()
     plt.close()
 
+def plot_heatmap_hits(df, title, result_path):
+    df_plot = df.pivot_table(index="Study", columns="Cluster", values="Hits", aggfunc=np.sum).sort_index()
+    # print(df_plot) ####
+    df_plot = df_plot.reindex(STUDY_ORDER)
+    df_plot.rename(index=STUDY_NAMES, inplace=True)
+    sns.set(style="whitegrid", font="Roboto")
+    # print(df_plot) ####
+    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    # g.fig.suptitle(title)
+    plt.title(title)
+    # g.savefig(result_path, bbox_inches='tight')
+    plt.savefig(result_path, bbox_inches='tight')
+    plt.clf()
+    plt.close()
+
 def ldsc_interpret(in_dir, name, namemap_path, out_dir):
     with open(namemap_path, 'rb') as namemap_file:
         namemap = pickle.load(namemap_file)
@@ -74,6 +89,10 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
         result_path = os.path.join(out_dir, name, f"heatmap_p_{study}_m_{model}.svg")
         plot_heatmap(group, title, result_path, "p-Value")
 
+    for study, group in df.groupby(["Study"])
+        title = f"{model} TWAS Hits"
+        result_path = os.path.join(out_dir, name, f"hits_m_{model}.svg")
+        plot_heatmap_hits(group, title, result_path)
 
 if __name__ == '__main__':
     in_dir = "/agusevlab/awang/sc_kellis/twas_res_2/agg/"

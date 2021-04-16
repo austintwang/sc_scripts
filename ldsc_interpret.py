@@ -78,6 +78,7 @@ def plot_heatmap(df, title, result_path, var):
 def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
+    df["EnrichmentZ"] = df["Enrichment"] / df["EnrichmentStdError"]
     # print(in_path) ####
     # print(df.to_string()) ####
     for thresh, window in params:
@@ -88,6 +89,8 @@ def ldsc_interpret(in_dir, name, params, out_dir):
         plot_heatmap(df_sub, title, result_path, "Enrichment")
         result_path = os.path.join(out_dir, name, f"heatmap_p_t_{thresh}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "EnrichmentP")
+        result_path = os.path.join(out_dir, name, f"heatmap_z_c_{cutoff}_w_{window}.svg")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentZ")
 
 
 if __name__ == '__main__':
