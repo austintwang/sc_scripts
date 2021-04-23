@@ -66,7 +66,7 @@ def get_genename(eid, namemap):
 def plot_heatmap(df, title, result_path, var):
     df_hits = df.pivot_table(index="Gene Name", columns="Cluster", values="Hits", aggfunc=np.sum).sort_index()
     sigs = (df_hits.sum(axis=1) > 0)
-    df_plot = df.pivot(index="Gene Name", columns="Cluster", values=var).sort_index()[sigs]
+    df_plot = df.pivot(index="Gene Name", columns="Cluster", values=var).sort_index()[sigs].fillna(value=np.nan)
     # print(df_plot) ####
     # df_plot = df_plot.reindex(STUDY_ORDER)
     # df_plot.rename(index=STUDY_NAMES, inplace=True)
