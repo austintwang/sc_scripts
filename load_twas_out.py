@@ -63,7 +63,7 @@ def load_ldsc_out(name, res_dir_base, out_dir):
     print(df) ####
 
     csv_path = os.path.join(out_dir, f"{name}.csv")
-    df.to_csv(csv_path, index=False, na_rep="None")
+    df.to_csv(csv_path, index=False, na_rep="nan")
 
 if __name__ == '__main__':
     res_dir_base = "/agusevlab/awang/sc_kellis/twas_res_2/"
