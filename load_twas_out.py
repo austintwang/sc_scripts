@@ -17,7 +17,7 @@ def add_hits(res_path, res_name, hits):
             gene = cols[2]
             model = cols[15]
 
-            hits.add((cluster, gene, model),)
+            hits.add((study, cluster, gene, model),)
 
 def add_data(res_path, res_name, data_lst, hits):
     # print(res_path) ####
@@ -37,7 +37,7 @@ def add_data(res_path, res_name, data_lst, hits):
             pstr = vals[cols["TWAS.P"]]
             p = np.nan if pstr == "NA" else float(pstr)
 
-            sig = int((cluster, gene, model) in hits)
+            sig = int((study, cluster, gene, model) in hits)
             data_lst.append([study, model, cluster, gene, z, p, sig])
 
 def load_ldsc_out(name, res_dir_base, out_dir):
