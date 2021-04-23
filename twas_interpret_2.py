@@ -66,7 +66,7 @@ def get_genename(eid, namemap):
 def plot_heatmap(df, title, result_path, var):
     df_hits = df.pivot_table(index="Gene Name", columns="Cluster", values="Hits", aggfunc=np.sum).sort_index()
     sigs = (df_hits.sum(axis=1) > 0)
-    df_plot = df.pivot_table(index="Gene Name", columns="Cluster", values=var, fill_value=np.nan, aggfunc='first').sort_index()[sigs]
+    df_plot = df.pivot_table(index="Gene Name", columns="Cluster", values=var, fill_value=np.nan).sort_index()[sigs]
     # print(df_plot) ####
     # df_plot = df_plot.reindex(STUDY_ORDER)
     # df_plot.rename(index=STUDY_NAMES, inplace=True)
@@ -101,6 +101,7 @@ def ldsc_interpret(in_dir, name, namemap_path, out_dir):
 
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
+    print(df)
     df["Gene Name"] = df["Gene"].map(lambda x: get_genename(x, namemap))
     # print(in_path) ####
     # print(df.to_string()) ####
