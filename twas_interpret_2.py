@@ -70,6 +70,9 @@ def plot_heatmap(df, title, result_path, var):
     # print(df_plot) ####
     # df_plot = df_plot.reindex(STUDY_ORDER)
     # df_plot.rename(index=STUDY_NAMES, inplace=True)
+    if df_plot.empty:
+        return
+        
     sns.set(style="whitegrid", font="Roboto")
     print(df_plot) ####
     g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})

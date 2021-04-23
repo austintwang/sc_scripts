@@ -11,7 +11,7 @@ def add_hits(res_path, res_name, hits):
     study = res_name.split(".")[0]
     with open(res_path) as res_file:
         for line in res_file:
-            cols = line.strip().split("\t")
+            cols = line.strip().split()
             line_id = cols[1] 
             cluster = line_id.split(".")[-3]
             gene = cols[2]
