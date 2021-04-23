@@ -28,13 +28,13 @@ def add_data(res_path, res_name, data_lst, hits):
         cols = {val: ind for ind, val in enumerate(header.strip().split())}
         for line in res_file:
             vals = line.strip().split("\t")
-            line_id = vals["FILE"]
+            line_id = vals[cols["FILE"]]
             cluster = line_id.split(".")[-3]
-            gene = vals["ID"]
-            model = vals["MODEL"]
-            zstr = vals["TWAS.Z"]
+            gene = vals[cols["ID"]]
+            model = vals[cols["MODEL"]]
+            zstr = vals[cols["TWAS.Z"]]
             z = np.nan if zstr == "NA" else float(zstr)
-            pstr = vals["TWAS.P"]
+            pstr = vals[cols["TWAS.P"]]
             p = np.nan if pstr == "NA" else float(pstr)
 
             sig = int((cluster, gene, model) in hits)
