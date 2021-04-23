@@ -27,7 +27,7 @@ def add_data(res_path, res_name, data_lst, hits):
         header = next(res_file)
         cols = {val: ind for ind, val in enumerate(header.strip().split())}
         for line in res_file:
-            vals = line.strip().split("\t")
+            vals = line.strip().split()
             line_id = vals[cols["FILE"]]
             cluster = line_id.split(".")[-3]
             gene = vals[cols["ID"]]
