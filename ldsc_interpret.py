@@ -67,7 +67,9 @@ def plot_heatmap(df, title, result_path, var, fmt=None):
     df_plot.rename(index=STUDY_NAMES, inplace=True)
     sns.set(style="whitegrid", font="Roboto")
     # print(df_plot) ####
-    kws_extras = {} if fmt is None else {"fmt": fmt}
+    kws_extras = {} 
+    if fmt is not None:
+        kws_extras["fmt"] = fmt
     g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"}, **kws_extras)
     # g.fig.suptitle(title)
     plt.title(title)
@@ -80,6 +82,7 @@ def ldsc_interpret(in_dir, name, params, out_dir):
     in_path = os.path.join(in_dir, f"{name}.csv")
     df = pd.read_csv(in_path)
     df["EnrichmentZ"] = df["Enrichment"] / df["EnrichmentStdError"]
+    df["EnrichmentSig"] = df["Enrichment"].mask(df["EnrichmentP"] <= 0.05)
     # print(in_path) ####
     # print(df.to_string()) ####
     for thresh, window in params:
@@ -94,6 +97,8 @@ def ldsc_interpret(in_dir, name, params, out_dir):
         plot_heatmap(df_sub, title, result_path, "EnrichmentZ")
         result_path = os.path.join(out_dir, name, f"heatmap_se_t_{thresh}_w_{window}.svg")
         plot_heatmap(df_sub, title, result_path, "EnrichmentStdError")
+        result_path = os.path.join(out_dir, name, f"heatmap_sg_t_{thresh}_w_{window}.svg")
+        plot_heatmap(df_sub, title, result_path, "EnrichmentSig")
 
 
 if __name__ == '__main__':

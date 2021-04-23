@@ -7,9 +7,7 @@ import numpy as np
 import pandas as pd
 # import scipy.stats
 
-def add_data(res_path, res_name, data_lst):
-    # print(res_path) ####
-    # print(res_name) ####
+def add_hits(res_path, res_name, hits):
     study = res_name.split(".")[0]
     with open(res_path) as res_file:
         for line in res_file:
@@ -18,17 +16,40 @@ def add_data(res_path, res_name, data_lst):
             cluster = line_id.split(".")[-3]
             gene = cols[2]
             model = cols[15]
-            z = float(cols[18])
-            p = float(cols[19])
 
-            data_lst.append([study, model, cluster, gene, z, p, 1.])
+            hits.add((cluster, gene, model),)
+
+def add_data(res_path, res_name, data_lst, hits):
+    # print(res_path) ####
+    # print(res_name) ####
+    study = res_name.split(".")[0]
+    with open(res_path) as res_file:
+        header = next(res_file)
+        cols = {val: ind for ind, val in enumerate(header.strip().split())}
+        for line in res_file:
+            vals = line.strip().split("\t")
+            line_id = vals["FILE"]
+            cluster = line_id.split(".")[-3]
+            gene = vals["ID"]
+            model = vals["MODEL"]
+            zstr = vals["TWAS.Z"]
+            z = np.nan if zstr == "NA" else float(zstr)
+            pstr = vals["TWAS.P"]
+            p = np.nan if pstr == "NA" else float(pstr)
+
+            sig = int((cluster, gene, model) in hits)
+            data_lst.append([study, model, cluster, gene, z, p, sig])
 
 def load_ldsc_out(name, res_dir_base, out_dir):
     res_dir = os.path.join(res_dir_base, name)
-    data_lst = []
+    hits = set()
     for i in glob.glob(os.path.join(res_dir, "*.ase.bonf_top")):
         basename = os.path.basename(i)
-        add_data(i, basename, data_lst)
+        add_hits(i, basename, hits)
+    data_lst = []
+    for i in glob.glob(os.path.join(res_dir, "*.twas")):
+        basename = os.path.basename(i)
+        add_data(i, basename, data_lst, hits)
     cols = [
         "Study", 
         "Regression", 
