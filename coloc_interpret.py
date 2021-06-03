@@ -64,6 +64,9 @@ def plot_heatmap(df, title, result_path):
     df_filled = np.abs(df_plot.fillna(df_plot.mean()))
     df_filled.fillna(0, inplace=True)
 
+    sig = (df_plot >= 0.8)
+    sig = np.where(sig, "*", "")fd
+
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(
         df_filled, 
@@ -72,7 +75,8 @@ def plot_heatmap(df, title, result_path):
         vmax=1,
         yticklabels=True,
         col_cluster=False,
-        cmap='rocket_r'
+        cmap='rocket_r',
+        annot=sig
     )
     g.ax_row_dendrogram.set_visible(False)
     g.ax_row_dendrogram.set_xlim([0,0])
@@ -105,7 +109,7 @@ def plot_manhattan(pp_df, gene_name, gene_id, out_dir):
         # hue_kws={"marker":["o", "o", "D"]},
         # palette="seismic",
         margin_titles=True, 
-        height=3, 
+        height=2, 
         aspect=2
     )
 

@@ -72,10 +72,10 @@ def plot_heatmap(df, title, result_path, var):
     # df_plot.rename(index=STUDY_NAMES, inplace=True)
     if df_plot.empty:
         return
-        
+
     sns.set(style="whitegrid", font="Roboto")
     print(df_plot) ####
-    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    g = sns.heatmap(df_plot, center=0, annot=True, cmap="magma_r", annot_kws={"size": 10, "weight": "medium"})
     # g.fig.suptitle(title)
     plt.title(title)
     # g.savefig(result_path, bbox_inches='tight')
@@ -84,13 +84,13 @@ def plot_heatmap(df, title, result_path, var):
     plt.close()
 
 def plot_heatmap_hits(df, title, result_path):
-    df_plot = df.pivot_table(index="Study", columns="Cluster", values="Hits", aggfunc=np.sum).sort_index()
+    df_plot = df.pivot_table(index="Study", columns="Cluster", values="Hits", aggfunc=np.sum, fill_value=0).sort_index()
     # print(df_plot) ####
     df_plot = df_plot.reindex(STUDY_ORDER)
     df_plot.rename(index=STUDY_NAMES, inplace=True)
     sns.set(style="whitegrid", font="Roboto")
     # print(df_plot) ####
-    g = sns.heatmap(df_plot, center=0, annot=True, annot_kws={"size": 10, "weight": "medium"})
+    g = sns.heatmap(df_plot, center=0, annot=True, cmap="magma_r", annot_kws={"size": 10, "weight": "medium"})
     # g.fig.suptitle(title)
     plt.title(title)
     # g.savefig(result_path, bbox_inches='tight')
@@ -98,7 +98,7 @@ def plot_heatmap_hits(df, title, result_path):
     plt.clf()
     plt.close()
 
-def ldsc_interpret(in_dir, name, namemap_path, out_dir):
+def twas_interpret(in_dir, name, namemap_path, out_dir):
     with open(namemap_path, 'rb') as namemap_file:
         namemap = pickle.load(namemap_file)
 
@@ -130,5 +130,5 @@ if __name__ == '__main__':
     name = "SCTWAS_RESULTS"
     out_dir = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/twas/heatmaps"
     namemap_path = "/agusevlab/awang/ensembl/id_to_name.pickle"
-    ldsc_interpret(in_dir, name, namemap_path, out_dir)
+    twas_interpret(in_dir, name, namemap_path, out_dir)
 
