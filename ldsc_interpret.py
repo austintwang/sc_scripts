@@ -70,7 +70,7 @@ def plot_heatmap(df, title, result_path, var, fmt=None):
     kws_extras = {} 
     if fmt is not None:
         kws_extras["fmt"] = fmt
-    g = sns.heatmap(df_plot, center=0, annot=True, cmap="magma_r", annot_kws={"size": 10, "weight": "medium"}, **kws_extras)
+    g = sns.heatmap(df_plot, center=0, annot=True, cmap="vlag", center=1, annot_kws={"size": 10, "weight": "medium"}, **kws_extras)
     # g.fig.suptitle(title)
     plt.title(title)
     # g.savefig(result_path, bbox_inches='tight')
