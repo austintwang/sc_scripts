@@ -65,7 +65,7 @@ def plot_heatmap(df, title, result_path):
     df_filled.fillna(0, inplace=True)
 
     sig = (df_plot >= 0.8)
-    sig = np.where(sig, "*", "")fd
+    sig = np.where(sig, "*", "")
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(
