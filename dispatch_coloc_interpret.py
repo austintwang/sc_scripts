@@ -60,7 +60,7 @@ if __name__ == '__main__':
     out_path_kellis = "/agusevlab/awang/ase_finemap_results/sc_results/kellis_429/colocalization"
     gwas_dir = "/agusevlab/awang/gwas_data"
     gwas_names = [i.split(".")[0] for i in os.listdir(gwas_dir)]
-    status_dir_kellis = os.path.join(data_path_kellis, "statuses/coloc_interpret")
+    status_dir_kellis = os.path.join(data_path_kellis, "statuses_2/coloc_interpret")
 
     genes_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
 
