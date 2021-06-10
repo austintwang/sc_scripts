@@ -73,7 +73,7 @@ def plot_heatmap(df, title, result_path, var):
     if df_plot.empty:
         return
 
-    plt.figure(figsize=(8,12))
+    plt.figure(figsize=(6,12))
     sns.set(style="whitegrid", font="Roboto")
     print(df_plot) ####
     g = sns.heatmap(df_plot, center=0, annot=True, cmap="vlag", annot_kws={"size": 10, "weight": "medium"})
