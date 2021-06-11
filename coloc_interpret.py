@@ -64,8 +64,8 @@ def plot_heatmap(df, title, result_path):
     df_filled = np.abs(df_plot.fillna(df_plot.mean()))
     df_filled.fillna(0, inplace=True)
 
-    sig = (df_plot >= 0.8)
-    sig = np.where(sig, "*", "")
+    # sig = (df_plot >= 0.8)
+    # sig = np.where(sig, "*", "")
 
     sns.set(style="whitegrid", font="Roboto")
     g = sns.clustermap(
@@ -76,7 +76,7 @@ def plot_heatmap(df, title, result_path):
         yticklabels=True,
         col_cluster=False,
         cmap='vlag',
-        annot=sig,
+        annot=True,
         figsize=(7,14),
     )
     g.ax_row_dendrogram.set_visible(False)

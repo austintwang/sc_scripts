@@ -64,21 +64,21 @@ if __name__ == '__main__':
 
     genes_list_path = os.path.join(data_path_kellis, "list_429_all.pickle")
 
-    # dispatch(
-    #     script_path, 
-    #     genes_dir_kellis, 
-    #     genes_list_path,
-    #     "False",
-    #     status_dir_kellis,
-    #     gwas_names,
-    #     "combined",
-    #     "coloc",
-    #     gene_map_path,
-    #     cluster_map_path_kellis, 
-    #     out_path_kellis, 
-    #     10000, 
-    #     fails_only=False
-    # )
+    dispatch(
+        script_path, 
+        genes_dir_kellis, 
+        genes_list_path,
+        "False",
+        status_dir_kellis,
+        gwas_names,
+        "combined",
+        "coloc",
+        gene_map_path,
+        cluster_map_path_kellis, 
+        out_path_kellis, 
+        10000, 
+        fails_only=False
+    )
 
     # dispatch(
     #     script_path, 
@@ -97,13 +97,13 @@ if __name__ == '__main__':
     # )
 
     groups = [
-        # "Female",
-        # "Male",
-        # "AgeUnder80",
-        # "Age80To90",
-        # "AgeOver90",
-        # "ReaganNeg",
-        # "ReaganPos",
+        "Female",
+        "Male",
+        "AgeUnder80",
+        "Age80To90",
+        "AgeOver90",
+        "ReaganNeg",
+        "ReaganPos",
         "Cerad1",
         "Cerad2",
         "Cerad3",
