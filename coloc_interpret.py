@@ -78,6 +78,8 @@ def plot_heatmap(df, title, result_path):
         cmap='vlag',
         annot=True,
         figsize=(7,14),
+        center=0,
+        annot_kws={"size": 10, "weight": "medium"}
     )
     g.ax_row_dendrogram.set_visible(False)
     g.ax_row_dendrogram.set_xlim([0,0])
